@@ -109,9 +109,9 @@
 </ul>
 <p>Pluralizes the argument based on the filtered value. When there is exactly one arg, plural forms simply add an “s” at the end. When there are more than one argument, the arguments will be used as array of strings corresponding to the single, double, triple … forms of the word to be pluralized. When the number to be pluralized exceeds the length of the args, it will use the last entry in the array.</p>
 <p><strong>Example:</strong></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;count&#125;&#125; &#123;&#123;count | pluralize item&#125;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;count&#125;&#125; &#123;&#123;count | pluralize 'item'&#125;&#125;</span><br></pre></td></tr></table></figure>
 <p><em>1 =&gt; ‘1 item’</em><br><em>2 =&gt; ‘2 items’</em></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;date&#125;&#125;&#123;&#123;date | pluralize st nd rd th&#125;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;date&#125;&#125;&#123;&#123;date | pluralize 'st' 'nd' 'rd' 'th'&#125;&#125;</span><br></pre></td></tr></table></figure>
 <p>Will result in:</p>
 <p><em>1 =&gt; ‘1st’</em><br><em>2 =&gt; ‘2nd’</em><br><em>3 =&gt; ‘3rd’</em><br><em>4 =&gt; ‘4th’</em><br><em>5 =&gt; ‘5th’</em></p>
 <h3 id="json">json</h3><ul>
@@ -135,7 +135,7 @@
 <li>right</li>
 </ul>
 <p><strong>Example:</strong></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-on</span>=<span class="value">"keyup:doSomething | key enter"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-on</span>=<span class="value">"keyup:doSomething | key 'enter'"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p><code>doSomething</code> will only be called when the Enter key is pressed.</p>
 <h3 id="filterBy">filterBy</h3><p><strong>Syntax:</strong> <code>filterBy searchKey [in dataKey]</code>.</p>
 <ul>
