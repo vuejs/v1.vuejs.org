@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = ""
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.min.js"></script>
+        <script src="/js/vue.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,7 +35,12 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li><a href="/guide/" class="nav-link">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link current">Blog</a></li>
@@ -46,7 +51,12 @@
                 
                     <div class="sidebar">
   <ul class="main-menu">
-      <li><a href="/guide/" class="nav-link">Guide</a></li>
+      <li>
+  <form id="search-form">
+    <input type="text" id="search-query">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link current">Blog</a></li>
@@ -57,9 +67,19 @@
 <h1 style="text-align: center; margin-bottom:.5em">The Vue.js Blog</h1>
 
     <div class="post">
+        <h2><a href="/2015/06/11/012-release/">Vue.js 0.12 released!</a></h2>
+        <h4>Jun 11, 2015</h4>
+        <div><p>I’m really excited to announce that <a href="https://github.com/yyx990803/vue/releases/tag/0.12.0">Vue.js 0.12: Dragon Ball</a> is finally here! Thanks to everyone who tried out the beta/rc versions and provided feedback / bug reports along the way.</p>
+<p>There’s a lot to cover in this release, and we will talk about a few highlights below. However, it is still recommended to carefully go through the <a href="https://github.com/yyx990803/vue/releases/tag/0.12.0">Full Release Note</a> and updated docs if you are upgrading from 0.11. You can report bugs on GitHub, send questions to <a href="https://github.com/vuejs/Discussion/issues">vuejs/Discussion</a>, or join us in the <a href="https://gitter.im/yyx990803/vue">Gitter chat channel</a>.</p></div>
+        <a href="/2015/06/11/012-release/">... continue reading</a>
+    </div>
+
+    <div class="post">
         <h2><a href="/2014/12/08/011-component/">0.11 Component Tips</a></h2>
         <h4>Dec 8, 2014</h4>
-        <div><p>The release of 0.11 introduced <a href="https://github.com/yyx990803/vue/blob/master/changes.md">many changes</a>, but the most important one is how the new component scope works. Previously in 0.10.x, components have inherited scope by default. That means in a child component template you can reference parent scope properties. This often leads to tightly-coupled components, where a child component assumes knowledge of what properties are present in the parent scope. It is also possible to accidentally refer to a parent scope property in a child component.</p></div>
+        <div><p class="tip">Note: this post contains information for the outdated 0.11 version. Please refer to the <a href="https://github.com/yyx990803/vue/releases">0.12 release notes</a> for the changes in the API.</p>
+
+<p>The release of 0.11 introduced <a href="https://github.com/yyx990803/vue/blob/master/changes.md">many changes</a>, but the most important one is how the new component scope works. Previously in 0.10.x, components have inherited scope by default. That means in a child component template you can reference parent scope properties. This often leads to tightly-coupled components, where a child component assumes knowledge of what properties are present in the parent scope. It is also possible to accidentally refer to a parent scope property in a child component.</p></div>
         <a href="/2014/12/08/011-component/">... continue reading</a>
     </div>
 
@@ -90,5 +110,12 @@
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                FastClick.attach(document.body);
+            }, false);
+        </script>
     </body>
 </html>

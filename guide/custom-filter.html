@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = "guide"
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.min.js"></script>
+        <script src="/js/vue.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,7 +35,12 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
@@ -47,7 +52,12 @@
                     
     <div class="sidebar">
     <ul class="main-menu">
-        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
@@ -79,7 +89,7 @@
             
                 <li><a href="/guide/components.html" class="sidebar-link">Component System</a></li>
             
-                <li><a href="/guide/transitions.html" class="sidebar-link">Transitions</a></li>
+                <li><a href="/guide/transitions.html" class="sidebar-link">Transition System</a></li>
             
                 <li><a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a></li>
             
@@ -87,7 +97,7 @@
             
                 <li><a href="/guide/faq.html" class="sidebar-link">Common FAQs</a></li>
             
-            <li><a href="http://legacy.vuejs.org">Looking for 0.10 docs?</a></li>
+            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
             <li style="margin:10px 0 3px">
               <script data-gittip-username="yyx990803"
                 data-gittip-widget="button"
@@ -107,14 +117,13 @@
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 'abc' =&gt; 'cba' --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-text</span>=<span class="value">"message | reverse"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>The filter function also receives any inline arguments:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Vue.filter(<span class="string">'wrap'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">value, begin, end</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> begin + value + end</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 'hello' =&gt; 'before hello after' --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-text</span>=<span class="value">"message | wrap before after"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 'hello' =&gt; 'before hello after' --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-text</span>=<span class="value">"message | wrap 'before' 'after'"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h2 id="Two-way_Filters">Two-way Filters</h2><p>Up till now we have used filters to transform values coming from the model and before displaying them in the view. But it is also possible to define a filter that transforms the value before it is written back to the model from the view (input elements):</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Vue.filter(<span class="string">'check-email'</span>, &#123;</span><br><span class="line">  <span class="comment">// read is optional in this case, it's here</span></span><br><span class="line">  <span class="comment">// just for demo purposes.</span></span><br><span class="line">  read: <span class="function"><span class="keyword">function</span> (<span class="params">val</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> val</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// this will be invoked before writing to</span></span><br><span class="line">  <span class="comment">// the model.</span></span><br><span class="line">  write: <span class="function"><span class="keyword">function</span> (<span class="params">val, oldVal</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> isEmail(val) ? val : oldVal</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<h2 id="Filter_Context">Filter Context</h2><p>When a filter is invoked, its <code>this</code> context is set to the Vue instance that is invoking it. This allows it to output dynamic results based on the state of the owner Vue instance.</p>
-<p>For example:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Vue.filter(<span class="string">'concat'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">value, key</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// `this` points to the Vue instance invoking the filter</span></span><br><span class="line">  <span class="keyword">return</span> value + <span class="keyword">this</span>[key]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="Dynamic_Arguments">Dynamic Arguments</h2><p>If a filter argument is not enclosed by quotes, it will be evaluated dynamically in the current vm’s data context. In addition, the filter function is always invoked using the current vm as its <code>this</code> context. For example:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-model</span>=<span class="value">"userInput"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">span</span>&gt;</span>&#123;&#123;msg | concat userInput&#125;&#125;<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>For this simple example above, you can achieve the same result with just an expression, but for more complicated procedures that need more than one statements, you need to put them either in a computed property or a custom filter.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Vue.filter(<span class="string">'concat'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">value, input</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// here `input` === `this.userInput`</span></span><br><span class="line">  <span class="keyword">return</span> value + input</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>For this simple example above, you can achieve the same result with just an expression, but for more complicated procedures that need more than one statement, you need to put them either in a computed property or a custom filter.</p>
 <p>The built-in <code>filterBy</code> and <code>orderBy</code> filters are both filters that perform non-trivial work on the Array being passed in and relies on the current state of the owner Vue instance.</p>
 <p>Alright! Now it’s time to learn how the <a href="/guide/components.html">Component System</a> works.</p>
 
@@ -125,5 +134,12 @@
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                FastClick.attach(document.body);
+            }, false);
+        </script>
     </body>
 </html>

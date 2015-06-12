@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = "api"
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.min.js"></script>
+        <script src="/js/vue.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,7 +35,12 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li><a href="/guide/" class="nav-link">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link">Guide</a></li>
 <li><a href="/api/" class="nav-link current">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
@@ -47,7 +52,12 @@
                     
     <div class="sidebar">
     <ul class="main-menu">
-        <li><a href="/guide/" class="nav-link">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link">Guide</a></li>
 <li><a href="/api/" class="nav-link current">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
@@ -71,7 +81,7 @@
             
                 <li><a href="/api/filters.html" class="sidebar-link">Filters</a></li>
             
-            <li><a href="http://legacy.vuejs.org">Looking for 0.10 docs?</a></li>
+            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
             <li style="margin:10px 0 3px">
               <script data-gittip-username="yyx990803"
                 data-gittip-widget="button"
@@ -104,12 +114,15 @@
 <p>If no argument is provided, it will add the binding’s value to the element’s classList, and update the class as the value changes.</p>
 <p>If a directive argument is provided, the argument will be the class to be toggled depending on the binding value’s truthy-ness. Combined with multiple clauses this can be pretty useful:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-class</span>=<span class="value">"</span><br><span class="line">  red    : hasError,</span><br><span class="line">  bold   : isImportant,</span><br><span class="line">  hidden : isHidden</span><br><span class="line">"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Alternatively, you can bind the directive directly to an Object. The keys of the object will the list of classes to toggle based on corresponding values.</p>
 <h3 id="v-attr">v-attr</h3><ul>
 <li>This directive requires an argument.</li>
 </ul>
 <p>Updates the element’s given attribute (indicated by the argument).</p>
 <p><strong>Example:</strong></p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">canvas</span> <span class="attribute">v-attr</span>=<span class="value">"width:w, height:h"</span>&gt;</span><span class="tag">&lt;/<span class="title">canvas</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Falsy values except 0 will remove the attribute.</p>
+<p>Alternatively, you can bind the directive directly to an Object. The keys of the object will the list of attributes to set based on corresponding values.</p>
 <p>Internally, &#123;&#123; Mustache &#125;&#125; interpolations inside attributes are compiled into computed <code>v-attr</code> directives.</p>
 <p class="tip">You should use <code>v-attr</code> instead of mustache binding when setting the <code>src</code> attribute on <code>&lt;img&gt;</code> elements. Your templates are parsed by the browser before being compiled by Vue.js, so the mustache binding will cause a 404 when the browser tries to fetch it as the image’s URL.</p>
 
@@ -155,7 +168,7 @@
 <li>This directive requires the value to be an Array, Object or Number.</li>
 <li>This directive can trigger transitions.</li>
 <li>This directive accepts an optional argument.</li>
-<li>Directive params: <a href="/guide/list.html#Using_track-by"><code>track-by</code></a></li>
+<li>Directive params: <a href="/guide/list.html#Using_track-by"><code>track-by</code></a>, <a href="/guide/transitions.html#Staggering_Transitions"><code>stagger</code></a>, <a href="/guide/transitions.html#Staggering_Transitions"><code>enter-stagger</code></a>, <a href="/guide/transitions.html#Staggering_Transitions"><code>leave-stagger</code></a></li>
 </ul>
 <p>Create a child ViewModel for every item in the binding Array or Object. If the value is a whole Number then that many child ViewModels are created. These child ViewModels will be automatically created / destroyed when mutating methods, e.g. <code>push()</code>, are called on the Array or Object, or the number is increased or decreased.</p>
 <p>When no argument is provided, the child ViewModel will directly use the assigned element in the Array as its <code>$data</code>. If the value is not an object, a wrapper data object will be created and the value will be set on that object using the alias key <code>$value</code>.</p>
@@ -164,47 +177,17 @@
 <p>If an argument is provided, a wrapper data object will always be created, using the argument string as the alias key. This allows for more explicit property access in templates:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-repeat</span>=<span class="value">"user : users"</span>&gt;</span></span><br><span class="line">    &#123;&#123;user.name&#125;&#125; &#123;&#123;user.email&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>For detailed examples, see <a href="/guide/list.html">Displaying a List</a>.</p>
-<h3 id="v-with">v-with</h3><ul>
-<li>This directive can only be used with <code>v-component</code>.</li>
-<li>This directive accepts only keypaths, no expressions.</li>
-</ul>
-<p>Allows a child ViewModel to inherit data from the parents. You can either pass in an Object which will be used as the <code>data</code> option, or bind individual parent properties to the child with different keys. This directive must be used in combination with <code>v-component</code>.</p>
-<p>Example inheriting an object:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// parent data looks like this</span></span><br><span class="line">&#123;</span><br><span class="line">  user: &#123;</span><br><span class="line">    name: <span class="string">'Foo Bar'</span>,</span><br><span class="line">    email: <span class="string">'foo@bar.com'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">my-component</span> <span class="attribute">v-with</span>=<span class="value">"user"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- you can access properties without `user.` --&gt;</span></span><br><span class="line">  &#123;&#123;name&#125;&#125; &#123;&#123;email&#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="title">my-component</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>Example inheriting individual properties (using the same data):</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;my-component v-with=&#34;myName: user.name, myEmail: user.email&#34;&#62;&#10;  &#60;!-- you can access properties with the new keys --&#62;&#10;  &#123;&#123;myName&#125;&#125; &#123;&#123;myEmail&#125;&#125;&#10;&#60;/my-component&#62;</span><br></pre></td></tr></table></figure>
-<h3 id="v-events">v-events</h3><ul>
-<li>This directive can only be used with <code>v-component</code>.</li>
-<li>This directive accepts either a method name, or a single expression statement.</li>
-</ul>
-<p>Allows a parent instance to listen to events on a child instance. The difference from <code>v-on</code> is that <code>v-events</code> listens to Vue’s component system events created via <code>vm.$emit()</code> rather than DOM events. This directive allows more decoupled parent-child communication without having to hard-code event listeners into the parent component. Note that it can only be used together with <code>v-component</code>, i.e. on the root element of a child component.</p>
-<p><strong>Example:</strong></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- inside parent template --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-component</span>=<span class="value">"child"</span> <span class="attribute">v-events</span>=<span class="value">"change: onChildChange"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>When the child component calls <code>this.$emit(&#39;change&#39;, ...)</code>, the parent’s <code>onChildChange</code> method will be invoked with additional arguments passed to <code>$emit()</code>.</p>
 <h2 id="Literal_Directives">Literal Directives</h2><blockquote>
 <p>Literal directives treat their attribute value as a plain string; they do not attempt to bind themselves to anything. All they do is executing the <code>bind()</code> function with the string value once. Literal directives accept mustache expressions inside their value, but these expressions will be evaluated only once on first compile and do not react to data changes.</p>
 </blockquote>
-<h3 id="v-component">v-component</h3><ul>
-<li>Directive params: <a href="/guide/components.html#Dynamic_Components"><code>keep-alive</code></a>, <a href="/guide/components.html#wait-for"><code>wait-for</code></a>, <a href="/guide/components.html#transition-mode"><code>transition-mode</code></a>, <a href="/guide/components.html#Inline_Template"><code>inline-template</code></a></li>
-<li>Can be made reactive with mustaches</li>
-</ul>
-<p>Compile this element as a child ViewModel with a registered component constructor. This can be used with <code>v-with</code> to inehrit data from the parent. For more details see <a href="/guide/components.html">Component System</a>.</p>
-<h3 id="v-partial">v-partial</h3><ul>
-<li>Can be made reactive with mustaches</li>
-</ul>
-<p>Replace the element’s innerHTML with a registered partial. Partials can be registered with <code>Vue.partial()</code> or passed inside the <code>partials</code> option.</p>
-<p>Using the mustache tag inside <code>v-partial</code> makes it reactive:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- content will change based on vm.partialId --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-partial</span>=<span class="value">"&#123;&#123;partialId&#125;&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>You can also use this syntax (which doesn’t support reactivity):</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span>&gt;</span>&#123;&#123;&gt; my-partial&#125;&#125;<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h3 id="v-transition">v-transition</h3><ul>
 <li>Can be made reactive with mustaches</li>
 </ul>
 <p>Notify Vue.js to apply transitions to this element. The transition classes are applied when certain transition-triggering directives modify the element, or when the Vue instance’s DOM manipulation methods are called.</p>
 <p>For details, see <a href="/guide/transitions.html">the guide on transitions</a>.</p>
-<h3 id="v-ref">v-ref</h3><p>Register a reference to a child component on its parent for easier access. Only respected when used in combination with <code>v-component</code> or <code>v-repeat</code>. The component instance will be accessible on its parent’s <code>$</code> object. For an example, see <a href="/guide/components.html#Child_Reference">child reference</a>.</p>
+<h3 id="v-ref">v-ref</h3><p>Register a reference to a child component on its parent for easier access. Only respected when used on a component or with <code>v-repeat</code>. The component instance will be accessible on its parent’s <code>$</code> object. For an example, see <a href="/guide/components.html#Child_Reference">child reference</a>.</p>
 <p>When used with <code>v-repeat</code>, the value will be an Array containing all the child Vue instances corresponding to the Array they are bound to.</p>
+<p>New in 0.12: If the <code>v-repeat</code>‘s source data is an Object, then <code>v-ref</code> will return an Object with instances matching each key in the Object.</p>
 <h3 id="v-el">v-el</h3><p>Register a reference to a DOM element on its owner Vue instance for easier access. e.g. <code>&lt;div v-el=&quot;hi&quot;&gt;</code> will be accessible as <code>vm.$$.hi</code>.</p>
 <h2 id="Empty_Directives">Empty Directives</h2><blockquote>
 <p>Empty directives do not require and will ignore their attribute value.</p>
@@ -219,5 +202,12 @@
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                FastClick.attach(document.body);
+            }, false);
+        </script>
     </body>
 </html>

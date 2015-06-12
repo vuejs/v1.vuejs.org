@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = "guide"
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.min.js"></script>
+        <script src="/js/vue.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,7 +35,12 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
@@ -47,7 +52,12 @@
                     
     <div class="sidebar">
     <ul class="main-menu">
-        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
@@ -79,7 +89,7 @@
             
                 <li><a href="/guide/components.html" class="sidebar-link">Component System</a></li>
             
-                <li><a href="/guide/transitions.html" class="sidebar-link">Transitions</a></li>
+                <li><a href="/guide/transitions.html" class="sidebar-link">Transition System</a></li>
             
                 <li><a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a></li>
             
@@ -87,7 +97,7 @@
             
                 <li><a href="/guide/faq.html" class="sidebar-link">Common FAQs</a></li>
             
-            <li><a href="http://legacy.vuejs.org">Looking for 0.10 docs?</a></li>
+            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
             <li style="margin:10px 0 3px">
               <script data-gittip-username="yyx990803"
                 data-gittip-widget="button"
@@ -116,17 +126,21 @@
 <h2 id="Filters">Filters</h2><p>Filters can be appended to directive keypaths or expressions to further process the value before updating the DOM. Filters are denoted by a single pipe (<code>|</code>) as in shell scripts. For more details see <a href="/guide/filters.html">Filters in Depth</a>.</p>
 <h2 id="Multiple_Clauses">Multiple Clauses</h2><p>You can create multiple bindings of the same directive in a single attribute, separated by commas. Under the hood they are bound as multiple directive instances.</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-on</span>=<span class="value">"</span><br><span class="line">  click   : onClick,</span><br><span class="line">  keyup   : onKeyup,</span><br><span class="line">  keydown : onKeydown</span><br><span class="line">"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="Literal_Directives">Literal Directives</h2><p>Some directives don’t create data bindings - they simply take the attribute value as a literal string. For example the <code>v-component</code> directive:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-component</span>=<span class="value">"my-component"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>Here <code>&quot;my-component&quot;</code> is not a data property - it’s a string ID that Vue.js uses to lookup the corresponding Component constructor.</p>
-<p>You can also use mustache expressions inside literal directives to make it reactive. For example, the following code allows you to dynamically resolve the type of component you want to use:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-component</span>=<span class="value">"&#123;&#123; isOwner ? 'owner-panel' : 'guest-panel' &#125;&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>When the expression inside the mustaches change, the rendered component will also change accordingly!</p>
-<p>However, note that not all literal directives can have this kind of reactive behavior. Built-in directives that support this usage include <code>v-component</code>, <code>v-partial</code> and <code>v-transition</code>. Mustache expressions in other literal directives, e.g. <code>v-ref</code> and <code>v-el</code>, are evaluated <strong>only once</strong>. After the directive has been compiled, it will no longer react to value changes.</p>
+<h2 id="Literal_Directives">Literal Directives</h2><p>Some directives don’t create data bindings - they simply take the attribute value as a literal string. For example the <code>v-ref</code> directive:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">my-component</span> <span class="attribute">v-ref</span>=<span class="value">"some-string-id"</span>&gt;</span><span class="tag">&lt;/<span class="title">my-component</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Here <code>&quot;some-string-id&quot;</code> is not a reactive expression - Vue.js will not attempt to look it up in the component’s data.</p>
+<p>In some cases you can also use the mustache syntax to make a literal directive reactive:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-show</span>=<span class="value">"showMsg"</span> <span class="attribute">v-transition</span>=<span class="value">"&#123;&#123;dynamicTransitionId&#125;&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>However, note that <code>v-transition</code> is the only directive that has this feature. Mustache expressions in other literal directives, e.g. <code>v-ref</code> and <code>v-el</code>, are evaluated <strong>only once</strong>. After the directive has been compiled, it will no longer react to value changes.</p>
 <p>A full list of literal directives can be found in the <a href="/api/directives.html#Literal_Directives">API reference</a>.</p>
 <h2 id="Empty_Directives">Empty Directives</h2><p>Some directives don’t even expect an attribute value - they simply do something to the element once and only once. For example the <code>v-pre</code> directive:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-pre</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- markup in here will not be compiled --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>A full list of empty directives can be found in the <a href="/api/directives.html#Empty_Directives">API reference</a>.</p>
+<h2 id="Understanding_Async_Updates">Understanding Async Updates</h2><p>You can think of directives as mappings of your data state to the DOM state. However, it is important to understand that in Vue.js, the directive update process is asynchronous by default. For example, when you set <code>vm.someData = &#39;new value&#39;</code>, the DOM will not update immediately. Vue.js buffers all data changes happening in the same event loop, and execute any necessary DOM updates asynchronously in the next “tick”. Internally it uses <code>MutationObserver</code> if available and falls back to <code>setTimeout(fn, 0)</code>. This prevents multiple changes to the same piece of data from triggering duplicate updates.</p>
+<p>This behavior can be tricky when you want to do something that depends on the updated DOM state. Although Vue.js generally encourages developers to think in a “data-driven” way and avoid touching the DOM directly, sometimes you might just want to use that handy jQuery plugin you’ve always been using. In order to wait until Vue.js has finished updating the DOM after a data change, you can use <code>Vue.nextTick(callback)</code> immediately after the data is changed - when the callback is called, the DOM would have been updated. For example:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"example"</span>&gt;</span>&#123;&#123;msg&#125;&#125;<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> vm = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#example'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    msg: <span class="string">'123'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line">vm.msg = <span class="string">'new message'</span> <span class="comment">// change data</span></span><br><span class="line">vm.$el.textContent === <span class="string">'new message'</span> <span class="comment">// false</span></span><br><span class="line">Vue.nextTick(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  vm.$el.textContent === <span class="string">'new message'</span> <span class="comment">// true</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>Alternatively, you can turn off async updates by setting <code>Vue.config.async = false</code>. However, note that in sync mode the order in which watchers and directives trigger may become different, so it does not guaruntee the exact same behavior.</p>
 <p>Next, let’s talk about <a href="/guide/filters.html">Filters</a>.</p>
 
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/vuejs/vuejs.org" target="_blank">Fork this site on Github</a>!</div>
@@ -136,5 +150,12 @@
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                FastClick.attach(document.body);
+            }, false);
+        </script>
     </body>
 </html>

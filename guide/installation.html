@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = "guide"
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.min.js"></script>
+        <script src="/js/vue.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,7 +35,12 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
@@ -47,7 +52,12 @@
                     
     <div class="sidebar">
     <ul class="main-menu">
-        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
@@ -79,7 +89,7 @@
             
                 <li><a href="/guide/components.html" class="sidebar-link">Component System</a></li>
             
-                <li><a href="/guide/transitions.html" class="sidebar-link">Transitions</a></li>
+                <li><a href="/guide/transitions.html" class="sidebar-link">Transition System</a></li>
             
                 <li><a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a></li>
             
@@ -87,7 +97,7 @@
             
                 <li><a href="/guide/faq.html" class="sidebar-link">Common FAQs</a></li>
             
-            <li><a href="http://legacy.vuejs.org">Looking for 0.10 docs?</a></li>
+            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
             <li style="margin:10px 0 3px">
               <script data-gittip-username="yyx990803"
                 data-gittip-widget="button"
@@ -106,13 +116,12 @@
 <p><strong>Compatibility Note:</strong> Vue.js does not support IE8 and below.</p>
 </blockquote>
 <h2 id="Standalone">Standalone</h2><p>Simply download and include with a script tag. <code>Vue</code> will be registered as a global variable.</p>
-<div id="downloads"><br><a class="button" href="https://raw.github.com/yyx990803/vue/0.11.10/dist/vue.js" download="" target="_blank" rel="external">Development Version</a><span class="light info">194.06kb, plenty of comments and debug/warning messages.</span><br><br><a class="button" href="https://raw.github.com/yyx990803/vue/0.11.10/dist/vue.min.js" download="" target="_blank" rel="external">Production Version</a><span class="light info">59.67kb minified / 19.57kb gzipped</span><br></div>
+<div id="downloads"><br><a class="button" href="https://raw.github.com/yyx990803/vue/0.12.0/dist/vue.js" download="" target="_blank" rel="external">Development Version</a><span class="light info">209.76kb, plenty of comments and debug/warning messages.</span><br><br><a class="button" href="https://raw.github.com/yyx990803/vue/0.12.0/dist/vue.min.js" download="" target="_blank" rel="external">Production Version</a><span class="light info">64.47kb minified / 20.99kb gzipped</span><br></div>
 
-<p>Also available on <a href="//cdnjs.cloudflare.com/ajax/libs/vue/0.11.10/vue.min.js">cdnjs</a> (takes some time to sync so the latest version might not be available yet).</p>
+<p>Also available on <a href="//cdnjs.cloudflare.com/ajax/libs/vue/0.12.0/vue.min.js">cdnjs</a> (takes some time to sync so the latest version might not be available yet).</p>
 <h2 id="NPM">NPM</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ npm install vue</span><br><span class="line"><span class="comment"># for edge version:</span></span><br><span class="line">$ npm install yyx990803/vue<span class="comment">#dev</span></span><br></pre></td></tr></table></figure>
 <h2 id="Bower">Bower</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># only stable version is available through Bower</span></span><br><span class="line">$ bower install vue</span><br></pre></td></tr></table></figure>
 <h2 id="Duo">Duo</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Vue = <span class="built_in">require</span>(<span class="string">'yyx990803/vue'</span>)</span><br><span class="line"><span class="comment">// for edge version:</span></span><br><span class="line"><span class="keyword">var</span> Vue = <span class="built_in">require</span>(<span class="string">'yyx990803/vue@dev'</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="Component">Component</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ component install yyx990803/vue</span><br><span class="line"><span class="comment"># for edge version:</span></span><br><span class="line">$ component install yyx990803/vue@dev</span><br></pre></td></tr></table></figure>
 <h2 id="AMD_Module_Loaders">AMD Module Loaders</h2><p>The standalone downloads or versions installed via Bower are wrapped with UMD so they can be used directly as an AMD module.</p>
 <h2 id="Ready?">Ready?</h2><p><a href="/guide/">Let’s Get Started</a>.</p>
 
@@ -123,5 +132,12 @@
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                FastClick.attach(document.body);
+            }, false);
+        </script>
     </body>
 </html>
