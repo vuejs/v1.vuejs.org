@@ -507,16 +507,19 @@ ul.demo li {
 }
 .content ul,
 .content ol {
-  padding-left: 1em;
+  padding-left: 1.5em;
 }
 .content a {
   color: #42b983;
   font-weight: 600;
 }
 .content blockquote {
-  margin: 0;
+  margin: 2em 0;
+  padding-left: 20px;
+  border-left: 4px solid #42b983;
 }
 .content blockquote p {
+  font-weight: 600;
   margin-left: 0;
 }
 .content iframe {
