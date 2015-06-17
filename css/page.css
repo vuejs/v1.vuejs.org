@@ -428,6 +428,21 @@ ul.demo li {
   font-weight: 600;
   color: #42b983;
 }
+.sidebar .sidebar-link.new:after {
+  content: "NEW";
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #42b983;
+  line-height: 14px;
+  padding: 0 4px;
+  border-radius: 3px;
+  margin-left: 5px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
 .sidebar .sidebar-link:hover {
   border-bottom: 2px solid #42b983;
 }
