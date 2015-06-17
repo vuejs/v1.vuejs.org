@@ -236,6 +236,7 @@ new Vue({
 
 <p>When you need to communicate across multiple nested components, you can use the <a href="/api/instance-methods.html#Events">Event System</a>. In addition, it is also quite feasible to implement a <a href="https://facebook.github.io/flux/docs/overview.html" target="_blank" rel="external">Flux</a>-like architecture with Vue, which you may want to consider for larger-scale applications.</p>
 <h2 id="Props_Availability">Props Availability</h2><p>If you’ve ever tried to access a component’s props in the <code>created</code> hook, you’d find them as <code>undefined</code>. This is because the <code>created</code> hook is called before any DOM compilation happens for the instance, thus props are not processed yet. Props are initialized with the parent values <em>after</em> template compilation. Similarly, two-way-bound props can only trigger parent changes after compilation.</p>
+<h2 id="Changing_Default_Options">Changing Default Options</h2><p>It is possible to change the default value of an option by setting it on the global <code>Vue.options</code> object. For example, you can set <code>Vue.options.replace = true</code> to give all Vue instances the behavior of <code>replace: true</code>. Use this feature carefully, and use it only when you are starting a new project, because it affects the behavior of every instance.</p>
 
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/vuejs/vuejs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>
