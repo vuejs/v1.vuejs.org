@@ -150,6 +150,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = _.Vue = Vue
 
+
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {

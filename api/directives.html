@@ -129,7 +129,7 @@
 <p>If no argument is provided, it will add the binding’s value to the element’s classList, and update the class as the value changes.</p>
 <p>If a directive argument is provided, the argument will be the class to be toggled depending on the binding value’s truthy-ness. Combined with multiple clauses this can be pretty useful:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-class</span>=<span class="value">"</span><br><span class="line">  red    : hasError,</span><br><span class="line">  bold   : isImportant,</span><br><span class="line">  hidden : isHidden</span><br><span class="line">"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>Alternatively, you can bind the directive directly to an Object. The keys of the object will the list of classes to toggle based on corresponding values.</p>
+<p>Alternatively, you can bind the directive directly to an Object. The keys of the object will be the list of classes to toggle based on corresponding values.</p>
 <h3 id="v-attr">v-attr</h3><ul>
 <li>This directive requires an argument.</li>
 </ul>
@@ -137,7 +137,7 @@
 <p><strong>Example:</strong></p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">canvas</span> <span class="attribute">v-attr</span>=<span class="value">"width:w, height:h"</span>&gt;</span><span class="tag">&lt;/<span class="title">canvas</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Falsy values except 0 will remove the attribute.</p>
-<p>Alternatively, you can bind the directive directly to an Object. The keys of the object will the list of attributes to set based on corresponding values.</p>
+<p>Alternatively, you can bind the directive directly to an Object. The keys of the object will be the list of attributes to set based on corresponding values.</p>
 <p>Internally, &#123;&#123; Mustache &#125;&#125; interpolations inside attributes are compiled into computed <code>v-attr</code> directives.</p>
 <p class="tip">You should use <code>v-attr</code> instead of mustache binding when setting the <code>src</code> attribute on <code>&lt;img&gt;</code> elements. Your templates are parsed by the browser before being compiled by Vue.js, so the mustache binding will cause a 404 when the browser tries to fetch it as the image’s URL.</p>
 
