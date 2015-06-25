@@ -95,6 +95,10 @@
                     <a href="/api/filters.html" class="sidebar-link">Filters</a>
                 </li>
             
+                <li>
+                    <a href="/api/elements.html" class="sidebar-link new">Special Elements</a>
+                </li>
+            
             <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
             <li style="margin:10px 0 3px">
               <script data-gittip-username="yyx990803"
@@ -127,8 +131,8 @@
 </ul>
 <p>Create a “subclass” of the base Vue constructor. All <a href="/api/options.html">instantiation options</a> can be used here. The special cases to note here are <code>el</code> and <code>data</code>, which must be functions in this case.</p>
 <p>Internally, <code>Vue.extend()</code> is called on all component options before instantiating the components. For more details regarding components, see <a href="/guide/components.html">Component System</a>.</p>
-<p><strong>Example</strong></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Profile = Vue.extend(&#123;</span><br><span class="line">  el: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">document</span>.createElement(<span class="string">'p'</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  template: <span class="string">'&#123;&#123;firstName&#125;&#125; &#123;&#123;lastName&#125;&#125; aka &#123;&#123;alias&#125;&#125;'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">var</span> profile = <span class="keyword">new</span> Profile(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    firstName : <span class="string">'Walter'</span>,</span><br><span class="line">    lastName  : <span class="string">'White'</span>,</span><br><span class="line">    alias     : <span class="string">'Heisenberg'</span></span><br><span class="line">  &#125;  </span><br><span class="line">&#125;)</span><br><span class="line">profile.$appendTo(<span class="string">'body'</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>Example</strong><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"mount-point"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// create reusable constructor</span></span><br><span class="line"><span class="keyword">var</span> Profile = Vue.extend(&#123;</span><br><span class="line">  template: <span class="string">'&lt;p&gt;&#123;&#123;firstName&#125;&#125; &#123;&#123;lastName&#125;&#125; aka &#123;&#123;alias&#125;&#125;&lt;/p&gt;'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// create an instance of Profile</span></span><br><span class="line"><span class="keyword">var</span> profile = <span class="keyword">new</span> Profile(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    firstName : <span class="string">'Walter'</span>,</span><br><span class="line">    lastName  : <span class="string">'White'</span>,</span><br><span class="line">    alias     : <span class="string">'Heisenberg'</span></span><br><span class="line">  &#125;  </span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// mount it on an element</span></span><br><span class="line">profile.$mount(<span class="string">'#mount-point'</span>)</span><br></pre></td></tr></table></figure>
 <p>Will result in:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">p</span>&gt;</span>Walter White aka Heisenberg<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h3 id="Vue-nextTick(_callback_)">Vue.nextTick( callback )</h3><ul>
@@ -160,6 +164,11 @@
 <li><strong>definition</strong> <code>Object</code> <em>optional</em></li>
 </ul>
 <p>Register or retrieve a global JavaScript transition effect definition. For more details see the guide for <a href="/guide/transitions.html#JavaScript_Functions">JavaScript Transitions</a>.</p>
+<h3 id="Vue-partial(_id,_[partial]_)">Vue.partial( id, [partial] )</h3><ul>
+<li><strong>id</strong> <code>String</code></li>
+<li><strong>partial</strong> <code>String</code> <em>optional</em></li>
+</ul>
+<p>Register or retrieve a global template partial string. For more details see <a href="/api/elements.html#partial">Partial</a>.</p>
 <h3 id="Vue-use(_plugin,_[args…]_)">Vue.use( plugin, [args…] )</h3><ul>
 <li><strong>plugin</strong> <code>Object</code> or <code>Function</code></li>
 <li><strong>args…</strong> <em>optional</em></li>

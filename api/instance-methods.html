@@ -95,6 +95,10 @@
                     <a href="/api/filters.html" class="sidebar-link">Filters</a>
                 </li>
             
+                <li>
+                    <a href="/api/elements.html" class="sidebar-link new">Special Elements</a>
+                </li>
+            
             <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
             <li style="margin:10px 0 3px">
               <script data-gittip-username="yyx990803"
@@ -227,7 +231,8 @@
 <h2 id="Lifecycle">Lifecycle</h2><h3 id="vm-$mount(_[element|selector]_)">vm.$mount( [element|selector] )</h3><ul>
 <li><strong>element</strong> <code>HTMLElement</code> | <strong>selector</strong> <code>String</code> <em>optional</em></li>
 </ul>
-<p>If the Vue instance didn’t get an <code>el</code> option at instantiation, you can manually call <code>$mount()</code> to assign an element to it and start the compilation. If no argument is provided, an empty <code>&lt;div&gt;</code> will be automatically created. Calling <code>$mount()</code> on an already mounted instance will have no effect. The method returns the instance itself so you can chain other instance methods after it.</p>
+<p>If the Vue instance didn’t get an <code>el</code> option at instantiation, you can manually call <code>$mount(el)</code> to start the compilation phase. By default, the mounted element will be replaced by the instance’s template. When the <code>replace</code> option is set to <code>false</code>, the template will be inserted into the mounted element and overwrite any existing inner content, unless the template contains <code>&lt;content&gt;</code> outlets.</p>
+<p>If no argument is provided, the template will be created as an out-of-document element, and you will have to use other DOM instance mathods to insert it into the document yourself. If <code>replace</code> option is set to <code>false</code>, then an empty <code>&lt;div&gt;</code> will be automatically created as the wrapper element. Calling <code>$mount()</code> on an already mounted instance will have no effect. The method returns the instance itself so you can chain other instance methods after it.</p>
 <h3 id="vm-$destroy(_[remove]_)">vm.$destroy( [remove] )</h3><ul>
 <li><strong>remove</strong> <code>Boolean</code> <em>optional</em></li>
 </ul>

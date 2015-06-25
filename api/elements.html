@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Overview - vue.js</title>
+        <title>Special Elements - vue.js</title>
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -68,7 +68,7 @@
         <ul class="menu-root">
             
                 <li>
-                    <a href="/api/index.html" class="sidebar-link current">Overview</a>
+                    <a href="/api/index.html" class="sidebar-link">Overview</a>
                 </li>
             
                 <li>
@@ -96,7 +96,7 @@
                 </li>
             
                 <li>
-                    <a href="/api/elements.html" class="sidebar-link new">Special Elements</a>
+                    <a href="/api/elements.html" class="sidebar-link current new">Special Elements</a>
                 </li>
             
             <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
@@ -111,19 +111,21 @@
 
 
 <div class="content api with-sidebar">
-    <h1>Overview</h1>
+    <h1>Special Elements</h1>
     <div id="ad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
     </div>
-    <h2 id="The_Vue_Constructor">The Vue Constructor</h2><p>The <code>Vue</code> constructor is the core of Vue.js. It is a constructor function that allows you to create Vue instances. Creating a Vue instance is straightforward:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> vm = <span class="keyword">new</span> Vue(&#123; <span class="comment">/* options */</span> &#125;)</span><br></pre></td></tr></table></figure>
-<p>When you instantiate a Vue instance, you need to pass in an option object which can include information about the DOM element, data object, mixin methods, lifecycle callbacks and more. See the full list of <a href="/api/options.html">Component Options</a>.</p>
-<p>Each Vue instance is essentially a ViewModel (hence the variable name <code>vm</code> you will see throughout the docs). It has an associated DOM element <code>$el</code>, which is roughly the V in MVVM. It also has an associated JavaScript object <code>$data</code>, which corresponds to the M in MVVM. Changing the M results in updates in the V. For two-way bindings, user inputs triggered in the V results in changes in the M. For more details on what properties are available on a Vue instance, check out <a href="/api/instance-properties.html">Instance Properties</a>.</p>
-<p>Each Vue instance also has a number of <a href="/api/instance-methods.html">Instance Methods</a> which cover data observation, event communication and DOM manipulation.</p>
-<p>The <code>Vue</code> constructor itself also exposes the <a href="/api/global-api.html">Global API</a>, which allow you to extend the <code>Vue</code> class, configure global settings and register global custom assets such as components, directives, filters and more.</p>
-<h2 id="Initialization">Initialization</h2><p>If you provided the <code>el</code> option at instantiation, the Vue instance will immediately enter the compilation phase. Otherwise, it will wait until <code>vm.$mount()</code> is called before it starts compilation. During the compilation phase, Vue walks through the DOM and collects the directives it runs into, and “links” the data and the DOM with these directives. Once linked, these DOM nodes are now said to be managed by the Vue instance. A DOM node can only be managed by one Vue instance, and should not be compiled more than once.</p>
-<h2 id="Data_Proxying">Data Proxying</h2><p>Vue instances proxy access to their <code>$data</code> objects, so if you have <code>vm.$data.msg</code> you can also access it as <code>vm.msg</code>. This might look a bit magical, but is totally optional. You can stick to <code>vm.$data.msg</code> for more explicit data access. However it is still important to notice the difference between <code>vm</code> and <code>vm.$data</code>, since the former cannot be observed by other Vue instances as data.</p>
-<p>It’s also worth noting that data objects do not necessarily belong to a single Vue instance - multiple ViewModels can observe the same piece of data, whether directly as <code>$data</code> or nested under it. This is useful when multiple components need to react to a shared global state object.</p>
+    <blockquote>
+<p>The following is a list of abstract elements that serve special purposes in Vue.js templates.</p>
+</blockquote>
+<h3 id="component">component</h3><p>Alternative syntax for invoking components. Primarily used for dynamic components with the <code>is</code> attribute:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- a dynamic component controlled by --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- the `componentId` property on the vm --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">component</span> <span class="attribute">is</span>=<span class="value">"&#123;&#123;componentId&#125;&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">component</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="content">content</h3><p><code>&lt;content&gt;</code> tags serve as content insertion outlets in component templates. The <code>&lt;content&gt;</code> element itself will be replaced. It optionally accepts a <code>select</code> attribute, which should be a valid CSS selector to be used to match a subset of inserted content to be displayed:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- only display &lt;li&gt;'s in the inserted content --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">content</span> <span class="attribute">select</span>=<span class="value">"li"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>The select attribute can also contain mustache expressions. For more details, see <a href="/guide/components.html#Content_Insertion">Content Insertion</a>.</p>
+<h3 id="partial">partial</h3><p><code>&lt;partial&gt;</code> tags serve as outlets for registered partials. Partial contents are also compiled by Vue when inserted. The <code>&lt;partial&gt;</code> element itself will be replaced. It requires a <code>name</code> attribute to be provided. For example:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// registering a partial</span></span><br><span class="line">Vue.partial(<span class="string">'my-partial'</span>, <span class="string">'&lt;p&gt;This is a partial! &#123;&#123;msg&#125;&#125;&lt;/p&gt;'</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- a static partial --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">partial</span> <span class="attribute">name</span>=<span class="value">"my-partial"</span>&gt;</span><span class="tag">&lt;/<span class="title">partial</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- a dynamic partial --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">partial</span> <span class="attribute">name</span>=<span class="value">"&#123;&#123;partialId&#125;&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">partial</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/vuejs/vuejs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>
