@@ -151,9 +151,9 @@
 <h2 id="Modularization">Modularization</h2><p>Although the standalone build of Vue.js can be used as a global, it is often better to utilize a modularized build system to better organize your code. The recommended approach of doing so is by writing your source code in CommonJS modules (the format used by Node.js, and also the format used by Vue.js source code) and bundle them using <a href="http://webpack.github.io/" target="_blank" rel="external">Webpack</a> or <a href="http://browserify.org/" target="_blank" rel="external">Browserify</a>.</p>
 <p>Webpack and Browserify are more than just module bundlers, though. They both provide source transform APIs that allow you to transform your source code with other pre-processors. For example, you can write your code with future ES6/7 syntax using <a href="https://github.com/babel/babel-loader" target="_blank" rel="external">babel-loader</a> or <a href="https://github.com/babel/babelify" target="_blank" rel="external">babelify</a>.</p>
 <h2 id="Single_File_Components">Single File Components</h2><p>In a typical Vue.js project we will be breaking up our code into many small components, and it would be nice to have each component encapsulate its CSS styles, template and JavaScript definition in the same place. As mentioned above, when using Webpack or Browserify, with proper source transforms we can write our components like this:</p>
-<p><img src="/images/vueify.png"></p>
+<p><img src="/images/vue-component.png"></p>
 <p>If you are into pre-processors, you can even do this:</p>
-<p><img src="/images/vueify_with_pre.png"></p>
+<p><img src="/images/vue-component-with-pre-processors.png"></p>
 <p>You can build these single-file Vue components with Webpack + <a href="https://github.com/vuejs/vue-loader" target="_blank" rel="external">vue-loader</a> or Browserify + <a href="https://github.com/vuejs/vueify" target="_blank" rel="external">vueify</a>. It is recommended to use the Webpack setup because Webpack’s loader API enables better file dependency tracking and caching if you are using pre-processors.</p>
 <p>You can find examples of the build setups on GitHub:</p>
 <ul>

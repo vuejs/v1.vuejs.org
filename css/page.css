@@ -478,6 +478,9 @@ ul.demo li {
   display: inline-block;
   vertical-align: middle;
 }
+.content img {
+  max-width: 100%;
+}
 .content span.light {
   color: #7f8c8d;
 }
