@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = "guide"
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.min.js"></script>
+        <script src="/js/vue.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,11 +35,17 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query" class="st-default-search-input">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
+
     </ul>
 </div>
             <div id="main">
@@ -47,46 +53,92 @@
                     
     <div class="sidebar">
     <ul class="main-menu">
-        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query" class="st-default-search-input">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
+
     </ul>
     <div class="list">
         <h2>Guide</h2>
         <ul class="menu-root">
             
-                <li><a href="/guide/installation.html" class="sidebar-link">Installation</a></li>
+                <li>
+                    <a href="/guide/installation.html" class="sidebar-link">Installation</a>
+                </li>
             
-                <li><a href="/guide/index.html" class="sidebar-link">Getting Started</a></li>
+                <li>
+                    <a href="/guide/index.html" class="sidebar-link">Getting Started</a>
+                </li>
             
-                <li><a href="/guide/directives.html" class="sidebar-link">Directives</a></li>
+                <li>
+                    <a href="/guide/directives.html" class="sidebar-link">Directives</a>
+                </li>
             
-                <li><a href="/guide/filters.html" class="sidebar-link">Filters</a></li>
+                <li>
+                    <a href="/guide/filters.html" class="sidebar-link">Filters</a>
+                </li>
             
-                <li><a href="/guide/list.html" class="sidebar-link">Displaying a List</a></li>
+                <li>
+                    <a href="/guide/list.html" class="sidebar-link">Displaying a List</a>
+                </li>
             
-                <li><a href="/guide/events.html" class="sidebar-link">Listening for Events</a></li>
+                <li>
+                    <a href="/guide/events.html" class="sidebar-link">Listening for Events</a>
+                </li>
             
-                <li><a href="/guide/forms.html" class="sidebar-link current">Handling Forms</a></li>
+                <li>
+                    <a href="/guide/forms.html" class="sidebar-link current">Handling Forms</a>
+                </li>
             
-                <li><a href="/guide/computed.html" class="sidebar-link">Computed Properties</a></li>
+                <li>
+                    <a href="/guide/computed.html" class="sidebar-link">Computed Properties</a>
+                </li>
             
-                <li><a href="/guide/custom-directive.html" class="sidebar-link">Custom Directives</a></li>
+                <li>
+                    <a href="/guide/custom-directive.html" class="sidebar-link">Custom Directives</a>
+                </li>
             
-                <li><a href="/guide/custom-filter.html" class="sidebar-link">Custom Filters</a></li>
+                <li>
+                    <a href="/guide/custom-filter.html" class="sidebar-link">Custom Filters</a>
+                </li>
             
-                <li><a href="/guide/components.html" class="sidebar-link">Component System</a></li>
+                <li>
+                    <a href="/guide/components.html" class="sidebar-link">Component System</a>
+                </li>
             
-                <li><a href="/guide/transitions.html" class="sidebar-link">Transitions</a></li>
+                <li>
+                    <a href="/guide/transitions.html" class="sidebar-link">Transition System</a>
+                </li>
             
-                <li><a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a></li>
+                <li>
+                    <a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a>
+                </li>
             
-                <li><a href="/guide/extending.html" class="sidebar-link">Extending Vue</a></li>
+                <li>
+                    <a href="/guide/extending.html" class="sidebar-link">Extending Vue</a>
+                </li>
             
-                <li><a href="/guide/faq.html" class="sidebar-link">Common FAQs</a></li>
+                <li>
+                    <a href="/guide/best-practices.html" class="sidebar-link new">Tips & Best Practices</a>
+                </li>
             
+                <li>
+                    <a href="/guide/faq.html" class="sidebar-link">Common FAQs</a>
+                </li>
+            
+            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
+            <li style="margin:10px 0 3px">
+              <script data-gittip-username="yyx990803"
+                data-gittip-widget="button"
+                src="//gttp.co/v1.js"></script>
+            </li>
         </ul>
     </div>
 </div>
@@ -120,10 +172,10 @@ new Vue({
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- synced after "change" instead of "input" --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-model</span>=<span class="value">"msg"</span> <span class="attribute">lazy</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h2 id="Casting_Value_as_Number">Casting Value as Number</h2><p>If you want user input to be automatically persisted as numbers, you can add a <code>number</code> attribute to your <code>v-model</code> managed inputs:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-model</span>=<span class="value">"age"</span> <span class="attribute">number</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="Dynamic_Select_Options">Dynamic Select Options</h2><p>When you need to dynamically render a list of options for a <code>&lt;select&gt;</code> element, it’s recommended to use an <code>options</code> attribute together with <code>v-model</code>:</p>
+<h2 id="Dynamic_Select_Options">Dynamic Select Options</h2><p>When you need to dynamically render a list of options for a <code>&lt;select&gt;</code> element, it’s recommended to use an <code>options</code> attribute together with <code>v-model</code> so that when the options change dynamically, <code>v-model</code> is properly synced:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">select</span> <span class="attribute">v-model</span>=<span class="value">"selected"</span> <span class="attribute">options</span>=<span class="value">"myOptions"</span>&gt;</span><span class="tag">&lt;/<span class="title">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>In your data, <code>myOptions</code> should be an keypath/expression that points to an Array to use as its options. The Array can contain plain strings, or contain objects.</p>
-<p>The object can be in the format of <code>{text:&#39;&#39;, value:&#39;&#39;}</code>. This allows you to have the option text displayed differently from its underlying value:</p>
+<p>In your data, <code>myOptions</code> should be an keypath/expression that points to an Array to use as its options.</p>
+<p>The Array can contain plain strings or objects. The object can be in the format of <code>{text:&#39;&#39;, value:&#39;&#39;}</code>. This allows you to have the option text displayed differently from its underlying value:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123; text: <span class="string">'A'</span>, value: <span class="string">'a'</span> &#125;,</span><br><span class="line">  &#123; text: <span class="string">'B'</span>, value: <span class="string">'b'</span> &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <p>Will render:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">select</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">"a"</span>&gt;</span>A<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">"b"</span>&gt;</span>B<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
@@ -131,7 +183,11 @@ new Vue({
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123; label: <span class="string">'A'</span>, options: [<span class="string">'a'</span>, <span class="string">'b'</span>]&#125;,</span><br><span class="line">  &#123; label: <span class="string">'B'</span>, options: [<span class="string">'c'</span>, <span class="string">'d'</span>]&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <p>Will render:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">select</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">optgroup</span> <span class="attribute">label</span>=<span class="value">"A"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">"a"</span>&gt;</span>a<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">"b"</span>&gt;</span>b<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">optgroup</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">optgroup</span> <span class="attribute">label</span>=<span class="value">"B"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">"c"</span>&gt;</span>c<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">"d"</span>&gt;</span>d<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">optgroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="Input_Debounce">Input Debounce</h2><p>The <code>debounce</code> param allows you to set a minimum delay after each keystroke before an update is executed. This can be useful when you are performing expensive operations on each update, for example making an Ajax request for type-ahead autocompletion.</p>
+<p>It’s quite likely that your source data does not come in this desired format, and you will have to transform the data in order to generate dynamic options. In order to DRY-up the transformation, the <code>options</code> param supports filters, and it can be helpful to put your transformation logic into a reusable <a href="/guide/custom-filter.html">custom filter</a>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Vue.filter(<span class="string">'extract'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">value, keyToExtract</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> value.map(<span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> item[keyToExtract]</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">select</span> <span class="attribute">options</span>=<span class="value">"users | extract 'name'"</span>&gt;</span><span class="tag">&lt;/<span class="title">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>The above filter transforms data like <code>[{ name: &#39;Bruce&#39; }, { name: &#39;Chuck&#39; }]</code> into <code>[&#39;Bruce&#39;, &#39;Chuck&#39;]</code> so it becomes properly formatted.</p>
+<h2 id="Input_Debounce">Input Debounce</h2><p>The <code>debounce</code> param allows you to set a minimum delay after each keystroke before the input’s value is synced to the model. This can be useful when you are performing expensive operations on each update, for example making an Ajax request for type-ahead autocompletion.</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-model</span>=<span class="value">"msg"</span> <span class="attribute">debounce</span>=<span class="value">"500"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p><strong>Result</strong></p>
 <p><div id="debounce-demo" class="demo">{&#123;msg&#125;}<br><input v-model="msg" debounce="500"></div></p>
@@ -142,6 +198,7 @@ new Vue({
 })
 </script>
 
+<p>Note that the <code>debounce</code> param does not debounce the user’s input events: it debounces the “write” operation to the underlying data. Therefore you should use <code>vm.$watch()</code> to react to data changes when using <code>debounce</code>.</p>
 <p>Next: <a href="/guide/computed.html">Computed Properties</a>.</p>
 
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/vuejs/vuejs.org" target="_blank">Fork this site on Github</a>!</div>
@@ -151,5 +208,12 @@ new Vue({
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                FastClick.attach(document.body);
+            }, false);
+        </script>
     </body>
 </html>

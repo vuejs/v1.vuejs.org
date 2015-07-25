@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = "api"
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.min.js"></script>
+        <script src="/js/vue.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,11 +35,17 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li><a href="/guide/" class="nav-link">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query" class="st-default-search-input">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link">Guide</a></li>
 <li><a href="/api/" class="nav-link current">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
+
     </ul>
 </div>
             <div id="main">
@@ -47,30 +53,60 @@
                     
     <div class="sidebar">
     <ul class="main-menu">
-        <li><a href="/guide/" class="nav-link">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query" class="st-default-search-input">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link">Guide</a></li>
 <li><a href="/api/" class="nav-link current">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
+
     </ul>
     <div class="list">
         <h2>Api</h2>
         <ul class="menu-root">
             
-                <li><a href="/api/index.html" class="sidebar-link">Overview</a></li>
+                <li>
+                    <a href="/api/index.html" class="sidebar-link">Overview</a>
+                </li>
             
-                <li><a href="/api/options.html" class="sidebar-link">Component Options</a></li>
+                <li>
+                    <a href="/api/options.html" class="sidebar-link">Component Options</a>
+                </li>
             
-                <li><a href="/api/instance-properties.html" class="sidebar-link">Instance Properties</a></li>
+                <li>
+                    <a href="/api/instance-properties.html" class="sidebar-link">Instance Properties</a>
+                </li>
             
-                <li><a href="/api/instance-methods.html" class="sidebar-link">Instance Methods</a></li>
+                <li>
+                    <a href="/api/instance-methods.html" class="sidebar-link">Instance Methods</a>
+                </li>
             
-                <li><a href="/api/global-api.html" class="sidebar-link">Global API</a></li>
+                <li>
+                    <a href="/api/global-api.html" class="sidebar-link">Global API</a>
+                </li>
             
-                <li><a href="/api/directives.html" class="sidebar-link">Directives</a></li>
+                <li>
+                    <a href="/api/directives.html" class="sidebar-link">Directives</a>
+                </li>
             
-                <li><a href="/api/filters.html" class="sidebar-link current">Filters</a></li>
+                <li>
+                    <a href="/api/filters.html" class="sidebar-link current">Filters</a>
+                </li>
             
+                <li>
+                    <a href="/api/elements.html" class="sidebar-link new">Special Elements</a>
+                </li>
+            
+            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
+            <li style="margin:10px 0 3px">
+              <script data-gittip-username="yyx990803"
+                data-gittip-widget="button"
+                src="//gttp.co/v1.js"></script>
+            </li>
         </ul>
     </div>
 </div>
@@ -94,9 +130,9 @@
 </ul>
 <p>Pluralizes the argument based on the filtered value. When there is exactly one arg, plural forms simply add an “s” at the end. When there are more than one argument, the arguments will be used as array of strings corresponding to the single, double, triple … forms of the word to be pluralized. When the number to be pluralized exceeds the length of the args, it will use the last entry in the array.</p>
 <p><strong>Example:</strong></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;count&#125;&#125; &#123;&#123;count | pluralize item&#125;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;count&#125;&#125; &#123;&#123;count | pluralize 'item'&#125;&#125;</span><br></pre></td></tr></table></figure>
 <p><em>1 =&gt; ‘1 item’</em><br><em>2 =&gt; ‘2 items’</em></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;date&#125;&#125;&#123;&#123;date | pluralize st nd rd th&#125;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;date&#125;&#125;&#123;&#123;date | pluralize 'st' 'nd' 'rd' 'th'&#125;&#125;</span><br></pre></td></tr></table></figure>
 <p>Will result in:</p>
 <p><em>1 =&gt; ‘1st’</em><br><em>2 =&gt; ‘2nd’</em><br><em>3 =&gt; ‘3rd’</em><br><em>4 =&gt; ‘4th’</em><br><em>5 =&gt; ‘5th’</em></p>
 <h3 id="json">json</h3><ul>
@@ -120,7 +156,7 @@
 <li>right</li>
 </ul>
 <p><strong>Example:</strong></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-on</span>=<span class="value">"keyup:doSomething | key enter"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-on</span>=<span class="value">"keyup:doSomething | key 'enter'"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p><code>doSomething</code> will only be called when the Enter key is pressed.</p>
 <h3 id="filterBy">filterBy</h3><p><strong>Syntax:</strong> <code>filterBy searchKey [in dataKey]</code>.</p>
 <ul>
@@ -153,5 +189,12 @@
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                FastClick.attach(document.body);
+            }, false);
+        </script>
     </body>
 </html>

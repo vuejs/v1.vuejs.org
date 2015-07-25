@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = "guide"
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.min.js"></script>
+        <script src="/js/vue.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,11 +35,17 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query" class="st-default-search-input">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
+
     </ul>
 </div>
             <div id="main">
@@ -47,46 +53,92 @@
                     
     <div class="sidebar">
     <ul class="main-menu">
-        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query" class="st-default-search-input">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
+
     </ul>
     <div class="list">
         <h2>Guide</h2>
         <ul class="menu-root">
             
-                <li><a href="/guide/installation.html" class="sidebar-link">Installation</a></li>
+                <li>
+                    <a href="/guide/installation.html" class="sidebar-link">Installation</a>
+                </li>
             
-                <li><a href="/guide/index.html" class="sidebar-link">Getting Started</a></li>
+                <li>
+                    <a href="/guide/index.html" class="sidebar-link">Getting Started</a>
+                </li>
             
-                <li><a href="/guide/directives.html" class="sidebar-link">Directives</a></li>
+                <li>
+                    <a href="/guide/directives.html" class="sidebar-link">Directives</a>
+                </li>
             
-                <li><a href="/guide/filters.html" class="sidebar-link">Filters</a></li>
+                <li>
+                    <a href="/guide/filters.html" class="sidebar-link">Filters</a>
+                </li>
             
-                <li><a href="/guide/list.html" class="sidebar-link current">Displaying a List</a></li>
+                <li>
+                    <a href="/guide/list.html" class="sidebar-link current">Displaying a List</a>
+                </li>
             
-                <li><a href="/guide/events.html" class="sidebar-link">Listening for Events</a></li>
+                <li>
+                    <a href="/guide/events.html" class="sidebar-link">Listening for Events</a>
+                </li>
             
-                <li><a href="/guide/forms.html" class="sidebar-link">Handling Forms</a></li>
+                <li>
+                    <a href="/guide/forms.html" class="sidebar-link">Handling Forms</a>
+                </li>
             
-                <li><a href="/guide/computed.html" class="sidebar-link">Computed Properties</a></li>
+                <li>
+                    <a href="/guide/computed.html" class="sidebar-link">Computed Properties</a>
+                </li>
             
-                <li><a href="/guide/custom-directive.html" class="sidebar-link">Custom Directives</a></li>
+                <li>
+                    <a href="/guide/custom-directive.html" class="sidebar-link">Custom Directives</a>
+                </li>
             
-                <li><a href="/guide/custom-filter.html" class="sidebar-link">Custom Filters</a></li>
+                <li>
+                    <a href="/guide/custom-filter.html" class="sidebar-link">Custom Filters</a>
+                </li>
             
-                <li><a href="/guide/components.html" class="sidebar-link">Component System</a></li>
+                <li>
+                    <a href="/guide/components.html" class="sidebar-link">Component System</a>
+                </li>
             
-                <li><a href="/guide/transitions.html" class="sidebar-link">Transitions</a></li>
+                <li>
+                    <a href="/guide/transitions.html" class="sidebar-link">Transition System</a>
+                </li>
             
-                <li><a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a></li>
+                <li>
+                    <a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a>
+                </li>
             
-                <li><a href="/guide/extending.html" class="sidebar-link">Extending Vue</a></li>
+                <li>
+                    <a href="/guide/extending.html" class="sidebar-link">Extending Vue</a>
+                </li>
             
-                <li><a href="/guide/faq.html" class="sidebar-link">Common FAQs</a></li>
+                <li>
+                    <a href="/guide/best-practices.html" class="sidebar-link new">Tips & Best Practices</a>
+                </li>
             
+                <li>
+                    <a href="/guide/faq.html" class="sidebar-link">Common FAQs</a>
+                </li>
+            
+            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
+            <li style="margin:10px 0 3px">
+              <script data-gittip-username="yyx990803"
+                data-gittip-widget="button"
+                src="//gttp.co/v1.js"></script>
+            </li>
         </ul>
     </div>
 </div>
@@ -132,8 +184,8 @@ new Vue({
 })
 </script>
 
-<h2 id="Using_an_identifier">Using an identifier</h2><p>Sometimes we might want to have more explicit variable access instead of implicitly falling back to parent scope. You can do that by providing an argument to the <code>v-repeat</code> directive and use it as the identifier for the item being iterated:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span> <span class="attribute">id</span>=<span class="value">"users"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- think of this as "for each user in users" --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-repeat</span>=<span class="value">"user: users"</span>&gt;</span></span><br><span class="line">    &#123;&#123;user.name&#125;&#125; - &#123;&#123;user.email&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Using_an_alias">Using an alias</h2><p>Sometimes we might want to have more explicit variable access instead of implicitly falling back to parent scope. You can do that by providing an alias to the <code>v-repeat</code> directive and use it as the alias for the item being iterated:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span> <span class="attribute">id</span>=<span class="value">"users"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-repeat</span>=<span class="value">"user in users"</span>&gt;</span></span><br><span class="line">    &#123;&#123;user.name&#125;&#125; - &#123;&#123;user.email&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#users'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    users: [</span><br><span class="line">      &#123; name: <span class="string">'Foo Bar'</span>, email: <span class="string">'foo@bar.com'</span> &#125;,</span><br><span class="line">      &#123; name: <span class="string">'John Doh'</span>, email: <span class="string">'john@doh.com'</span> &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p><strong>Result:</strong></p>
 <p><ul id="users" class="demo"><li v-repeat="user: users">{&#123;user.name&#125;} - {&#123;user.email&#125;}</li></ul></p>
@@ -149,6 +201,10 @@ new Vue({
 })
 </script>
 
+<p class="tip">The <code>user in users</code> syntax is only available in Vue 0.12.8 and above. For older versions, you must use the <code>user : users</code> syntax.</p>
+
+<p class="tip">Using an alias with <code>v-repeat</code> in general results in more readable templates and slightly better performance.</p>
+
 <h2 id="Mutation_Methods">Mutation Methods</h2><p>Under the hood, Vue.js intercepts an observed Array’s mutating methods (<code>push()</code>, <code>pop()</code>, <code>shift()</code>, <code>unshift()</code>, <code>splice()</code>, <code>sort()</code> and <code>reverse()</code>) so they will also trigger View updates.</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// the DOM will be updated accordingly</span></span><br><span class="line">demo.items.unshift(&#123; childMsg: <span class="string">'Baz'</span> &#125;)</span><br><span class="line">demo.items.pop()</span><br></pre></td></tr></table></figure>
 <h2 id="Augmented_Methods">Augmented Methods</h2><p>Vue.js augments observed Arrays with two convenience methods: <code>$set()</code> and <code>$remove()</code>.</p>
@@ -159,11 +215,15 @@ new Vue({
 <h2 id="Replacing_an_Array">Replacing an Array</h2><p>When you are using non-mutating methods, e.g. <code>filter()</code>, <code>concat()</code> or <code>slice()</code>, the returned Array will be a different instance. In that case, you can just replace the old Array with the new one:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">demo.items = demo.items.filter(<span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> item.childMsg.match(<span class="regexp">/Hello/</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p>You might think this will blow away the existing DOM and re-build everything. But worry not - Vue.js recognizes array elements that already have an associated Vue instance and will reuse those instances whenever possible.</p>
-<h2 id="Using_track-by">Using <code>track-by</code></h2><p>In some cases, you might need to replace the Array with completely new objects - e.g. ones returned from an API call. If your data objects have a unique id property, then you can use a <code>track-by</code> attribute to give Vue.js a hint so that it can reuse an existing instance with data that has the same id.</p>
+<h2 id="Using_track-by">Using <code>track-by</code></h2><p>In some cases, you might need to replace the Array with completely new objects - e.g. ones returned from an API call. Since by default <code>v-repeat</code> determines the reusability of an existing child instance and its DOM nodes by tracking the identity of its data object, this could cause the entire list to be re-rendered. However, if each of your data objects has a unique id property, then you can use a <code>track-by</code> param to give Vue.js a hint so that it can reuse existing instances as much as possible.</p>
 <p>For example, if your data looks like this:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  items: [</span><br><span class="line">    &#123; _uid: <span class="string">'88f869d'</span>, ... &#125;,</span><br><span class="line">    &#123; _uid: <span class="string">'7496c10'</span>, ... &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Then you can give the hint like this:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-repeat</span>=<span class="value">"items"</span> <span class="attribute">track-by</span>=<span class="value">"_uid"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- content --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Later on, when you replace the <code>items</code> array and Vue.js encounters a new object with <code>_uid: &#39;88f869d&#39;</code>, it knows it can reuse the existing instance with the same <code>_uid</code>.</p>
+<p>If you don’t have a unique key to track by, you can also use <code>track-by=&quot;$index&quot;</code>. Make sure to use this carefully though, because when tracking by <code>$index</code>, instead of moving the child instances and DOM nodes, Vue will simply reuse them in place in the order they were first created. Avoid using <code>track-by=&quot;$index&quot;</code> in two situations: when your repeated block contains form inputs that can cause the list to re-render; or when you are repeating a component with mutable state in addition to the repeated data being assigned to it.</p>
+<p class="tip">Using <code>track-by</code> properly can greatly increase the performance when re-rendering large <code>v-repeat</code> lists using completely new data.</p>
+
 <h2 id="Iterating_Through_An_Object">Iterating Through An Object</h2><p>You can also use <code>v-repeat</code> to iterate through the properties of an Object. Each repeated instance will have a special property <code>$key</code>. For primitive values, you also get <code>$value</code> which is similar to primitive values in Arrays.</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span> <span class="attribute">id</span>=<span class="value">"repeat-object"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-repeat</span>=<span class="value">"primitiveValues"</span>&gt;</span>&#123;&#123;$key&#125;&#125; : &#123;&#123;$value&#125;&#125;<span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span>&gt;</span>===<span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-repeat</span>=<span class="value">"objectValues"</span>&gt;</span>&#123;&#123;$key&#125;&#125; : &#123;&#123;msg&#125;&#125;<span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#repeat-object'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    primitiveValues: &#123;</span><br><span class="line">      FirstName: <span class="string">'John'</span>,</span><br><span class="line">      LastName: <span class="string">'Doe'</span>,</span><br><span class="line">      Age: <span class="number">30</span></span><br><span class="line">    &#125;,</span><br><span class="line">    objectValues: &#123;</span><br><span class="line">      one: &#123;</span><br><span class="line">        msg: <span class="string">'Hello'</span></span><br><span class="line">      &#125;,</span><br><span class="line">      two: &#123;</span><br><span class="line">        msg: <span class="string">'Bye'</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
@@ -214,5 +274,12 @@ new Vue({
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                FastClick.attach(document.body);
+            }, false);
+        </script>
     </body>
 </html>

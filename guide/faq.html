@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = "guide"
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.min.js"></script>
+        <script src="/js/vue.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,11 +35,17 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query" class="st-default-search-input">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
+
     </ul>
 </div>
             <div id="main">
@@ -47,46 +53,92 @@
                     
     <div class="sidebar">
     <ul class="main-menu">
-        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query" class="st-default-search-input">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
+
     </ul>
     <div class="list">
         <h2>Guide</h2>
         <ul class="menu-root">
             
-                <li><a href="/guide/installation.html" class="sidebar-link">Installation</a></li>
+                <li>
+                    <a href="/guide/installation.html" class="sidebar-link">Installation</a>
+                </li>
             
-                <li><a href="/guide/index.html" class="sidebar-link">Getting Started</a></li>
+                <li>
+                    <a href="/guide/index.html" class="sidebar-link">Getting Started</a>
+                </li>
             
-                <li><a href="/guide/directives.html" class="sidebar-link">Directives</a></li>
+                <li>
+                    <a href="/guide/directives.html" class="sidebar-link">Directives</a>
+                </li>
             
-                <li><a href="/guide/filters.html" class="sidebar-link">Filters</a></li>
+                <li>
+                    <a href="/guide/filters.html" class="sidebar-link">Filters</a>
+                </li>
             
-                <li><a href="/guide/list.html" class="sidebar-link">Displaying a List</a></li>
+                <li>
+                    <a href="/guide/list.html" class="sidebar-link">Displaying a List</a>
+                </li>
             
-                <li><a href="/guide/events.html" class="sidebar-link">Listening for Events</a></li>
+                <li>
+                    <a href="/guide/events.html" class="sidebar-link">Listening for Events</a>
+                </li>
             
-                <li><a href="/guide/forms.html" class="sidebar-link">Handling Forms</a></li>
+                <li>
+                    <a href="/guide/forms.html" class="sidebar-link">Handling Forms</a>
+                </li>
             
-                <li><a href="/guide/computed.html" class="sidebar-link">Computed Properties</a></li>
+                <li>
+                    <a href="/guide/computed.html" class="sidebar-link">Computed Properties</a>
+                </li>
             
-                <li><a href="/guide/custom-directive.html" class="sidebar-link">Custom Directives</a></li>
+                <li>
+                    <a href="/guide/custom-directive.html" class="sidebar-link">Custom Directives</a>
+                </li>
             
-                <li><a href="/guide/custom-filter.html" class="sidebar-link">Custom Filters</a></li>
+                <li>
+                    <a href="/guide/custom-filter.html" class="sidebar-link">Custom Filters</a>
+                </li>
             
-                <li><a href="/guide/components.html" class="sidebar-link">Component System</a></li>
+                <li>
+                    <a href="/guide/components.html" class="sidebar-link">Component System</a>
+                </li>
             
-                <li><a href="/guide/transitions.html" class="sidebar-link">Transitions</a></li>
+                <li>
+                    <a href="/guide/transitions.html" class="sidebar-link">Transition System</a>
+                </li>
             
-                <li><a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a></li>
+                <li>
+                    <a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a>
+                </li>
             
-                <li><a href="/guide/extending.html" class="sidebar-link">Extending Vue</a></li>
+                <li>
+                    <a href="/guide/extending.html" class="sidebar-link">Extending Vue</a>
+                </li>
             
-                <li><a href="/guide/faq.html" class="sidebar-link current">Common FAQs</a></li>
+                <li>
+                    <a href="/guide/best-practices.html" class="sidebar-link new">Tips & Best Practices</a>
+                </li>
             
+                <li>
+                    <a href="/guide/faq.html" class="sidebar-link current">Common FAQs</a>
+                </li>
+            
+            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
+            <li style="margin:10px 0 3px">
+              <script data-gittip-username="yyx990803"
+                data-gittip-widget="button"
+                src="//gttp.co/v1.js"></script>
+            </li>
         </ul>
     </div>
 </div>
@@ -114,7 +166,7 @@
 <p>That’s pretty much it. Accessing properties on the object is the same as before, <code>JSON.stringify</code> and <code>for ... in ...</code> loops will work as normal. 99.9% of the time you don’t even need to think about it.</p>
 </li>
 <li><p><strong>What is the current status of Vue.js? Can I use it in production?</strong></p>
-<p>Vue.js has undergone some major rewrite for the 0.11 update, and we are now working towards the 1.0 release. Vue.js is already being used in production at companies like Optimizely.</p>
+<p>Vue.js has gone through some API changes in the latest 0.12 release, but this is the last planned point release before 1.0. In the meanwhile, there already <a href="https://github.com/yyx990803/vue/wiki/Projects-Using-Vue.js" target="_blank" rel="external">companies/projects using Vue.js in production</a>.</p>
 </li>
 <li><p><strong>Is Vue.js free to use?</strong></p>
 <p>Vue.js is free and fully open sourced under the MIT License.</p>
@@ -122,29 +174,32 @@
 <li><p><strong>What is the difference between Vue.js and AngularJS?</strong></p>
 <p>There are a few reasons to use Vue over Angular, although they might not apply for everyone:</p>
 <ol>
-<li><p>Vue.js is a more flexible, less opinionated solution. That allows you to structure your app the way you want it to be, instead of being forced to do everything the Angular way. It’s only an interface layer so you can use it as a light feature in pages instead of a full blown SPA. It gives you bigger room to mix and match with other libraries. This is probably the most important distinction.</p>
+<li><p>Vue.js is a more flexible, less opinionated solution. That allows you to structure your app the way you want it to be, instead of being forced to do everything the Angular way. It’s only an interface layer so you can use it as a light feature in pages instead of a full blown SPA. It gives you bigger room to mix and match with other libraries, but you are also responsible for making more architectural decisions. For example, Vue.js’ core doesn’t come with routing or ajax functionalities by default, and usually assumes you are building the application using an external module bundler. This is probably the most important distinction.</p>
 </li>
-<li><p>Vue.js is much simpler than Angular in general, so you can learn almost everything about it really fast and get productive.</p>
+<li><p>Vue.js is much simpler than Angular, both in terms of API and design. You can learn almost everything about it really fast and get productive.</p>
 </li>
-<li><p>Vue.js has better performance because it doesn’t use dirty checking. Angular gets slow when there are a lot of watchers, because every time anything in the scope changes, all these watchers need to be re-evaluated again. Vue.js doesn’t suffer from this because it uses an event based observing mechanism, so all changes trigger independently unless they have explicit dependency relationships.</p>
+<li><p>Vue.js has better performance because it doesn’t use dirty checking. Angular gets slow when there are a lot of watchers, because every time anything in the scope changes, all these watchers need to be re-evaluated again. Vue.js doesn’t suffer from this because it uses a transparent dependency-tracking observing system - all changes trigger independently unless they have explicit dependency relationships.</p>
 </li>
 <li><p>Vue.js has a clearer separation between directives and components. Directives are meant to encapsulate DOM manipulations only, while Components stand for a self-contained unit that has its own view and data logic. In Angular there’s a lot of confusion between the two.</p>
 </li>
 </ol>
 <p>But also note that Vue.js is a relatively young project, while Angular is battle-proven, Google-sponsored, and has a larger community.</p>
 </li>
-<li><p><strong>What makes Vue.js different from KnockoutJS?</strong></p>
-<p>First, Vue provides a cleaner syntax in getting and setting VM properties.</p>
-<p>On a higher level, Vue differs from Knockout in that Vue’s component system encourages you to take a top-down, structure first, declarative design strategy, instead of imperatively build up ViewModels from bottom up. In Vue the source data are plain, logic-less objects (ones that you can directly JSON.stringify and throw into a post request), and the ViewModel simply proxies access to that data on itself. A Vue VM instance always connects raw data to a corresponding DOM element. In Knockout, the ViewModel essentially <strong>is</strong> the data and the line between Model and ViewModel is pretty blurry. This lack of differentiation makes Knockout more flexible, but also much more likely to result in convoluted ViewModels.</p>
-</li>
-<li><p><strong>What makes Vue.js different from React.js?</strong></p>
-<p>React.js and Vue.js do have some similarity in that they both provide reactive &amp; composable View components. However the internal implementation is fundamentally different. React is built upon a virtual DOM - an in-memory representation of what the actual DOM should look like. Data in React is largely immutable and DOM manipulations are calculated via diffing. On the contrary data in Vue.js is mutable and stateful by default, and changes are triggered through events. Instead of a virtual DOM, Vue.js uses the actual DOM as the template and keeps references to actual nodes for data bindings.</p>
+<li><p><strong>What makes Vue.js different from React?</strong></p>
+<p>React and Vue.js do have some similarity in that they both provide reactive &amp; composable View components. However the internal implementation is fundamentally different. React is built upon a virtual DOM - an in-memory representation of what the actual DOM should look like. Data in React is largely immutable and DOM manipulations are calculated via diffing. On the contrary data in Vue.js is mutable and stateful by default, and changes are triggered through events. Instead of a virtual DOM, Vue.js uses the actual DOM as the template and keeps references to actual nodes for data bindings.</p>
 <p>The virtual-DOM approach provides a functional way to describe your view at any point of time, which is really nice. Because it doesn’t use observables and re-renders the entire app on every update, the view is by definition guaranteed to be in sync with the data. It also opens up possiblities to isomorphic JavaScript applications.</p>
 <p>Overall I’m a big fan of React’s design philosophy myself. But one issue with React is that your logic and your view are tightly knit together. For some developers this is a bonus, but for designer/developer hybrids like me, having a template makes it much easier to think visually about the design and CSS. JSX mixed with JavaScript logic breaks that visual model I need to map the code to the design. In contrast, Vue.js pays the cost of a lightweight DSL (directives) so that we have a visually scannable template and with logic encapsulated into directives and filters.</p>
 <p>Another issue with React is that because DOM updates are completely delegated to the Virtual DOM, it’s a bit tricky when you actually <strong>want</strong> to control the DOM yourself (although theoretically you can, you’d be essentially working against the library when you do that). For applications that needs complex time-choreographed animations, this can become a pretty annoying restriction. On this front, Vue.js allows for more flexibility and there are <a href="https://github.com/yyx990803/vue/wiki/Projects-Using-Vue.js#interactive-experiences" target="_blank" rel="external">multiple FWA/Awwwards winning sites</a> built with Vue.js.</p>
 </li>
+<li><p><strong>What makes Vue.js different from Polymer?</strong></p>
+<p>Polymer is yet another Google-sponsored project and in fact was a source of inspiration for Vue.js as well. Vue.js’ components can be loosely compared to Polymer’s custom elements, and both provide a very similar development style. The biggest difference is that Polymer is built upon the latest Web Components features, and requires non-trivial polyfills to work (with degraded performance) in browsers that don’t support those features natively. In contrast, Vue.js works without any dependencies down to IE9.</p>
+</li>
+<li><p><strong>What makes Vue.js different from KnockoutJS?</strong></p>
+<p>First, Vue provides a cleaner syntax in getting and setting VM properties.</p>
+<p>On a higher level, Vue differs from Knockout in that Vue’s component system encourages you to take a top-down, structure first, declarative design strategy, instead of imperatively build up ViewModels from bottom up. In Vue the source data are plain, logic-less objects (ones that you can directly JSON.stringify and throw into a post request), and the ViewModel simply proxies access to that data on itself. A Vue VM instance always connects raw data to a corresponding DOM element. In Knockout, the ViewModel essentially <strong>is</strong> the data and the line between Model and ViewModel is pretty blurry. This lack of differentiation in Knockout makes it much more likely to result in convoluted ViewModels.</p>
+</li>
 <li><p><strong>I want to help!</strong></p>
-<p>  Great! Read the <a href="https://github.com/yyx990803/vue/blob/master/CONTRIBUTING.md" target="_blank" rel="external">contribution guide</a> and join discussions on IRC (#vuejs).</p>
+<p>  Great! Read the <a href="https://github.com/yyx990803/vue/blob/master/CONTRIBUTING.md" target="_blank" rel="external">contribution guide</a> and join discussions on <a href="https://gitter.im/yyx990803/vue" target="_blank"><img src="https://badges.gitter.im/Join%20Chat.svg"></a></p>
 </li>
 </ul>
 
@@ -155,5 +210,12 @@
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                FastClick.attach(document.body);
+            }, false);
+        </script>
     </body>
 </html>

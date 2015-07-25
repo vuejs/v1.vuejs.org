@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = "guide"
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.min.js"></script>
+        <script src="/js/vue.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,11 +35,17 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query" class="st-default-search-input">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
+
     </ul>
 </div>
             <div id="main">
@@ -47,46 +53,92 @@
                     
     <div class="sidebar">
     <ul class="main-menu">
-        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query" class="st-default-search-input">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
+
     </ul>
     <div class="list">
         <h2>Guide</h2>
         <ul class="menu-root">
             
-                <li><a href="/guide/installation.html" class="sidebar-link">Installation</a></li>
+                <li>
+                    <a href="/guide/installation.html" class="sidebar-link">Installation</a>
+                </li>
             
-                <li><a href="/guide/index.html" class="sidebar-link">Getting Started</a></li>
+                <li>
+                    <a href="/guide/index.html" class="sidebar-link">Getting Started</a>
+                </li>
             
-                <li><a href="/guide/directives.html" class="sidebar-link">Directives</a></li>
+                <li>
+                    <a href="/guide/directives.html" class="sidebar-link">Directives</a>
+                </li>
             
-                <li><a href="/guide/filters.html" class="sidebar-link">Filters</a></li>
+                <li>
+                    <a href="/guide/filters.html" class="sidebar-link">Filters</a>
+                </li>
             
-                <li><a href="/guide/list.html" class="sidebar-link">Displaying a List</a></li>
+                <li>
+                    <a href="/guide/list.html" class="sidebar-link">Displaying a List</a>
+                </li>
             
-                <li><a href="/guide/events.html" class="sidebar-link">Listening for Events</a></li>
+                <li>
+                    <a href="/guide/events.html" class="sidebar-link">Listening for Events</a>
+                </li>
             
-                <li><a href="/guide/forms.html" class="sidebar-link">Handling Forms</a></li>
+                <li>
+                    <a href="/guide/forms.html" class="sidebar-link">Handling Forms</a>
+                </li>
             
-                <li><a href="/guide/computed.html" class="sidebar-link">Computed Properties</a></li>
+                <li>
+                    <a href="/guide/computed.html" class="sidebar-link">Computed Properties</a>
+                </li>
             
-                <li><a href="/guide/custom-directive.html" class="sidebar-link current">Custom Directives</a></li>
+                <li>
+                    <a href="/guide/custom-directive.html" class="sidebar-link current">Custom Directives</a>
+                </li>
             
-                <li><a href="/guide/custom-filter.html" class="sidebar-link">Custom Filters</a></li>
+                <li>
+                    <a href="/guide/custom-filter.html" class="sidebar-link">Custom Filters</a>
+                </li>
             
-                <li><a href="/guide/components.html" class="sidebar-link">Component System</a></li>
+                <li>
+                    <a href="/guide/components.html" class="sidebar-link">Component System</a>
+                </li>
             
-                <li><a href="/guide/transitions.html" class="sidebar-link">Transitions</a></li>
+                <li>
+                    <a href="/guide/transitions.html" class="sidebar-link">Transition System</a>
+                </li>
             
-                <li><a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a></li>
+                <li>
+                    <a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a>
+                </li>
             
-                <li><a href="/guide/extending.html" class="sidebar-link">Extending Vue</a></li>
+                <li>
+                    <a href="/guide/extending.html" class="sidebar-link">Extending Vue</a>
+                </li>
             
-                <li><a href="/guide/faq.html" class="sidebar-link">Common FAQs</a></li>
+                <li>
+                    <a href="/guide/best-practices.html" class="sidebar-link new">Tips & Best Practices</a>
+                </li>
             
+                <li>
+                    <a href="/guide/faq.html" class="sidebar-link">Common FAQs</a>
+                </li>
+            
+            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
+            <li style="margin:10px 0 3px">
+              <script data-gittip-username="yyx990803"
+                data-gittip-widget="button"
+                src="//gttp.co/v1.js"></script>
+            </li>
         </ul>
     </div>
 </div>
@@ -148,6 +200,11 @@ var demo = new Vue({
 })
 </script>
 
+<h3 id="Multiple_Clauses">Multiple Clauses</h3><p>Comma separated arguments are bound as multiple directive instances. In the following example, directive methods are called twice:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-demo</span>=<span class="value">"color: 'white', text: 'hello!'"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>You can achieve single binding with all arguments by closing value with object literal:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-demo</span>=<span class="value">"&#123;color: 'white', text: 'hello!'&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Vue.directive(<span class="string">'demo'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(value) <span class="comment">// Object &#123;color: 'white', text: 'hello!'&#125;</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <h2 id="Literal_Directives">Literal Directives</h2><p>If you pass in <code>isLiteral: true</code> when creating a custom directive, the attribute value will be taken as a literal string and assigned as that directive’s <code>expression</code>. The directive will not attempt to setup data observation.</p>
 <p>Example:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-literal-dir</span>=<span class="value">"foo"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
@@ -171,7 +228,15 @@ var demo = new Vue({
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-my-directive</span>=<span class="value">"obj"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Vue.directive(<span class="string">'my-directive'</span>, &#123;</span><br><span class="line">  deep: <span class="literal">true</span>,</span><br><span class="line">  update: <span class="function"><span class="keyword">function</span> (<span class="params">obj</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// will be called when nested properties in `obj`</span></span><br><span class="line">    <span class="comment">// changes.</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <h2 id="Directive_Priority">Directive Priority</h2><p>You can optionally provide a priority number for your directive (defaults to 0). A directive with a higher priority will be processed earlier than other directives on the same element. Directives with the same priority will be processed in the order they appear in the element’s attribute list, although that order is not guaranteed to be consistent in different browsers.</p>
-<p>You can checkout the priorities for some built-in directives in the <a href="/api/directives.html">API reference</a>. Additionally, <code>v-repeat</code>, <code>v-if</code> and <code>v-component</code> are considered “terminal directives” and they always have the highest priority in the compilation process.</p>
+<p>You can checkout the priorities for some built-in directives in the <a href="/api/directives.html">API reference</a>. Additionally, logic control directives <code>v-if</code> and <code>v-repeat</code> are considered “terminal” and they always have the highest priority in the compilation process.</p>
+<h2 id="Element_Directives">Element Directives</h2><p>In some cases, we may want our directive to be used in the form of a custom element rather than as an attribute. This is very similar to Angular’s notion of “E” mode directives. Element directives provide a lighter-weight alternative to full-blown components (which are explained later in the guide). You can register a custom element directive like so:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Vue.elementDirective(<span class="string">'my-directive'</span>, &#123;</span><br><span class="line">  <span class="comment">// same API as normal directives</span></span><br><span class="line">  bind: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// manipulate this.el...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>Then, instead of:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-my-directive</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>We can write:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">my-directive</span>&gt;</span><span class="tag">&lt;/<span class="title">my-directive</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Element directives cannot accept arguments or expressions, but it can read the element’s attributes to determine its behavior.</p>
+<p>A big difference from normals directives is that element directives are <strong>terminal</strong>, which means once Vue encounters an element directive, it will leave that element and all its children alone - only the element directive itself will be able to manipulate that element and its children. </p>
 <p>Next, we’ll see how to <a href="/guide/custom-filter.html">write a custom filter</a>.</p>
 
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/vuejs/vuejs.org" target="_blank">Fork this site on Github</a>!</div>
@@ -181,5 +246,12 @@ var demo = new Vue({
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                FastClick.attach(document.body);
+            }, false);
+        </script>
     </body>
 </html>

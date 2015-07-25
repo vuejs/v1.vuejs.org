@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = "guide"
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.min.js"></script>
+        <script src="/js/vue.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,11 +35,17 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query" class="st-default-search-input">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
+
     </ul>
 </div>
             <div id="main">
@@ -47,46 +53,92 @@
                     
     <div class="sidebar">
     <ul class="main-menu">
-        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li>
+  <form id="search-form">
+    <input type="text" id="search-query" class="st-default-search-input">
+  </form>
+</li>
+<li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
+
     </ul>
     <div class="list">
         <h2>Guide</h2>
         <ul class="menu-root">
             
-                <li><a href="/guide/installation.html" class="sidebar-link">Installation</a></li>
+                <li>
+                    <a href="/guide/installation.html" class="sidebar-link">Installation</a>
+                </li>
             
-                <li><a href="/guide/index.html" class="sidebar-link">Getting Started</a></li>
+                <li>
+                    <a href="/guide/index.html" class="sidebar-link">Getting Started</a>
+                </li>
             
-                <li><a href="/guide/directives.html" class="sidebar-link">Directives</a></li>
+                <li>
+                    <a href="/guide/directives.html" class="sidebar-link">Directives</a>
+                </li>
             
-                <li><a href="/guide/filters.html" class="sidebar-link">Filters</a></li>
+                <li>
+                    <a href="/guide/filters.html" class="sidebar-link">Filters</a>
+                </li>
             
-                <li><a href="/guide/list.html" class="sidebar-link">Displaying a List</a></li>
+                <li>
+                    <a href="/guide/list.html" class="sidebar-link">Displaying a List</a>
+                </li>
             
-                <li><a href="/guide/events.html" class="sidebar-link current">Listening for Events</a></li>
+                <li>
+                    <a href="/guide/events.html" class="sidebar-link current">Listening for Events</a>
+                </li>
             
-                <li><a href="/guide/forms.html" class="sidebar-link">Handling Forms</a></li>
+                <li>
+                    <a href="/guide/forms.html" class="sidebar-link">Handling Forms</a>
+                </li>
             
-                <li><a href="/guide/computed.html" class="sidebar-link">Computed Properties</a></li>
+                <li>
+                    <a href="/guide/computed.html" class="sidebar-link">Computed Properties</a>
+                </li>
             
-                <li><a href="/guide/custom-directive.html" class="sidebar-link">Custom Directives</a></li>
+                <li>
+                    <a href="/guide/custom-directive.html" class="sidebar-link">Custom Directives</a>
+                </li>
             
-                <li><a href="/guide/custom-filter.html" class="sidebar-link">Custom Filters</a></li>
+                <li>
+                    <a href="/guide/custom-filter.html" class="sidebar-link">Custom Filters</a>
+                </li>
             
-                <li><a href="/guide/components.html" class="sidebar-link">Component System</a></li>
+                <li>
+                    <a href="/guide/components.html" class="sidebar-link">Component System</a>
+                </li>
             
-                <li><a href="/guide/transitions.html" class="sidebar-link">Transitions</a></li>
+                <li>
+                    <a href="/guide/transitions.html" class="sidebar-link">Transition System</a>
+                </li>
             
-                <li><a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a></li>
+                <li>
+                    <a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a>
+                </li>
             
-                <li><a href="/guide/extending.html" class="sidebar-link">Extending Vue</a></li>
+                <li>
+                    <a href="/guide/extending.html" class="sidebar-link">Extending Vue</a>
+                </li>
             
-                <li><a href="/guide/faq.html" class="sidebar-link">Common FAQs</a></li>
+                <li>
+                    <a href="/guide/best-practices.html" class="sidebar-link new">Tips & Best Practices</a>
+                </li>
             
+                <li>
+                    <a href="/guide/faq.html" class="sidebar-link">Common FAQs</a>
+                </li>
+            
+            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
+            <li style="margin:10px 0 3px">
+              <script data-gittip-username="yyx990803"
+                data-gittip-widget="button"
+                src="//gttp.co/v1.js"></script>
+            </li>
         </ul>
     </div>
 </div>
@@ -107,11 +159,11 @@
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">button</span> <span class="attribute">v-on</span>=<span class="value">"click: submit('hello!', $event)"</span>&gt;</span>Submit<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* ... */</span></span><br><span class="line">&#123;</span><br><span class="line">  methods: &#123;</span><br><span class="line">    submit: <span class="function"><span class="keyword">function</span> (<span class="params">msg, e</span>) </span>&#123;</span><br><span class="line">      e.stopPropagation()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* ... */</span></span><br></pre></td></tr></table></figure>
 <h2 id="The_Special_key_Filter">The Special <code>key</code> Filter</h2><p>When listening for keyboard events, we often need to check for common key codes. Vue.js provides a special <code>key</code> filter that can only be used with <code>v-on</code> directives. It takes a single argument that denotes the key code to check for:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;!-- only call vm.submit() when the keyCode is 13 --&#62;&#10;&#60;input v-on=&#34;keyup:submit | key 13&#34;&#62;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- only call vm.submit() when the keyCode is 13 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-on</span>=<span class="value">"keyup:submit | key 13"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>It also has a few presets for commonly used keys:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;!-- same as above --&#62;&#10;&#60;input v-on=&#34;keyup:submit | key enter&#34;&#62;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- same as above --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-on</span>=<span class="value">"keyup:submit | key 'enter'"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Check the API reference for a <a href="/api/filters.html#key">full list of key filter presets</a>.</p>
-<h2 id="Why_Listeners_in_HTML?">Why Listeners in HTML?</h2><p>You might be concerned about this whole event listening approach violates the good old rules about “separation of concern”. Rest assured - since all Vue.js handler functions and expressions are strictly bound to the ViewModel that’s handling the current View, it won’t cause any maintainance difficulty. In fact, there are several benefits in using <code>v-on</code>:</p>
+<h2 id="Why_Listeners_in_HTML?">Why Listeners in HTML?</h2><p>You might be concerned that this whole event listening approach violates the good old rules about “separation of concern”. Rest assured - since all Vue.js handler functions and expressions are strictly bound to the ViewModel that’s handling the current View, it won’t cause any maintainance difficulty. In fact, there are several benefits in using <code>v-on</code>:</p>
 <ol>
 <li>It makes it easier to locate the handler function implementations within your JS code by simply skimming the HTML template.</li>
 <li>Since you don’t have to manually attach event listeners in JS, your ViewModel code can be pure logic and DOM-free. This makes it easier to test.</li>
@@ -126,5 +178,12 @@
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                FastClick.attach(document.body);
+            }, false);
+        </script>
     </body>
 </html>
