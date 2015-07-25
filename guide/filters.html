@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = "guide"
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.js"></script>
+        <script src="/js/vue.min.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,17 +35,11 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li>
-  <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
-  </form>
-</li>
-<li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
-
     </ul>
 </div>
             <div id="main">
@@ -53,92 +47,46 @@
                     
     <div class="sidebar">
     <ul class="main-menu">
-        <li>
-  <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
-  </form>
-</li>
-<li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
-
     </ul>
     <div class="list">
         <h2>Guide</h2>
         <ul class="menu-root">
             
-                <li>
-                    <a href="/guide/installation.html" class="sidebar-link">Installation</a>
-                </li>
+                <li><a href="/guide/installation.html" class="sidebar-link">Installation</a></li>
             
-                <li>
-                    <a href="/guide/index.html" class="sidebar-link">Getting Started</a>
-                </li>
+                <li><a href="/guide/index.html" class="sidebar-link">Getting Started</a></li>
             
-                <li>
-                    <a href="/guide/directives.html" class="sidebar-link">Directives</a>
-                </li>
+                <li><a href="/guide/directives.html" class="sidebar-link">Directives</a></li>
             
-                <li>
-                    <a href="/guide/filters.html" class="sidebar-link current">Filters</a>
-                </li>
+                <li><a href="/guide/filters.html" class="sidebar-link current">Filters</a></li>
             
-                <li>
-                    <a href="/guide/list.html" class="sidebar-link">Displaying a List</a>
-                </li>
+                <li><a href="/guide/list.html" class="sidebar-link">Displaying a List</a></li>
             
-                <li>
-                    <a href="/guide/events.html" class="sidebar-link">Listening for Events</a>
-                </li>
+                <li><a href="/guide/events.html" class="sidebar-link">Listening for Events</a></li>
             
-                <li>
-                    <a href="/guide/forms.html" class="sidebar-link">Handling Forms</a>
-                </li>
+                <li><a href="/guide/forms.html" class="sidebar-link">Handling Forms</a></li>
             
-                <li>
-                    <a href="/guide/computed.html" class="sidebar-link">Computed Properties</a>
-                </li>
+                <li><a href="/guide/computed.html" class="sidebar-link">Computed Properties</a></li>
             
-                <li>
-                    <a href="/guide/custom-directive.html" class="sidebar-link">Custom Directives</a>
-                </li>
+                <li><a href="/guide/custom-directive.html" class="sidebar-link">Custom Directives</a></li>
             
-                <li>
-                    <a href="/guide/custom-filter.html" class="sidebar-link">Custom Filters</a>
-                </li>
+                <li><a href="/guide/custom-filter.html" class="sidebar-link">Custom Filters</a></li>
             
-                <li>
-                    <a href="/guide/components.html" class="sidebar-link">Component System</a>
-                </li>
+                <li><a href="/guide/components.html" class="sidebar-link">Component System</a></li>
             
-                <li>
-                    <a href="/guide/transitions.html" class="sidebar-link">Transition System</a>
-                </li>
+                <li><a href="/guide/transitions.html" class="sidebar-link">Transitions</a></li>
             
-                <li>
-                    <a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a>
-                </li>
+                <li><a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a></li>
             
-                <li>
-                    <a href="/guide/extending.html" class="sidebar-link">Extending Vue</a>
-                </li>
+                <li><a href="/guide/extending.html" class="sidebar-link">Extending Vue</a></li>
             
-                <li>
-                    <a href="/guide/best-practices.html" class="sidebar-link new">Tips & Best Practices</a>
-                </li>
+                <li><a href="/guide/faq.html" class="sidebar-link">Common FAQs</a></li>
             
-                <li>
-                    <a href="/guide/faq.html" class="sidebar-link">Common FAQs</a>
-                </li>
-            
-            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
-            <li style="margin:10px 0 3px">
-              <script data-gittip-username="yyx990803"
-                data-gittip-widget="button"
-                src="//gttp.co/v1.js"></script>
-            </li>
         </ul>
     </div>
 </div>
@@ -157,10 +105,9 @@
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span>&gt;</span>&#123;&#123;message | uppercase&#125;&#125;<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Multiple filters can be chained together:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span>&gt;</span>&#123;&#123;message | lowercase | reverse&#125;&#125;<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="Arguments">Arguments</h2><p>Some filters can take optional arguments. Arguments are separated by spaces:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span>&gt;</span>&#123;&#123;order | pluralize 'st' 'nd' 'rd' 'th'&#125;&#125;<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-on</span>=<span class="value">"keyup: submitForm | key 'enter'"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>Plain string arguments need to be enclosed in quotes. Non-quoted arguments will be evaluated dynamically against the current data scope, and we will discuss them in more details later when we talk about custom filters.</p>
+<h2 id="Arguments">Arguments</h2><p>Some filters can take optional arguments. Simply add arguments separated by spaces:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span>&gt;</span>&#123;&#123;order | pluralize st nd rd th&#125;&#125;<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-on</span>=<span class="value">"keyup: submitForm | key enter"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>For their specific use of the above examples see the <a href="/api/filters.html">full list of built-in filters</a>.</p>
 <p>Now that you know what directives and filters are, let’s get our hands dirty and try to <a href="/guide/list.html">display a list of items</a>.</p>
 
@@ -171,12 +118,5 @@
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                FastClick.attach(document.body);
-            }, false);
-        </script>
     </body>
 </html>

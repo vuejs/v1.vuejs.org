@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = "api"
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.js"></script>
+        <script src="/js/vue.min.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,17 +35,11 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li>
-  <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
-  </form>
-</li>
-<li><a href="/guide/" class="nav-link">Guide</a></li>
+        <li><a href="/guide/" class="nav-link">Guide</a></li>
 <li><a href="/api/" class="nav-link current">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
-
     </ul>
 </div>
             <div id="main">
@@ -53,60 +47,30 @@
                     
     <div class="sidebar">
     <ul class="main-menu">
-        <li>
-  <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
-  </form>
-</li>
-<li><a href="/guide/" class="nav-link">Guide</a></li>
+        <li><a href="/guide/" class="nav-link">Guide</a></li>
 <li><a href="/api/" class="nav-link current">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
-
     </ul>
     <div class="list">
         <h2>Api</h2>
         <ul class="menu-root">
             
-                <li>
-                    <a href="/api/index.html" class="sidebar-link">Overview</a>
-                </li>
+                <li><a href="/api/index.html" class="sidebar-link">Overview</a></li>
             
-                <li>
-                    <a href="/api/options.html" class="sidebar-link">Component Options</a>
-                </li>
+                <li><a href="/api/options.html" class="sidebar-link">Component Options</a></li>
             
-                <li>
-                    <a href="/api/instance-properties.html" class="sidebar-link">Instance Properties</a>
-                </li>
+                <li><a href="/api/instance-properties.html" class="sidebar-link">Instance Properties</a></li>
             
-                <li>
-                    <a href="/api/instance-methods.html" class="sidebar-link current">Instance Methods</a>
-                </li>
+                <li><a href="/api/instance-methods.html" class="sidebar-link current">Instance Methods</a></li>
             
-                <li>
-                    <a href="/api/global-api.html" class="sidebar-link">Global API</a>
-                </li>
+                <li><a href="/api/global-api.html" class="sidebar-link">Global API</a></li>
             
-                <li>
-                    <a href="/api/directives.html" class="sidebar-link">Directives</a>
-                </li>
+                <li><a href="/api/directives.html" class="sidebar-link">Directives</a></li>
             
-                <li>
-                    <a href="/api/filters.html" class="sidebar-link">Filters</a>
-                </li>
+                <li><a href="/api/filters.html" class="sidebar-link">Filters</a></li>
             
-                <li>
-                    <a href="/api/elements.html" class="sidebar-link new">Special Elements</a>
-                </li>
-            
-            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
-            <li style="margin:10px 0 3px">
-              <script data-gittip-username="yyx990803"
-                data-gittip-widget="button"
-                src="//gttp.co/v1.js"></script>
-            </li>
         </ul>
     </div>
 </div>
@@ -120,22 +84,18 @@
     <h2 id="Data">Data</h2><blockquote>
 <p>You can observe data changes on a Vue instance. Note that all watch callbacks fire asynchronously. In addition, value changes are batched within an event loop. This means when a value changes multiple times within a single event loop, the callback will be fired only once with the latest value.</p>
 </blockquote>
-<h3 id="vm-$watch(_expOrFn,_callback,_[options]_)">vm.$watch( expOrFn, callback, [options] )</h3><ul>
-<li><strong>expOrFn</strong> <code>String|Function</code></li>
+<h3 id="vm-$watch(_expression,_callback,_[deep,_immediate]_)">vm.$watch( expression, callback, [deep, immediate] )</h3><ul>
+<li><strong>expression</strong> <code>String</code></li>
 <li><strong>callback( newValue, oldValue )</strong> <code>Function</code></li>
-<li><strong>options</strong> <code>Object</code> <em>optional</em><ul>
-<li><strong>deep</strong> <code>Boolean</code></li>
-<li><strong>immediate</strong> <code>Boolean</code></li>
-<li><strong>sync</strong> <code>Boolean</code></li>
+<li><strong>deep</strong> <code>Boolean</code> <em>optional</em></li>
+<li><strong>immediate</strong> <code>Boolean</code> <em>optional</em></li>
 </ul>
-</li>
-</ul>
-<p>Watch an expression or a computed function on the Vue instance for changes. The expression can be a single keypath or actual expressions:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">vm.$watch(<span class="string">'a + b'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">newVal, oldVal</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// do something</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line">vm.$watch(</span><br><span class="line">  <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.a + <span class="keyword">this</span>.b</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="keyword">function</span> (<span class="params">newVal, oldVal</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>To also detect nested value changes inside Objects, you need to pass in <code>deep: true</code> in the options argument. Note that you don’t need to do so to listen for Array mutations.</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vm.$watch(<span class="string">'someObject'</span>, callback, &#123;</span><br><span class="line">  deep: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br><span class="line">vm.someObject.nestedValue = <span class="number">123</span></span><br><span class="line"><span class="comment">// callback is fired</span></span><br></pre></td></tr></table></figure>
-<p>Passing in <code>immediate: true</code> in the option will trigger the callback immediately with the current value of the expression:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vm.$watch(<span class="string">'a'</span>, callback, &#123;</span><br><span class="line">  immediate: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// callback is fired immediately with current value of `a`</span></span><br></pre></td></tr></table></figure>
+<p>Watch an expression on the Vue instance for changes. The expression can be a single keypath or actual expressions:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vm.$watch(<span class="string">'a + b'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">newVal, oldVal</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// do something</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>To also detect nested value changes inside Objects, you need to pass in <code>true</code> for the third <code>deep</code> argument. Note that you don’t need to do so to listen for Array mutations.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vm.$watch(<span class="string">'someObject'</span>, callback, <span class="literal">true</span>)</span><br><span class="line">vm.someObject.nestedValue = <span class="number">123</span></span><br><span class="line"><span class="comment">// callback is fired</span></span><br></pre></td></tr></table></figure>
+<p>Passing in <code>true</code> for the fourth <code>immediate</code> argument will trigger the callback immediately with the current value of the expression:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vm.$watch(<span class="string">'a'</span>, callback, <span class="literal">false</span>, <span class="literal">true</span>)</span><br><span class="line"><span class="comment">// callback is fired immediately with current value of `a`</span></span><br></pre></td></tr></table></figure>
 <p>Finally, <code>vm.$watch</code> returns an unwatch function that stops firing the callback:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> unwatch = vm.$watch(<span class="string">'a'</span>, cb)</span><br><span class="line"><span class="comment">// later, teardown the watcher</span></span><br><span class="line">unwatch()</span><br></pre></td></tr></table></figure>
 <h3 id="vm-$get(_expression_)">vm.$get( expression )</h3><ul>
@@ -226,15 +186,10 @@
 <li><strong>callback</strong> <code>Function</code> <em>optional</em></li>
 </ul>
 <p>Remove the vm’s <code>$el</code> from the DOM.</p>
-<h3 id="vm-$nextTick(_callback_)">vm.$nextTick( callback )</h3><ul>
-<li><strong>callback</strong> <code>Function</code></li>
-</ul>
-<p>Defer the callback to be executed after the next DOM update cycle. Use it immediately after you’ve changed some data to wait for the DOM update. This is the same as the global <code>Vue.nextTick</code>, except that the callback’s <code>this</code> context is automatically bound to the instance calling this method.</p>
 <h2 id="Lifecycle">Lifecycle</h2><h3 id="vm-$mount(_[element|selector]_)">vm.$mount( [element|selector] )</h3><ul>
 <li><strong>element</strong> <code>HTMLElement</code> | <strong>selector</strong> <code>String</code> <em>optional</em></li>
 </ul>
-<p>If the Vue instance didn’t get an <code>el</code> option at instantiation, you can manually call <code>$mount(el)</code> to start the compilation phase. By default, the mounted element will be replaced by the instance’s template. When the <code>replace</code> option is set to <code>false</code>, the template will be inserted into the mounted element and overwrite any existing inner content, unless the template contains <code>&lt;content&gt;</code> outlets.</p>
-<p>If no argument is provided, the template will be created as an out-of-document element, and you will have to use other DOM instance methods to insert it into the document yourself. If <code>replace</code> option is set to <code>false</code>, then an empty <code>&lt;div&gt;</code> will be automatically created as the wrapper element. Calling <code>$mount()</code> on an already mounted instance will have no effect. The method returns the instance itself so you can chain other instance methods after it.</p>
+<p>If the Vue instance didn’t get an <code>el</code> option at instantiation, you can manually call <code>$mount()</code> to assign an element to it and start the compilation. If no argument is provided, an empty <code>&lt;div&gt;</code> will be automatically created. Calling <code>$mount()</code> on an already mounted instance will have no effect. The method returns the instance itself so you can chain other instance methods after it.</p>
 <h3 id="vm-$destroy(_[remove]_)">vm.$destroy( [remove] )</h3><ul>
 <li><strong>remove</strong> <code>Boolean</code> <em>optional</em></li>
 </ul>
@@ -262,12 +217,5 @@
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                FastClick.attach(document.body);
-            }, false);
-        </script>
     </body>
 </html>

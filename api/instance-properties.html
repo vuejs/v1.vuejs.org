@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = "api"
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.js"></script>
+        <script src="/js/vue.min.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,17 +35,11 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li>
-  <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
-  </form>
-</li>
-<li><a href="/guide/" class="nav-link">Guide</a></li>
+        <li><a href="/guide/" class="nav-link">Guide</a></li>
 <li><a href="/api/" class="nav-link current">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
-
     </ul>
 </div>
             <div id="main">
@@ -53,60 +47,30 @@
                     
     <div class="sidebar">
     <ul class="main-menu">
-        <li>
-  <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
-  </form>
-</li>
-<li><a href="/guide/" class="nav-link">Guide</a></li>
+        <li><a href="/guide/" class="nav-link">Guide</a></li>
 <li><a href="/api/" class="nav-link current">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
-
     </ul>
     <div class="list">
         <h2>Api</h2>
         <ul class="menu-root">
             
-                <li>
-                    <a href="/api/index.html" class="sidebar-link">Overview</a>
-                </li>
+                <li><a href="/api/index.html" class="sidebar-link">Overview</a></li>
             
-                <li>
-                    <a href="/api/options.html" class="sidebar-link">Component Options</a>
-                </li>
+                <li><a href="/api/options.html" class="sidebar-link">Component Options</a></li>
             
-                <li>
-                    <a href="/api/instance-properties.html" class="sidebar-link current">Instance Properties</a>
-                </li>
+                <li><a href="/api/instance-properties.html" class="sidebar-link current">Instance Properties</a></li>
             
-                <li>
-                    <a href="/api/instance-methods.html" class="sidebar-link">Instance Methods</a>
-                </li>
+                <li><a href="/api/instance-methods.html" class="sidebar-link">Instance Methods</a></li>
             
-                <li>
-                    <a href="/api/global-api.html" class="sidebar-link">Global API</a>
-                </li>
+                <li><a href="/api/global-api.html" class="sidebar-link">Global API</a></li>
             
-                <li>
-                    <a href="/api/directives.html" class="sidebar-link">Directives</a>
-                </li>
+                <li><a href="/api/directives.html" class="sidebar-link">Directives</a></li>
             
-                <li>
-                    <a href="/api/filters.html" class="sidebar-link">Filters</a>
-                </li>
+                <li><a href="/api/filters.html" class="sidebar-link">Filters</a></li>
             
-                <li>
-                    <a href="/api/elements.html" class="sidebar-link new">Special Elements</a>
-                </li>
-            
-            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
-            <li style="margin:10px 0 3px">
-              <script data-gittip-username="yyx990803"
-                data-gittip-widget="button"
-                src="//gttp.co/v1.js"></script>
-            </li>
         </ul>
     </div>
 </div>
@@ -141,11 +105,6 @@
 <li><strong>Read only</strong></li>
 </ul>
 <p>The root Vue instance of the current component tree. If the current instance has no parents this value will be itself.</p>
-<h3 id="vm-$children">vm.$children</h3><ul>
-<li><strong>Type:</strong> <code>Array&lt;Vue&gt;</code></li>
-<li><strong>Read only</strong></li>
-</ul>
-<p>The direct child components of the current instance.</p>
 <h3 id="vm-$">vm.$</h3><ul>
 <li><strong>Type:</strong> <code>Object</code></li>
 <li><strong>Read only</strong></li>
@@ -165,12 +124,5 @@
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                FastClick.attach(document.body);
-            }, false);
-        </script>
     </body>
 </html>

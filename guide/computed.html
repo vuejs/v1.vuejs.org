@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = "guide"
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.js"></script>
+        <script src="/js/vue.min.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,17 +35,11 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li>
-  <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
-  </form>
-</li>
-<li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
-
     </ul>
 </div>
             <div id="main">
@@ -53,92 +47,46 @@
                     
     <div class="sidebar">
     <ul class="main-menu">
-        <li>
-  <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
-  </form>
-</li>
-<li><a href="/guide/" class="nav-link current">Guide</a></li>
+        <li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
-
     </ul>
     <div class="list">
         <h2>Guide</h2>
         <ul class="menu-root">
             
-                <li>
-                    <a href="/guide/installation.html" class="sidebar-link">Installation</a>
-                </li>
+                <li><a href="/guide/installation.html" class="sidebar-link">Installation</a></li>
             
-                <li>
-                    <a href="/guide/index.html" class="sidebar-link">Getting Started</a>
-                </li>
+                <li><a href="/guide/index.html" class="sidebar-link">Getting Started</a></li>
             
-                <li>
-                    <a href="/guide/directives.html" class="sidebar-link">Directives</a>
-                </li>
+                <li><a href="/guide/directives.html" class="sidebar-link">Directives</a></li>
             
-                <li>
-                    <a href="/guide/filters.html" class="sidebar-link">Filters</a>
-                </li>
+                <li><a href="/guide/filters.html" class="sidebar-link">Filters</a></li>
             
-                <li>
-                    <a href="/guide/list.html" class="sidebar-link">Displaying a List</a>
-                </li>
+                <li><a href="/guide/list.html" class="sidebar-link">Displaying a List</a></li>
             
-                <li>
-                    <a href="/guide/events.html" class="sidebar-link">Listening for Events</a>
-                </li>
+                <li><a href="/guide/events.html" class="sidebar-link">Listening for Events</a></li>
             
-                <li>
-                    <a href="/guide/forms.html" class="sidebar-link">Handling Forms</a>
-                </li>
+                <li><a href="/guide/forms.html" class="sidebar-link">Handling Forms</a></li>
             
-                <li>
-                    <a href="/guide/computed.html" class="sidebar-link current">Computed Properties</a>
-                </li>
+                <li><a href="/guide/computed.html" class="sidebar-link current">Computed Properties</a></li>
             
-                <li>
-                    <a href="/guide/custom-directive.html" class="sidebar-link">Custom Directives</a>
-                </li>
+                <li><a href="/guide/custom-directive.html" class="sidebar-link">Custom Directives</a></li>
             
-                <li>
-                    <a href="/guide/custom-filter.html" class="sidebar-link">Custom Filters</a>
-                </li>
+                <li><a href="/guide/custom-filter.html" class="sidebar-link">Custom Filters</a></li>
             
-                <li>
-                    <a href="/guide/components.html" class="sidebar-link">Component System</a>
-                </li>
+                <li><a href="/guide/components.html" class="sidebar-link">Component System</a></li>
             
-                <li>
-                    <a href="/guide/transitions.html" class="sidebar-link">Transition System</a>
-                </li>
+                <li><a href="/guide/transitions.html" class="sidebar-link">Transitions</a></li>
             
-                <li>
-                    <a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a>
-                </li>
+                <li><a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a></li>
             
-                <li>
-                    <a href="/guide/extending.html" class="sidebar-link">Extending Vue</a>
-                </li>
+                <li><a href="/guide/extending.html" class="sidebar-link">Extending Vue</a></li>
             
-                <li>
-                    <a href="/guide/best-practices.html" class="sidebar-link new">Tips & Best Practices</a>
-                </li>
+                <li><a href="/guide/faq.html" class="sidebar-link">Common FAQs</a></li>
             
-                <li>
-                    <a href="/guide/faq.html" class="sidebar-link">Common FAQs</a>
-                </li>
-            
-            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
-            <li style="margin:10px 0 3px">
-              <script data-gittip-username="yyx990803"
-                data-gittip-widget="button"
-                src="//gttp.co/v1.js"></script>
-            </li>
         </ul>
     </div>
 </div>
@@ -155,7 +103,6 @@
 <p>When you only need the getter, you can provide a single function instead of an object:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line">computed: &#123;</span><br><span class="line">  fullName: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.firstName + <span class="string">' '</span> + <span class="keyword">this</span>.lastName </span><br><span class="line">  &#125;    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
 <p>A computed property is essentially a property defined with getter/setter functions. You can use a computed property just like a normal property, but when you access it, you get the value returned by the getter function; when you change its value, you trigger the setter function passing in the new value as its argument.</p>
-<p>Before 0.12.8, computed properties behave just like getters - every time you access it, the getter function is re-evaluated. In 0.12.8 this has been improved - computed properties are cached and lazily re-evaluated only when necessary.</p>
 <p class="tip">Before Vue.js 0.11 there used to be a dependency collection gotcha which requires users to explicitly list dependencies when conditional statements are involved. Starting with 0.11 it is no longer necessary to do so.</p>
 
 <p>Next, let’s learn about how to <a href="/guide/custom-directive.html">write a custom directive</a>.</p>
@@ -167,12 +114,5 @@
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                FastClick.attach(document.body);
-            }, false);
-        </script>
     </body>
 </html>

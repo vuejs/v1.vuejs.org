@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = "api"
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.js"></script>
+        <script src="/js/vue.min.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,17 +35,11 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li>
-  <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
-  </form>
-</li>
-<li><a href="/guide/" class="nav-link">Guide</a></li>
+        <li><a href="/guide/" class="nav-link">Guide</a></li>
 <li><a href="/api/" class="nav-link current">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
-
     </ul>
 </div>
             <div id="main">
@@ -53,60 +47,30 @@
                     
     <div class="sidebar">
     <ul class="main-menu">
-        <li>
-  <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
-  </form>
-</li>
-<li><a href="/guide/" class="nav-link">Guide</a></li>
+        <li><a href="/guide/" class="nav-link">Guide</a></li>
 <li><a href="/api/" class="nav-link current">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
-
     </ul>
     <div class="list">
         <h2>Api</h2>
         <ul class="menu-root">
             
-                <li>
-                    <a href="/api/index.html" class="sidebar-link current">Overview</a>
-                </li>
+                <li><a href="/api/index.html" class="sidebar-link current">Overview</a></li>
             
-                <li>
-                    <a href="/api/options.html" class="sidebar-link">Component Options</a>
-                </li>
+                <li><a href="/api/options.html" class="sidebar-link">Component Options</a></li>
             
-                <li>
-                    <a href="/api/instance-properties.html" class="sidebar-link">Instance Properties</a>
-                </li>
+                <li><a href="/api/instance-properties.html" class="sidebar-link">Instance Properties</a></li>
             
-                <li>
-                    <a href="/api/instance-methods.html" class="sidebar-link">Instance Methods</a>
-                </li>
+                <li><a href="/api/instance-methods.html" class="sidebar-link">Instance Methods</a></li>
             
-                <li>
-                    <a href="/api/global-api.html" class="sidebar-link">Global API</a>
-                </li>
+                <li><a href="/api/global-api.html" class="sidebar-link">Global API</a></li>
             
-                <li>
-                    <a href="/api/directives.html" class="sidebar-link">Directives</a>
-                </li>
+                <li><a href="/api/directives.html" class="sidebar-link">Directives</a></li>
             
-                <li>
-                    <a href="/api/filters.html" class="sidebar-link">Filters</a>
-                </li>
+                <li><a href="/api/filters.html" class="sidebar-link">Filters</a></li>
             
-                <li>
-                    <a href="/api/elements.html" class="sidebar-link new">Special Elements</a>
-                </li>
-            
-            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
-            <li style="margin:10px 0 3px">
-              <script data-gittip-username="yyx990803"
-                data-gittip-widget="button"
-                src="//gttp.co/v1.js"></script>
-            </li>
         </ul>
     </div>
 </div>
@@ -126,6 +90,7 @@
 <h2 id="Initialization">Initialization</h2><p>If you provided the <code>el</code> option at instantiation, the Vue instance will immediately enter the compilation phase. Otherwise, it will wait until <code>vm.$mount()</code> is called before it starts compilation. During the compilation phase, Vue walks through the DOM and collects the directives it runs into, and “links” the data and the DOM with these directives. Once linked, these DOM nodes are now said to be managed by the Vue instance. A DOM node can only be managed by one Vue instance, and should not be compiled more than once.</p>
 <h2 id="Data_Proxying">Data Proxying</h2><p>Vue instances proxy access to their <code>$data</code> objects, so if you have <code>vm.$data.msg</code> you can also access it as <code>vm.msg</code>. This might look a bit magical, but is totally optional. You can stick to <code>vm.$data.msg</code> for more explicit data access. However it is still important to notice the difference between <code>vm</code> and <code>vm.$data</code>, since the former cannot be observed by other Vue instances as data.</p>
 <p>It’s also worth noting that data objects do not necessarily belong to a single Vue instance - multiple ViewModels can observe the same piece of data, whether directly as <code>$data</code> or nested under it. This is useful when multiple components need to react to a shared global state object.</p>
+<h2 id="Components">Components</h2><p>When building complex UI, we often need to structure our app as a tree of components. Vue.js’ component system allows you to do exactly that. The Vue constructor can be extended to define components that encapsulate its own template and data logic, and Vue provides a Web Component like syntax for you to compose your components in the template. For more details, read the <a href="/guide/components.html">Component System</a> section of the guide.</p>
 
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/vuejs/vuejs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>
@@ -134,12 +99,5 @@
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                FastClick.attach(document.body);
-            }, false);
-        </script>
     </body>
 </html>
