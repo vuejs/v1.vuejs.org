@@ -145,7 +145,7 @@
 <p>Falsy values except 0 will remove the attribute.</p>
 <p>Alternatively, you can bind the directive directly to an Object. The keys of the object will be the list of attributes to set based on corresponding values.</p>
 <p>Internally, &#123;&#123; Mustache &#125;&#125; interpolations inside attributes are compiled into computed <code>v-attr</code> directives.</p>
-<p>Starting in 0.12.8, <code>v-attr</code> also sets the corresponding property on the element if the property exists. For example, <code>&lt;input value=&quot;{{val}}&quot;&gt;</code> will not only update the attribute, but also set the value property. If the element doesn’t have a corresponding property for the bound attribute, it will not be set.</p>
+<p>Starting in 0.12.8, when used on input elements’ <code>value</code> attribute, <code>v-attr</code> also sets the corresponding <code>value</code> property on the element. For example, <code>&lt;input value=&quot;{{val}}&quot;&gt;</code> will not only update the attribute, but also set the underlying JavaScript property.</p>
 <p class="tip">You should use <code>v-attr</code> instead of mustache binding when setting the <code>src</code> attribute on <code>&lt;img&gt;</code> elements. Your templates are parsed by the browser before being compiled by Vue.js, so the mustache binding will cause a 404 when the browser tries to fetch it as the image’s URL.</p>
 
 <h3 id="v-style">v-style</h3><ul>
