@@ -151,7 +151,7 @@
 <li><strong>keypath</strong> <code>String</code></li>
 <li><strong>value</strong> <code>*</code></li>
 </ul>
-<p>Add a root level property to the Vue instance (and also its <code>$data</code>). Due to the limitations of ES5, Vue cannot detect properties directly added to or deleted from an Object, so use this method and <code>vm.$delete</code> when you need to do so. Additionally, all observed objects are augmented with these two methods too.</p>
+<p>Add a root level property to the Vue instance (and also its <code>$data</code>). Due to the limitations of ES5, Vue cannot detect properties directly added to or deleted from an Object, so use this method and <code>vm.$delete</code> when you need to do so. Make sure to use this only when necessary, because this method forces a dirty check of all watchers in the current vm.</p>
 <h3 id="vm-$delete(_keypath_)">vm.$delete( keypath )</h3><ul>
 <li><strong>keypath</strong> <code>String</code></li>
 </ul>
@@ -236,9 +236,9 @@
 <p>If the Vue instance didn’t get an <code>el</code> option at instantiation, you can manually call <code>$mount(el)</code> to start the compilation phase. By default, the mounted element will be replaced by the instance’s template. When the <code>replace</code> option is set to <code>false</code>, the template will be inserted into the mounted element and overwrite any existing inner content, unless the template contains <code>&lt;content&gt;</code> outlets.</p>
 <p>If no argument is provided, the template will be created as an out-of-document element, and you will have to use other DOM instance methods to insert it into the document yourself. If <code>replace</code> option is set to <code>false</code>, then an empty <code>&lt;div&gt;</code> will be automatically created as the wrapper element. Calling <code>$mount()</code> on an already mounted instance will have no effect. The method returns the instance itself so you can chain other instance methods after it.</p>
 <h3 id="vm-$destroy(_[remove]_)">vm.$destroy( [remove] )</h3><ul>
-<li><strong>remove</strong> <code>Boolean</code> <em>optional</em></li>
+<li><strong>remove</strong> <code>Boolean</code> <em>optional</em> (Default: <code>false</code>)</li>
 </ul>
-<p>Completely destroy a vm. Clean up its connections with other existing vms, unbind all its directives and remove its <code>$el</code> from the DOM. Also, all <code>$on</code> and <code>$watch</code> listeners will be automatically removed.</p>
+<p>Completely destroy a vm. Clean up its connections with other existing vms, unbind all its directives and optionally remove its <code>$el</code> from the DOM. Also, all <code>$on</code> and <code>$watch</code> listeners will be automatically removed.</p>
 <h3 id="vm-$compile(_element_)">vm.$compile( element )</h3><ul>
 <li><strong>element</strong> <code>HTMLElement</code></li>
 </ul>
