@@ -147,13 +147,13 @@
 <li><strong>value</strong> <code>*</code></li>
 </ul>
 <p>Set a data value on the Vue instance given a valid keypath. If the path doesn’t exist it will be created.</p>
-<h3 id="vm-$add(_keypath,_value_)">vm.$add( keypath, value )</h3><ul>
-<li><strong>keypath</strong> <code>String</code></li>
+<h3 id="vm-$add(_key,_value_)">vm.$add( key, value )</h3><ul>
+<li><strong>key</strong> <code>String</code></li>
 <li><strong>value</strong> <code>*</code></li>
 </ul>
 <p>Add a root level property to the Vue instance (and also its <code>$data</code>). Due to the limitations of ES5, Vue cannot detect properties directly added to or deleted from an Object, so use this method and <code>vm.$delete</code> when you need to do so. Make sure to use this only when necessary, because this method forces a dirty check of all watchers in the current vm.</p>
-<h3 id="vm-$delete(_keypath_)">vm.$delete( keypath )</h3><ul>
-<li><strong>keypath</strong> <code>String</code></li>
+<h3 id="vm-$delete(_key_)">vm.$delete( key )</h3><ul>
+<li><strong>key</strong> <code>String</code></li>
 </ul>
 <p>Delete a root level property on the Vue instance (and also its <code>$data</code>).</p>
 <h3 id="vm-$eval(_expression_)">vm.$eval( expression )</h3><ul>
