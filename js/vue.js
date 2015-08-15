@@ -6494,6 +6494,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // uid as a cache identifier
 	    this.id = '__v_repeat_' + (++uid)
 
+	    if (true) {
+	      if (!this.arg) {
+	        _.deprecation.REPEAT_ALIAS()
+	      }
+	    }
+
 	    // setup anchor nodes
 	    this.start = _.createAnchor('v-repeat-start')
 	    this.end = _.createAnchor('v-repeat-end')
