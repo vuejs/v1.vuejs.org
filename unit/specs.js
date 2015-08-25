@@ -570,7 +570,7 @@
 	  var callbacks = []
 	  var pending = false
 	  var timerFunc
-	  function handle () {
+	  function nextTickHandler () {
 	    pending = false
 	    var copies = callbacks.slice(0)
 	    callbacks = []
@@ -581,7 +581,7 @@
 	  /* istanbul ignore if */
 	  if (typeof MutationObserver !== 'undefined') {
 	    var counter = 1
-	    var observer = new MutationObserver(handle)
+	    var observer = new MutationObserver(nextTickHandler)
 	    var textNode = document.createTextNode(counter)
 	    observer.observe(textNode, {
 	      characterData: true
@@ -600,7 +600,7 @@
 	    callbacks.push(func)
 	    if (pending) return
 	    pending = true
-	    timerFunc(handle, 0)
+	    timerFunc(nextTickHandler, 0)
 	  }
 	})()
 
@@ -1457,13 +1457,17 @@
 	
 	exports.resolveAsset = function resolve (options, type, id) {
 	  var camelizedId = _.camelize(id)
-	  var asset = options[type][id] || options[type][camelizedId]
+	  var pascalizedId = camelizedId.charAt(0).toUpperCase() + camelizedId.slice(1)
+	  var assets = options[type]
+	  var asset = assets[id] || assets[camelizedId] || assets[pascalizedId]
 	  while (
-	    !asset && options._parent &&
+	    !asset &&
+	    options._parent &&
 	    (!config.strict || options._repeat)
 	  ) {
-	    options = options._parent.$options
-	    asset = options[type][id] || options[type][camelizedId]
+	    options = (options._context || options._parent).$options
+	    assets = options[type]
+	    asset = assets[id] || assets[camelizedId] || assets[pascalizedId]
 	  }
 	  return asset
 	}
@@ -1840,11 +1844,10 @@
 	 * @param {Element|DocumentFragment} el
 	 * @param {Object} options
 	 * @param {Boolean} partial
-	 * @param {Vue} [host] - host vm of transcluded content
 	 * @return {Function}
 	 */
 	
-	exports.compile = function (el, options, partial, host) {
+	exports.compile = function (el, options, partial) {
 	  // link function for the node itself.
 	  var nodeLinkFn = partial || !options._asComponent
 	    ? compileNode(el, options)
@@ -1864,10 +1867,11 @@
 	   *
 	   * @param {Vue} vm
 	   * @param {Element|DocumentFragment} el
+	   * @param {Vue} [host] - host vm of transcluded content
 	   * @return {Function|undefined}
 	   */
 	
-	  return function compositeLinkFn (vm, el) {
+	  return function compositeLinkFn (vm, el, host) {
 	    // cache childNodes before linking parent, fix #657
 	    var childNodes = _.toArray(el.childNodes)
 	    // link
@@ -2938,7 +2942,7 @@
 	var Cache = __webpack_require__(17)
 	var cache = new Cache(1000)
 	var argRE = /^[^\{\?]+$|^'[^']*'$|^"[^"]*"$/
-	var filterTokenRE = /[^\s'"]+|'[^']+'|"[^"]+"/g
+	var filterTokenRE = /[^\s'"]+|'[^']*'|"[^"]*"/g
 	var reservedArgRE = /^in$|^-?\d+/
 	
 	/**
@@ -3007,9 +3011,10 @@
 	  var stripped = reservedArgRE.test(arg)
 	    ? arg
 	    : _.stripQuotes(arg)
+	  var dynamic = stripped === false
 	  return {
-	    value: stripped || arg,
-	    dynamic: !stripped
+	    value: dynamic ? arg : stripped,
+	    dynamic: dynamic
 	  }
 	}
 	
@@ -3146,7 +3151,7 @@
 	        if (_.assertProp(prop, val)) {
 	          child[childKey] = val
 	        }
-	      }
+	      }, { sync: true }
 	    )
 	
 	    // set the child initial value.
@@ -3168,7 +3173,7 @@
 	          childKey,
 	          function (val) {
 	            parent.$set(parentKey, val)
-	          }
+	          }, { sync: true }
 	        )
 	      })
 	    }
@@ -3207,12 +3212,17 @@
 	 *                 - {Boolean} twoWay
 	 *                 - {Boolean} deep
 	 *                 - {Boolean} user
+	 *                 - {Boolean} sync
 	 *                 - {Boolean} lazy
 	 *                 - {Function} [preProcess]
 	 * @constructor
 	 */
 	
 	function Watcher (vm, expOrFn, cb, options) {
+	  // mix in options
+	  if (options) {
+	    _.extend(this, options)
+	  }
 	  var isFn = typeof expOrFn === 'function'
 	  this.vm = vm
 	  vm._watchers.push(this)
@@ -3220,22 +3230,16 @@
 	  this.cb = cb
 	  this.id = ++uid // uid for batching
 	  this.active = true
-	  options = options || {}
-	  this.deep = !!options.deep
-	  this.user = !!options.user
-	  this.twoWay = !!options.twoWay
-	  this.lazy = !!options.lazy
-	  this.dirty = this.lazy
-	  this.filters = options.filters
-	  this.preProcess = options.preProcess
+	  this.dirty = this.lazy // for lazy watchers
 	  this.deps = []
 	  this.newDeps = null
+	  this.prevError = null // for async error stacks
 	  // parse expression for getter/setter
 	  if (isFn) {
 	    this.getter = expOrFn
 	    this.setter = undefined
 	  } else {
-	    var res = expParser.parse(expOrFn, options.twoWay)
+	    var res = expParser.parse(expOrFn, this.twoWay)
 	    this.getter = res.get
 	    this.setter = res.set
 	  }
@@ -3247,15 +3251,13 @@
 	  this.queued = this.shallow = false
 	}
 	
-	var p = Watcher.prototype
-	
 	/**
 	 * Add a dependency to this directive.
 	 *
 	 * @param {Dep} dep
 	 */
 	
-	p.addDep = function (dep) {
+	Watcher.prototype.addDep = function (dep) {
 	  var newDeps = this.newDeps
 	  var old = this.deps
 	  if (_.indexOf(newDeps, dep) < 0) {
@@ -3273,7 +3275,7 @@
 	 * Evaluate the getter, and re-collect dependencies.
 	 */
 	
-	p.get = function () {
+	Watcher.prototype.get = function () {
 	  this.beforeGet()
 	  var vm = this.vm
 	  var value
@@ -3315,7 +3317,7 @@
 	 * @param {*} value
 	 */
 	
-	p.set = function (value) {
+	Watcher.prototype.set = function (value) {
 	  var vm = this.vm
 	  if (this.filters) {
 	    value = vm._applyFilters(
@@ -3340,7 +3342,7 @@
 	 * Prepare for dependency collection.
 	 */
 	
-	p.beforeGet = function () {
+	Watcher.prototype.beforeGet = function () {
 	  Dep.target = this
 	  this.newDeps = []
 	}
@@ -3349,7 +3351,7 @@
 	 * Clean up for dependency collection.
 	 */
 	
-	p.afterGet = function () {
+	Watcher.prototype.afterGet = function () {
 	  Dep.target = null
 	  var i = this.deps.length
 	  while (i--) {
@@ -3369,10 +3371,10 @@
 	 * @param {Boolean} shallow
 	 */
 	
-	p.update = function (shallow) {
+	Watcher.prototype.update = function (shallow) {
 	  if (this.lazy) {
 	    this.dirty = true
-	  } else if (!config.async) {
+	  } else if (this.sync || !config.async) {
 	    this.run()
 	  } else {
 	    // if queued, only overwrite shallow with non-shallow,
@@ -3383,6 +3385,11 @@
 	        : false
 	      : !!shallow
 	    this.queued = true
+	    // record before-push error stack in debug mode
+	    /* istanbul ignore if */
+	    if (process.env.NODE_ENV !== 'production' && config.debug) {
+	      this.prevError = new Error('[vue] async stack trace')
+	    }
 	    batcher.push(this)
 	  }
 	}
@@ -3392,7 +3399,7 @@
 	 * Will be called by the batcher.
 	 */
 	
-	p.run = function () {
+	Watcher.prototype.run = function () {
 	  if (this.active) {
 	    var value = this.get()
 	    if (
@@ -3403,9 +3410,28 @@
 	      // non-shallow update (caused by a vm digest).
 	      ((_.isArray(value) || this.deep) && !this.shallow)
 	    ) {
+	      // set new value
 	      var oldValue = this.value
 	      this.value = value
-	      this.cb(value, oldValue)
+	      // in debug + async mode, when a watcher callbacks
+	      // throws, we also throw the saved before-push error
+	      // so the full cross-tick stack trace is available.
+	      var prevError = this.prevError
+	      /* istanbul ignore if */
+	      if (process.env.NODE_ENV !== 'production' &&
+	          config.debug && prevError) {
+	        this.prevError = null
+	        try {
+	          this.cb.call(this.vm, value, oldValue)
+	        } catch (e) {
+	          _.nextTick(function () {
+	            throw prevError
+	          }, 0)
+	          throw e
+	        }
+	      } else {
+	        this.cb.call(this.vm, value, oldValue)
+	      }
 	    }
 	    this.queued = this.shallow = false
 	  }
@@ -3416,7 +3442,7 @@
 	 * This only gets called for lazy watchers.
 	 */
 	
-	p.evaluate = function () {
+	Watcher.prototype.evaluate = function () {
 	  // avoid overwriting another watcher that is being
 	  // collected.
 	  var current = Dep.target
@@ -3429,7 +3455,7 @@
 	 * Depend on all deps collected by this watcher.
 	 */
 	
-	p.depend = function () {
+	Watcher.prototype.depend = function () {
 	  var i = this.deps.length
 	  while (i--) {
 	    this.deps[i].depend()
@@ -3440,7 +3466,7 @@
 	 * Remove self from all dependencies' subcriber list.
 	 */
 	
-	p.teardown = function () {
+	Watcher.prototype.teardown = function () {
 	  if (this.active) {
 	    // remove self from vm's watcher list
 	    // we can skip this if the vm if being destroyed
@@ -3504,15 +3530,13 @@
 	// watcher being evaluated at any time.
 	Dep.target = null
 	
-	var p = Dep.prototype
-	
 	/**
 	 * Add a directive subscriber.
 	 *
 	 * @param {Directive} sub
 	 */
 	
-	p.addSub = function (sub) {
+	Dep.prototype.addSub = function (sub) {
 	  this.subs.push(sub)
 	}
 	
@@ -3522,7 +3546,7 @@
 	 * @param {Directive} sub
 	 */
 	
-	p.removeSub = function (sub) {
+	Dep.prototype.removeSub = function (sub) {
 	  this.subs.$remove(sub)
 	}
 	
@@ -3530,7 +3554,7 @@
 	 * Add self as a dependency to the target watcher.
 	 */
 	
-	p.depend = function () {
+	Dep.prototype.depend = function () {
 	  Dep.target.addDep(this)
 	}
 	
@@ -3538,7 +3562,7 @@
 	 * Notify all subscribers of a new value.
 	 */
 	
-	p.notify = function () {
+	Dep.prototype.notify = function () {
 	  // stablize the subscriber list first
 	  var subs = _.toArray(this.subs)
 	  for (var i = 0, l = subs.length; i < l; i++) {
@@ -4199,7 +4223,7 @@
 	 * Reset the batcher's state.
 	 */
 	
-	function reset () {
+	function resetBatcherState () {
 	  queue = []
 	  userQueue = []
 	  has = {}
@@ -4211,11 +4235,11 @@
 	 * Flush both queues and run the watchers.
 	 */
 	
-	function flush () {
-	  run(queue)
+	function flushBatcherQueue () {
+	  runBatcherQueue(queue)
 	  internalQueueDepleted = true
-	  run(userQueue)
-	  reset()
+	  runBatcherQueue(userQueue)
+	  resetBatcherState()
 	}
 	
 	/**
@@ -4224,7 +4248,7 @@
 	 * @param {Array} queue
 	 */
 	
-	function run (queue) {
+	function runBatcherQueue (queue) {
 	  // do not cache length because more watchers might be pushed
 	  // as we run existing watchers
 	  for (var i = 0; i < queue.length; i++) {
@@ -4273,7 +4297,7 @@
 	    // queue the flush
 	    if (!waiting) {
 	      waiting = true
-	      _.nextTick(flush)
+	      _.nextTick(flushBatcherQueue)
 	    }
 	  }
 	}
@@ -4698,14 +4722,18 @@
 	          options = {
 	            created: function () {
 	              this.$once(waitFor, function () {
+	                self.waitingFor = null
 	                self.transition(this, cb)
 	              })
 	            }
 	          }
 	        }
+	        var cached = this.getCached()
 	        var newComponent = this.build(options)
-	        if (!waitFor) {
+	        if (!waitFor || cached) {
 	          this.transition(newComponent, cb)
+	        } else {
+	          this.waitingFor = newComponent
 	        }
 	      }, this))
 	    }
@@ -4748,11 +4776,9 @@
 	   */
 	
 	  build: function (extraOptions) {
-	    if (this.keepAlive) {
-	      var cached = this.cache[this.Component.cid]
-	      if (cached) {
-	        return cached
-	      }
+	    var cached = this.getCached()
+	    if (cached) {
+	      return cached
 	    }
 	    if (this.Component) {
 	      // default options
@@ -4780,6 +4806,16 @@
 	  },
 	
 	  /**
+	   * Try to get a cached instance of the current component.
+	   *
+	   * @return {Vue|undefined}
+	   */
+	
+	  getCached: function () {
+	    return this.keepAlive && this.cache[this.Component.cid]
+	  },
+	
+	  /**
 	   * Teardown the current child, but defers cleanup so
 	   * that we can separate the destroy and removal steps.
 	   *
@@ -4787,6 +4823,10 @@
 	   */
 	
 	  unbuild: function (defer) {
+	    if (this.waitingFor) {
+	      this.waitingFor.$destroy()
+	      this.waitingFor = null
+	    }
 	    var child = this.childVM
 	    if (!child || this.keepAlive) {
 	      return
@@ -4838,7 +4878,6 @@
 	  transition: function (target, cb) {
 	    var self = this
 	    var current = this.childVM
-	    this.unsetCurrent()
 	    this.setCurrent(target)
 	    switch (self.transMode) {
 	      case 'in-out':
@@ -4862,6 +4901,7 @@
 	   */
 	
 	  setCurrent: function (child) {
+	    this.unsetCurrent()
 	    this.childVM = child
 	    var refID = child._refID || this.refID
 	    if (refID) {
@@ -5157,6 +5197,11 @@
 	// xlink
 	var xlinkNS = 'http://www.w3.org/1999/xlink'
 	var xlinkRE = /^xlink:/
+	var inputProps = {
+	  value: 1,
+	  checked: 1,
+	  selected: 1
+	}
 	
 	module.exports = {
 	
@@ -5191,12 +5236,12 @@
 	  },
 	
 	  setAttr: function (attr, value) {
-	    if (attr === 'value' && attr in this.el) {
+	    if (inputProps[attr] && attr in this.el) {
 	      if (!this.valueRemoved) {
 	        this.el.removeAttribute(attr)
 	        this.valueRemoved = true
 	      }
-	      this.el.value = value
+	      this.el[attr] = value
 	    } else if (value != null && value !== false) {
 	      if (xlinkRE.test(attr)) {
 	        this.el.setAttributeNS(xlinkNS, attr, value)
@@ -6039,7 +6084,7 @@
 	      this.iframeBind = function () {
 	        _.on(self.el.contentWindow, self.arg, self.handler)
 	      }
-	      _.on(this.el, 'load', this.iframeBind)
+	      this.on('load', this.iframeBind)
 	    }
 	  },
 	
@@ -6079,7 +6124,6 @@
 	
 	  unbind: function () {
 	    this.reset()
-	    _.off(this.el, 'load', this.iframeBind)
 	  }
 	}
 	
@@ -6179,6 +6223,7 @@
 	  bind: function () {
 	    var self = this
 	    var el = this.el
+	    var isRange = el.type === 'range'
 	
 	    // check params
 	    // - lazy: update model on "change" instead of "input"
@@ -6196,78 +6241,51 @@
 	    // Chinese, but instead triggers them for spelling
 	    // suggestions... (see Discussion/#162)
 	    var composing = false
-	    if (!_.isAndroid) {
-	      this.onComposeStart = function () {
+	    if (!_.isAndroid && !isRange) {
+	      this.on('compositionstart', function () {
 	        composing = true
-	      }
-	      this.onComposeEnd = function () {
+	      })
+	      this.on('compositionend', function () {
 	        composing = false
 	        // in IE11 the "compositionend" event fires AFTER
 	        // the "input" event, so the input handler is blocked
 	        // at the end... have to call it here.
 	        self.listener()
-	      }
-	      _.on(el, 'compositionstart', this.onComposeStart)
-	      _.on(el, 'compositionend', this.onComposeEnd)
+	      })
 	    }
 	
-	    function syncToModel () {
-	      var val = number
+	    // prevent messing with the input when user is typing,
+	    // and force update on blur.
+	    this.focused = false
+	    if (!isRange) {
+	      this.on('focus', function () {
+	        self.focused = true
+	      })
+	      this.on('blur', function () {
+	        self.focused = false
+	        self.listener()
+	      })
+	    }
+	
+	    // Now attach the main listener
+	    this.listener = function () {
+	      if (composing) return
+	      var val = number || isRange
 	        ? _.toNumber(el.value)
 	        : el.value
 	      self.set(val)
-	    }
-	
-	    // if the directive has filters, we need to
-	    // record cursor position and restore it after updating
-	    // the input with the filtered value.
-	    // also force update for type="range" inputs to enable
-	    // "lock in range" (see #506)
-	    if (this.hasRead || el.type === 'range') {
-	      this.listener = function () {
-	        if (composing) return
-	        var charsOffset
-	        // some HTML5 input types throw error here
-	        try {
-	          // record how many chars from the end of input
-	          // the cursor was at
-	          charsOffset = el.value.length - el.selectionStart
-	        } catch (e) {}
-	        // Fix IE10/11 infinite update cycle
-	        // https://github.com/yyx990803/vue/issues/592
-	        /* istanbul ignore if */
-	        if (charsOffset < 0) {
-	          return
+	      // force update on next tick to avoid lock & same value
+	      // also only update when user is not typing
+	      _.nextTick(function () {
+	        if (self._bound && !self.focused) {
+	          self.update(self._watcher.value)
 	        }
-	        syncToModel()
-	        _.nextTick(function () {
-	          // force a value update, because in
-	          // certain cases the write filters output the
-	          // same result for different input values, and
-	          // the Observer set events won't be triggered.
-	          var newVal = self._watcher.value
-	          self.update(newVal)
-	          if (charsOffset != null) {
-	            var cursorPos =
-	              _.toString(newVal).length - charsOffset
-	            el.setSelectionRange(cursorPos, cursorPos)
-	          }
-	        })
-	      }
-	    } else {
-	      this.listener = function () {
-	        if (composing) return
-	        syncToModel()
-	      }
+	      })
 	    }
-	
 	    if (debounce) {
 	      this.listener = _.debounce(this.listener, debounce)
 	    }
 	
-	    // Now attach the main listener
-	
-	    this.event = lazy ? 'change' : 'input'
 	    // Support jQuery events, since jQuery.trigger() doesn't
 	    // trigger native events in some cases and some plugins
 	    // rely on $.trigger()
@@ -6280,23 +6298,27 @@
 	    // jQuery variable in tests.
 	    this.hasjQuery = typeof jQuery === 'function'
 	    if (this.hasjQuery) {
-	      jQuery(el).on(this.event, this.listener)
+	      jQuery(el).on('change', this.listener)
+	      if (!lazy) {
+	        jQuery(el).on('input', this.listener)
+	      }
 	    } else {
-	      _.on(el, this.event, this.listener)
+	      this.on('change', this.listener)
+	      if (!lazy) {
+	        this.on('input', this.listener)
+	      }
 	    }
 	
 	    // IE9 doesn't fire input event on backspace/del/cut
 	    if (!lazy && _.isIE9) {
-	      this.onCut = function () {
+	      this.on('cut', function () {
 	        _.nextTick(self.listener)
-	      }
-	      this.onDel = function (e) {
+	      })
+	      this.on('keyup', function (e) {
 	        if (e.keyCode === 46 || e.keyCode === 8) {
 	          self.listener()
 	        }
-	      }
-	      _.on(el, 'cut', this.onCut)
-	      _.on(el, 'keyup', this.onDel)
+	      })
 	    }
 	
 	    // set initial value if present
@@ -6317,17 +6339,8 @@
 	  unbind: function () {
 	    var el = this.el
 	    if (this.hasjQuery) {
-	      jQuery(el).off(this.event, this.listener)
-	    } else {
-	      _.off(el, this.event, this.listener)
-	    }
-	    if (this.onComposeStart) {
-	      _.off(el, 'compositionstart', this.onComposeStart)
-	      _.off(el, 'compositionend', this.onComposeEnd)
-	    }
-	    if (this.onCut) {
-	      _.off(el, 'cut', this.onCut)
-	      _.off(el, 'keyup', this.onDel)
+	      jQuery(el).off('change', this.listener)
+	      jQuery(el).off('input', this.listener)
 	    }
 	  }
 	}
@@ -6345,28 +6358,31 @@
 	    var self = this
 	    var el = this.el
 	    var number = this._checkParam('number') != null
-	    function getValue () {
-	      return number
-	        ? _.toNumber(el.value)
-	        : el.value
+	    var expression = this._checkParam('exp')
+	
+	    this.getValue = function () {
+	      var val = el.value
+	      if (number) {
+	        val = _.toNumber(val)
+	      } else if (expression !== null) {
+	        val = self.vm.$eval(expression)
+	      }
+	      return val
 	    }
-	    this.listener = function () {
-	      self.set(getValue())
-	    }
-	    _.on(el, 'change', this.listener)
+	
+	    this.on('change', function () {
+	      self.set(self.getValue())
+	    })
+	
 	    if (el.checked) {
-	      this._initValue = getValue()
+	      this._initValue = this.getValue()
 	    }
 	  },
 	
 	  update: function (value) {
 	    /* eslint-disable eqeqeq */
-	    this.el.checked = value == this.el.value
+	    this.el.checked = value == this.getValue()
 	    /* eslint-enable eqeqeq */
-	  },
-	
-	  unbind: function () {
-	    _.off(this.el, 'change', this.listener)
 	  }
 	}
 
@@ -6384,12 +6400,14 @@
 	  bind: function () {
 	    var self = this
 	    var el = this.el
-	    // update DOM using latest value.
+	
+	    // method to force update DOM using latest value.
 	    this.forceUpdate = function () {
 	      if (self._watcher) {
 	        self.update(self._watcher.get())
 	      }
 	    }
+	
 	    // check options param
 	    var optionsParam = this._checkParam('options')
 	    if (optionsParam) {
@@ -6397,19 +6415,21 @@
 	    }
 	    this.number = this._checkParam('number') != null
 	    this.multiple = el.hasAttribute('multiple')
-	    this.listener = function () {
-	      var value = self.multiple
-	        ? getMultiValue(el)
-	        : el.value
+	
+	    // attach listener
+	    this.on('change', function () {
+	      var value = getValue(el, self.multiple)
 	      value = self.number
 	        ? _.isArray(value)
 	          ? value.map(_.toNumber)
 	          : _.toNumber(value)
 	        : value
 	      self.set(value)
-	    }
-	    _.on(el, 'change', this.listener)
+	    })
+	
+	    // check initial value (inline selected attribute)
 	    checkInitialValue.call(this)
+	
 	    // All major browsers except Firefox resets
 	    // selectedIndex with value -1 to 0 when the element
 	    // is appended to a new parent, therefore we have to
@@ -6420,7 +6440,7 @@
 	  update: function (value) {
 	    var el = this.el
 	    el.selectedIndex = -1
-	    if (!value && value !== 0) {
+	    if (value == null) {
 	      if (this.defaultOption) {
 	        this.defaultOption.selected = true
 	      }
@@ -6429,25 +6449,26 @@
 	    var multi = this.multiple && _.isArray(value)
 	    var options = el.options
 	    var i = options.length
-	    var option
+	    var op, val
 	    while (i--) {
-	      option = options[i]
+	      op = options[i]
+	      val = op.hasOwnProperty('_value')
+	        ? op._value
+	        : op.value
 	      /* eslint-disable eqeqeq */
-	      option.selected = multi
-	        ? indexOf(value, option.value) > -1
-	        : value == option.value
+	      op.selected = multi
+	        ? indexOf(value, val) > -1
+	        : equals(value, val)
 	      /* eslint-enable eqeqeq */
 	    }
 	  },
 	
 	  unbind: function () {
-	    _.off(this.el, 'change', this.listener)
 	    this.vm.$off('hook:attached', this.forceUpdate)
 	    if (this.optionWatcher) {
 	      this.optionWatcher.teardown()
 	    }
 	  }
-	
 	}
 	
 	/**
@@ -6512,10 +6533,13 @@
 	      if (typeof op === 'string') {
 	        el.text = el.value = op
 	      } else {
-	        if (op.value != null) {
+	        if (op.value != null && !_.isObject(op.value)) {
 	          el.value = op.value
 	        }
-	        el.text = op.text || op.value || ''
+	        // object values gets serialized when set as value,
+	        // so we store the raw value as a different property
+	        el._value = op.value
+	        el.text = op.text || ''
 	        if (op.disabled) {
 	          el.disabled = true
 	        }
@@ -6554,29 +6578,35 @@
 	}
 	
 	/**
-	 * Helper to extract a value array for select[multiple]
+	 * Get select value
 	 *
 	 * @param {SelectElement} el
-	 * @return {Array}
+	 * @param {Boolean} multi
+	 * @return {Array|*}
 	 */
 	
-	function getMultiValue (el) {
-	  return Array.prototype.filter
-	    .call(el.options, filterSelected)
-	    .map(getOptionValue)
-	}
-	
-	function filterSelected (op) {
-	  return op.selected
-	}
-	
-	function getOptionValue (op) {
-	  return op.value || op.text
+	function getValue (el, multi) {
+	  var res = multi ? [] : null
+	  var op, val
+	  for (var i = 0, l = el.options.length; i < l; i++) {
+	    op = el.options[i]
+	    if (op.selected) {
+	      val = op.hasOwnProperty('_value')
+	        ? op._value
+	        : op.value
+	      if (multi) {
+	        res.push(val)
+	      } else {
+	        return val
+	      }
+	    }
+	  }
+	  return res
 	}
 	
 	/**
 	 * Native Array.indexOf uses strict equal, but in this
-	 * case we need to match string/numbers with soft equal.
+	 * case we need to match string/numbers with custom equal.
 	 *
 	 * @param {Array} arr
 	 * @param {*} val
@@ -6585,41 +6615,69 @@
 	function indexOf (arr, val) {
 	  var i = arr.length
 	  while (i--) {
-	    /* eslint-disable eqeqeq */
-	    if (arr[i] == val) return i
-	    /* eslint-enable eqeqeq */
+	    if (equals(arr[i], val)) {
+	      return i
+	    }
 	  }
 	  return -1
+	}
+	
+	/**
+	 * Check if two values are loosely equal. If two objects
+	 * have the same shape, they are considered equal too:
+	 *   equals({a: 1}, {a: 1}) => true
+	 */
+	
+	function equals (a, b) {
+	  /* eslint-disable eqeqeq */
+	  return a == b || JSON.stringify(a) == JSON.stringify(b)
+	  /* eslint-enable eqeqeq */
 	}
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ },
 /* 47 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	var _ = __webpack_require__(3)
-	
 	module.exports = {
 	
 	  bind: function () {
 	    var self = this
 	    var el = this.el
-	    this.listener = function () {
-	      self.set(el.checked)
+	    var trueExp = this._checkParam('true-exp')
+	    var falseExp = this._checkParam('false-exp')
+	
+	    this._matchValue = function (value) {
+	      var trueValue = true
+	      if (trueExp !== null) {
+	        trueValue = self.vm.$eval(trueExp)
+	      }
+	      return trueValue === value
 	    }
-	    _.on(el, 'change', this.listener)
+	
+	    function getValue () {
+	      var val = el.checked
+	      if (val && trueExp !== null) {
+	        val = self.vm.$eval(trueExp)
+	      }
+	      if (!val && falseExp !== null) {
+	        val = self.vm.$eval(falseExp)
+	      }
+	      return val
+	    }
+	
+	    this.on('change', function () {
+	      self.set(getValue())
+	    })
+	
 	    if (el.checked) {
-	      this._initValue = el.checked
+	      this._initValue = getValue()
 	    }
 	  },
 	
 	  update: function (value) {
-	    this.el.checked = !!value
-	  },
-	
-	  unbind: function () {
-	    _.off(this.el, 'change', this.listener)
+	    this.el.checked = this._matchValue(value)
 	  }
 	}
 
@@ -6772,7 +6830,7 @@
 	    }, this))
 	  },
 	
-	    /**
+	  /**
 	   * Resolve a dynamic component to use for an instance.
 	   * The tricky part here is that there could be dynamic
 	   * components depending on instance data.
@@ -7418,8 +7476,7 @@
 	        this.linker = compiler.compile(
 	          this.template,
 	          this.vm.$options,
-	          true, // partial
-	          this._host // important
+	          true // partial
 	        )
 	        cache.put(cacheId, this.linker)
 	      }
@@ -7450,7 +7507,7 @@
 	
 	  link: function (frag, linker) {
 	    var vm = this.vm
-	    this.unlink = linker(vm, frag)
+	    this.unlink = linker(vm, frag, this._host /* important */)
 	    transition.blockAppend(frag, this.end, vm)
 	    // call attached for all the child components created
 	    // during the compilation
@@ -7790,7 +7847,7 @@
 	exports.currency = function (value, currency) {
 	  value = parseFloat(value)
 	  if (!isFinite(value) || (!value && value !== 0)) return ''
-	  currency = currency || '$'
+	  currency = currency != null ? currency : '$'
 	  var stringified = Math.abs(value).toFixed(2)
 	  var _int = stringified.slice(0, -3)
 	  var i = _int.length % 3
@@ -7859,6 +7916,14 @@
 	// expose keycode hash
 	exports.key.keyCodes = keyCodes
 	
+	exports.debounce = function (handler, delay) {
+	  if (!handler) return
+	  if (!delay) {
+	    delay = 300
+	  }
+	  return _.debounce(handler, delay)
+	}
+	
 	/**
 	 * Install special array filters
 	 */
@@ -7881,20 +7946,27 @@
 	 * @param {String} dataKey
 	 */
 	
-	exports.filterBy = function (arr, search, delimiter, dataKey) {
-	  // allow optional `in` delimiter
-	  // because why not
-	  if (delimiter && delimiter !== 'in') {
-	    dataKey = delimiter
-	  }
+	exports.filterBy = function (arr, search, delimiter /* ...dataKeys */) {
 	  if (search == null) {
 	    return arr
 	  }
+	  if (typeof search === 'function') {
+	    return arr.filter(search)
+	  }
 	  // cast to lowercase string
 	  search = ('' + search).toLowerCase()
+	  // allow optional `in` delimiter
+	  // because why not
+	  var n = delimiter === 'in' ? 3 : 2
+	  // extract and flatten keys
+	  var keys = _.toArray(arguments, n).reduce(function (prev, cur) {
+	    return prev.concat(cur)
+	  }, [])
 	  return arr.filter(function (item) {
-	    return dataKey
-	      ? contains(Path.get(item, dataKey), search)
+	    return keys.length
+	      ? keys.some(function (key) {
+	          return contains(Path.get(item, key), search)
+	        })
 	      : contains(item, search)
 	  })
 	}
@@ -8240,7 +8312,7 @@
 	  }
 	  // make sure to convert string selectors into element now
 	  el = options.el = _.query(el)
-	  this._propsUnlinkFn = el && props
+	  this._propsUnlinkFn = el && el.nodeType === 1 && props
 	    ? compiler.compileAndLinkProps(
 	        this, el, props
 	      )
@@ -8403,7 +8475,9 @@
 	        def.set = noop
 	      } else {
 	        def.get = userDef.get
-	          ? makeComputedGetter(userDef.get, this)
+	          ? userDef.cache !== false
+	            ? makeComputedGetter(userDef.get, this)
+	            : _.bind(userDef.get, this)
 	          : noop
 	        def.set = userDef.set
 	          ? _.bind(userDef.set, this)
@@ -8468,8 +8542,6 @@
 	exports._defineMeta = function (key, value) {
 	  var dep = new Dep()
 	  Object.defineProperty(this, key, {
-	    enumerable: true,
-	    configurable: true,
 	    get: function metaGetter () {
 	      if (Dep.target) {
 	        dep.depend()
@@ -8559,8 +8631,6 @@
 	
 	// Instance methods
 	
-	var p = Observer.prototype
-	
 	/**
 	 * Walk through each property and convert them into
 	 * getter/setters. This method should only be called when
@@ -8570,16 +8640,11 @@
 	 * @param {Object} obj
 	 */
 	
-	p.walk = function (obj) {
+	Observer.prototype.walk = function (obj) {
 	  var keys = Object.keys(obj)
 	  var i = keys.length
-	  var key, prefix
 	  while (i--) {
-	    key = keys[i]
-	    prefix = key.charCodeAt(0)
-	    if (prefix !== 0x24 && prefix !== 0x5F) { // skip $ or _
-	      this.convert(key, obj[key])
-	    }
+	    this.convert(keys[i], obj[keys[i]])
 	  }
 	}
 	
@@ -8591,7 +8656,7 @@
 	 * @return {Dep|undefined}
 	 */
 	
-	p.observe = function (val) {
+	Observer.prototype.observe = function (val) {
 	  return Observer.create(val)
 	}
 	
@@ -8601,7 +8666,7 @@
 	 * @param {Array} items
 	 */
 	
-	p.observeArray = function (items) {
+	Observer.prototype.observeArray = function (items) {
 	  var i = items.length
 	  while (i--) {
 	    this.observe(items[i])
@@ -8616,7 +8681,7 @@
 	 * @param {*} val
 	 */
 	
-	p.convert = function (key, val) {
+	Observer.prototype.convert = function (key, val) {
 	  var ob = this
 	  var childOb = ob.observe(val)
 	  var dep = new Dep()
@@ -8656,7 +8721,7 @@
 	 * @param {Vue} vm
 	 */
 	
-	p.addVm = function (vm) {
+	Observer.prototype.addVm = function (vm) {
 	  (this.vms || (this.vms = [])).push(vm)
 	}
 	
@@ -8667,7 +8732,7 @@
 	 * @param {Vue} vm
 	 */
 	
-	p.removeVm = function (vm) {
+	Observer.prototype.removeVm = function (vm) {
 	  this.vms.$remove(vm)
 	}
 	
@@ -9101,7 +9166,7 @@
 /* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
 	var config = __webpack_require__(8)
 	var Watcher = __webpack_require__(20)
 	var textParser = __webpack_require__(16)
@@ -9140,11 +9205,10 @@
 	  this._host = host
 	  this._locked = false
 	  this._bound = false
+	  this._listeners = null
 	  // init
 	  this._bind(def)
 	}
-	
-	var p = Directive.prototype
 	
 	/**
 	 * Initialize the directive, mixin definition properties,
@@ -9154,7 +9218,7 @@
 	 * @param {Object} def
 	 */
 	
-	p._bind = function (def) {
+	Directive.prototype._bind = function (def) {
 	  if (
 	    (this.name !== 'cloak' || this.vm._isCompiled) &&
 	    this.el && this.el.removeAttribute
@@ -9215,7 +9279,7 @@
 	 * e.g. v-component="{{currentView}}"
 	 */
 	
-	p._checkDynamicLiteral = function () {
+	Directive.prototype._checkDynamicLiteral = function () {
 	  var expression = this.expression
 	  if (expression && this.isLiteral) {
 	    var tokens = textParser.parse(expression)
@@ -9239,7 +9303,7 @@
 	 * @return {Boolean}
 	 */
 	
-	p._checkStatement = function () {
+	Directive.prototype._checkStatement = function () {
 	  var expression = this.expression
 	  if (
 	    expression && this.acceptStatement &&
@@ -9265,30 +9329,13 @@
 	 * @return {String}
 	 */
 	
-	p._checkParam = function (name) {
+	Directive.prototype._checkParam = function (name) {
 	  var param = this.el.getAttribute(name)
 	  if (param !== null) {
 	    this.el.removeAttribute(name)
 	    param = this.vm.$interpolate(param)
 	  }
 	  return param
-	}
-	
-	/**
-	 * Teardown the watcher and call unbind.
-	 */
-	
-	p._teardown = function () {
-	  if (this._bound) {
-	    this._bound = false
-	    if (this.unbind) {
-	      this.unbind()
-	    }
-	    if (this._watcher) {
-	      this._watcher.teardown()
-	    }
-	    this.vm = this.el = this._watcher = null
-	  }
 	}
 	
 	/**
@@ -9300,11 +9347,17 @@
 	 * @public
 	 */
 	
-	p.set = function (value) {
+	Directive.prototype.set = function (value) {
+	  /* istanbul ignore else */
 	  if (this.twoWay) {
 	    this._withLock(function () {
 	      this._watcher.set(value)
 	    })
+	  } else if (process.env.NODE_ENV !== 'production') {
+	    _.warn(
+	      'Directive.set() can only be used inside twoWay' +
+	      'directives.'
+	    )
 	  }
 	}
 	
@@ -9315,7 +9368,7 @@
 	 * @param {Function} fn
 	 */
 	
-	p._withLock = function (fn) {
+	Directive.prototype._withLock = function (fn) {
 	  var self = this
 	  self._locked = true
 	  fn.call(self)
@@ -9324,8 +9377,48 @@
 	  })
 	}
 	
+	/**
+	 * Convenience method that attaches a DOM event listener
+	 * to the directive element and autometically tears it down
+	 * during unbind.
+	 *
+	 * @param {String} event
+	 * @param {Function} handler
+	 */
+	
+	Directive.prototype.on = function (event, handler) {
+	  _.on(this.el, event, handler)
+	  ;(this._listeners || (this._listeners = []))
+	    .push([event, handler])
+	}
+	
+	/**
+	 * Teardown the watcher and call unbind.
+	 */
+	
+	Directive.prototype._teardown = function () {
+	  if (this._bound) {
+	    this._bound = false
+	    if (this.unbind) {
+	      this.unbind()
+	    }
+	    if (this._watcher) {
+	      this._watcher.teardown()
+	    }
+	    var listeners = this._listeners
+	    if (listeners) {
+	      for (var i = 0; i < listeners.length; i++) {
+	        _.off(this.el, listeners[i][0], listeners[i][1])
+	      }
+	    }
+	    this.vm = this.el =
+	    this._watcher = this._listeners = null
+	  }
+	}
+	
 	module.exports = Directive
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ },
 /* 63 */
@@ -9506,15 +9599,12 @@
 	
 	exports.$watch = function (exp, cb, options) {
 	  var vm = this
-	  var wrappedCb = function (val, oldVal) {
-	    cb.call(vm, val, oldVal)
-	  }
-	  var watcher = new Watcher(vm, exp, wrappedCb, {
+	  var watcher = new Watcher(vm, exp, cb, {
 	    deep: options && options.deep,
 	    user: !options || options.user !== false
 	  })
 	  if (options && options.immediate) {
-	    wrappedCb(watcher.value)
+	    cb.call(vm, watcher.value)
 	  }
 	  return function unwatchFn () {
 	    watcher.teardown()
@@ -10124,7 +10214,7 @@
 	 */
 	
 	exports.$compile = function (el, host) {
-	  return compiler.compile(el, this.$options, true, host)(this, el)
+	  return compiler.compile(el, this.$options, true)(this, el, host)
 	}
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
@@ -10312,7 +10402,7 @@
 	    var unwatch = vm.$watch('a + b.c', spy, {
 	      immediate: true
 	    })
-	    expect(spy).toHaveBeenCalledWith(3, undefined)
+	    expect(spy).toHaveBeenCalledWith(3)
 	    vm.a = 2
 	    nextTick(function () {
 	      expect(spy).toHaveBeenCalledWith(4, 3)
@@ -10332,7 +10422,7 @@
 	    var unwatch = vm.$watch(function () {
 	      return this.a + this.b.c
 	    }, spy, { immediate: true })
-	    expect(spy).toHaveBeenCalledWith(3, undefined)
+	    expect(spy).toHaveBeenCalledWith(3)
 	    vm.a = 2
 	    nextTick(function () {
 	      expect(spy).toHaveBeenCalledWith(4, 3)
@@ -12467,6 +12557,12 @@
 	      dir.update('what')
 	      expect(dir.el.hasAttribute('value')).toBe(false)
 	      expect(dir.el.value).toBe('what')
+	      dir.el = document.createElement('input')
+	      dir.el.type = 'checkbox'
+	      dir.arg = 'checked'
+	      expect(dir.el.checked).toBe(false)
+	      dir.update(true)
+	      expect(dir.el.checked).toBe(true)
 	    })
 	
 	    it('xlink', function () {
@@ -12911,13 +13007,60 @@
 	        }
 	      })
 	      vm.$children[0].$emit('ok')
+	      expect(el.textContent).toBe('AAA')
 	      vm.view = 'view-b'
 	      _.nextTick(function () {
 	        expect(el.textContent).toBe('AAA')
 	        // old vm is already removed, this is the new vm
+	        expect(vm.$children.length).toBe(1)
 	        vm.$children[0].$emit('ok')
 	        expect(el.textContent).toBe('BBB')
-	        done()
+	        // ensure switching before ready event correctly
+	        // cleans up the component being waited on.
+	        // see #1152
+	        vm.view = 'view-a'
+	        _.nextTick(function () {
+	          vm.view = 'view-b'
+	          _.nextTick(function () {
+	            expect(vm.$children.length).toBe(1)
+	            expect(vm.$children[0].$el.textContent).toBe('BBB')
+	            done()
+	          })
+	        })
+	      })
+	    })
+	
+	    // #1150
+	    it('wait-for + keep-alive', function (done) {
+	      var vm = new Vue({
+	        el: el,
+	        data: {
+	          view: 'view-a'
+	        },
+	        template: '<component is="{{view}}" wait-for="ok" keep-alive></component>',
+	        components: {
+	          'view-a': {
+	            template: 'AAA'
+	          },
+	          'view-b': {
+	            template: 'BBB'
+	          }
+	        }
+	      })
+	      vm.$children[0].$emit('ok')
+	      expect(el.textContent).toBe('AAA')
+	      vm.view = 'view-b'
+	      _.nextTick(function () {
+	        expect(vm.$children.length).toBe(2)
+	        vm.$children[1].$emit('ok')
+	        expect(el.textContent).toBe('BBB')
+	        vm.view = 'view-a'
+	        _.nextTick(function () {
+	          // should switch without the need to emit
+	          // because of keep-alive
+	          expect(el.textContent).toBe('AAA')
+	          done()
+	        })
 	      })
 	    })
 	
@@ -13584,7 +13727,7 @@
 	        expect(el.childNodes[0].checked).toBe(true)
 	        expect(el.childNodes[1].checked).toBe(false)
 	        expect(vm.test).toBe(1)
-	        vm._directives[1].unbind()
+	        vm._directives[1]._teardown()
 	        el.childNodes[1].click()
 	        expect(vm.test).toBe(1)
 	        done()
@@ -13598,6 +13741,34 @@
 	        template: '<input type="radio" checked value="a" v-model="test">'
 	      })
 	      expect(vm.test).toBe('a')
+	    })
+	
+	    it('radio expression', function (done) {
+	      var vm = new Vue({
+	        el: el,
+	        data: {
+	          test: false,
+	          test2: 'string1',
+	          expression1: 'string1',
+	          expression2: 'string2'
+	        },
+	        template:
+	          '<input type="radio" value="1" v-model="test" name="test" exp="true">' +
+	          '<input type="radio" value="0" v-model="test" name="test" exp="false">' +
+	          '<input type="radio" value="1" v-model="test2" name="test2" exp="expression1">' +
+	          '<input type="radio" value="0" v-model="test2" name="test2" exp="expression2">'
+	      })
+	      expect(el.childNodes[0].checked).toBe(false)
+	      expect(el.childNodes[1].checked).toBe(true)
+	      expect(el.childNodes[2].checked).toBe(true)
+	      expect(el.childNodes[3].checked).toBe(false)
+	      _.nextTick(function () {
+	        el.childNodes[0].click()
+	        expect(vm.test).toBe(true)
+	        el.childNodes[3].click()
+	        expect(vm.test2).toBe('string2')
+	        done()
+	      })
 	    })
 	
 	    it('checkbox', function (done) {
@@ -13616,7 +13787,7 @@
 	        el.firstChild.click()
 	        expect(el.firstChild.checked).toBe(true)
 	        expect(vm.test).toBe(true)
-	        vm._directives[0].unbind()
+	        vm._directives[0]._teardown()
 	        el.firstChild.click()
 	        expect(el.firstChild.checked).toBe(false)
 	        expect(vm.test).toBe(true)
@@ -13631,6 +13802,32 @@
 	        template: '<input type="checkbox" checked v-model="test">'
 	      })
 	      expect(vm.test).toBe(true)
+	    })
+	
+	    it('checkbox expression', function (done) {
+	      var vm = new Vue({
+	        el: el,
+	        data: {
+	          test: '',
+	          expression1: 'aTrueValue',
+	          expression2: 'aFalseValue'
+	        },
+	        template: '<input type="checkbox" v-model="test" true-exp="expression1" false-exp="expression2">'
+	      })
+	      expect(vm.test).toBe('')
+	      el.firstChild.click()
+	      expect(vm.test).toBe('aTrueValue')
+	      expect(el.firstChild.checked).toBe(true)
+	      el.firstChild.click()
+	      expect(vm.test).toBe('aFalseValue')
+	      expect(el.firstChild.checked).toBe(false)
+	      _.nextTick(function () {
+	        vm.test = 'aTrueValue'
+	        _.nextTick(function () {
+	          expect(el.firstChild.checked).toBe(true)
+	          done()
+	        })
+	      })
 	    })
 	
 	    it('select', function (done) {
@@ -13833,6 +14030,72 @@
 	      expect(opts[2].selected).toBe(false)
 	    })
 	
+	    it('select + options with Object value', function (done) {
+	      var vm = new Vue({
+	        el: el,
+	        data: {
+	          test: { msg: 'A' },
+	          opts: [
+	            { text: 'a', value: { msg: 'A' }},
+	            { text: 'b', value: { msg: 'B' }}
+	          ]
+	        },
+	        template: '<select v-model="test" options="opts"></select>'
+	      })
+	      var select = el.firstChild
+	      var opts = select.options
+	      expect(opts[0].selected).toBe(true)
+	      expect(opts[1].selected).toBe(false)
+	      expect(vm.test.msg).toBe('A')
+	      opts[1].selected = true
+	      trigger(select, 'change')
+	      _.nextTick(function () {
+	        expect(opts[0].selected).toBe(false)
+	        expect(opts[1].selected).toBe(true)
+	        expect(vm.test.msg).toBe('B')
+	        vm.test = { msg: 'A' }
+	        _.nextTick(function () {
+	          expect(opts[0].selected).toBe(true)
+	          expect(opts[1].selected).toBe(false)
+	          done()
+	        })
+	      })
+	    })
+	
+	    it('select + options + multiple + Object value', function (done) {
+	      var vm = new Vue({
+	        el: el,
+	        data: {
+	          test: [{ msg: 'A' }, { msg: 'B'}],
+	          opts: [
+	            { text: 'a', value: { msg: 'A' }},
+	            { text: 'b', value: { msg: 'B' }},
+	            { text: 'c', value: { msg: 'C' }}
+	          ]
+	        },
+	        template: '<select v-model="test" options="opts" multiple></select>'
+	      })
+	      var select = el.firstChild
+	      var opts = select.options
+	      expect(opts[0].selected).toBe(true)
+	      expect(opts[1].selected).toBe(true)
+	      expect(opts[2].selected).toBe(false)
+	      vm.test = [{ msg: 'C' }]
+	      _.nextTick(function () {
+	        expect(opts[0].selected).toBe(false)
+	        expect(opts[1].selected).toBe(false)
+	        expect(opts[2].selected).toBe(true)
+	        opts[1].selected = true
+	        opts[2].selected = false
+	        trigger(select, 'change')
+	        _.nextTick(function () {
+	          expect(vm.test.length).toBe(1)
+	          expect(vm.test[0].msg).toBe('B')
+	          done()
+	        })
+	      })
+	    })
+	
 	    it('select + number', function () {
 	      var vm = new Vue({
 	        el: el,
@@ -13937,7 +14200,7 @@
 	        el.firstChild.value = 'c'
 	        trigger(el.firstChild, 'input')
 	        expect(vm.test).toBe('c')
-	        vm._directives[0].unbind()
+	        vm._directives[0]._teardown()
 	        el.firstChild.value = 'd'
 	        trigger(el.firstChild, 'input')
 	        expect(vm.test).toBe('c')
@@ -14000,17 +14263,21 @@
 	        template: '<input v-model="test | uppercase | test">'
 	      })
 	      expect(el.firstChild.value).toBe('B')
+	      trigger(el.firstChild, 'focus')
 	      el.firstChild.value = 'cc'
 	      trigger(el.firstChild, 'input')
 	      _.nextTick(function () {
-	        expect(el.firstChild.value).toBe('CC')
+	        expect(el.firstChild.value).toBe('cc')
 	        expect(vm.test).toBe('cc')
-	        done()
+	        trigger(el.firstChild, 'blur')
+	        _.nextTick(function () {
+	          expect(el.firstChild.value).toBe('CC')
+	          expect(vm.test).toBe('cc')
+	          done()
+	        })
 	      })
 	    })
 	
-	    // when there's only write filter, should allow
-	    // out of sync between the input field and actual data
 	    it('text with only write filter', function (done) {
 	      var vm = new Vue({
 	        el: el,
@@ -14026,12 +14293,18 @@
 	        },
 	        template: '<input v-model="test | test">'
 	      })
+	      trigger(el.firstChild, 'focus')
 	      el.firstChild.value = 'cc'
 	      trigger(el.firstChild, 'input')
 	      _.nextTick(function () {
 	        expect(el.firstChild.value).toBe('cc')
 	        expect(vm.test).toBe('CC')
-	        done()
+	        trigger(el.firstChild, 'blur')
+	        _.nextTick(function () {
+	          expect(el.firstChild.value).toBe('CC')
+	          expect(vm.test).toBe('CC')
+	          done()
+	        })
 	      })
 	    })
 	
@@ -14070,7 +14343,7 @@
 	        })
 	        expect(vm.test).toBe('a')
 	        // teardown
-	        vm._directives[0].unbind()
+	        vm._directives[0]._teardown()
 	        input.value = 'bbb'
 	        trigger(input, 'keyup', function (e) {
 	          e.keyCode = 8
@@ -14167,7 +14440,7 @@
 	        data: {
 	          test: 'b'
 	        },
-	        template: '<input v-model="test" lazy>'
+	        template: '<input v-model="test">'
 	      })
 	      expect(el.firstChild.value).toBe('b')
 	      vm.test = 'a'
@@ -14176,7 +14449,7 @@
 	        el.firstChild.value = 'c'
 	        jQuery(el.firstChild).trigger('change')
 	        expect(vm.test).toBe('c')
-	        vm._directives[0].unbind()
+	        vm._directives[0]._teardown()
 	        el.firstChild.value = 'd'
 	        jQuery(el.firstChild).trigger('change')
 	        expect(vm.test).toBe('c')
@@ -14422,9 +14695,9 @@
 	      _.nextTick(function () {
 	        expect(el.innerHTML).toBe('<test>BB</test>')
 	        vm.$.child.b = 'BBB'
+	        expect(vm.b).toBe('BB')
 	        _.nextTick(function () {
 	          expect(el.innerHTML).toBe('<test>BBB</test>')
-	          expect(vm.b).toBe('BB')
 	          done()
 	        })
 	      })
@@ -16927,6 +17200,8 @@
 	    expect(filter(0.76)).toBe('$0.76')
 	    // sign arg
 	    expect(filter(2134, '@')).toBe('@2,134.00')
+	    // no symbol
+	    expect(filter(2134, '')).toBe('2,134.00')
 	    // falsy, infinity and 0
 	    expect(filter(0)).toBe('$0.00')
 	    expect(filter(false)).toBe('')
@@ -16957,6 +17232,31 @@
 	    expect(spy).toHaveBeenCalled()
 	  })
 	
+	  it('debounce', function (done) {
+	    var filter = filters.debounce
+	    expect(filter(null)).toBeUndefined()
+	    var spy = jasmine.createSpy('filter:debounce')
+	    var handler = filter(spy)
+	    handler()
+	    expect(spy).not.toHaveBeenCalled()
+	    handler = filter(spy)
+	    handler()
+	    setTimeout(function () {
+	      expect(spy).toHaveBeenCalled()
+	    }, 400)
+	    var spy2 = jasmine.createSpy('filter:debounce')
+	    handler = filter(spy2, 450)
+	    handler()
+	    handler()
+	    setTimeout(function () {
+	      expect(spy2).not.toHaveBeenCalled()
+	    }, 400)
+	    setTimeout(function () {
+	      expect(spy2.calls.count()).toBe(1)
+	      done()
+	    }, 500)
+	  })
+	
 	  it('filterBy', function () {
 	    var filter = filters.filterBy
 	    var arr = [
@@ -16967,31 +17267,52 @@
 	    var res
 	    // normal
 	    res = filter(arr, 'hello')
-	    expect(res.length).toBe(2)
-	    expect(res[0]).toBe(arr[0])
-	    expect(res[1]).toBe(arr[1])
+	    assertArray(res, [arr[0], arr[1]])
 	    // data key
 	    res = filter(arr, 'hello', 'b.c')
-	    expect(res.length).toBe(1)
-	    expect(res[0]).toBe(arr[0])
+	    assertArray(res, [arr[0]])
 	    // delimiter
 	    res = filter(arr, 'hello', 'in', 'b.c')
-	    expect(res.length).toBe(1)
-	    expect(res[0]).toBe(arr[0])
+	    assertArray(res, [arr[0]])
 	    // no search key
 	    res = filter(arr, null)
 	    expect(res).toBe(arr)
 	    // number search key
 	    res = filter(arr, 2)
-	    expect(res[0]).toBe(arr[1])
+	    assertArray(res, [arr[1]])
 	    // search in sub array
 	    res = filter(arr, 'yoyo')
-	    expect(res.length).toBe(1)
-	    expect(res[0]).toBe(arr[2])
+	    assertArray(res, [arr[2]])
 	    // filter by false (#928)
-	    res = filter([{a: false}, {b: true}], false)
-	    expect(res.length).toBe(1)
-	    expect(res[0].a).toBe(false)
+	    arr = [{a: false}, {b: true}]
+	    res = filter(arr, false)
+	    assertArray(res, [arr[0]])
+	    // filter by a function
+	    res = filter(arr, function (val) {
+	      return val.b === true
+	    })
+	    assertArray(res, [arr[1]])
+	  })
+	
+	  it('filterBy multiple keys', function () {
+	    var filter = filters.filterBy
+	    var arr = [
+	      { firstname: 'A', lastname: 'B' },
+	      { firstname: 'C', lastname: 'B' },
+	      { firstname: 'A', lastname: 'D' }
+	    ]
+	    // multiple string keys
+	    var res
+	    res = filter(arr, 'A', 'in', 'firstname', 'lastname')
+	    assertArray(res, [arr[0], arr[2]])
+	    // array of keys
+	    res = filter(arr, 'B', ['firstname', 'lastname'])
+	    assertArray(res, [arr[0], arr[1]])
+	    // multiple arrays of keys
+	    res = filter(arr, 'C', 'in', ['firstname'], ['lastname'])
+	    assertArray(res, [arr[1]])
+	    res = filter(arr, 'A', ['firstname', 'lastname'], [])
+	    assertArray(res, [arr[0], arr[2]])
 	  })
 	
 	  it('orderBy', function () {
@@ -17004,28 +17325,16 @@
 	    var res
 	    // sort key
 	    res = filter(arr, 'a.b')
-	    expect(res.length).toBe(3)
-	    expect(res[0].a.b).toBe(0)
-	    expect(res[1].a.b).toBe(1)
-	    expect(res[2].a.b).toBe(2)
+	    assertArray(res, [arr[0], arr[2], arr[1]])
 	    // reverse key
 	    res = filter(arr, 'a.b', true)
-	    expect(res.length).toBe(3)
-	    expect(res[0].a.b).toBe(2)
-	    expect(res[1].a.b).toBe(1)
-	    expect(res[2].a.b).toBe(0)
+	    assertArray(res, [arr[1], arr[2], arr[0]])
 	    // literal args
 	    res = filter(arr, 'c', '-1')
-	    expect(res.length).toBe(3)
-	    expect(res[0].c).toBe('c')
-	    expect(res[1].c).toBe('b')
-	    expect(res[2].c).toBe('a')
+	    assertArray(res, [arr[1], arr[0], arr[2]])
 	    // negate reverse
 	    res = filter(arr, 'c', false)
-	    expect(res.length).toBe(3)
-	    expect(res[0].c).toBe('a')
-	    expect(res[1].c).toBe('b')
-	    expect(res[2].c).toBe('c')
+	    assertArray(res, [arr[2], arr[0], arr[1]])
 	    // no sort key
 	    res = filter(arr, null)
 	    expect(res).toBe(arr)
@@ -17040,13 +17349,9 @@
 	      { $key: 'b', $value: 2 }
 	    ]
 	    var res = filter(arr, '$key')
-	    expect(res[0].$value).toBe(3)
-	    expect(res[1].$value).toBe(2)
-	    expect(res[2].$value).toBe(1)
+	    assertArray(res, [arr[0], arr[2], arr[1]])
 	    res = filter(arr, '$value')
-	    expect(res[0].$value).toBe(1)
-	    expect(res[1].$value).toBe(2)
-	    expect(res[2].$value).toBe(3)
+	    assertArray(res, [arr[1], arr[2], arr[0]])
 	    // normal keys
 	    arr = [
 	      { $key: 'a', $value: { v: 3 } },
@@ -17054,11 +17359,16 @@
 	      { $key: 'b', $value: { v: 2 } }
 	    ]
 	    res = filter(arr, 'v')
-	    expect(res[0].$value.v).toBe(1)
-	    expect(res[1].$value.v).toBe(2)
-	    expect(res[2].$value.v).toBe(3)
+	    assertArray(res, [arr[1], arr[2], arr[0]])
 	  })
 	})
+	
+	function assertArray (res, expectations) {
+	  expect(res.length).toBe(expectations.length)
+	  expectations.forEach(function (exp, i) {
+	    expect(exp).toBe(res[i])
+	  })
+	}
 	
 	function assertNumberAndFalsy (filter) {
 	  // should stringify numbers
@@ -17589,7 +17899,7 @@
 	      expect(vm.hasOwnProperty('a')).toBe(false)
 	    })
 	
-	    it('replace $data and handle props', function (done) {
+	    it('replace $data and handle props', function () {
 	      var el = document.createElement('div')
 	      var vm = new Vue({
 	        el: el,
@@ -17632,20 +17942,20 @@
 	      expect(child.b).toBe(3)
 	      expect(child.c).toBe(4)
 	      // assert parent state
-	      Vue.nextTick(function () {
-	        // one-way
-	        expect(vm.a).toBe(1)
-	        // one-time
-	        expect(vm.b).toBe(2)
-	        // two-way
-	        expect(vm.c).toBe(4)
-	        done()
-	      })
+	      // one-way
+	      expect(vm.a).toBe(1)
+	      // one-time
+	      expect(vm.b).toBe(2)
+	      // two-way
+	      expect(vm.c).toBe(4)
 	    })
-	
 	  })
 	
 	  describe('computed', function () {
+	
+	    var spyE = jasmine.createSpy('computed e')
+	    var spyF = jasmine.createSpy('cached computed f')
+	    var spyCachedWatcher = jasmine.createSpy('cached computed watcher')
 	
 	    var Test = Vue.extend({
 	      computed: {
@@ -17665,19 +17975,39 @@
 	        // chained computed
 	        e: function () {
 	          return this.c + 'e'
+	        },
+	        // cached
+	        f: {
+	          get: function () {
+	            spyF()
+	            return this.ff
+	          }
+	        },
+	        // chained cached
+	        g: function () {
+	          return this.f + 1
+	        },
+	        // another cached, for watcher test
+	        h: {
+	          get: function () {
+	            return this.hh
+	          }
 	        }
 	      }
 	    })
 	
-	    var spy = jasmine.createSpy()
 	    var vm = new Test({
 	      data: {
 	        a: 'a',
-	        b: 'b'
+	        b: 'b',
+	        ff: 0,
+	        hh: 0
+	      },
+	      watch: {
+	        e: spyE,
+	        h: spyCachedWatcher
 	      }
 	    })
-	
-	    vm.$watch('e', spy)
 	
 	    it('get', function () {
 	      expect(vm.c).toBe('ab')
@@ -17694,7 +18024,7 @@
 	      expect(vm.d).toBe('cd')
 	      expect(vm.e).toBe('cde')
 	      Vue.nextTick(function () {
-	        expect(spy).toHaveBeenCalledWith('cde', 'abe')
+	        expect(spyE).toHaveBeenCalledWith('cde', 'abe')
 	        done()
 	      })
 	    })
@@ -17717,13 +18047,45 @@
 	      expect(child.d).toBe('ef')
 	      expect(vm.e).toBe('efe')
 	      Vue.nextTick(function () {
-	        expect(spy).toHaveBeenCalledWith('efe', 'cde')
+	        expect(spyE).toHaveBeenCalledWith('efe', 'cde')
+	        done()
+	      })
+	    })
+	
+	    it('cached computed', function () {
+	      expect(spyF).not.toHaveBeenCalled()
+	      var f = vm.f
+	      var g = vm.g
+	      expect(spyF.calls.count()).toBe(1)
+	      expect(f).toBe(0)
+	      expect(g).toBe(1)
+	      // get again
+	      f = vm.f
+	      g = vm.g
+	      // should not be evaluated again
+	      expect(spyF.calls.count()).toBe(1)
+	      expect(f).toBe(0)
+	      expect(g).toBe(1)
+	      // update dep
+	      vm.ff = 1
+	      f = vm.f
+	      g = vm.g
+	      expect(spyF.calls.count()).toBe(2)
+	      expect(f).toBe(1)
+	      expect(g).toBe(2)
+	    })
+	
+	    it('watching cached computed', function (done) {
+	      expect(spyCachedWatcher).not.toHaveBeenCalled()
+	      vm.hh = 2
+	      Vue.nextTick(function () {
+	        expect(spyCachedWatcher).toHaveBeenCalledWith(2, 0)
 	        done()
 	      })
 	    })
 	
 	    it('same definition object bound to different instance', function () {
-	      vm = new Test({
+	      var vm = new Test({
 	        data: {
 	          a: 'A',
 	          b: 'B'
@@ -17737,6 +18099,26 @@
 	      expect(vm.c).toBe('CD')
 	      expect(vm.d).toBe('CD')
 	      expect(vm.e).toBe('CDe')
+	    })
+	
+	    it('disable cache', function () {
+	      var external = { b: 'B' }
+	      var vm = new Vue({
+	        data: {
+	          a: 'A'
+	        },
+	        computed: {
+	          test: {
+	            cache: false,
+	            get: function () {
+	              return this.a + external.b
+	            }
+	          }
+	        }
+	      })
+	      expect(vm.test).toBe('AB')
+	      external.b = 'C'
+	      expect(vm.test).toBe('AC')
 	    })
 	
 	  })
@@ -18101,6 +18483,29 @@
 	    })
 	  })
 	
+	  it('resolveAsset for repeat instance inside content in strict mode', function () {
+	    Vue.config.strict = true
+	    var el = document.createElement('div')
+	    el.innerHTML =
+	      '<outer>' +
+	        '<template v-repeat="item in items">' +
+	          '<inner>{{item}}</inner>' +
+	        '</template>' +
+	      '</outer>'
+	    new Vue({
+	      el: el,
+	      data: {
+	        items: [1, 2, 3]
+	      },
+	      components: {
+	        outer: { template: '<content></content>' },
+	        inner: { template: '<content></content>' }
+	      }
+	    })
+	    expect(el.textContent).toBe('123')
+	    Vue.config.strict = false
+	  })
+	
 	})
 
 
@@ -18369,18 +18774,20 @@
 	  })
 	
 	  it('with filters', function () {
-	    var res = parse(' arg : exp | abc de \'ok\' | bcd')
+	    var res = parse(' arg : exp | abc de \'ok\' \'\' | bcd')
 	    expect(res.length).toBe(1)
 	    expect(res[0].expression).toBe('exp')
 	    expect(res[0].arg).toBe('arg')
-	    expect(res[0].raw).toBe('arg : exp | abc de \'ok\' | bcd')
+	    expect(res[0].raw).toBe('arg : exp | abc de \'ok\' \'\' | bcd')
 	    expect(res[0].filters.length).toBe(2)
 	    expect(res[0].filters[0].name).toBe('abc')
-	    expect(res[0].filters[0].args.length).toBe(2)
+	    expect(res[0].filters[0].args.length).toBe(3)
 	    expect(res[0].filters[0].args[0].value).toBe('de')
 	    expect(res[0].filters[0].args[0].dynamic).toBe(true)
 	    expect(res[0].filters[0].args[1].value).toBe('ok')
 	    expect(res[0].filters[0].args[1].dynamic).toBe(false)
+	    expect(res[0].filters[0].args[2].value).toBe('')
+	    expect(res[0].filters[0].args[2].dynamic).toBe(false)
 	    expect(res[0].filters[1].name).toBe('bcd')
 	    expect(res[0].filters[1].args).toBeUndefined()
 	  })
@@ -20635,6 +21042,9 @@
 	        },
 	        camelCasedComponent: {
 	          template: 'yo'
+	        },
+	        PascalCasedComponent: {
+	          template: 'ho'
 	        }
 	      }
 	    })
@@ -20643,6 +21053,7 @@
 	  it('resolves', function () {
 	    expect(resolveAsset(vm.$options, 'components', 'hyphenated-component')).toBeTruthy()
 	    expect(resolveAsset(vm.$options, 'components', 'camel-cased-component')).toBeTruthy()
+	    expect(resolveAsset(vm.$options, 'components', 'pascal-cased-component')).toBeTruthy()
 	  })
 	
 	})
