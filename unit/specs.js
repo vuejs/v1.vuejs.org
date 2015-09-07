@@ -416,8 +416,9 @@
 	 */
 	
 	var toString = Object.prototype.toString
+	var OBJECT_STRING = '[object Object]'
 	exports.isPlainObject = function (obj) {
-	  return toString.call(obj) === '[object Object]'
+	  return toString.call(obj) === OBJECT_STRING
 	}
 	
 	/**
@@ -488,7 +489,8 @@
 	 */
 	
 	exports.indexOf = function (arr, obj) {
-	  for (var i = 0, l = arr.length; i < l; i++) {
+	  var i = arr.length
+	  while (i--) {
 	    if (arr[i] === obj) return i
 	  }
 	  return -1
@@ -3309,8 +3311,8 @@
 	        'Error when evaluating expression "' +
 	        this.expression + '". ' +
 	        (config.debug
-	          ? '' :
-	          'Turn on debug mode to see stack trace.'
+	          ? ''
+	          : 'Turn on debug mode to see stack trace.'
 	        ), e
 	      )
 	    }
@@ -5752,6 +5754,7 @@
 	  this.op =
 	  this.cb = null
 	  this.justEntered = false
+	  this.entered = this.left = false
 	  this.typeCache = {}
 	  // bind
 	  var self = this
@@ -5794,7 +5797,11 @@
 	  this.cb = cb
 	  addClass(this.el, this.enterClass)
 	  op()
+	  this.entered = false
 	  this.callHookWithCb('enter')
+	  if (this.entered) {
+	    return // user called done synchronously.
+	  }
 	  this.cancel = this.hooks && this.hooks.enterCancelled
 	  queue.push(this.enterNextTick)
 	}
@@ -5810,16 +5817,20 @@
 	  _.nextTick(function () {
 	    this.justEntered = false
 	  }, this)
-	  var type = this.getCssTransitionType(this.enterClass)
 	  var enterDone = this.enterDone
-	  if (type === TYPE_TRANSITION) {
-	    // trigger transition by removing enter class now
+	  var type = this.getCssTransitionType(this.enterClass)
+	  if (!this.pendingJsCb) {
+	    if (type === TYPE_TRANSITION) {
+	      // trigger transition by removing enter class now
+	      removeClass(this.el, this.enterClass)
+	      this.setupCssCb(transitionEndEvent, enterDone)
+	    } else if (type === TYPE_ANIMATION) {
+	      this.setupCssCb(animationEndEvent, enterDone)
+	    } else {
+	      enterDone()
+	    }
+	  } else if (type === TYPE_TRANSITION) {
 	    removeClass(this.el, this.enterClass)
-	    this.setupCssCb(transitionEndEvent, enterDone)
-	  } else if (type === TYPE_ANIMATION) {
-	    this.setupCssCb(animationEndEvent, enterDone)
-	  } else if (!this.pendingJsCb) {
-	    enterDone()
 	  }
 	}
 	
@@ -5828,6 +5839,7 @@
 	 */
 	
 	p.enterDone = function () {
+	  this.entered = true
 	  this.cancel = this.pendingJsCb = null
 	  removeClass(this.el, this.enterClass)
 	  this.callHook('afterEnter')
@@ -5861,7 +5873,11 @@
 	  this.op = op
 	  this.cb = cb
 	  addClass(this.el, this.leaveClass)
+	  this.left = false
 	  this.callHookWithCb('leave')
+	  if (this.left) {
+	    return // user called done synchronously.
+	  }
 	  this.cancel = this.hooks && this.hooks.leaveCancelled
 	  // only need to handle leaveDone if
 	  // 1. the transition is already done (synchronously called
@@ -5900,6 +5916,7 @@
 	 */
 	
 	p.leaveDone = function () {
+	  this.left = true
 	  this.cancel = this.pendingJsCb = null
 	  this.op()
 	  removeClass(this.el, this.leaveClass)
@@ -6204,9 +6221,10 @@
 	      )
 	      return
 	    }
+	    el.__v_model = this
 	    handler.bind.call(this)
 	    this.update = handler.update
-	    this.unbind = handler.unbind
+	    this._unbind = handler.unbind
 	  },
 	
 	  /**
@@ -6226,6 +6244,11 @@
 	        this.hasWrite = true
 	      }
 	    }
+	  },
+	
+	  unbind: function () {
+	    this.el.__v_model = null
+	    this._unbind && this._unbind()
 	  }
 	}
 	
@@ -6716,6 +6739,21 @@
 	   */
 	
 	  bind: function () {
+	
+	    // some helpful tips...
+	    /* istanbul ignore if */
+	    if (
+	      process.env.NODE_ENV !== 'production' &&
+	      this.el.tagName === 'OPTION' &&
+	      this.el.parentNode && this.el.parentNode.__v_model
+	    ) {
+	      _.warn(
+	        'Don\'t use v-repeat for v-model options; ' +
+	        'use the `options` param instead: ' +
+	        'http://vuejs.org/guide/forms.html#Dynamic_Select_Options'
+	      )
+	    }
+	
 	    // support for item in array syntax
 	    var inMatch = this.expression.match(/(.*) in (.*)/)
 	    if (inMatch) {
@@ -6754,19 +6792,6 @@
 	
 	    // create cache object
 	    this.cache = Object.create(null)
-	
-	    // some helpful tips...
-	    /* istanbul ignore if */
-	    if (
-	      process.env.NODE_ENV !== 'production' &&
-	      this.el.tagName === 'OPTION'
-	    ) {
-	      _.warn(
-	        'Don\'t use v-repeat for v-model options; ' +
-	        'use the `options` param instead: ' +
-	        'http://vuejs.org/guide/forms.html#Dynamic_Select_Options'
-	      )
-	    }
 	  },
 	
 	  /**
@@ -6885,6 +6910,12 @@
 	   */
 	
 	  update: function (data) {
+	    if (process.env.NODE_ENV !== 'production' && !_.isArray(data)) {
+	      _.warn(
+	        'v-repeat pre-converts Objects into Arrays, and ' +
+	        'v-repeat filters should always return Arrays.'
+	      )
+	    }
 	    if (this.componentId) {
 	      var state = this.componentState
 	      if (state === UNRESOLVED) {
@@ -6958,6 +6989,14 @@
 	      primitive = !isObject(raw)
 	      vm = !init && this.getVm(raw, i, converted ? obj.$key : null)
 	      if (vm) { // reusable instance
+	
+	        if (process.env.NODE_ENV !== 'production' && vm._reused) {
+	          _.warn(
+	            'Duplicate objects found in v-repeat="' + this.expression + '": ' +
+	            JSON.stringify(raw)
+	          )
+	        }
+	
 	        vm._reused = true
 	        vm.$index = i // update $index
 	        // update data for track-by or object repeat,
@@ -7155,7 +7194,7 @@
 	        cache[id] = vm
 	      } else if (!primitive && idKey !== '$index') {
 	        process.env.NODE_ENV !== 'production' && _.warn(
-	          'Duplicate track-by key in v-repeat: ' + id
+	          'Duplicate objects with the same track-by key in v-repeat: ' + id
 	        )
 	      }
 	    } else {
@@ -7165,8 +7204,8 @@
 	          data[id] = vm
 	        } else {
 	          process.env.NODE_ENV !== 'production' && _.warn(
-	            'Duplicate objects are not supported in v-repeat ' +
-	            'when using components or transitions.'
+	            'Duplicate objects found in v-repeat="' + this.expression + '": ' +
+	            JSON.stringify(data)
 	          )
 	        }
 	      } else {
@@ -7900,6 +7939,7 @@
 	  esc: 27,
 	  tab: 9,
 	  enter: 13,
+	  space: 32,
 	  'delete': 46,
 	  up: 38,
 	  left: 37,
@@ -8570,7 +8610,7 @@
 /* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
 	var config = __webpack_require__(8)
 	var Dep = __webpack_require__(21)
 	var arrayMethods = __webpack_require__(59)
@@ -8624,11 +8664,18 @@
 	  ) {
 	    ob = value.__ob__
 	  } else if (
-	    _.isObject(value) &&
+	    (_.isArray(value) || _.isPlainObject(value)) &&
 	    !Object.isFrozen(value) &&
 	    !value._isVue
 	  ) {
 	    ob = new Observer(value)
+	  } else if (process.env.NODE_ENV !== 'production') {
+	    if (_.isObject(value) && !_.isArray(value) && !_.isPlainObject(value)) {
+	      _.warn(
+	        'Unobservable object found in data: ' +
+	        Object.prototype.toString.call(value)
+	      )
+	    }
 	  }
 	  if (ob && vm) {
 	    ob.addVm(vm)
@@ -8676,7 +8723,42 @@
 	Observer.prototype.observeArray = function (items) {
 	  var i = items.length
 	  while (i--) {
-	    this.observe(items[i])
+	    var ob = this.observe(items[i])
+	    if (ob) {
+	      (ob.parents || (ob.parents = [])).push(this)
+	    }
+	  }
+	}
+	
+	/**
+	 * Remove self from the parent list of removed objects.
+	 *
+	 * @param {Array} items
+	 */
+	
+	Observer.prototype.unobserveArray = function (items) {
+	  var i = items.length
+	  while (i--) {
+	    var ob = items[i] && items[i].__ob__
+	    if (ob) {
+	      ob.parents.$remove(this)
+	    }
+	  }
+	}
+	
+	/**
+	 * Notify self dependency, and also parent Array dependency
+	 * if any.
+	 */
+	
+	Observer.prototype.notify = function () {
+	  this.dep.notify()
+	  var parents = this.parents
+	  if (parents) {
+	    var i = parents.length
+	    while (i--) {
+	      parents[i].notify()
+	    }
 	  }
 	}
 	
@@ -8700,12 +8782,6 @@
 	        dep.depend()
 	        if (childOb) {
 	          childOb.dep.depend()
-	        }
-	        if (_.isArray(val)) {
-	          for (var e, i = 0, l = val.length; i < l; i++) {
-	            e = val[i]
-	            e && e.__ob__ && e.__ob__.dep.depend()
-	          }
 	        }
 	      }
 	      return val
@@ -8775,7 +8851,8 @@
 	}
 	
 	module.exports = Observer
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ },
 /* 59 */
@@ -8811,7 +8888,7 @@
 	    }
 	    var result = original.apply(this, args)
 	    var ob = this.__ob__
-	    var inserted
+	    var inserted, removed
 	    switch (method) {
 	      case 'push':
 	        inserted = args
@@ -8821,11 +8898,17 @@
 	        break
 	      case 'splice':
 	        inserted = args.slice(2)
+	        removed = result
+	        break
+	      case 'pop':
+	      case 'shift':
+	        removed = [result]
 	        break
 	    }
 	    if (inserted) ob.observeArray(inserted)
+	    if (removed) ob.unobserveArray(removed)
 	    // notify change
-	    ob.dep.notify()
+	    ob.notify()
 	    return result
 	  })
 	})
@@ -8902,7 +8985,7 @@
 	      return
 	    }
 	    ob.convert(key, val)
-	    ob.dep.notify()
+	    ob.notify()
 	    if (ob.vms) {
 	      var i = ob.vms.length
 	      while (i--) {
@@ -8950,7 +9033,7 @@
 	    if (!ob || _.isReserved(key)) {
 	      return
 	    }
-	    ob.dep.notify()
+	    ob.notify()
 	    if (ob.vms) {
 	      var i = ob.vms.length
 	      while (i--) {
@@ -10116,13 +10199,15 @@
 	exports.$addChild = function (opts, BaseCtor) {
 	  BaseCtor = BaseCtor || _.Vue
 	  opts = opts || {}
-	  var parent = this
 	  var ChildVue
+	  var parent = this
+	  // transclusion context
+	  var context = opts._context || parent
 	  var inherit = opts.inherit !== undefined
 	    ? opts.inherit
 	    : BaseCtor.options.inherit
 	  if (inherit) {
-	    var ctors = parent._childCtors
+	    var ctors = context._childCtors
 	    ChildVue = ctors[BaseCtor.cid]
 	    if (!ChildVue) {
 	      var optionName = BaseCtor.options.name
@@ -10136,9 +10221,7 @@
 	      )()
 	      ChildVue.options = BaseCtor.options
 	      ChildVue.linker = BaseCtor.linker
-	      // important: transcluded inline repeaters should
-	      // inherit from outer scope rather than host
-	      ChildVue.prototype = opts._context || this
+	      ChildVue.prototype = context
 	      ctors[BaseCtor.cid] = ChildVue
 	    }
 	  } else {
@@ -15917,7 +16000,7 @@
 	      }
 	    })
 	
-	    it('warn duplicate objects', function () {
+	    it('warn duplicate objects on initial render', function () {
 	      var obj = {}
 	      new Vue({
 	        el: el,
@@ -15929,6 +16012,23 @@
 	      expect(hasWarned(_, 'Duplicate objects')).toBe(true)
 	    })
 	
+	    it('warn duplicate objects on diff', function (done) {
+	      var obj = {}
+	      var vm = new Vue({
+	        el: el,
+	        template: '<div v-repeat="items"></div>',
+	        data: {
+	          items: [obj]
+	        }
+	      })
+	      expect(_.warn).not.toHaveBeenCalled()
+	      vm.items.push(obj)
+	      _.nextTick(function () {
+	        expect(hasWarned(_, 'Duplicate objects')).toBe(true)
+	        done()
+	      })
+	    })
+	
 	    it('warn duplicate trackby id', function () {
 	      new Vue({
 	        el: el,
@@ -15937,7 +16037,7 @@
 	          items: [{id: 1}, {id: 1}]
 	        }
 	      })
-	      expect(hasWarned(_, 'Duplicate track-by key')).toBe(true)
+	      expect(hasWarned(_, 'Duplicate objects with the same track-by key')).toBe(true)
 	    })
 	
 	    it('warn v-if', function () {
@@ -16129,6 +16229,22 @@
 	        expect(vm._directives[0].cache.b).toBeNull()
 	        done()
 	      })
+	    })
+	
+	    it('warn filters that return non-Array values', function () {
+	      new Vue({
+	        el: el,
+	        template: '<div v-repeat="items | test"></div>',
+	        data: {
+	          items: []
+	        },
+	        filters: {
+	          test: function (val) {
+	            return {}
+	          }
+	        }
+	      })
+	      expect(hasWarned(_, 'should always return Arrays')).toBe(true)
 	    })
 	
 	  })
@@ -18513,6 +18629,22 @@
 	    Vue.config.strict = false
 	  })
 	
+	  it('nested object $set should trigger parent array notify', function (done) {
+	    var vm = new Vue({
+	      el: document.createElement('div'),
+	      template: '{{items | json}}{{items[0].a}}',
+	      data: {
+	        items: [{}]
+	      }
+	    })
+	    expect(vm.$el.textContent).toBe(JSON.stringify(vm.items, null, 2))
+	    vm.items[0].$set('a', 123)
+	    Vue.nextTick(function () {
+	      expect(vm.$el.textContent).toBe(JSON.stringify(vm.items, null, 2) + '123')
+	      done()
+	    })
+	  })
+	
 	})
 
 
@@ -18565,6 +18697,10 @@
 	var _ = __webpack_require__(3)
 	
 	describe('Observer', function () {
+	
+	  beforeEach(function () {
+	    spyOn(_, 'warn')
+	  })
 	
 	  it('create on non-observables', function () {
 	    // skip primitive value
@@ -18752,6 +18888,11 @@
 	    arr.push(1)
 	    expect(dep2.notify).toHaveBeenCalled()
 	    config.proto = true
+	  })
+	
+	  it('warn unobservable object', function () {
+	    Observer.create(window)
+	    expect(hasWarned(_, 'Unobservable object found in data')).toBe(true)
 	  })
 	
 	})
@@ -20194,6 +20335,50 @@
 	          expect(cb).toHaveBeenCalled()
 	          expect(hooks.afterEnter).toHaveBeenCalled()
 	          done()
+	        }
+	      })
+	
+	      it('css + js hook with callback before transitionend', function (done) {
+	        document.body.removeChild(el)
+	        el.classList.add('test')
+	
+	        // enter hook that expects a second argument
+	        // indicates the user wants to control when the
+	        // transition ends.
+	        var enterCalled = false
+	        hooks.enter = function (el, enterDone) {
+	          enterCalled = true
+	          setTimeout(function () {
+	            enterDone()
+	            testDone()
+	          }, 20)
+	        }
+	
+	        el.__v_trans = new Transition(el, 'test', hooks, vm)
+	        transition.apply(el, 1, function () {
+	          document.body.appendChild(el)
+	          op()
+	        }, vm, cb)
+	        expect(hooks.beforeEnter).toHaveBeenCalled()
+	        expect(op).toHaveBeenCalled()
+	        expect(cb).not.toHaveBeenCalled()
+	        expect(enterCalled).toBe(true)
+	        _.nextTick(function () {
+	          expect(el.classList.contains('test-enter')).toBe(false)
+	          expect(hooks.afterEnter).not.toHaveBeenCalled()
+	          _.on(el, _.transitionEndEvent, function () {
+	            // callback should have been called, but only once, by the js callback
+	            expect(cb).toHaveBeenCalled()
+	            expect(cb.calls.count()).toBe(1)
+	            expect(hooks.afterEnter).toHaveBeenCalled()
+	            done()
+	          })
+	        })
+	
+	        // this is called by the enter hook
+	        function testDone () {
+	          expect(cb).toHaveBeenCalled()
+	          expect(hooks.afterEnter).toHaveBeenCalled()
 	        }
 	      })
 	
