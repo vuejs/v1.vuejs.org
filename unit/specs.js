@@ -224,7 +224,7 @@
 /***/ function(module, exports) {
 
 	/**
-	 * Check is a string starts with $ or _
+	 * Check if a string starts with $ or _
 	 *
 	 * @param {String} str
 	 * @return {Boolean}
@@ -941,7 +941,9 @@
 	        currentQueue = queue;
 	        queue = [];
 	        while (++queueIndex < len) {
-	            currentQueue[queueIndex].run();
+	            if (currentQueue) {
+	                currentQueue[queueIndex].run();
+	            }
 	        }
 	        queueIndex = -1;
 	        len = queue.length;
@@ -993,7 +995,6 @@
 	    throw new Error('process.binding is not supported');
 	};
 	
-	// TODO(shtylman)
 	process.cwd = function () { return '/' };
 	process.chdir = function (dir) {
 	    throw new Error('process.chdir is not supported');
@@ -6531,7 +6532,13 @@
 	      while (i--) {
 	        var option = el.options[i]
 	        if (option !== defaultOption) {
-	          el.removeChild(option)
+	          var parentNode = option.parentNode
+	          if (parentNode === el) {
+	            parentNode.removeChild(option)
+	          } else {
+	            el.removeChild(parentNode)
+	            i = el.options.length
+	          }
 	        }
 	      }
 	      buildOptions(el, value)
@@ -7577,7 +7584,7 @@
 	  },
 	
 	  getContainedComponents: function () {
-	    var vm = this.vm
+	    var vm = this._host || this.vm
 	    var start = this.start.nextSibling
 	    var end = this.end
 	
@@ -8610,7 +8617,7 @@
 /* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	var _ = __webpack_require__(3)
 	var config = __webpack_require__(8)
 	var Dep = __webpack_require__(21)
 	var arrayMethods = __webpack_require__(59)
@@ -8669,13 +8676,6 @@
 	    !value._isVue
 	  ) {
 	    ob = new Observer(value)
-	  } else if (process.env.NODE_ENV !== 'production') {
-	    if (_.isObject(value) && !_.isArray(value) && !_.isPlainObject(value)) {
-	      _.warn(
-	        'Unobservable object found in data: ' +
-	        Object.prototype.toString.call(value)
-	      )
-	    }
 	  }
 	  if (ob && vm) {
 	    ob.addVm(vm)
@@ -8851,8 +8851,7 @@
 	}
 	
 	module.exports = Observer
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+
 
 /***/ },
 /* 59 */
@@ -14094,8 +14093,8 @@
 	      expect(opts[2].selected).toBe(true)
 	    })
 	
-	    it('select + options + optgroup', function () {
-	      new Vue({
+	    it('select + options + optgroup', function (done) {
+	      var vm = new Vue({
 	        el: el,
 	        data: {
 	          test: 'b',
@@ -14118,6 +14117,53 @@
 	      expect(opts[0].selected).toBe(false)
 	      expect(opts[1].selected).toBe(true)
 	      expect(opts[2].selected).toBe(false)
+	      vm.opts = [
+	        { label: 'X', options: ['x', 'y'] },
+	        { label: 'Y', options: ['z'] }
+	      ]
+	      vm.test = 'y'
+	      _.nextTick(function () {
+	        expect(el.firstChild.innerHTML).toBe(
+	          '<optgroup label="X">' +
+	            '<option value="x">x</option><option value="y">y</option>' +
+	          '</optgroup>' +
+	          '<optgroup label="Y">' +
+	            '<option value="z">z</option>' +
+	          '</optgroup>'
+	        )
+	        var opts = el.firstChild.options
+	        expect(opts[0].selected).toBe(false)
+	        expect(opts[1].selected).toBe(true)
+	        expect(opts[2].selected).toBe(false)
+	        done()
+	      })
+	    })
+	
+	    it('select + options + optgroup + default option', function (done) {
+	      var vm = new Vue({
+	        el: el,
+	        data: {
+	          test: '',
+	          opts: [
+	            { label: 'A', options: ['a', 'b'] },
+	            { label: 'B', options: ['c'] }
+	          ]
+	        },
+	        template: '<select v-model="test" options="opts"><option value=""></option></select>'
+	      })
+	      var opts = el.firstChild.options
+	      expect(opts[0].selected).toBe(true)
+	      expect(el.firstChild.value).toBe('')
+	      vm.opts = [
+	        { label: 'X', options: ['x', 'y'] },
+	        { label: 'Y', options: ['z'] }
+	      ]
+	      _.nextTick(function () {
+	        var opts = el.firstChild.options
+	        expect(opts[0].selected).toBe(true)
+	        expect(el.firstChild.value).toBe('')
+	        done()
+	      })
 	    })
 	
 	    it('select + options with Object value', function (done) {
@@ -18889,12 +18935,6 @@
 	    expect(dep2.notify).toHaveBeenCalled()
 	    config.proto = true
 	  })
-	
-	  it('warn unobservable object', function () {
-	    Observer.create(window)
-	    expect(hasWarned(_, 'Unobservable object found in data')).toBe(true)
-	  })
-	
 	})
 
 
