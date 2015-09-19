@@ -4402,7 +4402,7 @@
 	}
 	
 	var tagRE = /<([\w:]+)/
-	var entityRE = /&\w+;/
+	var entityRE = /&\w+;|&#\d+;|&#x[\dA-F]+;/
 	
 	/**
 	 * Convert a string template to a DocumentFragment.
@@ -6006,7 +6006,9 @@
 	    // CSS transitions.
 	    document.hidden ||
 	    // explicit js-only transition
-	    (this.hooks && this.hooks.css === false)
+	    (this.hooks && this.hooks.css === false) ||
+	    // element is hidden
+	    isHidden(this.el)
 	  ) {
 	    return
 	  }
@@ -6054,6 +6056,20 @@
 	    }
 	  }
 	  _.on(el, event, onEnd)
+	}
+	
+	/**
+	 * Check if an element is hidden - in that case we can just
+	 * skip the transition alltogether.
+	 *
+	 * @param {Element} el
+	 * @return {Boolean}
+	 */
+	
+	function isHidden (el) {
+	  return el.style.display === 'none' ||
+	    el.style.visibility === 'hidden' ||
+	    el.hidden
 	}
 	
 	module.exports = Transition
@@ -6293,7 +6309,11 @@
 	        // in IE11 the "compositionend" event fires AFTER
 	        // the "input" event, so the input handler is blocked
 	        // at the end... have to call it here.
-	        self.listener()
+	        //
+	        // #1327: in lazy mode this is unecessary.
+	        if (!lazy) {
+	          self.listener()
+	        }
 	      })
 	    }
 	
@@ -6577,7 +6597,7 @@
 	    op = options[i]
 	    if (!op.options) {
 	      el = document.createElement('option')
-	      if (typeof op === 'string') {
+	      if (typeof op === 'string' || typeof op === 'number') {
 	        el.text = el.value = op
 	      } else {
 	        if (op.value != null && !_.isObject(op.value)) {
@@ -19604,6 +19624,11 @@
 	      expect(res instanceof DocumentFragment).toBeTruthy()
 	      expect(res.childNodes.length).toBe(1)
 	      expect(res.firstChild.nodeValue).toBe('hi<hi')
+	      // #1330
+	      res = parse('hello &#x2F; hello')
+	      expect(res instanceof DocumentFragment).toBeTruthy()
+	      expect(res.childNodes.length).toBe(1)
+	      expect(res.firstChild.nodeValue).toBe('hello / hello')
 	    })
 	
 	    it('should parse textContent if argument is a script node', function () {
