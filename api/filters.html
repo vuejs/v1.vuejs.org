@@ -178,7 +178,7 @@
 <p>New in 0.12.11</p>
 </blockquote>
 <p>Starting in 0.12.11 you can pass in multiple data keys:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-repeat</span>=<span class="value">"user in uers | filterBy searchText in 'name' 'phone'"</span>&gt;</span><span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-repeat</span>=<span class="value">"user in users | filterBy searchText in 'name' 'phone'"</span>&gt;</span><span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Or pass in a dynamic argument with an Array value:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- fields = ['fieldA', 'fieldB'] --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-repeat</span>=<span class="value">"user in users | filterBy searchText in fields"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Or, just pass in a custom filter function:</p>
