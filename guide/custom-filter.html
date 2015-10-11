@@ -74,51 +74,31 @@
                 </li>
             
                 <li>
-                    <a href="/guide/index.html" class="sidebar-link">Introduction</a>
+                    <a href="/guide/index.html" class="sidebar-link">Getting Started</a>
                 </li>
             
                 <li>
-                    <a href="/guide/instance.html" class="sidebar-link">The Vue Instance</a>
+                    <a href="/guide/directives.html" class="sidebar-link">Directives</a>
                 </li>
             
                 <li>
-                    <a href="/guide/syntax.html" class="sidebar-link">Data Binding Syntax</a>
+                    <a href="/guide/filters.html" class="sidebar-link">Filters</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/list.html" class="sidebar-link">Displaying a List</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/events.html" class="sidebar-link">Listening for Events</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/forms.html" class="sidebar-link">Handling Forms</a>
                 </li>
             
                 <li>
                     <a href="/guide/computed.html" class="sidebar-link">Computed Properties</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/class-and-style.html" class="sidebar-link">Class and Style Bindings</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/conditional.html" class="sidebar-link">Conditional Rendering</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/list.html" class="sidebar-link">List Rendering</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/events.html" class="sidebar-link">Methods and Event Handling</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/forms.html" class="sidebar-link">Form Input Bindings</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/transitions.html" class="sidebar-link">Transitions</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/components.html" class="sidebar-link">Components</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/reactivity.html" class="sidebar-link">Reactivity in Depth</a>
                 </li>
             
                 <li>
@@ -130,21 +110,35 @@
                 </li>
             
                 <li>
-                    <a href="/guide/mixins.html" class="sidebar-link">Mixins</a>
+                    <a href="/guide/components.html" class="sidebar-link">Component System</a>
                 </li>
             
                 <li>
-                    <a href="/guide/plugins.html" class="sidebar-link">Plugins</a>
+                    <a href="/guide/transitions.html" class="sidebar-link">Transition System</a>
                 </li>
             
                 <li>
-                    <a href="/guide/application.html" class="sidebar-link">Building Large-Scale Apps</a>
+                    <a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a>
                 </li>
             
                 <li>
-                    <a href="/guide/comparison.html" class="sidebar-link">Comparison with Other Frameworks</a>
+                    <a href="/guide/extending.html" class="sidebar-link">Extending Vue</a>
                 </li>
             
+                <li>
+                    <a href="/guide/best-practices.html" class="sidebar-link new">Tips & Best Practices</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/faq.html" class="sidebar-link">Common FAQs</a>
+                </li>
+            
+            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
+            <li style="margin:10px 0 3px">
+              <script data-gittip-username="yyx990803"
+                data-gittip-widget="button"
+                src="//gttp.co/v1.js"></script>
+            </li>
         </ul>
     </div>
 </div>
@@ -155,14 +149,14 @@
     <div id="ad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
     </div>
-    <h2 id="Basics">Basics</h2><p>Similar to custom directives, you can register a custom filter with the global <code>Vue.filter()</code> method, passing in a <strong>filterID</strong> and a <strong>filter function</strong>. The filter function takes a value as the argument and returns the transformed value:</p>
+    <h2 id="The_Basics">The Basics</h2><p>Similar to custom directives, you can register a custom filter with the global <code>Vue.filter()</code> method, passing in a <strong>filterID</strong> and a <strong>filter function</strong>. The filter function takes a value as the argument and returns the transformed value:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Vue.filter(<span class="string">'reverse'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> value.split(<span class="string">''</span>).reverse().join(<span class="string">''</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 'abc' =&gt; 'cba' --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-text</span>=<span class="value">"message | reverse"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>The filter function also receives any inline arguments:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Vue.filter(<span class="string">'wrap'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">value, begin, end</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> begin + value + end</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 'hello' =&gt; 'before hello after' --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-text</span>=<span class="value">"message | wrap 'before' 'after'"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h2 id="Two-way_Filters">Two-way Filters</h2><p>Up till now we have used filters to transform values coming from the model and before displaying them in the view. But it is also possible to define a filter that transforms the value before it is written back to the model from the view (input elements):</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Vue.filter(<span class="string">'currencyDisplay'</span>, &#123;</span><br><span class="line">  <span class="comment">// model -&gt; view</span></span><br><span class="line">  <span class="comment">// formats the value when updating the input element.</span></span><br><span class="line">  read: <span class="function"><span class="keyword">function</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'$'</span>+val.toFixed(<span class="number">2</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// view -&gt; model</span></span><br><span class="line">  <span class="comment">// formats the value when writing to the data.</span></span><br><span class="line">  write: <span class="function"><span class="keyword">function</span>(<span class="params">val, oldVal</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> number = +val.replace(<span class="regexp">/[^\d.]/g</span>, <span class="string">''</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">isNaN</span>(number) ? <span class="number">0</span> : <span class="built_in">parseFloat</span>(number.toFixed(<span class="number">2</span>))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Vue.filter(<span class="string">'currencyDisplay'</span>, &#123;</span><br><span class="line">  <span class="comment">// model -&gt; view</span></span><br><span class="line">  <span class="comment">// formats the value when updating the input element.</span></span><br><span class="line">  read: <span class="function"><span class="keyword">function</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'$'</span>+val.toFixed(<span class="number">2</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// view -&gt; model</span></span><br><span class="line">  <span class="comment">// formats the value when updating the data.</span></span><br><span class="line">  write: <span class="function"><span class="keyword">function</span>(<span class="params">val, oldVal</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> number = +val.replace(<span class="regexp">/[^\d.]/g</span>, <span class="string">''</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">isNaN</span>(number) ? <span class="number">0</span> : number</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p>Demo:</p>
 
 <div id="two-way-filter-demo" class="demo">
@@ -182,7 +176,7 @@ new Vue({
       },
       write: function(val, oldVal) {
         var number = +val.replace(/[^\d.]/g, '')
-        return isNaN(number) ? 0 : parseFloat(number.toFixed(2))
+        return isNaN(number) ? 0 : number
       }
     }
   }
@@ -194,20 +188,10 @@ new Vue({
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Vue.filter(<span class="string">'concat'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">value, input</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// here `input` === `this.userInput`</span></span><br><span class="line">  <span class="keyword">return</span> value + input</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p>For this simple example above, you can achieve the same result with just an expression, but for more complicated procedures that need more than one statement, you need to put them either in a computed property or a custom filter.</p>
 <p>The built-in <code>filterBy</code> and <code>orderBy</code> filters are both filters that perform non-trivial work on the Array being passed in and relies on the current state of the owner Vue instance.</p>
+<p>Alright! Now it’s time to learn how the <a href="/guide/components.html">Component System</a> works.</p>
 
-    
-      <div class="guide-links">
-        
-          <span>← <a href="/guide/custom-directive.html">Custom Directives</a></span>
-        
-        
-          <span style="float:right"><a href="/guide/mixins.html">Mixins</a> →</span>
-        
-      </div>
-    
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/vuejs/vuejs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>
-
                 
             </div>
             <script src="/js/smooth-scroll.min.js"></script>

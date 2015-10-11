@@ -118,10 +118,10 @@ pre {
   -moz-osx-font-smoothing: initial;
 }
 code {
-  color: #e96900;
-  padding: 3px 5px;
+  color: #525252;
+  padding: 2px 6px;
   margin: 0 2px;
-  border-radius: 2px;
+  border: 1px solid #e6e6e6;
   white-space: nowrap;
 }
 em {
@@ -234,13 +234,10 @@ a.button:hover {
   box-shadow: 0 1px 1px rgba(0,0,0,0.1);
   border-radius: 0px;
   padding: 25px 35px;
+  margin-left: 0.8em;
   margin-bottom: 40px;
   font-size: 1.2em;
   line-height: 1.5em;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 #demo h1,
 .demo h1 {
@@ -302,7 +299,7 @@ ul.demo li {
   border-bottom: 1px solid #ddd;
 }
 @media screen and (max-width: 1400px) and (min-width: 720px) {
-  .content.blog.post {
+  .content.blog {
     margin: 0 0 0 280px;
   }
 }
@@ -463,13 +460,13 @@ ul.demo li {
   max-width: 600px;
   margin: 0 auto;
 }
-.content.api ul {
-  padding-left: 1.25em;
-  line-height: 1.4em;
+.content.with-sidebar {
+  margin: 0 0 0 280px;
 }
-.content.api ul ul,
-.content.api ul p {
-  margin: 0.6em 0;
+.content.api ul {
+  font-size: 0.9em;
+  padding-left: 1.25em;
+  color: #7f8c8d;
 }
 .content a.button {
   font-size: 0.9em;
@@ -572,13 +569,9 @@ ul.demo li {
   font-family: 'Dosis', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
   font-size: 14px;
 }
-.guide-links {
-  margin-top: 2em;
-  height: 1em;
-}
 .footer {
   color: #7f8c8d;
-  margin-top: 2em;
+  margin-top: 4em;
   padding-top: 2em;
   border-top: 1px solid #e5e5e5;
   font-size: 0.9em;
@@ -589,9 +582,6 @@ ul.demo li {
   }
 }
 @media screen and (max-width: 1200px) {
-  .content.with-sidebar {
-    margin-left: 280px;
-  }
   #ad {
     z-index: 8;
     position: relative;

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Methods and Event Handling - vue.js</title>
+        <title>Listening for Events - vue.js</title>
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -74,51 +74,31 @@
                 </li>
             
                 <li>
-                    <a href="/guide/index.html" class="sidebar-link">Introduction</a>
+                    <a href="/guide/index.html" class="sidebar-link">Getting Started</a>
                 </li>
             
                 <li>
-                    <a href="/guide/instance.html" class="sidebar-link">The Vue Instance</a>
+                    <a href="/guide/directives.html" class="sidebar-link">Directives</a>
                 </li>
             
                 <li>
-                    <a href="/guide/syntax.html" class="sidebar-link">Data Binding Syntax</a>
+                    <a href="/guide/filters.html" class="sidebar-link">Filters</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/list.html" class="sidebar-link">Displaying a List</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/events.html" class="sidebar-link current">Listening for Events</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/forms.html" class="sidebar-link">Handling Forms</a>
                 </li>
             
                 <li>
                     <a href="/guide/computed.html" class="sidebar-link">Computed Properties</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/class-and-style.html" class="sidebar-link">Class and Style Bindings</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/conditional.html" class="sidebar-link">Conditional Rendering</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/list.html" class="sidebar-link">List Rendering</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/events.html" class="sidebar-link current">Methods and Event Handling</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/forms.html" class="sidebar-link">Form Input Bindings</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/transitions.html" class="sidebar-link">Transitions</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/components.html" class="sidebar-link">Components</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/reactivity.html" class="sidebar-link">Reactivity in Depth</a>
                 </li>
             
                 <li>
@@ -130,123 +110,69 @@
                 </li>
             
                 <li>
-                    <a href="/guide/mixins.html" class="sidebar-link">Mixins</a>
+                    <a href="/guide/components.html" class="sidebar-link">Component System</a>
                 </li>
             
                 <li>
-                    <a href="/guide/plugins.html" class="sidebar-link">Plugins</a>
+                    <a href="/guide/transitions.html" class="sidebar-link">Transition System</a>
                 </li>
             
                 <li>
-                    <a href="/guide/application.html" class="sidebar-link">Building Large-Scale Apps</a>
+                    <a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a>
                 </li>
             
                 <li>
-                    <a href="/guide/comparison.html" class="sidebar-link">Comparison with Other Frameworks</a>
+                    <a href="/guide/extending.html" class="sidebar-link">Extending Vue</a>
                 </li>
             
+                <li>
+                    <a href="/guide/best-practices.html" class="sidebar-link new">Tips & Best Practices</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/faq.html" class="sidebar-link">Common FAQs</a>
+                </li>
+            
+            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
+            <li style="margin:10px 0 3px">
+              <script data-gittip-username="yyx990803"
+                data-gittip-widget="button"
+                src="//gttp.co/v1.js"></script>
+            </li>
         </ul>
     </div>
 </div>
 
 
 <div class="content guide with-sidebar">
-    <h1>Methods and Event Handling</h1>
+    <h1>Listening for Events</h1>
     <div id="ad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
     </div>
-    <h2 id="Method_Handler">Method Handler</h2><p>We can then use the <code>v-on</code> directive to listen to DOM events:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"example"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">button</span> <span class="attribute">v-on:click</span>=<span class="value">"greet"</span>&gt;</span>Greet<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>We are binding a click event listener to a method named <code>greet</code>. Here’s how to define that method in our Vue instance:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> vm = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#example'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    name: <span class="string">'Vue.js'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// define methods under the `methods` object</span></span><br><span class="line">  methods: &#123;</span><br><span class="line">    greet: <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">      <span class="comment">// `this` inside methods point to the Vue instance</span></span><br><span class="line">      alert(<span class="string">'Hello '</span> + <span class="keyword">this</span>.name + <span class="string">'!'</span>)</span><br><span class="line">      <span class="comment">// `event` is the native DOM event</span></span><br><span class="line">      alert(event.target.tagName)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// you can invoke methods in JavaScript too</span></span><br><span class="line">vm.greet() <span class="comment">// -&gt; 'Hello Vue.js!'</span></span><br></pre></td></tr></table></figure>
-<p>Test it yourself:</p>
-
-<div id="example" class="demo">
-  <button v-on:click="greet">Greet</button>
-</div>
-<script>
-var vm = new Vue({
-  el: '#example',
-  data: {
-    name: 'Vue.js'
-  },
-  // define methods under the `methods` object
-  methods: {
-    greet: function (event) {
-      // `this` inside methods point to the vm
-      alert('Hello ' + this.name + '!')
-      // `event` is the native DOM event
-      alert(event.target.tagName)
-    }
-  }
-})
-</script>
-
-<h2 id="Inline_Statement_Handler">Inline Statement Handler</h2><p>Instead of binding directly to a method name, we can also use an inline JavaScript statement:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"example-2"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">button</span> <span class="attribute">v-on:click</span>=<span class="value">"say('hi')"</span>&gt;</span>Say Hi<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">button</span> <span class="attribute">v-on:click</span>=<span class="value">"say('what')"</span>&gt;</span>Say What<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#example-2'</span>,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    say: <span class="function"><span class="keyword">function</span> (<span class="params">msg</span>) </span>&#123;</span><br><span class="line">      alert(msg)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>Result:<br>
-<div id="example-2" class="demo">
-  <button v-on:click="say('hi')">Say Hi</button>
-  <button v-on:click="say('what')">Say What</button>
-</div>
-<script>
-new Vue({
-  el: '#example-2',
-  methods: {
-    say: function (msg) {
-      alert(msg)
-    }
-  }
-})
-</script>
-</p>
-<p>Similar to the restrictions on inline expressions, event handlers are restricted to <strong>one statement only</strong>.</p>
-<p>Sometimes we also need to access the original DOM event in an inline statement handler. You can pass it into a method using the special <code>$event</code> variable:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">button</span> <span class="attribute">v-on:click</span>=<span class="value">"say('hello!', $event)"</span>&gt;</span>Submit<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line">methods: &#123;</span><br><span class="line">  say: <span class="function"><span class="keyword">function</span> (<span class="params">msg, event</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// now we have access to the native event</span></span><br><span class="line">    event.preventDefault()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Event_Modifiers">Event Modifiers</h2><p>It is a very common need to call <code>event.preventDefault()</code> or <code>event.stopPropagation()</code> inside event handlers. Although we can do this easily inside methods, it would be better if the methods can be purely about data logic rather than having to deal with DOM event details.</p>
-<p>To address this problem, Vue.js provides two <strong>event modifiers</strong> for <code>v-on</code>: <code>.prevent</code> and <code>.stop</code>. Recall that modifiers are directive postfixes denoted by a dot:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- the click event's propagation will be stopped --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">v-on:click.stop</span>=<span class="value">"doThis"</span>&gt;</span><span class="tag">&lt;/<span class="title">a</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- the submit event will no longer reload the page --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">form</span> <span class="attribute">v-on:submit.prevent</span>=<span class="value">"onSubmit"</span>&gt;</span><span class="tag">&lt;/<span class="title">form</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- modifiers can be chained --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">v-on:click.stop.prevent</span>=<span class="value">"doThat"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="Key_Modifiers">Key Modifiers</h2><p>When listening for keyboard events, we often need to check for common key codes. Vue.js also allows adding key modifiers for <code>v-on</code> when listening for key events:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- only call vm.submit() when the keyCode is 13 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-on:keyup.13</span>=<span class="value">"submit"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>Remembering all the keyCodes is a hassle, so Vue.js provides aliases for most commonly used keys:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- same as above --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-on:keyup.enter</span>=<span class="value">"submit"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- also works for shorthand --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> @<span class="attribute">keyup.enter</span>=<span class="value">"submit"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>Here’s the full list of key modifier aliases:</p>
-<ul>
-<li>enter</li>
-<li>tab</li>
-<li>delete</li>
-<li>esc</li>
-<li>space</li>
-<li>up</li>
-<li>down</li>
-<li>left</li>
-<li>right</li>
-</ul>
-<h2 id="Why_Listeners_in_HTML?">Why Listeners in HTML?</h2><p>You might be concerned that this whole event listening approach violates the good old rules about “separation of concern”. Rest assured - since all Vue.js handler functions and expressions are strictly bound to the ViewModel that’s handling the current View, it won’t cause any maintenance difficulty. In fact, there are several benefits in using <code>v-on</code>:</p>
+    <p>You can use the <code>v-on</code> directive to bind event listeners to DOM events. It can be bound to either an event handler function (without the invocation parentheses) or an inline expression. If a handler function is provided, it will get the original DOM event as the argument. The event also comes with an extra property: <code>targetVM</code>, pointing to the particular ViewModel the event was triggered on:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"demo"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">a</span> <span class="attribute">v-on</span>=<span class="value">"click: onClick"</span>&gt;</span>Trigger a handler<span class="tag">&lt;/<span class="title">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">a</span> <span class="attribute">v-on</span>=<span class="value">"click: n++"</span>&gt;</span>Trigger an expression<span class="tag">&lt;/<span class="title">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#demo'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    n: <span class="number">0</span></span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    onClick: <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(e.target.tagName) <span class="comment">// "A"</span></span><br><span class="line">      <span class="built_in">console</span>.log(e.targetVM === <span class="keyword">this</span>) <span class="comment">// true</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="Invoke_Handler_with_Expression">Invoke Handler with Expression</h2><p><code>targetVM</code> could be useful when <code>v-on</code> is used with <code>v-repeat</code>, since the latter creates a lot of child ViewModels. However, it is often more convenient and explicit to use an invocation expression passing in the current alias, which equals the current data object being iterated on:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span> <span class="attribute">id</span>=<span class="value">"list"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-repeat</span>=<span class="value">"item in items"</span> <span class="attribute">v-on</span>=<span class="value">"click: toggle(item)"</span>&gt;</span></span><br><span class="line">    &#123;&#123;item.text&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#list'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    items: [</span><br><span class="line">      &#123; text: <span class="string">'one'</span>, done: <span class="literal">true</span> &#125;,</span><br><span class="line">      &#123; text: <span class="string">'two'</span>, done: <span class="literal">false</span> &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    toggle: <span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">      item.done = !item.done</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>When you want to access the original DOM event in an expression handler, you can pass it in as <code>$event</code>:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">button</span> <span class="attribute">v-on</span>=<span class="value">"click: submit('hello!', $event)"</span>&gt;</span>Submit<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* ... */</span></span><br><span class="line">&#123;</span><br><span class="line">  methods: &#123;</span><br><span class="line">    submit: <span class="function"><span class="keyword">function</span> (<span class="params">msg, e</span>) </span>&#123;</span><br><span class="line">      e.stopPropagation()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* ... */</span></span><br></pre></td></tr></table></figure>
+<h2 id="The_Special_key_Filter">The Special <code>key</code> Filter</h2><p>When listening for keyboard events, we often need to check for common key codes. Vue.js provides a special <code>key</code> filter that can only be used with <code>v-on</code> directives. It takes a single argument that denotes the key code to check for:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- only call vm.submit() when the keyCode is 13 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-on</span>=<span class="value">"keyup:submit | key 13"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>It also has a few presets for commonly used keys:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- same as above --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-on</span>=<span class="value">"keyup:submit | key 'enter'"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Check the API reference for a <a href="/api/filters.html#key">full list of key filter presets</a>.</p>
+<h2 id="Why_Listeners_in_HTML?">Why Listeners in HTML?</h2><p>You might be concerned that this whole event listening approach violates the good old rules about “separation of concern”. Rest assured - since all Vue.js handler functions and expressions are strictly bound to the ViewModel that’s handling the current View, it won’t cause any maintainance difficulty. In fact, there are several benefits in using <code>v-on</code>:</p>
 <ol>
-<li><p>It makes it easier to locate the handler function implementations within your JS code by simply skimming the HTML template.</p>
-</li>
-<li><p>Since you don’t have to manually attach event listeners in JS, your ViewModel code can be pure logic and DOM-free. This makes it easier to test.</p>
-</li>
-<li><p>When a ViewModel is destroyed, all event listeners are automatically removed. You don’t need to worry about cleaning it up yourself.</p>
-</li>
+<li>It makes it easier to locate the handler function implementations within your JS code by simply skimming the HTML template.</li>
+<li>Since you don’t have to manually attach event listeners in JS, your ViewModel code can be pure logic and DOM-free. This makes it easier to test.</li>
+<li>When a ViewModel is destroyed, all event listeners are automatically removed. You don’t need to worry about cleaning it up yourself.</li>
 </ol>
+<p>Next up: <a href="/guide/forms.html">Handling Forms</a>.</p>
 
-    
-      <div class="guide-links">
-        
-          <span>← <a href="/guide/list.html">List Rendering</a></span>
-        
-        
-          <span style="float:right"><a href="/guide/forms.html">Form Input Bindings</a> →</span>
-        
-      </div>
-    
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/vuejs/vuejs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>
-
                 
             </div>
             <script src="/js/smooth-scroll.min.js"></script>

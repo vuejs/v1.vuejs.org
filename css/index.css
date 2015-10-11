@@ -118,10 +118,10 @@ pre {
   -moz-osx-font-smoothing: initial;
 }
 code {
-  color: #e96900;
-  padding: 3px 5px;
+  color: #525252;
+  padding: 2px 6px;
   margin: 0 2px;
-  border-radius: 2px;
+  border: 1px solid #e6e6e6;
   white-space: nowrap;
 }
 em {
