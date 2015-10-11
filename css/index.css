@@ -232,23 +232,29 @@ html,
 body {
   height: 100%;
 }
-#cn-link {
-  position: absolute;
-  top: 10px;
-  right: 12px;
-  font-size: 14px;
-}
-#nav {
+#nav,
+#translations {
   list-style-type: none;
   text-align: center;
-  margin-bottom: 3em;
   padding: 0;
 }
-#nav li {
+#nav li,
+#translations li {
   display: inline-block;
 }
-#nav li:last-child .nav-link {
+#nav li:last-child .nav-link,
+#translations li:last-child .nav-link {
   margin-right: 0;
+}
+#translations {
+  margin-bottom: 3em;
+}
+#translations .delimiter {
+  color: #7f8c8d;
+  margin: 0 5px;
+}
+#translations .nav-link {
+  margin: 0;
 }
 .nav-link {
   color: #7f8c8d;
@@ -261,10 +267,6 @@ body {
 .nav-link:hover,
 .nav-link.current {
   border-bottom: 3px solid #42b983;
-  -webkit-transform: scale(1.05);
-  -moz-transform: scale(1.05);
-  -ms-transform: scale(1.05);
-  transform: scale(1.05);
 }
 #logo {
   display: block;
@@ -289,11 +291,7 @@ body {
   font-family: 'Dosis', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 300;
   font-size: 4em;
-  margin: 0.4em 0 0.7em;
-}
-#hero .sub {
-  color: #34495e;
-  font-size: 1.2em;
+  margin: 0.4em 0;
 }
 #hero .warning {
   color: #7f8c8d;
@@ -316,7 +314,7 @@ body {
   width: 20px;
 }
 #hero a.button {
-  width: 180px;
+  width: 280px;
   margin: 0.5em;
 }
 #social {
@@ -524,7 +522,10 @@ body {
     font-size: 14px;
   }
   #nav {
-    margin: 3em 1.8em 2em;
+    margin: 3em 1.8em 0;
+  }
+  #translations {
+    margin-bottom: 2em;
   }
   #logo {
     width: 100px;
