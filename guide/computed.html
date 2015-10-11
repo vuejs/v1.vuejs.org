@@ -74,31 +74,51 @@
                 </li>
             
                 <li>
-                    <a href="/guide/index.html" class="sidebar-link">Getting Started</a>
+                    <a href="/guide/index.html" class="sidebar-link">Introduction</a>
                 </li>
             
                 <li>
-                    <a href="/guide/directives.html" class="sidebar-link">Directives</a>
+                    <a href="/guide/instance.html" class="sidebar-link">The Vue Instance</a>
                 </li>
             
                 <li>
-                    <a href="/guide/filters.html" class="sidebar-link">Filters</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/list.html" class="sidebar-link">Displaying a List</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/events.html" class="sidebar-link">Listening for Events</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/forms.html" class="sidebar-link">Handling Forms</a>
+                    <a href="/guide/syntax.html" class="sidebar-link">Data Binding Syntax</a>
                 </li>
             
                 <li>
                     <a href="/guide/computed.html" class="sidebar-link current">Computed Properties</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/class-and-style.html" class="sidebar-link">Class and Style Bindings</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/conditional.html" class="sidebar-link">Conditional Rendering</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/list.html" class="sidebar-link">List Rendering</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/events.html" class="sidebar-link">Methods and Event Handling</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/forms.html" class="sidebar-link">Form Input Bindings</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/transitions.html" class="sidebar-link">Transitions</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/components.html" class="sidebar-link">Components</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/reactivity.html" class="sidebar-link">Reactivity in Depth</a>
                 </li>
             
                 <li>
@@ -110,35 +130,21 @@
                 </li>
             
                 <li>
-                    <a href="/guide/components.html" class="sidebar-link">Component System</a>
+                    <a href="/guide/mixins.html" class="sidebar-link">Mixins</a>
                 </li>
             
                 <li>
-                    <a href="/guide/transitions.html" class="sidebar-link">Transition System</a>
+                    <a href="/guide/plugins.html" class="sidebar-link">Plugins</a>
                 </li>
             
                 <li>
-                    <a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a>
+                    <a href="/guide/application.html" class="sidebar-link">Building Large-Scale Apps</a>
                 </li>
             
                 <li>
-                    <a href="/guide/extending.html" class="sidebar-link">Extending Vue</a>
+                    <a href="/guide/comparison.html" class="sidebar-link">Comparison with Other Frameworks</a>
                 </li>
             
-                <li>
-                    <a href="/guide/best-practices.html" class="sidebar-link new">Tips & Best Practices</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/faq.html" class="sidebar-link">Common FAQs</a>
-                </li>
-            
-            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
-            <li style="margin:10px 0 3px">
-              <script data-gittip-username="yyx990803"
-                data-gittip-widget="button"
-                src="//gttp.co/v1.js"></script>
-            </li>
         </ul>
     </div>
 </div>
@@ -149,28 +155,56 @@
     <div id="ad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
     </div>
-    <p>Vue.js’ inline expressions are very convenient, but the best use cases for them are simple boolean operations or string concatenations. For more complicated logic, you should use <strong>computed properties</strong>.</p>
-<p>A computed property is used to declaratively describe a value that depends on other values. When you data-bind to a computed property inside the template, Vue knows when to update the DOM when any of the values depended upon by the computed property has changed. This can be very powerful and makes your code more declarative, data-driven and thus easier to maintain.</p>
-<p>It is often a better idea to use a computed property rather than an imperative <code>$watch</code> callback. Consider this example:</p>
+    <p>In-template expressions are very convenient, but they are really meant for simple operations only. Templates are meant to describe the structure of your view. Putting too much logic into your templates can make them bloated and hard to maintain. This is why Vue.js limits binding expressions to one expression only. For any logic that requires more than one expression, you should use a <strong>computed property</strong>.</p>
+<h3 id="Basic_Example">Basic Example</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"example"</span>&gt;</span></span><br><span class="line">  a=&#123;&#123; a &#125;&#125;, b=&#123;&#123; b &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> vm = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#example'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    a: <span class="number">1</span></span><br><span class="line">  &#125;,</span><br><span class="line">  computed: &#123;</span><br><span class="line">    <span class="comment">// a computed getter</span></span><br><span class="line">    b: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="comment">// `this` points to the vm instance</span></span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.a + <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>Result:</p>
+
+<div id="example" class="demo">
+  a={{ a }}, b={{ b }}
+</div>
+<script>
+var vm = new Vue({
+  el: '#example',
+  data: {
+    a: 1
+  },
+  computed: {
+    b: function () {
+      return this.a + 1
+    }
+  }
+})
+</script>
+
+<p>Here we have declared a computed property <code>b</code>. The function we provided will be used as the getter function for the property <code>vm.b</code>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(vm.b) <span class="comment">// -&gt; 2</span></span><br><span class="line">vm.a = <span class="number">2</span></span><br><span class="line"><span class="built_in">console</span>.log(vm.b) <span class="comment">// -&gt; 3</span></span><br></pre></td></tr></table></figure>
+<p>You can open the console and play with the example vm yourself. The value of <code>vm.b</code> is always dependent on the value of <code>vm.a</code>.</p>
+<p>You can data-bind to computed properties in templates just like a normal property. Vue is aware that <code>vm.b</code> depends on <code>vm.a</code>, so it will update any bindings that depends on <code>vm.b</code> when <code>vm.a</code> changes. And the best part is that we’ve created this dependency relationship declaratively: the computed getter function is pure and has no side effects, which makes it easy to test and reason about.</p>
+<h3 id="Computed_Property_vs-_$watch">Computed Property vs. $watch</h3><p>Vue.js does provide an API method called <code>$watch</code> that allows you to observe data changes on a Vue instance. When you have some data that needs to change based on some other data, it is tempting to use <code>$watch</code> - especially if you are coming from an AngularJS background. However, it is often a better idea to use a computed property rather than an imperative <code>$watch</code> callback. Consider this example:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"demo"</span>&gt;</span>&#123;&#123;fullName&#125;&#125;<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> vm = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    firstName: <span class="string">'Foo'</span>,</span><br><span class="line">    lastName: <span class="string">'Bar'</span>,</span><br><span class="line">    fullName: <span class="string">'Foo Bar'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">vm.$watch(<span class="string">'firstName'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">val</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.fullName = val + <span class="string">' '</span> + <span class="keyword">this</span>.lastName</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">vm.$watch(<span class="string">'lastName'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">val</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.fullName = <span class="keyword">this</span>.firstName + <span class="string">' '</span> + val</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>The above code is imperative and cumbersome. Compare it with a computed property version:</p>
+<p>The above code is imperative and repetitive. Compare it with a computed property version:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> vm = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    firstName: <span class="string">'Foo'</span>,</span><br><span class="line">    lastName: <span class="string">'Bar'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  computed: &#123;</span><br><span class="line">    fullName: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.firstName + <span class="string">' '</span> + <span class="keyword">this</span>.lastName</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>Much better. In addition, you can also provide a setter for a computed property:</p>
+<p>Much better, isn’t it?</p>
+<h3 id="Computed_Setter">Computed Setter</h3><p>Computed properties are by default get-only, but you can also provide a setter when you need it:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line">computed: &#123;</span><br><span class="line">  fullName: &#123;</span><br><span class="line">    <span class="comment">// getter</span></span><br><span class="line">    get: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.firstName + <span class="string">' '</span> + <span class="keyword">this</span>.lastName</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// setter</span></span><br><span class="line">    set: <span class="function"><span class="keyword">function</span> (<span class="params">newValue</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> names = newValue.split(<span class="string">' '</span>)</span><br><span class="line">      <span class="keyword">this</span>.firstName = names[<span class="number">0</span>]</span><br><span class="line">      <span class="keyword">this</span>.lastName = names[names.length - <span class="number">1</span>]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
-<h3 id="Computed_Property_Caching">Computed Property Caching</h3><p>Before 0.12.8, computed properties behave just like getters - every time you access it, the getter function is re-evaluated. In 0.12.8 this has been improved - computed properties are cached and lazily re-evaluated only when one of its reactive dependencies have changed.</p>
-<p>Imagine we have an expensive computed property A, which requires looping through a huge Array and doing a lot of computations. Then, we may have other computed properties that depend on A. Without caching, we’d be calling A’s getter many more times than necessary and this could potentially cause performance issues. With caching, A’s value will be cached as long as its dependencies haven’t changed, and accessing it many times will not trigger unnecessary computations.</p>
-<p>However, it is important to understand what is considered a “reactive dependency”:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> vm = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    msg: <span class="string">'hi'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  computed: &#123;</span><br><span class="line">    example: &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Date</span>.now() + <span class="keyword">this</span>.msg</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>In the example above, the computed property relies on <code>vm.msg</code>. Because this is an observed data property on the Vue instance, it is considered a reactive dependency. Whenever <code>vm.msg</code> is changed, <code>vm.example</code>‘s value will be re-evaluated.</p>
-<p>However, <code>Date.now()</code> is <strong>not</strong> a reactive dependency, because it has nothing to do with Vue’s data observation system. Therefore, when you programatically access <code>vm.example</code>, you will find the timestamp to remain the same unless <code>vm.msg</code> triggered a re-evaluation.</p>
-<p>Sometimes you may want to preserve the simple getter-like behavior, where every time you access <code>vm.example</code> it is simply re-evaluated. Starting in 0.12.11, it’s possible to turn off caching for a specific computed property:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">computed: &#123;</span><br><span class="line">  example: &#123;</span><br><span class="line">    cache: <span class="literal">false</span>,</span><br><span class="line">    get: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Date</span>.now() + <span class="keyword">this</span>.msg</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Now, every time you access <code>vm.example</code>, the timestamp will be up-to-date. However, note this only affects programmatic access inside JavaScript; data-bindings are still dependency-driven. When you bind to a computed property in the template as <code>{{example}}</code>, the DOM will only be updated when a reactive dependency has changed.</p>
-<p>Next, let’s learn about how to <a href="/guide/custom-directive.html">write a custom directive</a>.</p>
+<p>Now when you call <code>vm.fullName = &#39;John Doe&#39;</code>, the setter will be invoked and <code>vm.firstName</code> and <code>vm.lastName</code> will be updated accordingly.</p>
+<p>The technical details behind how computed properties are updated are <a href="reactivity.html#Inside_Computed_Properties">discussed in another section</a> dedicated to the reactivity system.</p>
 
+    
+      <div class="guide-links">
+        
+          <span>← <a href="/guide/syntax.html">Data Binding Syntax</a></span>
+        
+        
+          <span style="float:right"><a href="/guide/class-and-style.html">Class and Style Bindings</a> →</span>
+        
+      </div>
+    
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/vuejs/vuejs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>
+
                 
             </div>
             <script src="/js/smooth-scroll.min.js"></script>
