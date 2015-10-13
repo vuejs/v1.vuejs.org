@@ -1767,6 +1767,7 @@
 	 * Hooks and param attributes are merged as arrays.
 	 */
 	
+	strats.init =
 	strats.created =
 	strats.ready =
 	strats.attached =
@@ -8379,6 +8380,9 @@
 	  // initialize data as empty object.
 	  // it will be filled up in _initScope().
 	  this._data = {}
+	
+	  // call init hook
+	  this._callHook('init')
 	
 	  // initialize data observation and scope inheritance.
 	  this._initState()
