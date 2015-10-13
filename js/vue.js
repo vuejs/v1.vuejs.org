@@ -1615,7 +1615,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Hooks and param attributes are merged as arrays.
 	 */
 
-	strats.init =
 	strats.created =
 	strats.ready =
 	strats.attached =
@@ -4976,8 +4975,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  'false-value': '_falseValue'
 	}
 
-	// check for attribtues that prohibit interpolations
-	var disallowedInterpAttrRE = /^v-|^(is|transition|transition-mode|debounce|track-by|stagger|enter-stagger|leave-stagger)$/
+	// regex to test for globally allowed attributes.
+	// we only need to include ones that:
+	// - do not have a corresponding property, e.g. role, dropzone;
+	// - cannot be camelized into the corresponding property, .e.g class, accesskey, contenteditable;
+	var globalAllowedAttrRE = /^(class|role|accesskey|contenteditable|contextmenu|dropzone|hidden|tabindex)$|^data-|^aria-/
 
 	module.exports = {
 
@@ -4988,11 +4990,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // handle interpolation bindings
 	    if (this.descriptor.interp) {
 	      // only allow binding on native attributes
-	      if (disallowedInterpAttrRE.test(attr)) {
+	      if (!(
+	        // globally allowed attributes
+	        globalAllowedAttrRE.test(attr) ||
+	        // check if "for" is available on current element.
+	        // the corresponding property is a special case.
+	        (attr === 'for' && 'htmlFor' in this.el) ||
+	        // other attributes: check if a camelized property
+	        // is available on the element
+	        _.camelize(attr) in this.el
+	      )) {
 	        ("development") !== 'production' && _.warn(
 	          attr + '="' + this.descriptor.raw + '": ' +
-	          'attribute interpolation is not allowed in Vue.js ' +
-	          'directives and special attributes.'
+	          'attribute interpolation is allowed only ' +
+	          'in valid native attributes. "' + attr + '" ' +
+	          'is not a valid attribute on <' + this.el.tagName.toLowerCase() + '>.'
 	        )
 	        this.el.removeAttribute(attr)
 	        this.invalid = true
@@ -8210,9 +8222,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // initialize data as empty object.
 	  // it will be filled up in _initScope().
 	  this._data = {}
-
-	  // call init hook
-	  this._callHook('init')
 
 	  // initialize data observation and scope inheritance.
 	  this._initState()
