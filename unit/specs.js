@@ -200,7 +200,7 @@
 	extend(p, __webpack_require__(68))
 	extend(p, __webpack_require__(69))
 	
-	Vue.version = '1.0.0-beta.4'
+	Vue.version = '1.0.0-rc.1'
 	module.exports = _.Vue = Vue
 
 
@@ -1767,6 +1767,7 @@
 	 * Hooks and param attributes are merged as arrays.
 	 */
 	
+	strats.init =
 	strats.created =
 	strats.ready =
 	strats.attached =
@@ -1889,8 +1890,8 @@
 	      }
 	      def = components[key]
 	      if (_.isPlainObject(def)) {
-	        def.id = def.id || key
-	        components[key] = def._Ctor || (def._Ctor = _.Vue.extend(def))
+	        def.name = def.name || key
+	        components[key] = _.Vue.extend(def)
 	      }
 	    }
 	  }
@@ -1938,10 +1939,10 @@
 	    var asset
 	    while (i--) {
 	      asset = assets[i]
-	      var id = asset.id || (asset.options && asset.options.id)
+	      var id = asset.name || (asset.options && asset.options.name)
 	      if (!id) {
 	        process.env.NODE_ENV !== 'production' && _.warn(
-	          'Array-syntax assets must provide an id field.'
+	          'Array-syntax assets must provide a "name" field.'
 	        )
 	      } else {
 	        res[id] = asset
@@ -2268,6 +2269,10 @@
 	exports.extend = function (extendOptions) {
 	  extendOptions = extendOptions || {}
 	  var Super = this
+	  var isFirstExtend = Super.cid === 0
+	  if (isFirstExtend && extendOptions._Ctor) {
+	    return extendOptions._Ctor
+	  }
 	  var name = extendOptions.name || Super.options.name
 	  var Sub = createClass(name || 'VueComponent')
 	  Sub.prototype = Object.create(Super.prototype)
@@ -2288,6 +2293,10 @@
 	  // enable recursive self-lookup
 	  if (name) {
 	    Sub.options.components[name] = Sub
+	  }
+	  // cache constructor
+	  if (isFirstExtend) {
+	    extendOptions._Ctor = Sub
 	  }
 	  return Sub
 	}
@@ -5135,11 +5144,8 @@
 	  'false-value': '_falseValue'
 	}
 	
-	// regex to test for globally allowed attributes.
-	// we only need to include ones that:
-	// - do not have a corresponding property, e.g. role, dropzone;
-	// - cannot be camelized into the corresponding property, .e.g class, accesskey, contenteditable;
-	var globalAllowedAttrRE = /^(class|role|accesskey|contenteditable|contextmenu|dropzone|hidden|tabindex)$|^data-|^aria-/
+	// check for attribtues that prohibit interpolations
+	var disallowedInterpAttrRE = /^v-|^:|^@|^(is|transition|transition-mode|debounce|track-by|stagger|enter-stagger|leave-stagger)$/
 	
 	module.exports = {
 	
@@ -5150,21 +5156,11 @@
 	    // handle interpolation bindings
 	    if (this.descriptor.interp) {
 	      // only allow binding on native attributes
-	      if (!(
-	        // globally allowed attributes
-	        globalAllowedAttrRE.test(attr) ||
-	        // check if "for" is available on current element.
-	        // the corresponding property is a special case.
-	        (attr === 'for' && 'htmlFor' in this.el) ||
-	        // other attributes: check if a camelized property
-	        // is available on the element
-	        _.camelize(attr) in this.el
-	      )) {
+	      if (disallowedInterpAttrRE.test(attr)) {
 	        process.env.NODE_ENV !== 'production' && _.warn(
 	          attr + '="' + this.descriptor.raw + '": ' +
-	          'attribute interpolation is allowed only ' +
-	          'in valid native attributes. "' + attr + '" ' +
-	          'is not a valid attribute on <' + this.el.tagName.toLowerCase() + '>.'
+	          'attribute interpolation is not allowed in Vue.js ' +
+	          'directives and special attributes.'
 	        )
 	        this.el.removeAttribute(attr)
 	        this.invalid = true
@@ -7711,7 +7707,7 @@
 
 	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
 	var templateParser = __webpack_require__(21)
-	var specialCharRE = /[^a-zA-Z_\-:\.]/
+	var specialCharRE = /[^\w\-:\.]/
 	
 	/**
 	 * Process an element or a DocumentFragment based on a
@@ -8392,6 +8388,9 @@
 	  // initialize data as empty object.
 	  // it will be filled up in _initScope().
 	  this._data = {}
+	
+	  // call init hook
+	  this._callHook('init')
 	
 	  // initialize data observation and scope inheritance.
 	  this._initState()
@@ -12347,13 +12346,13 @@
 	    it('attribute interpolation: warn invalid', function () {
 	      new Vue({
 	        el: el,
-	        template: '<div hello="{{a}}"></div>',
+	        template: '<div v-text="{{a}}"></div>',
 	        data: {
 	          a: '123'
 	        }
 	      })
 	      expect(el.innerHTML).toBe('<div></div>')
-	      expect(hasWarned(_, 'attribute interpolation is allowed only in valid native attributes')).toBe(true)
+	      expect(hasWarned(_, 'attribute interpolation is not allowed in Vue.js directives')).toBe(true)
 	    })
 	
 	    it('warn directives on fragment instances', function () {
@@ -21219,7 +21218,7 @@
 	      }
 	    })
 	    expect(typeof res.components.test).toBe('function')
-	    expect(res.components.test.options.id).toBe('test')
+	    expect(res.components.test.options.name).toBe('test')
 	    expect(res.components.test.super).toBe(Vue)
 	  })
 	
@@ -21378,11 +21377,12 @@
 	      }
 	    }
 	    var b = {
-	      components: [{ id: 'b' }]
+	      components: [{ name: 'b' }]
 	    }
 	    var res = merge(a, b)
 	    expect(res.components.a).toBe(a.components.a)
 	    // b.components is guarded and converted to object hash
+	    expect(res.components.b).toBeTruthy()
 	    expect(res.components.b).toBe(b.components.b)
 	  })
 	
@@ -21396,7 +21396,7 @@
 	      components: [{}]
 	    }
 	    merge(a, b)
-	    expect(hasWarned(_, 'must provide an id')).toBe(true)
+	    expect(hasWarned(_, 'must provide a "name" field')).toBe(true)
 	  })
 	
 	})
