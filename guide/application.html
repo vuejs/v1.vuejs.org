@@ -43,9 +43,9 @@
 <li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
-<li><a href="https://github.com/yyx990803/vue" class="nav-link" target="_blank">GitHub</a></li>
+<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
 <li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
-<li><a href="https://gitter.im/yyx990803/vue" class="nav-link" target="_blank">Chat</a></li>
+<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
 
     </ul>
 </div>
@@ -62,9 +62,9 @@
 <li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
-<li><a href="https://github.com/yyx990803/vue" class="nav-link" target="_blank">GitHub</a></li>
+<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
 <li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
-<li><a href="https://gitter.im/yyx990803/vue" class="nav-link" target="_blank">Chat</a></li>
+<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
 
     </ul>
     <div class="list">
@@ -202,7 +202,7 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  plugins: [</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">new</span> webpack.DefinePlugin(&#123;</span><br><span class="line">      <span class="string">'process.env'</span>: &#123;</span><br><span class="line">        NODE_ENV: <span class="string">'"production"'</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="keyword">new</span> webpack.optimize.UglifyJsPlugin(&#123;</span><br><span class="line">      compress: &#123;</span><br><span class="line">        warnings: <span class="literal">false</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="Browserify">Browserify</h3><p>Just run your bundling command with <code>NODE_ENV</code> set to <code>&quot;production&quot;</code>. Vue automatically applies <a href="https://github.com/hughsk/envify" target="_blank" rel="external">envify</a> transform to itself and makes warning blocks unreachable. For example:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NODE_ENV=production browserify <span class="operator">-e</span> main.js | uglifyjs -c -m &gt; build.js</span><br></pre></td></tr></table></figure>
-<h2 id="An_App_Example">An App Example</h2><p>The <a href="https://github.com/yyx990803/vue-hackernews" target="_blank" rel="external">Vue.js Hackernews Clone</a> is an example application that uses Webpack + vue-loader for code organization, Director.js for routing, and HackerNews’ official Firebase API as the backend. It’s by no means a big application, but it demonstrates the combined usage of the concepts discussed on this page.</p>
+<h2 id="An_App_Example">An App Example</h2><p>The <a href="https://github.com/vuejs/vue-hackernews" target="_blank" rel="external">Vue.js Hackernews Clone</a> is an example application that uses Webpack + vue-loader for code organization, Director.js for routing, and HackerNews’ official Firebase API as the backend. It’s by no means a big application, but it demonstrates the combined usage of the concepts discussed on this page.</p>
 
     
       <div class="guide-links">

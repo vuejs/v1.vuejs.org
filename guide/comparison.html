@@ -43,9 +43,9 @@
 <li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
-<li><a href="https://github.com/yyx990803/vue" class="nav-link" target="_blank">GitHub</a></li>
+<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
 <li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
-<li><a href="https://gitter.im/yyx990803/vue" class="nav-link" target="_blank">Chat</a></li>
+<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
 
     </ul>
 </div>
@@ -62,9 +62,9 @@
 <li><a href="/guide/" class="nav-link current">Guide</a></li>
 <li><a href="/api/" class="nav-link">API</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
-<li><a href="https://github.com/yyx990803/vue" class="nav-link" target="_blank">GitHub</a></li>
+<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
 <li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
-<li><a href="https://gitter.im/yyx990803/vue" class="nav-link" target="_blank">Chat</a></li>
+<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
 
     </ul>
     <div class="list">
@@ -174,7 +174,7 @@
 <p>The virtual-DOM approach provides a functional way to describe your view at any point of time, which is really nice. Because it doesn’t use observables and re-renders the entire app on every update, the view is by definition guaranteed to be in sync with the data. It also opens up possibilities to isomorphic JavaScript applications.</p>
 <p>Instead of a Virtual DOM, Vue.js uses the actual DOM as the template and keeps references to actual nodes for data bindings. This limits Vue.js to environments where DOM is present. However, contrary to the common misconception that Virtual-DOM makes React faster than anything else, Vue.js actually out-performs React when it comes to hot updates, and requires almost no hand-tuned optimization. With React, you need to implement <code>shouldComponentUpdate</code> everywhere or use immutable data structures to achieve fully optimized re-renders.</p>
 <p>API-wise, one issue with React (or JSX) is that the render function often involves a lot of logic, and ends up looking more like a piece of program (which in fact it is) rather than a visual representation of the interface. For some developers this is a bonus, but for designer/developer hybrids like me, having a template makes it much easier to think visually about the design and CSS. JSX mixed with JavaScript logic breaks that visual model I need to map the code to the design. In contrast, Vue.js pays the cost of a lightweight data-binding DSL so that we have a visually scannable template and with logic encapsulated into directives and filters.</p>
-<p>Another issue with React is that because DOM updates are completely delegated to the Virtual DOM, it’s a bit tricky when you actually <strong>want</strong> to control the DOM yourself (although theoretically you can, you’d be essentially working against the library when you do that). For applications that needs ad-hoc custom DOM manipulations, especially animations with complex timing requirements, this can become a pretty annoying restriction. On this front, Vue.js allows for more flexibility and there are <a href="https://github.com/yyx990803/vue/wiki/Projects-Using-Vue.js#interactive-experiences" target="_blank" rel="external">multiple FWA/Awwwards winning sites</a> built with Vue.js.</p>
+<p>Another issue with React is that because DOM updates are completely delegated to the Virtual DOM, it’s a bit tricky when you actually <strong>want</strong> to control the DOM yourself (although theoretically you can, you’d be essentially working against the library when you do that). For applications that needs ad-hoc custom DOM manipulations, especially animations with complex timing requirements, this can become a pretty annoying restriction. On this front, Vue.js allows for more flexibility and there are <a href="https://github.com/vuejs/vue/wiki/Projects-Using-Vue.js#interactive-experiences" target="_blank" rel="external">multiple FWA/Awwwards winning sites</a> built with Vue.js.</p>
 <h2 id="Ember">Ember</h2><p>Ember is a full-featured framework that is designed to be highly opinionated. It provides a lot of established conventions, and once you are familiar enough with them, it can make you very productive. However, it also means the learning curve is high and the flexibility suffers. It’s a trade-off when you try to pick between an opinionated framework and a library with a loosely coupled set of tools that work together. The latter gives you more freedom but also requires you to make more architectural decisions.</p>
 <p>That said, it would probably make a better comparison between Vue.js core and Ember’s templating and object model layer:</p>
 <ul>
