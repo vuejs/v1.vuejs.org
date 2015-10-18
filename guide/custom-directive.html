@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = "guide"
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.js"></script>
+        <script src="/js/vue.min.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,18 +35,11 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li>
-  <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
-  </form>
-</li>
-<li><a href="/guide/" class="nav-link current">Guide</a></li>
-<li><a href="/api/" class="nav-link">API</a></li>
+        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+<li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
-<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
-<li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
-<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
-
+<li><a href="/blog/" class="nav-link">Blog</a></li>
+<li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
     </ul>
 </div>
             <div id="main">
@@ -54,102 +47,45 @@
                     
     <div class="sidebar">
     <ul class="main-menu">
-        <li>
-  <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
-  </form>
-</li>
-<li><a href="/guide/" class="nav-link current">Guide</a></li>
-<li><a href="/api/" class="nav-link">API</a></li>
+        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+<li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
-<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
-<li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
-<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
-
+<li><a href="/blog/" class="nav-link">Blog</a></li>
+<li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
     </ul>
     <div class="list">
         <h2>Guide</h2>
         <ul class="menu-root">
             
-                <li>
-                    <a href="/guide/installation.html" class="sidebar-link">Installation</a>
-                </li>
+                <li><a href="/guide/installation.html" class="sidebar-link">Installation</a></li>
             
-                <li>
-                    <a href="/guide/index.html" class="sidebar-link">Getting Started</a>
-                </li>
+                <li><a href="/guide/index.html" class="sidebar-link">Getting Started</a></li>
             
-                <li>
-                    <a href="/guide/overview.html" class="sidebar-link">Overview</a>
-                </li>
+                <li><a href="/guide/directives.html" class="sidebar-link">Directives</a></li>
             
-                <li>
-                    <a href="/guide/instance.html" class="sidebar-link">The Vue Instance</a>
-                </li>
+                <li><a href="/guide/filters.html" class="sidebar-link">Filters</a></li>
             
-                <li>
-                    <a href="/guide/syntax.html" class="sidebar-link">Data Binding Syntax</a>
-                </li>
+                <li><a href="/guide/list.html" class="sidebar-link">Displaying a List</a></li>
             
-                <li>
-                    <a href="/guide/computed.html" class="sidebar-link">Computed Properties</a>
-                </li>
+                <li><a href="/guide/events.html" class="sidebar-link">Listening for Events</a></li>
             
-                <li>
-                    <a href="/guide/class-and-style.html" class="sidebar-link">Class and Style Bindings</a>
-                </li>
+                <li><a href="/guide/forms.html" class="sidebar-link">Handling Forms</a></li>
             
-                <li>
-                    <a href="/guide/conditional.html" class="sidebar-link">Conditional Rendering</a>
-                </li>
+                <li><a href="/guide/computed.html" class="sidebar-link">Computed Properties</a></li>
             
-                <li>
-                    <a href="/guide/list.html" class="sidebar-link">List Rendering</a>
-                </li>
+                <li><a href="/guide/custom-directive.html" class="sidebar-link current">Custom Directives</a></li>
             
-                <li>
-                    <a href="/guide/events.html" class="sidebar-link">Methods and Event Handling</a>
-                </li>
+                <li><a href="/guide/custom-filter.html" class="sidebar-link">Custom Filters</a></li>
             
-                <li>
-                    <a href="/guide/forms.html" class="sidebar-link">Form Input Bindings</a>
-                </li>
+                <li><a href="/guide/components.html" class="sidebar-link">Component System</a></li>
             
-                <li>
-                    <a href="/guide/transitions.html" class="sidebar-link">Transitions</a>
-                </li>
+                <li><a href="/guide/transitions.html" class="sidebar-link">Transitions</a></li>
             
-                <li>
-                    <a href="/guide/components.html" class="sidebar-link">Components</a>
-                </li>
+                <li><a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a></li>
             
-                <li>
-                    <a href="/guide/reactivity.html" class="sidebar-link">Reactivity in Depth</a>
-                </li>
+                <li><a href="/guide/extending.html" class="sidebar-link">Extending Vue</a></li>
             
-                <li>
-                    <a href="/guide/custom-directive.html" class="sidebar-link current">Custom Directives</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/custom-filter.html" class="sidebar-link">Custom Filters</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/mixins.html" class="sidebar-link">Mixins</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/plugins.html" class="sidebar-link">Plugins</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/application.html" class="sidebar-link">Building Large-Scale Apps</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/comparison.html" class="sidebar-link">Comparison with Other Frameworks</a>
-                </li>
+                <li><a href="/guide/faq.html" class="sidebar-link">Common FAQs</a></li>
             
         </ul>
     </div>
@@ -161,112 +97,89 @@
     <div id="ad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
     </div>
-    <h2 id="Basics">Basics</h2><p>In addition to the default set of directives shipped in core, Vue.js also allows you to register custom directives. Custom directives provide a mechanism for mapping data changes to arbitrary DOM behavior.</p>
-<p>You can register a global custom directive with the <code>Vue.directive(id, definition)</code> method, passing in a <strong>directive id</strong> followed by a <strong>definition object</strong>. You can also register a local custom directive by including it in a component’s <code>directives</code> option.</p>
-<h3 id="Hook_Functions">Hook Functions</h3><p>A definition object can provide several hook functions (all optional):</p>
+    <h2 id="The_Basics">The Basics</h2><p>Vue.js allows you to register custom directives, essentially enabling you to teach Vue new tricks on how to map data changes to DOM behavior. You can register a global custom directive with the <code>Vue.directive(id, definition)</code> method, passing in a <strong>directive id</strong> followed by a <strong>definition object</strong>. A definition object can provide several hook functions (all optional):</p>
 <ul>
-<li><p><strong>bind</strong>: called only once, when the directive is first bound to the element.</p>
-</li>
-<li><p><strong>update</strong>: called for the first time immediately after <code>bind</code> with the initial value, then again whenever the binding value changes. The new value and the previous value are provided as the argument.</p>
-</li>
-<li><p><strong>unbind</strong>: called only once, when the directive is unbound from the element.</p>
-</li>
+<li><strong>bind</strong>: called only once, when the directive is first bound to the element.</li>
+<li><strong>update</strong>: called for the first time immediately after <code>bind</code> with the initial value, then again whenever the binding value changes. The new value and the previous value are provided as the argument.</li>
+<li><strong>unbind</strong>: called only once, when the directive is unbound from the element.</li>
 </ul>
 <p><strong>Example</strong></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">Vue.directive(<span class="string">'my-directive'</span>, &#123;</span><br><span class="line">  bind: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// do preparation work</span></span><br><span class="line">    <span class="comment">// e.g. add event listeners or expensive stuff</span></span><br><span class="line">    <span class="comment">// that needs to be run only once</span></span><br><span class="line">  &#125;,</span><br><span class="line">  update: <span class="function"><span class="keyword">function</span> (<span class="params">newValue, oldValue</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// do something based on the updated value</span></span><br><span class="line">    <span class="comment">// this will also be called for the initial value</span></span><br><span class="line">  &#125;,</span><br><span class="line">  unbind: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// do clean up work</span></span><br><span class="line">    <span class="comment">// e.g. remove event listeners added in bind()</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>Once registered, you can use it in Vue.js templates like this (remember to add the <code>v-</code> prefix):</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-my-directive</span>=<span class="value">"someValue"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Vue.directive(<span class="string">'my-directive'</span>, &#123;</span><br><span class="line">  bind: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// do preparation work</span></span><br><span class="line">    <span class="comment">// e.g. add event listeners or expensive stuff</span></span><br><span class="line">    <span class="comment">// that needs to be run only once</span></span><br><span class="line">  &#125;,</span><br><span class="line">  update: <span class="function"><span class="keyword">function</span> (<span class="params">newValue, oldValue</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// do something based on the updated value</span></span><br><span class="line">    <span class="comment">// this will also be called for the initial value</span></span><br><span class="line">  &#125;,</span><br><span class="line">  unbind: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// do clean up work</span></span><br><span class="line">    <span class="comment">// e.g. remove event listeners added in bind()</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>Once registered, you can use it in Vue.js templates like this (you need to add the Vue.js prefix to it):</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-my-directive</span>=<span class="value">"someValue"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>When you only need the <code>update</code> function, you can pass in a single function instead of the definition object:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">Vue.directive(<span class="string">'my-directive'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// this function will be used as update()</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="Directive_Instance_Properties">Directive Instance Properties</h3><p>All the hook functions will be copied into the actual <strong>directive object</strong>, which you can access inside these functions as their <code>this</code> context. The directive object exposes some useful properties:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Vue.directive(<span class="string">'my-directive'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// this function will be used as update()</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>All the hook functions will be copied into the actual <strong>directive object</strong>, which you can access inside these functions as their <code>this</code> context. The directive object exposes some useful properties:</p>
 <ul>
 <li><strong>el</strong>: the element the directive is bound to.</li>
 <li><strong>vm</strong>: the context ViewModel that owns this directive.</li>
 <li><strong>expression</strong>: the expression of the binding, excluding arguments and filters.</li>
 <li><strong>arg</strong>: the argument, if present.</li>
+<li><strong>raw</strong>: the raw, unparsed expression.</li>
 <li><strong>name</strong>: the name of the directive, without the prefix.</li>
-<li><strong>modifiers</strong>: an object containing modifiers, if any.</li>
-<li><strong>descriptor</strong>: an object that contains the parsing result of the entire directive.</li>
 </ul>
-<p class="tip">You should treat all these properties as read-only and never modify them. You can attach custom properties to the directive object too, but be careful not to accidentally overwrite existing internal ones.</p>
+<p class="tip">You should treat all these properties as read-only and refrain from changing them. You can attach custom properties to the directive object too, but be careful not to accidentally overwrite existing internal ones.</p>
 
 <p>An example of a custom directive using some of these properties:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"demo"</span> <span class="attribute">v-demo:hello.a.b</span>=<span class="value">"msg"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">Vue.directive(<span class="string">'demo'</span>, &#123;</span><br><span class="line">  bind: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.el.style.color = <span class="string">'#fff'</span></span><br><span class="line">    <span class="keyword">this</span>.el.style.backgroundColor = <span class="keyword">this</span>.arg</span><br><span class="line">  &#125;,</span><br><span class="line">  update: <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.el.innerHTML =</span><br><span class="line">      <span class="string">'name - '</span>       + <span class="keyword">this</span>.name + <span class="string">'&lt;br&gt;'</span> +</span><br><span class="line">      <span class="string">'expression - '</span> + <span class="keyword">this</span>.expression + <span class="string">'&lt;br&gt;'</span> +</span><br><span class="line">      <span class="string">'argument - '</span>   + <span class="keyword">this</span>.arg + <span class="string">'&lt;br&gt;'</span> +</span><br><span class="line">      <span class="string">'modifiers - '</span>  + <span class="built_in">JSON</span>.stringify(<span class="keyword">this</span>.modifiers) + <span class="string">'&lt;br&gt;'</span> +</span><br><span class="line">      <span class="string">'value - '</span>      + value</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">var</span> demo = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#demo'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    msg: <span class="string">'hello!'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"demo"</span> <span class="attribute">v-demo</span>=<span class="value">"LightSlateGray : msg"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Vue.directive(<span class="string">'demo'</span>, &#123;</span><br><span class="line">  bind: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.el.style.color = <span class="string">'#fff'</span></span><br><span class="line">    <span class="keyword">this</span>.el.style.backgroundColor = <span class="keyword">this</span>.arg</span><br><span class="line">  &#125;,</span><br><span class="line">  update: <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.el.innerHTML =</span><br><span class="line">      <span class="string">'name - '</span>       + <span class="keyword">this</span>.name + <span class="string">'&lt;br&gt;'</span> +</span><br><span class="line">      <span class="string">'raw - '</span>        + <span class="keyword">this</span>.raw + <span class="string">'&lt;br&gt;'</span> +</span><br><span class="line">      <span class="string">'expression - '</span> + <span class="keyword">this</span>.expression + <span class="string">'&lt;br&gt;'</span> +</span><br><span class="line">      <span class="string">'argument - '</span>   + <span class="keyword">this</span>.arg + <span class="string">'&lt;br&gt;'</span> +</span><br><span class="line">      <span class="string">'value - '</span>      + value</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">var</span> demo = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#demo'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    msg: <span class="string">'hello!'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p><strong>Result</strong></p>
-<p><div id="demo" v-demo:hello.a.b="msg"></div></p>
+<p><div id="demo" v-demo="LightSlateGray : msg"></div></p>
 <script>
 Vue.directive('demo', {
   bind: function () {
-    console.log('demo bound!')
+    this.el.style.color = '#fff'
+    this.el.style.backgroundColor = this.arg
   },
   update: function (value) {
     this.el.innerHTML =
       'name - ' + this.name + '<br>' +
+      'raw - ' + this.raw + '<br>' +
       'expression - ' + this.expression + '<br>' +
       'argument - ' + this.arg + '<br>' +
-      'modifiers - '  + JSON.stringify(this.modifiers) + '<br>' +
       'value - ' + value
   }
 })
 var demo = new Vue({
   el: '#demo',
   data: {
-    msg: 'world!'
+    msg: 'hello!'
   }
 })
 </script>
 
-<h3 id="Object_Literals">Object Literals</h3><p>If your directive needs multiple values, you can also pass in a JavaScript object literal. Remember, directives can take any valid JavaScript expression:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-demo</span>=<span class="value">"&#123; color: 'white', text: 'hello!' &#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">Vue.directive(<span class="string">'demo'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(value.color) <span class="comment">// "white"</span></span><br><span class="line">  <span class="built_in">console</span>.log(value.text) <span class="comment">// "hello!"</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="Literal_Modifier">Literal Modifier</h3><p>When a directive is used with the literal modifier, its attribute value will be interpreted as a plain string and passed directly into the <code>update</code> method. The <code>update</code> method will also be called only once, because a plain string cannot be reactive.</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-demo.literal</span>=<span class="value">"foo bar baz"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">Vue.directive(<span class="string">'demo'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(value) <span class="comment">// "foo bar baz"</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<h2 id="Advanced_Options">Advanced Options</h2><h3 id="deep">deep</h3><p>If your custom directive is expected to be used on an Object, and it needs to trigger <code>update</code> when a nested property inside the object changes, you need to pass in <code>deep: true</code> in your directive definition.</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-my-directive</span>=<span class="value">"obj"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">Vue.directive(<span class="string">'my-directive'</span>, &#123;</span><br><span class="line">  deep: <span class="literal">true</span>,</span><br><span class="line">  update: <span class="function"><span class="keyword">function</span> (<span class="params">obj</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// will be called when nested properties in `obj`</span></span><br><span class="line">    <span class="comment">// changes.</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="twoWay">twoWay</h3><p>If your directive expects to write data back to the Vue instance, you need to pass in <code>twoWay: true</code>. This option allows the use of <code>this.set(value)</code> inside the directive:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">Vue.directive(<span class="string">'example'</span>, &#123;</span><br><span class="line">  twoWay: <span class="literal">true</span>,</span><br><span class="line">  bind: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.handler = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="comment">// set data back to the vm.</span></span><br><span class="line">      <span class="comment">// If the directive is bound as v-example="a.b.c",</span></span><br><span class="line">      <span class="comment">// this will attempt to set `vm.a.b.c` with the</span></span><br><span class="line">      <span class="comment">// given value.</span></span><br><span class="line">      <span class="keyword">this</span>.set(<span class="keyword">this</span>.el.value)</span><br><span class="line">    &#125;.bind(<span class="keyword">this</span>)</span><br><span class="line">    <span class="keyword">this</span>.el.addEventListener(<span class="string">'input'</span>, <span class="keyword">this</span>.handler)</span><br><span class="line">  &#125;,</span><br><span class="line">  unbind: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.el.removeEventListener(<span class="string">'input'</span>, <span class="keyword">this</span>.handler)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="acceptStatement">acceptStatement</h3><p>Passing in <code>acceptStatement:true</code> enables your custom directive to accept inline statements like <code>v-on</code> does:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-my-directive</span>=<span class="value">"a++"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">Vue.directive(<span class="string">'my-directive'</span>, &#123;</span><br><span class="line">  acceptStatement: <span class="literal">true</span>,</span><br><span class="line">  update: <span class="function"><span class="keyword">function</span> (<span class="params">fn</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// the passed in value is a function which when called,</span></span><br><span class="line">    <span class="comment">// will execute the "a++" statement in the owner vm's</span></span><br><span class="line">    <span class="comment">// scope.</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="Literal_Directives">Literal Directives</h2><p>If you pass in <code>isLiteral: true</code> when creating a custom directive, the attribute value will be taken as a literal string and assigned as that directive’s <code>expression</code>. The directive will not attempt to setup data observation.</p>
+<p>Example:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-literal-dir</span>=<span class="value">"foo"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Vue.directive(<span class="string">'literal-dir'</span>, &#123;</span><br><span class="line">  isLiteral: <span class="literal">true</span>,</span><br><span class="line">  bind: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.expression) <span class="comment">// 'foo'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="Dynamic_Literal">Dynamic Literal</h3><p>However, in the case that the literal directive contains mustache tags, the behavior is as follows:</p>
+<ul>
+<li><p>The directive instance will have a flag <code>this._isDynamicLiteral</code> set to <code>true</code>;</p>
+</li>
+<li><p>If no <code>update</code> function is provided, the mustache expression will be evaluated only once and assigned to <code>this.expression</code>. No data observation happens.</p>
+</li>
+<li><p>If an <code>update</code> function is provided, the directive <strong>will</strong> setup data observation for that expression and call <code>update</code> when the evaluated result changes.</p>
+</li>
+</ul>
+<h2 id="Two-way_Directives">Two-way Directives</h2><p>If your directive expects to write data back to the Vue instance, you need to pass in <code>twoWay: true</code>. This option allows the use of <code>this.set(value)</code> inside the directive:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Vue.directive(<span class="string">'example'</span>, &#123;</span><br><span class="line">  twoWay: <span class="literal">true</span>,</span><br><span class="line">  bind: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.handler = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="comment">// set data back to the vm.</span></span><br><span class="line">      <span class="comment">// If the directive is bound as v-example="a.b.c",</span></span><br><span class="line">      <span class="comment">// this will attempt to set `vm.a.b.c` with the</span></span><br><span class="line">      <span class="comment">// given value.</span></span><br><span class="line">      <span class="keyword">this</span>.set(<span class="keyword">this</span>.el.value)</span><br><span class="line">    &#125;.bind(<span class="keyword">this</span>)</span><br><span class="line">    <span class="keyword">this</span>.el.addEventListener(<span class="string">'input'</span>, <span class="keyword">this</span>.handler)</span><br><span class="line">  &#125;,</span><br><span class="line">  unbind: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.el.removeEventListener(<span class="string">'input'</span>, <span class="keyword">this</span>.handler)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="Inline_Statements">Inline Statements</h2><p>Passing in <code>acceptStatement:true</code> enables your custom directive to accept inline statements like <code>v-on</code> does:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-my-directive</span>=<span class="value">"a++"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Vue.directive(<span class="string">'my-directive'</span>, &#123;</span><br><span class="line">  acceptStatement: <span class="literal">true</span>,</span><br><span class="line">  update: <span class="function"><span class="keyword">function</span> (<span class="params">fn</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// the passed in value is a function which when called,</span></span><br><span class="line">    <span class="comment">// will execute the "a++" statement in the owner vm's</span></span><br><span class="line">    <span class="comment">// scope.</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p>Use this wisely though, because in general you want to avoid side-effects in your templates.</p>
-<h3 id="priority">priority</h3><p>You can optionally provide a priority number for your directive (defaults to 0). A directive with a higher priority will be processed earlier than other directives on the same element. Directives with the same priority will be processed in the order they appear in the element’s attribute list, although that order is not guaranteed to be consistent in different browsers.</p>
-<p>You can checkout the priorities for some built-in directives in the <a href="/api/#Directives">API reference</a>. Additionally, flow control directives <code>v-if</code> and <code>v-for</code> always have the highest priority in the compilation process.</p>
-<h2 id="Element_Directives">Element Directives</h2><p>In some cases, we may want our directive to be used in the form of a custom element rather than as an attribute. This is very similar to Angular’s notion of “E” mode directives. Element directives provide a lighter-weight alternative to full-blown components (which are explained later in the guide). You can register a custom element directive like so:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">Vue.elementDirective(<span class="string">'my-directive'</span>, &#123;</span><br><span class="line">  <span class="comment">// same API as normal directives</span></span><br><span class="line">  bind: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// manipulate this.el...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>Then, instead of:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-my-directive</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>We can write:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">my-directive</span>&gt;</span><span class="tag">&lt;/<span class="title">my-directive</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>Element directives cannot accept arguments or expressions, but it can read the element’s attributes to determine its behavior.</p>
-<p>A big difference from normal directives is that element directives are <strong>terminal</strong>, which means once Vue encounters an element directive, it will leave that element and all its children alone - only the element directive itself will be able to manipulate that element and its children. </p>
+<h2 id="Deep_Observation">Deep Observation</h2><p>If your custom directive is expected to be used on an Object, and it needs to trigger <code>update</code> when a nested property inside the object changes, you need to pass in <code>deep: true</code> in your directive definition.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-my-directive</span>=<span class="value">"obj"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Vue.directive(<span class="string">'my-directive'</span>, &#123;</span><br><span class="line">  deep: <span class="literal">true</span>,</span><br><span class="line">  update: <span class="function"><span class="keyword">function</span> (<span class="params">obj</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// will be called when nested properties in `obj`</span></span><br><span class="line">    <span class="comment">// changes.</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="Directive_Priority">Directive Priority</h2><p>You can optionally provide a priority number for your directive (defaults to 0). A directive with a higher priority will be processed earlier than other directives on the same element. Directives with the same priority will be processed in the order they appear in the element’s attribute list, although that order is not guaranteed to be consistent in different browsers.</p>
+<p>You can checkout the priorities for some built-in directives in the <a href="/api/directives.html">API reference</a>. Additionally, <code>v-repeat</code>, <code>v-if</code> and <code>v-component</code> are considered “terminal directives” and they always have the highest priority in the compilation process.</p>
+<p>Next, we’ll see how to <a href="/guide/custom-filter.html">write a custom filter</a>.</p>
 
-    
-      <div class="guide-links">
-        
-          <span>← <a href="/guide/reactivity.html">Reactivity in Depth</a></span>
-        
-        
-          <span style="float:right"><a href="/guide/custom-filter.html">Custom Filters</a> →</span>
-        
-      </div>
-    
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/vuejs/vuejs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>
-
                 
             </div>
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                FastClick.attach(document.body);
-            }, false);
-        </script>
     </body>
 </html>

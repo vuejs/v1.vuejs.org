@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Installation - vue.js</title>
+        <title>Filters - vue.js</title>
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -57,13 +57,13 @@
         <h2>Guide</h2>
         <ul class="menu-root">
             
-                <li><a href="/guide/installation.html" class="sidebar-link current">Installation</a></li>
+                <li><a href="/guide/installation.html" class="sidebar-link">Installation</a></li>
             
                 <li><a href="/guide/index.html" class="sidebar-link">Getting Started</a></li>
             
                 <li><a href="/guide/directives.html" class="sidebar-link">Directives</a></li>
             
-                <li><a href="/guide/filters.html" class="sidebar-link">Filters</a></li>
+                <li><a href="/guide/filters.html" class="sidebar-link current">Filters</a></li>
             
                 <li><a href="/guide/list.html" class="sidebar-link">Displaying a List</a></li>
             
@@ -93,23 +93,23 @@
 
 
 <div class="content guide with-sidebar">
-    <h1>Installation</h1>
+    <h1>Filters</h1>
     <div id="ad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
     </div>
-    <blockquote>
-<p><strong>Compatibility Note:</strong> Vue.js does not support IE8 and below.</p>
-</blockquote>
-<h2 id="Standalone">Standalone</h2><p>Simply download and include with a script tag. <code>Vue</code> will be registered as a global variable.</p>
-<div id="downloads"><br><a class="button" href="https://raw.github.com/yyx990803/vue/0.11.10/dist/vue.js" download="" target="_blank" rel="external">Development Version</a><span class="light info">194.06kb, plenty of comments and debug/warning messages.</span><br><br><a class="button" href="https://raw.github.com/yyx990803/vue/0.11.10/dist/vue.min.js" download="" target="_blank" rel="external">Production Version</a><span class="light info">59.67kb minified / 19.57kb gzipped</span><br></div>
-
-<p>Also available on <a href="//cdnjs.cloudflare.com/ajax/libs/vue/0.11.10/vue.min.js">cdnjs</a> (takes some time to sync so the latest version might not be available yet).</p>
-<h2 id="NPM">NPM</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ npm install vue</span><br><span class="line"><span class="comment"># for edge version:</span></span><br><span class="line">$ npm install yyx990803/vue<span class="comment">#dev</span></span><br></pre></td></tr></table></figure>
-<h2 id="Bower">Bower</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># only stable version is available through Bower</span></span><br><span class="line">$ bower install vue</span><br></pre></td></tr></table></figure>
-<h2 id="Duo">Duo</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Vue = <span class="built_in">require</span>(<span class="string">'yyx990803/vue'</span>)</span><br><span class="line"><span class="comment">// for edge version:</span></span><br><span class="line"><span class="keyword">var</span> Vue = <span class="built_in">require</span>(<span class="string">'yyx990803/vue@dev'</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="Component">Component</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ component install yyx990803/vue</span><br><span class="line"><span class="comment"># for edge version:</span></span><br><span class="line">$ component install yyx990803/vue@dev</span><br></pre></td></tr></table></figure>
-<h2 id="AMD_Module_Loaders">AMD Module Loaders</h2><p>The standalone downloads or versions installed via Bower are wrapped with UMD so they can be used directly as an AMD module.</p>
-<h2 id="Ready?">Ready?</h2><p><a href="/guide/">Let’s Get Started</a>.</p>
+    <h2 id="Synopsis">Synopsis</h2><p>A Vue.js filter is essentially a function that takes a value, processes it, and then returns the processed value. In the markup it is denoted by a single pipe (<code>|</code>) and can be followed by one or more arguments:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">element</span> <span class="attribute">directive</span>=<span class="value">"expression | filterId [args...]"</span>&gt;</span><span class="tag">&lt;/<span class="title">element</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Examples">Examples</h2><p>Filters must be placed at the end of a directive’s value:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-text</span>=<span class="value">"message | capitalize"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>You can also use them inside mustache-style bindings:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span>&gt;</span>&#123;&#123;message | uppercase&#125;&#125;<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Multiple filters can be chained together:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span>&gt;</span>&#123;&#123;message | lowercase | reverse&#125;&#125;<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Arguments">Arguments</h2><p>Some filters can take optional arguments. Simply add arguments separated by spaces:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span>&gt;</span>&#123;&#123;order | pluralize st nd rd th&#125;&#125;<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-on</span>=<span class="value">"keyup: submitForm | key enter"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>For their specific use of the above examples see the <a href="/api/filters.html">full list of built-in filters</a>.</p>
+<p>Now that you know what directives and filters are, let’s get our hands dirty and try to <a href="/guide/list.html">display a list of items</a>.</p>
 
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/vuejs/vuejs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>

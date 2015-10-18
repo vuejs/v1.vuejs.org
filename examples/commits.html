@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = "examples"
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.js"></script>
+        <script src="/js/vue.min.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,18 +35,11 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li>
-  <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
-  </form>
-</li>
-<li><a href="/guide/" class="nav-link">Guide</a></li>
-<li><a href="/api/" class="nav-link">API</a></li>
+        <li><a href="/guide/" class="nav-link">Guide</a></li>
+<li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link current">Examples</a></li>
-<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
-<li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
-<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
-
+<li><a href="/blog/" class="nav-link">Blog</a></li>
+<li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
     </ul>
 </div>
             <div id="main">
@@ -54,62 +47,33 @@
                     
     <div class="sidebar">
     <ul class="main-menu">
-        <li>
-  <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
-  </form>
-</li>
-<li><a href="/guide/" class="nav-link">Guide</a></li>
-<li><a href="/api/" class="nav-link">API</a></li>
+        <li><a href="/guide/" class="nav-link">Guide</a></li>
+<li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link current">Examples</a></li>
-<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
-<li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
-<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
-
+<li><a href="/blog/" class="nav-link">Blog</a></li>
+<li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
     </ul>
     <div class="list">
         <h2>Examples</h2>
         <ul class="menu-root">
             
-                <li>
-                    <a href="/examples/index.html" class="sidebar-link">Markdown Editor</a>
-                </li>
+                <li><a href="/examples/index.html" class="sidebar-link">Markdown Editor</a></li>
             
-                <li>
-                    <a href="/examples/commits.html" class="sidebar-link current">GitHub Commits</a>
-                </li>
+                <li><a href="/examples/commits.html" class="sidebar-link current">GitHub Commits</a></li>
             
-                <li>
-                    <a href="/examples/firebase.html" class="sidebar-link">Firebase + Validation</a>
-                </li>
+                <li><a href="/examples/firebase.html" class="sidebar-link">Firebase + Validation</a></li>
             
-                <li>
-                    <a href="/examples/grid-component.html" class="sidebar-link">Grid Component</a>
-                </li>
+                <li><a href="/examples/grid-component.html" class="sidebar-link">Grid Component</a></li>
             
-                <li>
-                    <a href="/examples/tree-view.html" class="sidebar-link">Tree View</a>
-                </li>
+                <li><a href="/examples/tree-view.html" class="sidebar-link">Tree View</a></li>
             
-                <li>
-                    <a href="/examples/svg.html" class="sidebar-link">SVG Graph</a>
-                </li>
+                <li><a href="/examples/svg.html" class="sidebar-link">SVG Graph</a></li>
             
-                <li>
-                    <a href="/examples/modal.html" class="sidebar-link">Modal Component</a>
-                </li>
+                <li><a href="/examples/image-slider.html" class="sidebar-link">Image Slider Component</a></li>
             
-                <li>
-                    <a href="/examples/select2.html" class="sidebar-link">Custom Directive</a>
-                </li>
+                <li><a href="/examples/todomvc.html" class="sidebar-link">TodoMVC</a></li>
             
-                <li>
-                    <a href="/examples/todomvc.html" class="sidebar-link">TodoMVC</a>
-                </li>
-            
-                <li>
-                    <a href="/examples/hackernews.html" class="sidebar-link">HackerNews Clone</a>
-                </li>
+                <li><a href="/examples/hackernews.html" class="sidebar-link">HackerNews Clone</a></li>
             
         </ul>
     </div>
@@ -124,23 +88,13 @@
     <blockquote>
 <p>This example fetches latest Vue.js commits data from GitHub’s API and displays them as a list. You can switch between the master and dev branches.</p>
 </blockquote>
-<iframe width="100%" height="500" src="http://jsfiddle.net/yyx990803/vaj48u3h/embedded/result,html,js,css" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
-
-    
+<iframe width="100%" height="500" src="http://jsfiddle.net/yyx990803/wd64qs6f/embedded/result,html,js,css" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/vuejs/vuejs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>
-
                 
             </div>
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                FastClick.attach(document.body);
-            }, false);
-        </script>
     </body>
 </html>

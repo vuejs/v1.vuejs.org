@@ -2,125 +2,121 @@
 
 (function (exports) {
 
-	'use strict';
+    'use strict';
 
-	var filters = {
-		all: function (todos) {
-			return todos;
-		},
-		active: function (todos) {
-			return todos.filter(function (todo) {
-				return !todo.completed;
-			});
-		},
-		completed: function (todos) {
-			return todos.filter(function (todo) {
-				return todo.completed;
-			});
-		}
-	};
+    exports.app = new Vue({
 
-	exports.app = new Vue({
+        // the root element that will be compiled
+        el: '#todoapp',
 
-		// the root element that will be compiled
-		el: '.todoapp',
+        // app state data
+        data: {
+            todos: todoStorage.fetch(),
+            newTodo: '',
+            editedTodo: null,
+            activeFilter: 'all',
+            filters: {
+                all: function () {
+                    return true;
+                },
+                active: function (todo) {
+                    return !todo.completed;
+                },
+                completed: function (todo) {
+                    return todo.completed;
+                }
+            }
+        },
 
-		// app initial state
-		data: {
-			todos: todoStorage.fetch(),
-			newTodo: '',
-			editedTodo: null,
-			visibility: 'all'
-		},
+        // ready hook, watch todos change for data persistence
+        ready: function () {
+            this.$watch('todos', function (todos) {
+                todoStorage.save(todos);
+            }, true);
+        },
 
-		// watch todos change for localStorage persistence
-		watch: {
-			todos: {
-				handler: function (todos) {
-				  todoStorage.save(todos);
-				},
-				deep: true
-			}
-		},
+        // a custom directive to wait for the DOM to be updated
+        // before focusing on the input field.
+        // http://vuejs.org/guide/directives.html#Writing_a_Custom_Directive
+        directives: {
+            'todo-focus': function (value) {
+                if (!value) {
+                    return;
+                }
+                var el = this.el;
+                setTimeout(function () {
+                    el.focus();
+                }, 0);
+            }
+        },
 
-		// computed properties
-		// http://vuejs.org/guide/computed.html
-		computed: {
-			filteredTodos: function () {
-				return filters[this.visibility](this.todos);
-			},
-			remaining: function () {
-				return filters.active(this.todos).length;
-			},
-			allDone: {
-				get: function () {
-					return this.remaining === 0;
-				},
-				set: function (value) {
-					this.todos.forEach(function (todo) {
-						todo.completed = value;
-					});
-				}
-			}
-		},
+        // a custom filter that filters the displayed todos array
+        filters: {
+            filterTodos: function (todos) {
+                return todos.filter(this.filters[this.activeFilter]);
+            }
+        },
 
-		// methods that implement data logic.
-		// note there's no DOM manipulation here at all.
-		methods: {
+        // computed properties
+        // http://vuejs.org/guide/computed.html
+        computed: {
+            remaining: function () {
+                return this.todos.filter(this.filters.active).length;
+            },
+            allDone: {
+                get: function () {
+                    return this.remaining === 0;
+                },
+                set: function (value) {
+                    this.todos.forEach(function (todo) {
+                        todo.completed = value;
+                    });
+                }
+            }
+        },
 
-			addTodo: function () {
-				var value = this.newTodo && this.newTodo.trim();
-				if (!value) {
-					return;
-				}
-				this.todos.push({ title: value, completed: false });
-				this.newTodo = '';
-			},
+        // methods that implement data logic.
+        // note there's no DOM manipulation here at all.
+        methods: {
 
-			removeTodo: function (todo) {
-				this.todos.$remove(todo);
-			},
+            addTodo: function () {
+                var value = this.newTodo && this.newTodo.trim();
+                if (!value) {
+                    return;
+                }
+                this.todos.push({ title: value, completed: false });
+                this.newTodo = '';
+            },
 
-			editTodo: function (todo) {
-				this.beforeEditCache = todo.title;
-				this.editedTodo = todo;
-			},
+            removeTodo: function (todo) {
+                this.todos.$remove(todo.$data);
+            },
 
-			doneEdit: function (todo) {
-				if (!this.editedTodo) {
-					return;
-				}
-				this.editedTodo = null;
-				todo.title = todo.title.trim();
-				if (!todo.title) {
-					this.removeTodo(todo);
-				}
-			},
+            editTodo: function (todo) {
+                this.beforeEditCache = todo.title;
+                this.editedTodo = todo;
+            },
 
-			cancelEdit: function (todo) {
-				this.editedTodo = null;
-				todo.title = this.beforeEditCache;
-			},
+            doneEdit: function (todo) {
+                if (!this.editedTodo) {
+                    return;
+                }
+                this.editedTodo = null;
+                todo.title = todo.title.trim();
+                if (!todo.title) {
+                    this.removeTodo(todo);
+                }
+            },
 
-			removeCompleted: function () {
-				this.todos = filters.active(this.todos);
-			}
-		},
-
-		// a custom directive to wait for the DOM to be updated
-		// before focusing on the input field.
-		// http://vuejs.org/guide/custom-directive.html
-		directives: {
-			'todo-focus': function (value) {
-				if (!value) {
-					return;
-				}
-				var el = this.el;
-				Vue.nextTick(function () {
-					el.focus();
-				});
-			}
-		}
-	});
+            cancelEdit: function (todo) {
+                this.editedTodo = null;
+                todo.title = this.beforeEditCache;
+            },
+            
+            removeCompleted: function () {
+                this.todos = this.todos.filter(this.filters.active);
+            }
+        }
+    });
 
 })(window);

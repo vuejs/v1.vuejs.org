@@ -2,23 +2,23 @@
 
 (function (app, Router) {
 
-	'use strict';
+    'use strict';
 
-	var router = new Router();
+    var router = new Router();
 
-	['all', 'active', 'completed'].forEach(function (visibility) {
-		router.on(visibility, function () {
-			app.visibility = visibility;
-		});
-	});
+    Object.keys(app.filters).forEach(function (filter) {
+        router.on(filter, function () {
+            app.activeFilter = filter;
+        });
+    });
 
-	router.configure({
-		notfound: function () {
-			window.location.hash = '';
-			app.visibility = 'all';
-		}
-	});
+    router.configure({
+        notfound: function () {
+            window.location.hash = '';
+            app.activeFilter = 'all';
+        }
+    });
 
-	router.init();
-
+    router.init();
+    
 })(app, Router);

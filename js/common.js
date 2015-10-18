@@ -22,17 +22,11 @@
 
   // build sidebar
   var currentPageAnchor = menu.querySelector('.sidebar-link.current')
-  var isAPI = document.querySelector('.content').classList.contains('api')
-  if (currentPageAnchor || isAPI) {
+  if (currentPageAnchor) {
     var allLinks = []
-    var sectionContainer
-    if (isAPI) {
-      sectionContainer = document.querySelector('.menu-root')
-    } else {
-      sectionContainer = document.createElement('ul')
-      sectionContainer.className = 'menu-sub'
-      currentPageAnchor.parentNode.appendChild(sectionContainer)
-    }
+    var sectionContainer = document.createElement('ul')
+    sectionContainer.className = 'menu-sub'
+    currentPageAnchor.parentNode.appendChild(sectionContainer)
     var h2s = content.querySelectorAll('h2')
     if (h2s.length) {
       each.call(h2s, function (h) {
@@ -41,7 +35,7 @@
         allLinks.push(h)
         allLinks.push.apply(allLinks, h3s)
         if (h3s.length) {
-          sectionContainer.appendChild(makeSubLinks(h3s, isAPI))
+          sectionContainer.appendChild(makeSubLinks(h3s))
         }
       })
     } else {
@@ -64,9 +58,6 @@
         }, 400)
       }
     }, true)
-
-    // make links clickable
-    allLinks.forEach(makeLinkClickable)
 
     // init smooth scroll
     smoothScroll.init({
@@ -106,14 +97,9 @@
 
   function makeLink (h) {
     var link = document.createElement('li')
-    var text = h.textContent.replace(/\(.*\)$/, '')
-    // make sure the ids are link-able...
-    h.id = h.id
-      .replace(/\(.*\)$/, '')
-      .replace(/\$/, '')
     link.innerHTML =
       '<a class="section-link" data-scroll href="#' + h.id + '">' +
-        text +
+        h.textContent.replace(/\(.*\)$/, '') +
       '</a>'
     return link
   }
@@ -130,11 +116,8 @@
     return h3s
   }
 
-  function makeSubLinks (h3s, small) {
+  function makeSubLinks (h3s) {
     var container = document.createElement('ul')
-    if (small) {
-      container.className = 'menu-sub'
-    }
     h3s.forEach(function (h) {
       container.appendChild(makeLink(h))
     })
@@ -151,22 +134,5 @@
       currentActive.classList.add('active')
     }
   }
-
-  function makeLinkClickable (link) {
-    var wrapper = document.createElement('a')
-    wrapper.href = '#' + link.id
-    wrapper.setAttribute('data-scroll', '')
-    link.parentNode.insertBefore(wrapper, link)
-    wrapper.appendChild(link)
-  }
-
-  // Search with SwiftType
-  
-  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
-  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
-  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
-  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
-
-  _st('install','HgpxvBc7pUaPUWmG9sgv','2.0.0');
 
 })()

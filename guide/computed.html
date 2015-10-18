@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro|Dosis:300,500' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
             window.PAGE_TYPE = "guide"
@@ -21,7 +21,7 @@
   ga('create', 'UA-46852172-1', 'vuejs.org');
   ga('send', 'pageview');
 </script>
-        <script src="/js/vue.js"></script>
+        <script src="/js/vue.min.js"></script>
     </head>
     <body>
         <div id="mobile-bar">
@@ -35,18 +35,11 @@
         <span>Vue.js</span>
     </a>
     <ul id="nav">
-        <li>
-  <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
-  </form>
-</li>
-<li><a href="/guide/" class="nav-link current">Guide</a></li>
-<li><a href="/api/" class="nav-link">API</a></li>
+        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+<li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
-<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
-<li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
-<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
-
+<li><a href="/blog/" class="nav-link">Blog</a></li>
+<li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
     </ul>
 </div>
             <div id="main">
@@ -54,102 +47,45 @@
                     
     <div class="sidebar">
     <ul class="main-menu">
-        <li>
-  <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
-  </form>
-</li>
-<li><a href="/guide/" class="nav-link current">Guide</a></li>
-<li><a href="/api/" class="nav-link">API</a></li>
+        <li><a href="/guide/" class="nav-link current">Guide</a></li>
+<li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
-<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
-<li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
-<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
-
+<li><a href="/blog/" class="nav-link">Blog</a></li>
+<li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
     </ul>
     <div class="list">
         <h2>Guide</h2>
         <ul class="menu-root">
             
-                <li>
-                    <a href="/guide/installation.html" class="sidebar-link">Installation</a>
-                </li>
+                <li><a href="/guide/installation.html" class="sidebar-link">Installation</a></li>
             
-                <li>
-                    <a href="/guide/index.html" class="sidebar-link">Getting Started</a>
-                </li>
+                <li><a href="/guide/index.html" class="sidebar-link">Getting Started</a></li>
             
-                <li>
-                    <a href="/guide/overview.html" class="sidebar-link">Overview</a>
-                </li>
+                <li><a href="/guide/directives.html" class="sidebar-link">Directives</a></li>
             
-                <li>
-                    <a href="/guide/instance.html" class="sidebar-link">The Vue Instance</a>
-                </li>
+                <li><a href="/guide/filters.html" class="sidebar-link">Filters</a></li>
             
-                <li>
-                    <a href="/guide/syntax.html" class="sidebar-link">Data Binding Syntax</a>
-                </li>
+                <li><a href="/guide/list.html" class="sidebar-link">Displaying a List</a></li>
             
-                <li>
-                    <a href="/guide/computed.html" class="sidebar-link current">Computed Properties</a>
-                </li>
+                <li><a href="/guide/events.html" class="sidebar-link">Listening for Events</a></li>
             
-                <li>
-                    <a href="/guide/class-and-style.html" class="sidebar-link">Class and Style Bindings</a>
-                </li>
+                <li><a href="/guide/forms.html" class="sidebar-link">Handling Forms</a></li>
             
-                <li>
-                    <a href="/guide/conditional.html" class="sidebar-link">Conditional Rendering</a>
-                </li>
+                <li><a href="/guide/computed.html" class="sidebar-link current">Computed Properties</a></li>
             
-                <li>
-                    <a href="/guide/list.html" class="sidebar-link">List Rendering</a>
-                </li>
+                <li><a href="/guide/custom-directive.html" class="sidebar-link">Custom Directives</a></li>
             
-                <li>
-                    <a href="/guide/events.html" class="sidebar-link">Methods and Event Handling</a>
-                </li>
+                <li><a href="/guide/custom-filter.html" class="sidebar-link">Custom Filters</a></li>
             
-                <li>
-                    <a href="/guide/forms.html" class="sidebar-link">Form Input Bindings</a>
-                </li>
+                <li><a href="/guide/components.html" class="sidebar-link">Component System</a></li>
             
-                <li>
-                    <a href="/guide/transitions.html" class="sidebar-link">Transitions</a>
-                </li>
+                <li><a href="/guide/transitions.html" class="sidebar-link">Transitions</a></li>
             
-                <li>
-                    <a href="/guide/components.html" class="sidebar-link">Components</a>
-                </li>
+                <li><a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a></li>
             
-                <li>
-                    <a href="/guide/reactivity.html" class="sidebar-link">Reactivity in Depth</a>
-                </li>
+                <li><a href="/guide/extending.html" class="sidebar-link">Extending Vue</a></li>
             
-                <li>
-                    <a href="/guide/custom-directive.html" class="sidebar-link">Custom Directives</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/custom-filter.html" class="sidebar-link">Custom Filters</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/mixins.html" class="sidebar-link">Mixins</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/plugins.html" class="sidebar-link">Plugins</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/application.html" class="sidebar-link">Building Large-Scale Apps</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/comparison.html" class="sidebar-link">Comparison with Other Frameworks</a>
-                </li>
+                <li><a href="/guide/faq.html" class="sidebar-link">Common FAQs</a></li>
             
         </ul>
     </div>
@@ -161,67 +97,22 @@
     <div id="ad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
     </div>
-    <p>In-template expressions are very convenient, but they are really meant for simple operations only. Templates are meant to describe the structure of your view. Putting too much logic into your templates can make them bloated and hard to maintain. This is why Vue.js limits binding expressions to one expression only. For any logic that requires more than one expression, you should use a <strong>computed property</strong>.</p>
-<h3 id="Basic_Example">Basic Example</h3><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"example"</span>&gt;</span></span><br><span class="line">  a=&#123;&#123; a &#125;&#125;, b=&#123;&#123; b &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> vm = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#example'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    a: <span class="number">1</span></span><br><span class="line">  &#125;,</span><br><span class="line">  computed: &#123;</span><br><span class="line">    <span class="comment">// a computed getter</span></span><br><span class="line">    b: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="comment">// `this` points to the vm instance</span></span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.a + <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>Result:</p>
+    <p>Vue.js’ inline expressions are very convenient, but the best use cases for them are simple boolean operations or string concatenations. For more complicated logic, you should use <strong>computed properties</strong>.</p>
+<p>In Vue.js, you define computed properties with the <code>computed</code> option:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> demo = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    firstName: <span class="string">'Foo'</span>,</span><br><span class="line">    lastName: <span class="string">'Bar'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  computed: &#123;</span><br><span class="line">    fullName: &#123;</span><br><span class="line">      <span class="comment">// the getter should return the desired value</span></span><br><span class="line">      get: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.firstName + <span class="string">' '</span> + <span class="keyword">this</span>.lastName</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="comment">// the setter is optional</span></span><br><span class="line">      set: <span class="function"><span class="keyword">function</span> (<span class="params">newValue</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> names = newValue.split(<span class="string">' '</span>)</span><br><span class="line">        <span class="keyword">this</span>.firstName = names[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">this</span>.lastName = names[names.length - <span class="number">1</span>]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">demo.fullName <span class="comment">// 'Foo Bar'</span></span><br></pre></td></tr></table></figure>
+<p>When you only need the getter, you can provide a single function instead of an object:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line">computed: &#123;</span><br><span class="line">  fullName: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.firstName + <span class="string">' '</span> + <span class="keyword">this</span>.lastName </span><br><span class="line">  &#125;    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+<p>A computed property is essentially a property defined with getter/setter functions. You can use a computed property just like a normal property, but when you access it, you get the value returned by the getter function; when you change its value, you trigger the setter function passing in the new value as its argument.</p>
+<p class="tip">Before Vue.js 0.11 there used to be a dependency collection gotcha which requires users to explicitly list dependencies when conditional statements are involved. Starting with 0.11 it is no longer necessary to do so.</p>
 
-<div id="example" class="demo">
-  a={{ a }}, b={{ b }}
-</div>
-<script>
-var vm = new Vue({
-  el: '#example',
-  data: {
-    a: 1
-  },
-  computed: {
-    b: function () {
-      return this.a + 1
-    }
-  }
-})
-</script>
+<p>Next, let’s learn about how to <a href="/guide/custom-directive.html">write a custom directive</a>.</p>
 
-<p>Here we have declared a computed property <code>b</code>. The function we provided will be used as the getter function for the property <code>vm.b</code>:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(vm.b) <span class="comment">// -&gt; 2</span></span><br><span class="line">vm.a = <span class="number">2</span></span><br><span class="line"><span class="built_in">console</span>.log(vm.b) <span class="comment">// -&gt; 3</span></span><br></pre></td></tr></table></figure>
-<p>You can open the console and play with the example vm yourself. The value of <code>vm.b</code> is always dependent on the value of <code>vm.a</code>.</p>
-<p>You can data-bind to computed properties in templates just like a normal property. Vue is aware that <code>vm.b</code> depends on <code>vm.a</code>, so it will update any bindings that depends on <code>vm.b</code> when <code>vm.a</code> changes. And the best part is that we’ve created this dependency relationship declaratively: the computed getter function is pure and has no side effects, which makes it easy to test and reason about.</p>
-<h3 id="Computed_Property_vs-_$watch">Computed Property vs. $watch</h3><p>Vue.js does provide an API method called <code>$watch</code> that allows you to observe data changes on a Vue instance. When you have some data that needs to change based on some other data, it is tempting to use <code>$watch</code> - especially if you are coming from an AngularJS background. However, it is often a better idea to use a computed property rather than an imperative <code>$watch</code> callback. Consider this example:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"demo"</span>&gt;</span>&#123;&#123;fullName&#125;&#125;<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> vm = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    firstName: <span class="string">'Foo'</span>,</span><br><span class="line">    lastName: <span class="string">'Bar'</span>,</span><br><span class="line">    fullName: <span class="string">'Foo Bar'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">vm.$watch(<span class="string">'firstName'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">val</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.fullName = val + <span class="string">' '</span> + <span class="keyword">this</span>.lastName</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">vm.$watch(<span class="string">'lastName'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">val</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.fullName = <span class="keyword">this</span>.firstName + <span class="string">' '</span> + val</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>The above code is imperative and repetitive. Compare it with a computed property version:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> vm = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    firstName: <span class="string">'Foo'</span>,</span><br><span class="line">    lastName: <span class="string">'Bar'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  computed: &#123;</span><br><span class="line">    fullName: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.firstName + <span class="string">' '</span> + <span class="keyword">this</span>.lastName</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>Much better, isn’t it?</p>
-<h3 id="Computed_Setter">Computed Setter</h3><p>Computed properties are by default getter-only, but you can also provide a setter when you need it:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line">computed: &#123;</span><br><span class="line">  fullName: &#123;</span><br><span class="line">    <span class="comment">// getter</span></span><br><span class="line">    get: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.firstName + <span class="string">' '</span> + <span class="keyword">this</span>.lastName</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// setter</span></span><br><span class="line">    set: <span class="function"><span class="keyword">function</span> (<span class="params">newValue</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> names = newValue.split(<span class="string">' '</span>)</span><br><span class="line">      <span class="keyword">this</span>.firstName = names[<span class="number">0</span>]</span><br><span class="line">      <span class="keyword">this</span>.lastName = names[names.length - <span class="number">1</span>]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
-<p>Now when you call <code>vm.fullName = &#39;John Doe&#39;</code>, the setter will be invoked and <code>vm.firstName</code> and <code>vm.lastName</code> will be updated accordingly.</p>
-<p>The technical details behind how computed properties are updated are <a href="reactivity.html#Inside_Computed_Properties">discussed in another section</a> dedicated to the reactivity system.</p>
-
-    
-      <div class="guide-links">
-        
-          <span>← <a href="/guide/syntax.html">Data Binding Syntax</a></span>
-        
-        
-          <span style="float:right"><a href="/guide/class-and-style.html">Class and Style Bindings</a> →</span>
-        
-      </div>
-    
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/vuejs/vuejs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>
-
                 
             </div>
             <script src="/js/smooth-scroll.min.js"></script>
             <script src="/js/common.js"></script>
         
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                FastClick.attach(document.body);
-            }, false);
-        </script>
     </body>
 </html>
