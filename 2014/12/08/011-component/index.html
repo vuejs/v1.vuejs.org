@@ -41,10 +41,11 @@
   </form>
 </li>
 <li><a href="/guide/" class="nav-link">Guide</a></li>
-<li><a href="/api/" class="nav-link">API Reference</a></li>
+<li><a href="/api/" class="nav-link">API</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
-<li><a href="/blog/" class="nav-link current">Blog</a></li>
-<li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
+<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
+<li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
+<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
 
     </ul>
 </div>
@@ -58,10 +59,11 @@
   </form>
 </li>
 <li><a href="/guide/" class="nav-link">Guide</a></li>
-<li><a href="/api/" class="nav-link">API Reference</a></li>
+<li><a href="/api/" class="nav-link">API</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
-<li><a href="/blog/" class="nav-link current">Blog</a></li>
-<li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
+<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
+<li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
+<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
 
     </ul>
     <div class="list">
@@ -88,15 +90,10 @@
                 <a href="/2014/03/22/vuejs-010-release/" class="sidebar-link">Vue.js 0.10 is here!</a>
             </li>
         
-        <li style="margin:10px 0 3px">
-          <script data-gittip-username="yyx990803"
-            data-gittip-widget="button"
-            src="//gttp.co/v1.js"></script>
-        </li>
         </ul>
     </div>
 </div>
-<div class="content blog">
+<div class="content blog post">
     <h1>0.11 Component Tips</h1>
     <div id="ad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
@@ -108,11 +105,11 @@
 <a id="more"></a>
 <h3 id="Isolated_Scope_and_Data_Passing">Isolated Scope and Data Passing</h3><p>Starting in 0.11, all child components have isolated scope by default, and the recommended way to control component data access is via <a href="/guide/components.html#Explicit_Data_Passing">Explicit Data Passing</a> using <a href="/api/directives.html#v-with"><code>v-with</code></a> or <a href="/api/options.html#paramAttributes"><code>paramAttributes</code></a>.</p>
 <p><code>paramAttributes</code> enables us to write Web Component style templates:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Vue.component(<span class="string">'my-component'</span>, &#123;</span><br><span class="line">  paramAttributes: [<span class="string">'params'</span>],</span><br><span class="line">  compiled: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.params) <span class="comment">// passed from parent</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">my-component</span> <span class="attribute">params</span>=<span class="value">"&#123;&#123;params&#125;&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">my-component</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">Vue.component(<span class="string">'my-component'</span>, &#123;</span><br><span class="line">  paramAttributes: [<span class="string">'params'</span>],</span><br><span class="line">  compiled: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.params) <span class="comment">// passed from parent</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">my-component</span> <span class="attribute">params</span>=<span class="value">"&#123;&#123;params&#125;&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">my-component</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h3 id="Where_Does_It_Belong?">Where Does It Belong?</h3><p>Previously in 0.10, all directives on a component’s container element are compiled in the child component’s scope. Because it inherited parent scope, this worked in most situations. Starting in 0.11.1, we want to provide a cleaner separation between component scopes. The rule of thumbs is: if something appears in the parent template, it will be compiled in parent scope; if it appears in child template, it will be compiled in child scope. For example:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- parent template --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-component</span>=<span class="value">"child"</span> <span class="attribute">v-on</span>=<span class="value">"click:onParentClick"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span>&gt;</span>&#123;&#123;parentMessage&#125;&#125;<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- child template, with replace: true --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-on</span>=<span class="value">"click:onChildClick"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">h1</span>&gt;</span>&#123;&#123;childMessage&#125;&#125;<span class="tag">&lt;/<span class="title">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">content</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- parent template --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-component</span>=<span class="value">"child"</span> <span class="attribute">v-on</span>=<span class="value">"click:onParentClick"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span>&gt;</span>&#123;&#123;parentMessage&#125;&#125;<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- child template, with replace: true --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-on</span>=<span class="value">"click:onChildClick"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">h1</span>&gt;</span>&#123;&#123;childMessage&#125;&#125;<span class="tag">&lt;/<span class="title">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">content</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Everything in the parent template will be compiled in the parent’s scope, including the content that’s going to be inserted into the child component.</p>
 <p>The only exception to the rule is <code>v-with</code> (and <code>paramAttributes</code> which compiles down to <code>v-with</code>), which works in both places - so you don’t need to worry about it too much.</p>
 <h3 id="Cleaner_Event_Communication">Cleaner Event Communication</h3><p>Previously the standard way for a child component to communicate to its parent is via dispatching events. However, with this approach, the event listeners on the parent component are not guaranteed to be listening on the desired child component only. It’s also possible to trigger undesired listners further up the chain if we do not cancel the event.</p>
@@ -120,6 +117,7 @@
 <p>0.11.4 has already been released, go try it out!</p>
 
 </div>
+
                 
             </div>
             <script src="/js/smooth-scroll.min.js"></script>

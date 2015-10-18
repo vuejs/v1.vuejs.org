@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Installation - vue.js</title>
+        <title>Conditional Rendering - vue.js</title>
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -72,7 +72,7 @@
         <ul class="menu-root">
             
                 <li>
-                    <a href="/guide/installation.html" class="sidebar-link current">Installation</a>
+                    <a href="/guide/installation.html" class="sidebar-link">Installation</a>
                 </li>
             
                 <li>
@@ -100,7 +100,7 @@
                 </li>
             
                 <li>
-                    <a href="/guide/conditional.html" class="sidebar-link">Conditional Rendering</a>
+                    <a href="/guide/conditional.html" class="sidebar-link current">Conditional Rendering</a>
                 </li>
             
                 <li>
@@ -157,28 +157,37 @@
 
 
 <div class="content guide with-sidebar">
-    <h1>Installation</h1>
+    <h1>Conditional Rendering</h1>
     <div id="ad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
     </div>
-    <blockquote>
-<p><strong>Compatibility Note:</strong> Vue.js does not support IE8 and below.</p>
-</blockquote>
-<h2 id="Standalone">Standalone</h2><p>Simply download and include with a script tag. <code>Vue</code> will be registered as a global variable.</p>
-<div id="downloads"><br><a class="button" href="https://raw.github.com/vuejs/vue/1.0.0-rc.1/dist/vue.js" download="" target="_blank" rel="external">Development Version</a><span class="light info">With full warnings and debug mode</span><br><br><a class="button" href="https://raw.github.com/vuejs/vue/1.0.0-rc.1/dist/vue.min.js" download="" target="_blank" rel="external">Production Version</a><span class="light info">Warnings stripped, 23.52kb min+gzip</span><br></div>
-
-<h3 id="CDN">CDN</h3><p>Available on <a href="//cdn.jsdelivr.net/vue/1.0.0-rc.1/vue.min.js">jsdelivr</a> or <a href="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.0-rc.1/vue.min.js">cdnjs</a> (takes some time to sync so the latest version might not be available yet).</p>
-<h3 id="CSP-compliant_build">CSP-compliant build</h3><p>Some environments, such as Google Chrome Apps, enforces Content Security Policy (CSP) and does not allow the use of <code>new Function()</code> for evaluating expressions. In these cases you can use the <a href="https://github.com/vuejs/vue/tree/csp/dist" target="_blank" rel="external">CSP-compliant build</a> instead.</p>
-<h2 id="NPM">NPM</h2><p>NPM is the recommended installation method when building large scale apps with Vue.js. It pairs nicely with a CommonJS module bundler such as <a href="http://webpack.github.io/" target="_blank" rel="external">Webpack</a> or <a href="http://browserify.org/" target="_blank" rel="external">Browserify</a>. Vue.js also provides accompanying tools for authoring <a href="http://localhost:4000/guide/application.html#Single_File_Components" target="_blank" rel="external">Single File Components</a>.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># latest stable</span></span><br><span class="line">$ npm install vue</span><br><span class="line"><span class="comment"># latest stable + CSP-compliant</span></span><br><span class="line">$ npm install vue@csp</span><br><span class="line"><span class="comment"># dev build (directly from GitHub):</span></span><br><span class="line">$ npm install vuejs/vue<span class="comment">#dev</span></span><br></pre></td></tr></table></figure>
-<h2 id="Bower">Bower</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># latest stable</span></span><br><span class="line">$ bower install vue</span><br></pre></td></tr></table></figure>
-<h2 id="AMD_Module_Loaders">AMD Module Loaders</h2><p>The standalone downloads or versions installed via Bower are wrapped with UMD so they can be used directly as an AMD module.</p>
+    <h2 id="v-if">v-if</h2><p>In string templates, for example Handlebars, we would write a conditional block like this:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Handlebars template --&gt;</span></span><br><span class="line">&#123;&#123;#if ok&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Yes<span class="tag">&lt;/<span class="title">h1</span>&gt;</span></span><br><span class="line">&#123;&#123;/if&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>In Vue.js, we use the <code>v-if</code> directive to achieve the same:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">h1</span> <span class="attribute">v-if</span>=<span class="value">"ok"</span>&gt;</span>Yes<span class="tag">&lt;/<span class="title">h1</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>It is also possible to add an “else” block with <code>v-else</code>:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">h1</span> <span class="attribute">v-if</span>=<span class="value">"ok"</span>&gt;</span>Yes<span class="tag">&lt;/<span class="title">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">h1</span> <span class="attribute">v-else</span>&gt;</span>No<span class="tag">&lt;/<span class="title">h1</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Template_v-if">Template v-if</h2><p>Because <code>v-if</code> is a directive, it has to be attached to a single element. But what if we want to toggle more than one element? In this case we can use <code>v-if</code> on a <code>&lt;template&gt;</code> element, which serves as an invisible wrapper. The final rendered result will not include the <code>&lt;template&gt;</code> element.</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">template</span> <span class="attribute">v-if</span>=<span class="value">"ok"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Title<span class="tag">&lt;/<span class="title">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span>&gt;</span>Paragraph 1<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span>&gt;</span>Paragraph 2<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="v-show">v-show</h2><p>Another option for conditionally displaying an element is the <code>v-show</code> directive. The usage is largely the same:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">h1</span> <span class="attribute">v-show</span>=<span class="value">"ok"</span>&gt;</span>Hello!<span class="tag">&lt;/<span class="title">h1</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>The difference is that an element with <code>v-show</code> will always be rendered and remain in the DOM; <code>v-show</code> simply toggles the <code>display</code> CSS property of the element.</p>
+<p>Note that <code>v-show</code> doesn’t support the <code>&lt;template&gt;</code> syntax.</p>
+<h2 id="v-else">v-else</h2><p>You can use the <code>v-else</code> directive to indicate an “else block” for <code>v-if</code> or <code>v-show</code>:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-if</span>=<span class="value">"Math.random() &gt; 0.5"</span>&gt;</span></span><br><span class="line">  Sorry</span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-else</span>&gt;</span></span><br><span class="line">  Not sorry</span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>The <code>v-else</code> element must following immediately after the <code>v-if</code> or <code>v-show</code> element - otherwise it will not be recognized.</p>
+<h2 id="v-if_vs-_v-show">v-if vs. v-show</h2><p>When a <code>v-if</code> block is toggled, Vue.js will have to perform a partial compilation/teardown process, because the template content inside <code>v-if</code> can also contain data bindings or child components. <code>v-if</code> is “real” conditional rendering because it ensures that event listeners and child components inside the conditional block are properly destroyed and re-created during toggles.</p>
+<p><code>v-if</code> is also <strong>lazy</strong>: if the condition is false on initial render, it will not do anything - partial compilation won’t start until the condition becomes true for the first time (and the compilation is subsequently cached).</p>
+<p>In comparison, <code>v-show</code> is much simpler - the element is always compiled and preserved, with just simple CSS-based toggling.</p>
+<p>Generally speaking, <code>v-if</code> has higher toggle costs while <code>v-show</code> has higher initial render costs. So prefer <code>v-show</code> if you need to toggle something very often, and prefer <code>v-if</code> if the condition is unlikely to change at runtime.</p>
 
     
       <div class="guide-links">
         
+          <span>← <a href="/guide/class-and-style.html">Class and Style Bindings</a></span>
         
-          <span style="float:right"><a href="/guide/index.html">Getting Started</a> →</span>
+        
+          <span style="float:right"><a href="/guide/list.html">List Rendering</a> →</span>
         
       </div>
     
