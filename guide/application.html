@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Building Larger Apps - vue.js</title>
+        <title>Building Large-Scale Apps - vue.js</title>
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -41,10 +41,11 @@
   </form>
 </li>
 <li><a href="/guide/" class="nav-link current">Guide</a></li>
-<li><a href="/api/" class="nav-link">API Reference</a></li>
+<li><a href="/api/" class="nav-link">API</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
-<li><a href="/blog/" class="nav-link">Blog</a></li>
-<li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
+<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
+<li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
+<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
 
     </ul>
 </div>
@@ -59,10 +60,11 @@
   </form>
 </li>
 <li><a href="/guide/" class="nav-link current">Guide</a></li>
-<li><a href="/api/" class="nav-link">API Reference</a></li>
+<li><a href="/api/" class="nav-link">API</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
-<li><a href="/blog/" class="nav-link">Blog</a></li>
-<li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
+<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
+<li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
+<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
 
     </ul>
     <div class="list">
@@ -78,27 +80,51 @@
                 </li>
             
                 <li>
-                    <a href="/guide/directives.html" class="sidebar-link">Directives</a>
+                    <a href="/guide/overview.html" class="sidebar-link">Overview</a>
                 </li>
             
                 <li>
-                    <a href="/guide/filters.html" class="sidebar-link">Filters</a>
+                    <a href="/guide/instance.html" class="sidebar-link">The Vue Instance</a>
                 </li>
             
                 <li>
-                    <a href="/guide/list.html" class="sidebar-link">Displaying a List</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/events.html" class="sidebar-link">Listening for Events</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/forms.html" class="sidebar-link">Handling Forms</a>
+                    <a href="/guide/syntax.html" class="sidebar-link">Data Binding Syntax</a>
                 </li>
             
                 <li>
                     <a href="/guide/computed.html" class="sidebar-link">Computed Properties</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/class-and-style.html" class="sidebar-link">Class and Style Bindings</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/conditional.html" class="sidebar-link">Conditional Rendering</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/list.html" class="sidebar-link">List Rendering</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/events.html" class="sidebar-link">Methods and Event Handling</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/forms.html" class="sidebar-link">Form Input Bindings</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/transitions.html" class="sidebar-link">Transitions</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/components.html" class="sidebar-link">Components</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/reactivity.html" class="sidebar-link">Reactivity in Depth</a>
                 </li>
             
                 <li>
@@ -110,85 +136,91 @@
                 </li>
             
                 <li>
-                    <a href="/guide/components.html" class="sidebar-link">Component System</a>
+                    <a href="/guide/mixins.html" class="sidebar-link">Mixins</a>
                 </li>
             
                 <li>
-                    <a href="/guide/transitions.html" class="sidebar-link">Transition System</a>
+                    <a href="/guide/plugins.html" class="sidebar-link">Plugins</a>
                 </li>
             
                 <li>
-                    <a href="/guide/application.html" class="sidebar-link current">Building Larger Apps</a>
+                    <a href="/guide/application.html" class="sidebar-link current">Building Large-Scale Apps</a>
                 </li>
             
                 <li>
-                    <a href="/guide/extending.html" class="sidebar-link">Extending Vue</a>
+                    <a href="/guide/comparison.html" class="sidebar-link">Comparison with Other Frameworks</a>
                 </li>
             
-                <li>
-                    <a href="/guide/best-practices.html" class="sidebar-link new">Tips & Best Practices</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/faq.html" class="sidebar-link">Common FAQs</a>
-                </li>
-            
-            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
-            <li style="margin:10px 0 3px">
-              <script data-gittip-username="yyx990803"
-                data-gittip-widget="button"
-                src="//gttp.co/v1.js"></script>
-            </li>
         </ul>
     </div>
 </div>
 
 
 <div class="content guide with-sidebar">
-    <h1>Building Larger Apps</h1>
+    <h1>Building Large-Scale Apps</h1>
     <div id="ad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
     </div>
-    <p>Vue.js is designed to be as flexible as possible - it’s just an interface library that doesn’t enforce any architectural decisions. While this can be very useful for rapid prototyping, it could be a challenge for those with less experience to build larger scale applications with it. The following is an opinionated perspective on how to organize larger projects when using Vue.js.</p>
-<h2 id="Modularization">Modularization</h2><p>Although the standalone build of Vue.js can be used as a global, it is often better to utilize a modularized build system to better organize your code. The recommended approach of doing so is by writing your source code in CommonJS modules (the format used by Node.js, and also the format used by Vue.js source code) and bundle them using <a href="http://webpack.github.io/" target="_blank" rel="external">Webpack</a> or <a href="http://browserify.org/" target="_blank" rel="external">Browserify</a>.</p>
-<p>Webpack and Browserify are more than just module bundlers, though. They both provide source transform APIs that allow you to transform your source code with other pre-processors. For example, you can write your code with future ES6/7 syntax using <a href="https://github.com/babel/babel-loader" target="_blank" rel="external">babel-loader</a> or <a href="https://github.com/babel/babelify" target="_blank" rel="external">babelify</a>.</p>
-<h2 id="Single_File_Components">Single File Components</h2><p>In a typical Vue.js project we will be breaking up our code into many small components, and it would be nice to have each component encapsulate its CSS styles, template and JavaScript definition in the same place. As mentioned above, when using Webpack or Browserify, with proper source transforms we can write our components like this:</p>
+    <p>The Vue.js core library is designed to be focused and flexible - it’s just a view layer library that doesn’t enforce any application-level architecture. While this can be great for integrating with existing projects, it could be a challenge for those with less experience to build larger scale applications from scratch.</p>
+<p>The Vue.js ecosystem provides a set of tools, libraries on how to build large SPAs with Vue. This part is where we start get a bit “framework”-ish, but it’s really just an opinionated list of recommendations; you still get to pick what to use for each part of the stack.</p>
+<h2 id="Modularization">Modularization</h2><p>For large projects it’s necessary to utilize a modularized build system to better organize your code. The recommended approach of doing so is by writing your source code in CommonJS or ES6 modules and bundle them using <a href="http://webpack.github.io/" target="_blank" rel="external">Webpack</a> or <a href="http://browserify.org/" target="_blank" rel="external">Browserify</a>.</p>
+<p>Webpack and Browserify are more than just module bundlers, though. They both provide source transform APIs that allow you to transform your source code with other pre-processors. For example, you can write your code with future ES2015/2016 syntax using <a href="https://github.com/babel/babel-loader" target="_blank" rel="external">babel-loader</a> or <a href="https://github.com/babel/babelify" target="_blank" rel="external">babelify</a>.</p>
+<p>If you’ve never used them before, I highly recommend going through a few tutorials to get familiar with the concept of module bundlers, and start writing JavaScript using the latest ECMAScript features.</p>
+<h2 id="Single_File_Components">Single File Components</h2><p>In a typical Vue.js project we will be dividing our interface into many small components, and it would be nice to have each component encapsulate its CSS styles, template and JavaScript definition in the same place. As mentioned above, when using Webpack or Browserify, with proper source transforms we can write our components like this:</p>
 <p><img src="/images/vue-component.png"></p>
 <p>If you are into pre-processors, you can even do this:</p>
 <p><img src="/images/vue-component-with-pre-processors.png"></p>
-<p>You can build these single-file Vue components with Webpack + <a href="https://github.com/vuejs/vue-loader" target="_blank" rel="external">vue-loader</a> or Browserify + <a href="https://github.com/vuejs/vueify" target="_blank" rel="external">vueify</a>. It is recommended to use the Webpack setup because Webpack’s loader API enables better file dependency tracking and caching if you are using pre-processors.</p>
+<p>You can build these single-file Vue components with Webpack + <a href="https://github.com/vuejs/vue-loader" target="_blank" rel="external">vue-loader</a> or Browserify + <a href="https://github.com/vuejs/vueify" target="_blank" rel="external">vueify</a>. It is recommended to use the Webpack setup because Webpack’s loader API enables better file dependency tracking / caching and some advanced features that are not feasible with Browserify transforms.</p>
 <p>You can find examples of the build setups on GitHub:</p>
 <ul>
 <li><a href="https://github.com/vuejs/vue-loader-example" target="_blank" rel="external">Webpack + vue-loader</a></li>
 <li><a href="https://github.com/vuejs/vueify-example" target="_blank" rel="external">Browserify + vueify</a></li>
 </ul>
-<h2 id="Routing">Routing</h2><p>For Single Page Applications, it is recommended to use the <a href="https://github.com/vuejs/vue-router" target="_blank" rel="external">offical vue-router library</a>, which is now in technical preview. For more details, please refer to vue-router’s <a href="http://vuejs.github.io/vue-router/" target="_blank" rel="external">documentation</a>.</p>
-<p>If you just need some very simple routing logic, you can also implement it by manually listening on hashchange and utilizing a dynamic component:</p>
+<h2 id="Routing">Routing</h2><p>For Single Page Applications, it is recommended to use the <a href="https://github.com/vuejs/vue-router" target="_blank" rel="external">official vue-router library</a>, which is currently in technical preview. For more details, please refer to vue-router’s <a href="http://vuejs.github.io/vue-router/" target="_blank" rel="external">documentation</a>.</p>
+<p>If you just need some very simple routing logic, you can also implement it by manually listening on <code>hashchange</code> and utilizing a dynamic component:</p>
 <p><strong>Example:</strong></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"app"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">component</span> <span class="attribute">is</span>=<span class="value">"&#123;&#123;currentView&#125;&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">component</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"app"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">component</span> <span class="attribute">:is</span>=<span class="value">"currentView"</span>&gt;</span><span class="tag">&lt;/<span class="title">component</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Vue.component(<span class="string">'home'</span>, &#123; <span class="comment">/* ... */</span> &#125;)</span><br><span class="line">Vue.component(<span class="string">'page1'</span>, &#123; <span class="comment">/* ... */</span> &#125;)</span><br><span class="line"><span class="keyword">var</span> app = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#app'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    currentView: <span class="string">'home'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// Switching pages in your route handler:</span></span><br><span class="line">app.currentView = <span class="string">'page1'</span></span><br></pre></td></tr></table></figure>
 <p>With this mechanism it’s also very easy to leverage external routing libraries such as <a href="https://github.com/visionmedia/page.js" target="_blank" rel="external">Page.js</a> or <a href="https://github.com/flatiron/director" target="_blank" rel="external">Director</a>.</p>
 <h2 id="Communication_with_Server">Communication with Server</h2><p>All Vue instances can have their raw <code>$data</code> directly serialized with <code>JSON.stringify()</code> with no additional effort. The community has contributed the <a href="https://github.com/vuejs/vue-resource" target="_blank" rel="external">vue-resource</a> plugin, which provides an easy way to work with RESTful APIs. You can also use any Ajax library you like, e.g. <code>$.ajax</code> or <a href="https://github.com/visionmedia/superagent" target="_blank" rel="external">SuperAgent</a>. Vue.js also plays nicely with no-backend services such as Firebase and Parse.</p>
-<h2 id="Unit_Testing">Unit Testing</h2><p>Anything compatible with a CommonJS-based build system works. A recommendation is using the <a href="http://karma-runner.github.io/0.12/index.html" target="_blank" rel="external">Karma</a> test runner together with its <a href="https://github.com/karma-runner/karma-commonjs" target="_blank" rel="external">CommonJS pre-processor</a> to test your code modularly.</p>
-<p>The best practice is to export raw options / functions inside modules. Consider this example:</p>
+<h2 id="State_Management">State Management</h2><p>In large applications, state management often becomes complex due to multiple pieces of state scattered across many components and the interactions between them. It is often overlooked that the source of truth in Vue.js applications is the raw data object - a Vue instances simply proxies access to it. Therefore, if you have a piece of state that should be shared by multiple instances, you should avoid duplicating it and share it by identity:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sourceOfTruth = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> vmA = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  data: sourceOfTruth</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> vmB = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  data: sourceOfTruth</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>Now whenever <code>sourceOfTruth</code> is mutated, both <code>vmA</code> and <code>vmB</code> will update their views automatically. Extending this idea further, we would arrive at the <strong>store pattern</strong>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> store = &#123;</span><br><span class="line">  state: &#123;</span><br><span class="line">    message: <span class="string">'Hello!'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  actionA: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.state.message = <span class="string">'action A triggered'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  actionB: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.state.message = <span class="string">'action B triggered'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> vmA = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    privateState: &#123;&#125;,</span><br><span class="line">    sharedState: store.state</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> vmB = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    privateState: &#123;&#125;,</span><br><span class="line">    sharedState: store.state</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>Notice we are putting all actions that mutate the store’s state inside the store itself. This type of centralized state management makes it easier to understand what type of mutations could happen to the state, and how are they triggered. Each component can still own and manage its private state.</p>
+<p><img src="/images/state.png" alt="State Management"></p>
+<p>One thing to take note is that you should never replace the original state object in your actions - the components and the store need to share reference to the same object in order for the mutations to be observed.</p>
+<p>If we enforce a convention where components are never allowed to directly mutate state that belongs to a store, but should instead dispatch events that notify the store to perform actions, we’ve essentially arrived at the <a href="https://facebook.github.io/flux/" target="_blank" rel="external">Flux</a> architecture. The benefits of this convention is we can record all state mutations happening to the store, and on top of that we can implement advanced debugging helpers such as mutation logs, snapshots, history re-rolls etc.</p>
+<p>The Flux architecture is commonly used in React applications. Turns out the core idea behind Flux can be quite simply achieved in Vue.js, thanks to the unobtrusive reactivity system. Do note what we demonstrated here is just an example to introduce the concept - you may not need it at all for simple scenarios, and you should adapt the pattern to fit the real needs of your application.</p>
+<h2 id="Unit_Testing">Unit Testing</h2><p>Anything compatible with a module-based build system works. A recommendation is using the <a href="http://karma-runner.github.io/0.12/index.html" target="_blank" rel="external">Karma</a> test runner. It has a lot of community plugins, including support for <a href="https://github.com/webpack/karma-webpack" target="_blank" rel="external">Webpack</a> and <a href="https://github.com/Nikku/karma-browserify" target="_blank" rel="external">Browserify</a>. For detailed setup, please refer to each project’s respective documentation.</p>
+<p>In terms of code structure for testing, the best practice is to export raw options / functions in your component modules. Consider this example:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// my-component.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  template: <span class="string">'&lt;span&gt;&#123;&#123;msg&#125;&#125;&lt;/span&gt;'</span>,</span><br><span class="line">  data: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      msg: <span class="string">'hello!'</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  created: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'my-component created!'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>You can use that file in your entry module like this:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.js</span></span><br><span class="line"><span class="keyword">var</span> Vue = <span class="built_in">require</span>(<span class="string">'vue'</span>)</span><br><span class="line"><span class="keyword">var</span> app = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#app'</span>,</span><br><span class="line">  data: &#123; <span class="comment">/* ... */</span> &#125;,</span><br><span class="line">  components: &#123;</span><br><span class="line">    <span class="string">'my-component'</span>: <span class="built_in">require</span>(<span class="string">'./my-component'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p>And you can test that module like this:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Some Jasmine 2.0 tests</span></span><br><span class="line">describe(<span class="string">'my-component'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;  </span><br><span class="line">  <span class="comment">// require source module</span></span><br><span class="line">  <span class="keyword">var</span> myComponent = <span class="built_in">require</span>(<span class="string">'../src/my-component'</span>)</span><br><span class="line">  it(<span class="string">'should have a created hook'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    expect(<span class="keyword">typeof</span> myComponent.created).toBe(<span class="string">'function'</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  it(<span class="string">'should set correct default data'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    expect(<span class="keyword">typeof</span> myComponent.data).toBe(<span class="string">'function'</span>)</span><br><span class="line">    <span class="keyword">var</span> defaultData = myComponent.data()</span><br><span class="line">    expect(defaultData.message).toBe(<span class="string">'hello!'</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p class="tip">Since Vue.js directives react to data updates asynchronously, when you are asserting DOM state after changing the data, you will have to do so in a <code>Vue.nextTick</code> callback.</p>
+<p class="tip">Since Vue.js directives perform updates asynchronously, when you are asserting DOM state after changing the data, you will have to do so in a <code>Vue.nextTick</code> callback.</p>
 
-<h2 id="Deploying_for_Production">Deploying for Production</h2><p>The minified standalone build of Vue.js has already stripped out all the warnings for you for a smaller file size, but when you are using tools like Browserify or Webpack to build Vue.js applications, it’s not so obvious how to do that.</p>
-<p>Starting in 0.12.8, it is quite simple to configure the tools to strip out the warnings:</p>
+<h2 id="Deploying_for_Production">Deploying for Production</h2><p>The minified standalone build of Vue.js has already stripped out all the warnings for you for a smaller file size, but when you are using tools like Browserify or Webpack to build Vue.js applications, you will need some additional configuration to achieve this.</p>
 <h3 id="Webpack">Webpack</h3><p>Use Webpack’s <a href="http://webpack.github.io/docs/list-of-plugins.html#defineplugin" target="_blank" rel="external">DefinePlugin</a> to indicate a production environment, so that warning blocks can be automatically dropped by UglifyJS during minification. Example config:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  plugins: [</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">new</span> webpack.DefinePlugin(&#123;</span><br><span class="line">      <span class="string">'process.env'</span>: &#123;</span><br><span class="line">        NODE_ENV: <span class="string">'"production"'</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="keyword">new</span> webpack.optimize.UglifyJsPlugin(&#123;</span><br><span class="line">      compress: &#123;</span><br><span class="line">        warnings: <span class="literal">false</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="Browserify">Browserify</h3><p>Just run your bundling command with <code>NODE_ENV</code> set to <code>&quot;production&quot;</code>. Vue automatically applies <a href="https://github.com/hughsk/envify" target="_blank" rel="external">envify</a> transform to itself and makes warning blocks unreachable. For example:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NODE_ENV=production browserify <span class="operator">-e</span> main.js | uglifyjs -c -m &gt; build.js</span><br></pre></td></tr></table></figure>
-<h2 id="An_Example">An Example</h2><p>The <a href="https://github.com/yyx990803/vue-hackernews" target="_blank" rel="external">Vue.js Hackernews Clone</a> is an example application that uses Webpack + vue-loader for code organization, Director.js for routing, and HackerNews’ official Firebase API as the backend. It’s by no means a big application, but it demonstrates the combined usage of the concepts discussed on this page.</p>
-<p>Next: <a href="/guide/extending.html">Extending Vue</a>.</p>
+<h2 id="An_App_Example">An App Example</h2><p>The <a href="https://github.com/vuejs/vue-hackernews" target="_blank" rel="external">Vue.js Hackernews Clone</a> is an example application that uses Webpack + vue-loader for code organization, Director.js for routing, and HackerNews’ official Firebase API as the backend. It’s by no means a big application, but it demonstrates the combined usage of the concepts discussed on this page.</p>
 
+    
+      <div class="guide-links">
+        
+          <span>← <a href="/guide/plugins.html">Plugins</a></span>
+        
+        
+          <span style="float:right"><a href="/guide/comparison.html">Comparison with Other Frameworks</a> →</span>
+        
+      </div>
+    
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/vuejs/vuejs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>
+
                 
             </div>
             <script src="/js/smooth-scroll.min.js"></script>
