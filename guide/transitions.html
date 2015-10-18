@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Transitions - vue.js</title>
+        <title>Transition System - vue.js</title>
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -41,11 +41,10 @@
   </form>
 </li>
 <li><a href="/guide/" class="nav-link current">Guide</a></li>
-<li><a href="/api/" class="nav-link">API</a></li>
+<li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
-<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
-<li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
-<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
+<li><a href="/blog/" class="nav-link">Blog</a></li>
+<li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
 
     </ul>
 </div>
@@ -60,11 +59,10 @@
   </form>
 </li>
 <li><a href="/guide/" class="nav-link current">Guide</a></li>
-<li><a href="/api/" class="nav-link">API</a></li>
+<li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
-<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
-<li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
-<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
+<li><a href="/blog/" class="nav-link">Blog</a></li>
+<li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
 
     </ul>
     <div class="list">
@@ -76,51 +74,31 @@
                 </li>
             
                 <li>
-                    <a href="/guide/index.html" class="sidebar-link">Introduction</a>
+                    <a href="/guide/index.html" class="sidebar-link">Getting Started</a>
                 </li>
             
                 <li>
-                    <a href="/guide/instance.html" class="sidebar-link">The Vue Instance</a>
+                    <a href="/guide/directives.html" class="sidebar-link">Directives</a>
                 </li>
             
                 <li>
-                    <a href="/guide/syntax.html" class="sidebar-link">Data Binding Syntax</a>
+                    <a href="/guide/filters.html" class="sidebar-link">Filters</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/list.html" class="sidebar-link">Displaying a List</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/events.html" class="sidebar-link">Listening for Events</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/forms.html" class="sidebar-link">Handling Forms</a>
                 </li>
             
                 <li>
                     <a href="/guide/computed.html" class="sidebar-link">Computed Properties</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/class-and-style.html" class="sidebar-link">Class and Style Bindings</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/conditional.html" class="sidebar-link">Conditional Rendering</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/list.html" class="sidebar-link">List Rendering</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/events.html" class="sidebar-link">Methods and Event Handling</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/forms.html" class="sidebar-link">Form Input Bindings</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/transitions.html" class="sidebar-link current">Transitions</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/components.html" class="sidebar-link">Components</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/reactivity.html" class="sidebar-link">Reactivity in Depth</a>
                 </li>
             
                 <li>
@@ -132,43 +110,47 @@
                 </li>
             
                 <li>
-                    <a href="/guide/mixins.html" class="sidebar-link">Mixins</a>
+                    <a href="/guide/components.html" class="sidebar-link">Component System</a>
                 </li>
             
                 <li>
-                    <a href="/guide/plugins.html" class="sidebar-link">Plugins</a>
+                    <a href="/guide/transitions.html" class="sidebar-link current">Transition System</a>
                 </li>
             
                 <li>
-                    <a href="/guide/application.html" class="sidebar-link">Building Large-Scale Apps</a>
+                    <a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a>
                 </li>
             
                 <li>
-                    <a href="/guide/comparison.html" class="sidebar-link">Comparison with Other Frameworks</a>
+                    <a href="/guide/extending.html" class="sidebar-link">Extending Vue</a>
                 </li>
             
+                <li>
+                    <a href="/guide/best-practices.html" class="sidebar-link new">Tips & Best Practices</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/faq.html" class="sidebar-link">Common FAQs</a>
+                </li>
+            
+            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
+            <li style="margin:10px 0 3px">
+              <script data-gittip-username="yyx990803"
+                data-gittip-widget="button"
+                src="//gttp.co/v1.js"></script>
+            </li>
         </ul>
     </div>
 </div>
 
 
 <div class="content guide with-sidebar">
-    <h1>Transitions</h1>
+    <h1>Transition System</h1>
     <div id="ad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
     </div>
     <p>With Vue.js’ transition system you can apply automatic transition effects when elements are inserted into or removed from the DOM. Vue.js will automatically add/remove CSS classes at appropriate times to trigger CSS transitions or animations for you, and you can also provide JavaScript hook functions to perform custom DOM manipulations during the transition.</p>
-<p>To apply transition effects, you need to use the special <code>transition</code> attribute on the target element:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-if</span>=<span class="value">"show"</span> <span class="attribute">transition</span>=<span class="value">"my-transition"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>The <code>transition</code> attribute can be used together with:</p>
-<ul>
-<li><code>v-if</code></li>
-<li><code>v-show</code></li>
-<li><code>v-for</code> (triggered for insertion and removal only)</li>
-<li>Dynamic components (introduced in the <a href="components.html#Dynamic_Components">next section</a>)</li>
-<li>On a component root node, and triggered via Vue instance DOM methods, e.g. <code>vm.$appendTo(el)</code>.</li>
-</ul>
-<p>When an element with transition is inserted or removed, Vue will:</p>
+<p>With the directive <code>v-transition=&quot;my-transition&quot;</code> applied, Vue will:</p>
 <ol>
 <li><p>Try to find a JavaScript transition hooks object registered either through <code>Vue.transition(id, hooks)</code> or passed in with the <code>transitions</code> option, using the id <code>&quot;my-transition&quot;</code>. If it finds it, it will call the appropriate hooks at different stages of the transition.</p>
 </li>
@@ -177,17 +159,15 @@
 <li><p>If no JavaScript hooks are provided and no CSS transitions/animations are detected, the DOM operation (insertion/removal) is executed immediately on next frame.</p>
 </li>
 </ol>
-<h2 id="CSS_Transitions">CSS Transitions</h2><h3 id="Example">Example</h3><p>A typical CSS transition looks like this:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-if</span>=<span class="value">"show"</span> <span class="attribute">transition</span>=<span class="value">"expand"</span>&gt;</span>hello<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p class="tip">All Vue.js transitions are triggered only if the DOM manipulation was applied through Vue.js, either by a built-in directive, e.g. <code>v-if</code>, or by one of Vue’s instance methods, e.g. <code>vm.$appendTo()</code>.</p>
+
+<h2 id="CSS_Transitions">CSS Transitions</h2><p>A typical CSS transition looks like this:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-if</span>=<span class="value">"show"</span> <span class="attribute">v-transition</span>=<span class="value">"expand"</span>&gt;</span>hello<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>You also need to define CSS rules for <code>.expand-transition</code>, <code>.expand-enter</code> and <code>.expand-leave</code> classes:</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* always present */</span></span><br><span class="line"><span class="class">.expand-transition</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">transition</span>:<span class="value"> all .<span class="number">3s</span> ease</span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">30px</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">padding</span>:<span class="value"> <span class="number">10px</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">background-color</span>:<span class="value"> <span class="hexcolor">#eee</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">overflow</span>:<span class="value"> hidden</span></span>;</span><br><span class="line">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* .expand-enter defines the starting state for entering */</span></span><br><span class="line"><span class="comment">/* .expand-leave defines the ending state for leaving */</span></span><br><span class="line"><span class="class">.expand-enter</span>, <span class="class">.expand-leave</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">padding</span>:<span class="value"> <span class="number">0</span> <span class="number">10px</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">opacity</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.expand-transition</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">transition</span>:<span class="value"> all .<span class="number">3s</span> ease</span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">30px</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">padding</span>:<span class="value"> <span class="number">10px</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">background-color</span>:<span class="value"> <span class="hexcolor">#eee</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">overflow</span>:<span class="value"> hidden</span></span>;</span><br><span class="line">&#125;</span></span><br><span class="line"><span class="class">.expand-enter</span>, <span class="class">.expand-leave</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">padding</span>:<span class="value"> <span class="number">0</span> <span class="number">10px</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">opacity</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
 <p>In addition, you can provide JavaScript hooks:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">Vue.transition(<span class="string">'expand'</span>, &#123;</span><br><span class="line"></span><br><span class="line">  beforeEnter: <span class="function"><span class="keyword">function</span> (<span class="params">el</span>) </span>&#123;</span><br><span class="line">    el.textContent = <span class="string">'beforeEnter'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  enter: <span class="function"><span class="keyword">function</span> (<span class="params">el</span>) </span>&#123;</span><br><span class="line">    el.textContent = <span class="string">'enter'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  afterEnter: <span class="function"><span class="keyword">function</span> (<span class="params">el</span>) </span>&#123;</span><br><span class="line">    el.textContent = <span class="string">'afterEnter'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  enterCancelled: <span class="function"><span class="keyword">function</span> (<span class="params">el</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// handle cancellation</span></span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  beforeLeave: <span class="function"><span class="keyword">function</span> (<span class="params">el</span>) </span>&#123;</span><br><span class="line">    el.textContent = <span class="string">'beforeLeave'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  leave: <span class="function"><span class="keyword">function</span> (<span class="params">el</span>) </span>&#123;</span><br><span class="line">    el.textContent = <span class="string">'leave'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  afterLeave: <span class="function"><span class="keyword">function</span> (<span class="params">el</span>) </span>&#123;</span><br><span class="line">    el.textContent = <span class="string">'afterLeave'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  leaveCancelled: <span class="function"><span class="keyword">function</span> (<span class="params">el</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// handle cancellation</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<div id="demo">
-  <div v-if="show" transition="expand">hello</div>
-  <button @click="show = !show">Toggle</button>
-</div>
+<div id="demo"><div v-if="show" v-transition="expand">hello</div><button v-on="click: show = !show">Toggle</button></div>
 
 <style>
 .expand-transition {
@@ -236,17 +216,8 @@ new Vue({
 })
 </script>
 
-<h3 id="Transition_CSS_Classes">Transition CSS Classes</h3><p>The classes being added and toggled are based on the value of the <code>transition</code> attribute. In the case of <code>transition=&quot;fade&quot;</code>, three CSS classes are involved:</p>
-<ol>
-<li><p>The class <code>.fade-transition</code> will be always present on the element.</p>
-</li>
-<li><p><code>.fade-enter</code> defines the starting state of an entering transition. It is applied for a single frame and then immediately removed.</p>
-</li>
-<li><p><code>.fade-leave</code> defines the ending state of a leaving transition. It is applied when the leaving transition starts and removed when the transition finishes.</p>
-</li>
-</ol>
-<p>If the <code>transition</code> attribute has no value, the classes will default to <code>.v-transition</code>, <code>.v-enter</code> and <code>.v-leave</code>.</p>
-<h3 id="Transition_Flow_Details">Transition Flow Details</h3><p>When the <code>show</code> property changes, Vue.js will insert or remove the <code>&lt;div&gt;</code> element accordingly, and apply transition classes as specified below:</p>
+<p>The classes being added and toggled are based on the value of your <code>v-transition</code> directive. In the case of <code>v-transition=&quot;fade&quot;</code>, the class <code>.fade-transition</code> will be always present, and the classes <code>.fade-enter</code> and <code>.fade-leave</code> will be toggled automatically at the right moments. When no value is provided they will default to <code>.v-transition</code>, <code>.v-enter</code> and <code>.v-leave</code>.</p>
+<p>When the <code>show</code> property changes, Vue.js will insert or remove the <code>&lt;div&gt;</code> element accordingly, and apply transition classes as specified below:</p>
 <ul>
 <li><p>When <code>show</code> becomes false, Vue.js will:</p>
 <ol>
@@ -278,16 +249,11 @@ new Vue({
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">enter: <span class="function"><span class="keyword">function</span> (<span class="params">el, done</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// with the second argument, the transition</span></span><br><span class="line">  <span class="comment">// will only end when `done` is called.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p class="tip">When multiple elements are being transitioned together, Vue.js batches them and only applies one forced layout.</p>
 
-<h3 id="CSS_Animations">CSS Animations</h3><p>CSS animations are applied in the same way with CSS transitions, the difference being that <code>v-enter</code> is not removed immediately after the element is inserted, but on an <code>animationend</code> event.</p>
-<p>Example: (omitting prefixed CSS rules here)</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-show</span>=<span class="value">"show"</span> <span class="attribute">transition</span>=<span class="value">"bounce"</span>&gt;</span>Look at me!<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="CSS_Animations">CSS Animations</h2><p>CSS animations are applied in the same way with CSS transitions, the difference being that <code>v-enter</code> is not removed immediately after the element is inserted, but on an <code>animationend</code> event.</p>
+<p><strong>Example:</strong> (omitting prefixed CSS rules here)</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-show</span>=<span class="value">"show"</span> <span class="attribute">v-transition</span>=<span class="value">"bounce"</span>&gt;</span>Look at me!<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.bounce-enter</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">animation</span>:<span class="value"> bounce-in .<span class="number">5s</span></span></span>;</span><br><span class="line">&#125;</span></span><br><span class="line"><span class="class">.bounce-leave</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">animation</span>:<span class="value"> bounce-out .<span class="number">5s</span></span></span>;</span><br><span class="line">&#125;</span></span><br><span class="line"><span class="at_rule">@<span class="keyword">keyframes</span> bounce-in </span>&#123;</span><br><span class="line">  0% <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">0</span>)</span></span>;</span><br><span class="line">  &#125;</span></span><br><span class="line">  50% <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">1.5</span>)</span></span>;</span><br><span class="line">  &#125;</span></span><br><span class="line">  100% <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">1</span>)</span></span>;</span><br><span class="line">  &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="at_rule">@<span class="keyword">keyframes</span> bounce-out </span>&#123;</span><br><span class="line">  0% <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">1</span>)</span></span>;</span><br><span class="line">  &#125;</span></span><br><span class="line">  50% <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">1.5</span>)</span></span>;</span><br><span class="line">  &#125;</span></span><br><span class="line">  100% <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">0</span>)</span></span>;</span><br><span class="line">  &#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<div id="anim" class="demo">
-  <span v-show="show" transition="bounce">Look at me!</span>
-  <br>
-  <button @click="show = !show">Toggle</button>
-</div>
+<div id="anim" class="demo"><span v-show="show" v-transition="bounce">Look at me!</span><br><button v-on="click: show = !show">Toggle</button></div>
 
 <style>
   .bounce-enter {
@@ -357,32 +323,23 @@ new Vue({
 })
 </script>
 
-<h2 id="JavaScript_Transitions">JavaScript Transitions</h2><p>You can also use just the JavaScript hooks without defining any CSS rules. When using JavaScript only transitions, <strong>the <code>done</code> callbacks are required for the <code>enter</code> and <code>leave</code> hooks</strong>, otherwise they will be called synchronously and the transition will finish immediately.</p>
-<p>It’s also a good idea to explicitly declare <code>css: false</code> for your JavaScript transitions so that Vue.js can skip the CSS detection. This also prevents cascaded CSS rules from accidentally interfering with the transition.</p>
-<p>The following example registers a custom JavaScript transition using jQuery:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Vue.transition(<span class="string">'fade'</span>, &#123;</span><br><span class="line">  css: <span class="literal">false</span>,</span><br><span class="line">  enter: <span class="function"><span class="keyword">function</span> (<span class="params">el, done</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// element is already inserted into the DOM</span></span><br><span class="line">    <span class="comment">// call done when animation finishes.</span></span><br><span class="line">    $(el)</span><br><span class="line">      .css(<span class="string">'opacity'</span>, <span class="number">0</span>)</span><br><span class="line">      .animate(&#123; opacity: <span class="number">1</span> &#125;, <span class="number">1000</span>, done)</span><br><span class="line">  &#125;,</span><br><span class="line">  enterCancelled: <span class="function"><span class="keyword">function</span> (<span class="params">el</span>) </span>&#123;</span><br><span class="line">    $(el).stop()</span><br><span class="line">  &#125;,</span><br><span class="line">  leave: <span class="function"><span class="keyword">function</span> (<span class="params">el, done</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// same as enter</span></span><br><span class="line">    $(el).animate(&#123; opacity: <span class="number">0</span> &#125;, <span class="number">1000</span>, done)</span><br><span class="line">  &#125;,</span><br><span class="line">  leaveCancelled: <span class="function"><span class="keyword">function</span> (<span class="params">el</span>) </span>&#123;</span><br><span class="line">    $(el).stop()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>Then you can use it with the <code>transition</code> attribute, same deal:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">p</span> <span class="attribute">transition</span>=<span class="value">"fade"</span>&gt;</span><span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="Staggering_Transitions">Staggering Transitions</h2><p>It’s possible to create staggering transitions when using <code>transition</code> with <code>v-for</code>. You can do this either by adding a <code>stagger</code>, <code>enter-stagger</code> or <code>leave-stagger</code> attribute to your transitioned element:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-for</span>=<span class="value">"list"</span> <span class="attribute">transition</span> <span class="attribute">stagger</span>=<span class="value">"100"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="JavaScript_Only_Transitions">JavaScript Only Transitions</h2><p>You can also use just the JavaScript hooks without defining any CSS rules. When using JavaScript only transitions, the <code>done</code> callbacks are required for the <code>enter</code> and <code>leave</code> hooks, otherwise they will be called synchronously and the transition will finish immediately. The following example registers a custom JavaScript transition using jQuery:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Vue.transition(<span class="string">'fade'</span>, &#123;</span><br><span class="line">  enter: <span class="function"><span class="keyword">function</span> (<span class="params">el, done</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// element is already inserted into the DOM</span></span><br><span class="line">    <span class="comment">// call done when animation finishes.</span></span><br><span class="line">    $(el)</span><br><span class="line">      .css(<span class="string">'opacity'</span>, <span class="number">0</span>)</span><br><span class="line">      .animate(&#123; opacity: <span class="number">1</span> &#125;, <span class="number">1000</span>, done)</span><br><span class="line">  &#125;,</span><br><span class="line">  enterCancelled: <span class="function"><span class="keyword">function</span> (<span class="params">el</span>) </span>&#123;</span><br><span class="line">    $(el).stop()</span><br><span class="line">  &#125;,</span><br><span class="line">  leave: <span class="function"><span class="keyword">function</span> (<span class="params">el, done</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// same as enter</span></span><br><span class="line">    $(el).animate(&#123; opacity: <span class="number">0</span> &#125;, <span class="number">1000</span>, done)</span><br><span class="line">  &#125;,</span><br><span class="line">  leaveCancelled: <span class="function"><span class="keyword">function</span> (<span class="params">el</span>) </span>&#123;</span><br><span class="line">    $(el).stop()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>Then you can use it by providing the transition id to <code>v-transition</code>, same deal:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">p</span> <span class="attribute">v-transition</span>=<span class="value">"fade"</span>&gt;</span><span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p class="tip">If the element with a JavaScript-only transition happens to have other CSS transitions or animations applied, it may intefere with Vue’s transition detection. In such cases you can add <code>css: false</code> to your transition object to explicitly disable Vue from sniffing CSS-related transitions.</p>
+
+<h2 id="Staggering_Transitions">Staggering Transitions</h2><p>It’s possible to create staggering transitions when using <code>v-transition</code> with <code>v-repeat</code>. You can do this either by adding a <code>stagger</code>, <code>enter-stagger</code> or <code>leave-stagger</code> attribute to your transitioned element:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-repeat</span>=<span class="value">"list"</span> <span class="attribute">v-transition</span> <span class="attribute">stagger</span>=<span class="value">"100"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Or, you can provide a <code>stagger</code>, <code>enterStagger</code> or <code>leaveStagger</code> hook for finer-grained control:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Vue.transition(<span class="string">'stagger'</span>, &#123;</span><br><span class="line">  stagger: <span class="function"><span class="keyword">function</span> (<span class="params">index</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// increase delay by 50ms for each transitioned item,</span></span><br><span class="line">    <span class="comment">// but limit max delay to 300ms</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.min(<span class="number">300</span>, index * <span class="number">50</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p>Example:</p>
-<iframe width="100%" height="200" style="margin-left:10px" src="http://jsfiddle.net/yyx990803/mvo99bse/embedded/result,html,js,css" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="200" style="margin-left:10px" src="http://jsfiddle.net/yyx990803/ujqrsu6w/embedded/result,html,js,css" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-    
-      <div class="guide-links">
-        
-          <span>← <a href="/guide/forms.html">Form Input Bindings</a></span>
-        
-        
-          <span style="float:right"><a href="/guide/components.html">Components</a> →</span>
-        
-      </div>
-    
+<p>Next: <a href="/guide/application.html">Building Larger Apps</a>.</p>
+
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/vuejs/vuejs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>
-
                 
             </div>
             <script src="/js/smooth-scroll.min.js"></script>

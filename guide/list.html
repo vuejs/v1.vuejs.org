@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>List Rendering - vue.js</title>
+        <title>Displaying a List - vue.js</title>
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -41,11 +41,10 @@
   </form>
 </li>
 <li><a href="/guide/" class="nav-link current">Guide</a></li>
-<li><a href="/api/" class="nav-link">API</a></li>
+<li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
-<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
-<li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
-<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
+<li><a href="/blog/" class="nav-link">Blog</a></li>
+<li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
 
     </ul>
 </div>
@@ -60,11 +59,10 @@
   </form>
 </li>
 <li><a href="/guide/" class="nav-link current">Guide</a></li>
-<li><a href="/api/" class="nav-link">API</a></li>
+<li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
-<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
-<li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
-<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
+<li><a href="/blog/" class="nav-link">Blog</a></li>
+<li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
 
     </ul>
     <div class="list">
@@ -76,51 +74,31 @@
                 </li>
             
                 <li>
-                    <a href="/guide/index.html" class="sidebar-link">Introduction</a>
+                    <a href="/guide/index.html" class="sidebar-link">Getting Started</a>
                 </li>
             
                 <li>
-                    <a href="/guide/instance.html" class="sidebar-link">The Vue Instance</a>
+                    <a href="/guide/directives.html" class="sidebar-link">Directives</a>
                 </li>
             
                 <li>
-                    <a href="/guide/syntax.html" class="sidebar-link">Data Binding Syntax</a>
+                    <a href="/guide/filters.html" class="sidebar-link">Filters</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/list.html" class="sidebar-link current">Displaying a List</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/events.html" class="sidebar-link">Listening for Events</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/forms.html" class="sidebar-link">Handling Forms</a>
                 </li>
             
                 <li>
                     <a href="/guide/computed.html" class="sidebar-link">Computed Properties</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/class-and-style.html" class="sidebar-link">Class and Style Bindings</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/conditional.html" class="sidebar-link">Conditional Rendering</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/list.html" class="sidebar-link current">List Rendering</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/events.html" class="sidebar-link">Methods and Event Handling</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/forms.html" class="sidebar-link">Form Input Bindings</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/transitions.html" class="sidebar-link">Transitions</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/components.html" class="sidebar-link">Components</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/reactivity.html" class="sidebar-link">Reactivity in Depth</a>
                 </li>
             
                 <li>
@@ -132,179 +110,165 @@
                 </li>
             
                 <li>
-                    <a href="/guide/mixins.html" class="sidebar-link">Mixins</a>
+                    <a href="/guide/components.html" class="sidebar-link">Component System</a>
                 </li>
             
                 <li>
-                    <a href="/guide/plugins.html" class="sidebar-link">Plugins</a>
+                    <a href="/guide/transitions.html" class="sidebar-link">Transition System</a>
                 </li>
             
                 <li>
-                    <a href="/guide/application.html" class="sidebar-link">Building Large-Scale Apps</a>
+                    <a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a>
                 </li>
             
                 <li>
-                    <a href="/guide/comparison.html" class="sidebar-link">Comparison with Other Frameworks</a>
+                    <a href="/guide/extending.html" class="sidebar-link">Extending Vue</a>
                 </li>
             
+                <li>
+                    <a href="/guide/best-practices.html" class="sidebar-link new">Tips & Best Practices</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/faq.html" class="sidebar-link">Common FAQs</a>
+                </li>
+            
+            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
+            <li style="margin:10px 0 3px">
+              <script data-gittip-username="yyx990803"
+                data-gittip-widget="button"
+                src="//gttp.co/v1.js"></script>
+            </li>
         </ul>
     </div>
 </div>
 
 
 <div class="content guide with-sidebar">
-    <h1>List Rendering</h1>
+    <h1>Displaying a List</h1>
     <div id="ad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
     </div>
-    <h2 id="v-for">v-for</h2><p>We can use the <code>v-for</code> directive to render a list of items based on an Array. The <code>v-for</code> directive requires a special syntax in the form of <code>item in items</code>, where <code>items</code> is the source data Array and <code>item</code> is an <strong>alias</strong> for the Array element being iterated on:</p>
+    <p>You can use the <code>v-repeat</code> directive to repeat a template element based on an Array of objects on the ViewModel. For every object in the Array, the directive will create a child Vue instance using that object as its <code>$data</code> object. These child instances inherit all data on the parent, so in the repeated element you have access to properties on both the repeated instance and the parent instance. In addition, you get access to the <code>$index</code> property, which will be the corresponding Array index of the rendered instance.</p>
 <p><strong>Example:</strong></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span> <span class="attribute">id</span>=<span class="value">"example-1"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-for</span>=<span class="value">"item in items"</span>&gt;</span></span><br><span class="line">    &#123;&#123; item.message &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> example1 = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#example-1'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    items: [</span><br><span class="line">      &#123; message: <span class="string">'Foo'</span> &#125;,</span><br><span class="line">      &#123; message: <span class="string">'Bar'</span> &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span> <span class="attribute">id</span>=<span class="value">"demo"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-repeat</span>=<span class="value">"items"</span> <span class="attribute">class</span>=<span class="value">"item-&#123;&#123;$index&#125;&#125;"</span>&gt;</span></span><br><span class="line">    &#123;&#123;$index&#125;&#125; - &#123;&#123;parentMsg&#125;&#125; &#123;&#123;childMsg&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> demo = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#demo'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    parentMsg: <span class="string">'Hello'</span>,</span><br><span class="line">    items: [</span><br><span class="line">      &#123; childMsg: <span class="string">'Foo'</span> &#125;,</span><br><span class="line">      &#123; childMsg: <span class="string">'Bar'</span> &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p><strong>Result:</strong></p>
-
-<ul id="example-1" class="demo">
-  <li v-for="item in items">
-    {{item.message}}
-  </li>
-</ul>
+<p><ul id="demo"><li v-repeat="items" class="item-{&#123;$index&#125;}">{&#123;$index&#125;} - {&#123;parentMsg&#125;} {&#123;childMsg&#125;}</li></ul></p>
 <script>
-var example1 = new Vue({
-  el: '#example-1',
+var demo = new Vue({
+  el: '#demo',
   data: {
+    parentMsg: 'Hello',
     items: [
-      { message: 'Foo' },
-      { message: 'Bar' }
+      { childMsg: 'Foo' },
+      { childMsg: 'Bar' }
     ]
-  },
-  watch: {
-    items: function () {
-      smoothScroll.animateScroll(null, '#example-1')
-    }
   }
 })
 </script>
 
-<p>Inside <code>v-for</code> blocks we have full access to parent scope properties, plus a special variable <code>$index</code> which, as you probably have guessed, is the Array index for the current item:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span> <span class="attribute">id</span>=<span class="value">"example-2"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-for</span>=<span class="value">"item in items"</span>&gt;</span></span><br><span class="line">    &#123;&#123; parentMessage &#125;&#125; &#123;&#123; $index &#125;&#125; &#123;&#123; item.message &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> example2 = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#example-2'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    parentMessage: <span class="string">'Parent'</span>,</span><br><span class="line">    items: [</span><br><span class="line">      &#123; message: <span class="string">'Foo'</span> &#125;,</span><br><span class="line">      &#123; message: <span class="string">'Bar'</span> &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="Fragment_Repeat">Fragment Repeat</h2><p>Sometimes you might want to repeat a fragment of more than one nodes - in that case, you can use a <code>&lt;template&gt;</code> tag to wrap the repeat fragment. The <code>&lt;template&gt;</code> tag here merely serves as a semantic wrapper. For example:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">template</span> <span class="attribute">v-repeat</span>=<span class="value">"list"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">li</span>&gt;</span>&#123;&#123;msg&#125;&#125;<span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">li</span> <span class="attribute">class</span>=<span class="value">"divider"</span>&gt;</span><span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Arrays_of_Primitive_Values">Arrays of Primitive Values</h2><p>For Arrays containing primitive values, you can access the value simply as <code>$value</code>:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span> <span class="attribute">id</span>=<span class="value">"tags"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-repeat</span>=<span class="value">"tags"</span>&gt;</span></span><br><span class="line">    &#123;&#123;$value&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#tags'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    tags: [<span class="string">'JavaScript'</span>, <span class="string">'MVVM'</span>, <span class="string">'Vue.js'</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p><strong>Result:</strong></p>
-
-<ul id="example-2" class="demo">
-  <li v-for="item in items">
-    {{ parentMessage }} - {{ $index }} - {{ item.message }}
-  </li>
-</ul>
+<p><ul id="tags" class="demo"><li v-repeat="tags">{&#123;$value&#125;}</li></ul></p>
 <script>
-var example2 = new Vue({
-  el: '#example-2',
+new Vue({
+  el: '#tags',
   data: {
-    parentMessage: 'Parent',
-    items: [
-      { message: 'Foo' },
-      { message: 'Bar' }
-    ]
-  },
-  watch: {
-    items: function () {
-      smoothScroll.animateScroll(null, '#example-2')
-    }
+    tags: ['JavaScript', 'MVVM', 'Vue.js']
   }
 })
 </script>
 
-<h2 id="Template_v-for">Template v-for</h2><p>Similar to template <code>v-if</code>, you can also use a <code>&lt;template&gt;</code> tag with <code>v-for</code> to render a block of multiple elements. For example:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">template</span> <span class="attribute">v-for</span>=<span class="value">"item in items"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">li</span>&gt;</span>&#123;&#123; item.msg &#125;&#125;<span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">li</span> <span class="attribute">class</span>=<span class="value">"divider"</span>&gt;</span><span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="Array_Change_Detection">Array Change Detection</h2><h3 id="Mutation_Methods">Mutation Methods</h3><p>Vue.js wraps an observed Array’s mutation methods so they will also trigger View updates. The wrapped methods are:</p>
-<ul>
-<li><code>push()</code></li>
-<li><code>pop()</code></li>
-<li><code>shift()</code></li>
-<li><code>unshift()</code></li>
-<li><code>splice()</code></li>
-<li><code>sort()</code></li>
-<li><code>reverse()</code></li>
-</ul>
-<p>You can open the console and play with the previous examples’ <code>items</code> array by calling its mutation methods. For example: <code>example1.items.push({ message: &#39;Baz&#39; })</code>.</p>
-<h3 id="Replacing_an_Array">Replacing an Array</h3><p>Mutation methods, as the name suggests, mutate the original Array they are called on. In comparison, there are also non-mutating methods, e.g. <code>filter()</code>, <code>concat()</code> and <code>slice()</code>, which do not mutate the original Array but <strong>always return a new Array</strong>. When working with non-mutating methods, you can just replace the old Array with the new one:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">example1.items = example1.items.filter(<span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> item.message.match(<span class="regexp">/Foo/</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>You might think this will cause Vue.js to throw away the existing DOM and re-render the entire list - luckily that is not the case. Vue.js implements some smart heuristics to maximize DOM element reuse, so replacing an array with another array containing overlapping objects is a very efficient operation.</p>
-<h3 id="track-by">track-by</h3><p>In some cases, you might need to replace the Array with completely new objects - e.g. ones created from an API call. Since by default <code>v-for</code> determines the reusability of existing scopes and DOM elements by tracking the identity of its data object, this could cause the entire list to be re-rendered. However, if each of your data objects has a unique id property, then you can use a <code>track-by</code> special attribute to give Vue.js a hint so that it can reuse existing instances as much as possible.</p>
+<h2 id="Using_an_alias">Using an alias</h2><p>Sometimes we might want to have more explicit variable access instead of implicitly falling back to parent scope. You can do that by providing an alias to the <code>v-repeat</code> directive and use it as the alias for the item being iterated:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span> <span class="attribute">id</span>=<span class="value">"users"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-repeat</span>=<span class="value">"user in users"</span>&gt;</span></span><br><span class="line">    &#123;&#123;user.name&#125;&#125; - &#123;&#123;user.email&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#users'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    users: [</span><br><span class="line">      &#123; name: <span class="string">'Foo Bar'</span>, email: <span class="string">'foo@bar.com'</span> &#125;,</span><br><span class="line">      &#123; name: <span class="string">'John Doh'</span>, email: <span class="string">'john@doh.com'</span> &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><strong>Result:</strong></p>
+<p><ul id="users" class="demo"><li v-repeat="user: users">{&#123;user.name&#125;} - {&#123;user.email&#125;}</li></ul></p>
+<script>
+new Vue({
+  el: '#users',
+  data: {
+    users: [
+      { name: 'Foo Bar', email: 'foo@bar.com' },
+      { name: 'John Doh', email: 'john@doh.com' }
+    ]
+  }
+})
+</script>
+
+<p class="tip">The <code>user in users</code> syntax is only available in Vue 0.12.8 and above. For older versions, you must use the <code>user : users</code> syntax.</p>
+
+<p class="tip">Using an alias with <code>v-repeat</code> in general results in more readable templates and slightly better performance.</p>
+
+<h2 id="Mutation_Methods">Mutation Methods</h2><p>Under the hood, Vue.js intercepts an observed Array’s mutating methods (<code>push()</code>, <code>pop()</code>, <code>shift()</code>, <code>unshift()</code>, <code>splice()</code>, <code>sort()</code> and <code>reverse()</code>) so they will also trigger View updates.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// the DOM will be updated accordingly</span></span><br><span class="line">demo.items.unshift(&#123; childMsg: <span class="string">'Baz'</span> &#125;)</span><br><span class="line">demo.items.pop()</span><br></pre></td></tr></table></figure>
+<h2 id="Augmented_Methods">Augmented Methods</h2><p>Vue.js augments observed Arrays with two convenience methods: <code>$set()</code> and <code>$remove()</code>.</p>
+<p>You should avoid directly setting elements of a data-bound Array with indices, because those changes will not be picked up by Vue.js. Instead, use the augmented <code>$set()</code> method:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// same as `demo.items[0] = ...` but triggers view update</span></span><br><span class="line">demo.items.$set(<span class="number">0</span>, &#123; childMsg: <span class="string">'Changed!'</span>&#125;)</span><br></pre></td></tr></table></figure>
+<p><code>$remove()</code> is just syntax sugar for <code>splice()</code>. It will remove the element at the given index. When the argument is not a number, <code>$remove()</code> will search for that value in the array and remove the first occurrence.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// remove the item at index 0</span></span><br><span class="line">demo.items.$remove(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="Replacing_an_Array">Replacing an Array</h2><p>When you are using non-mutating methods, e.g. <code>filter()</code>, <code>concat()</code> or <code>slice()</code>, the returned Array will be a different instance. In that case, you can just replace the old Array with the new one:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">demo.items = demo.items.filter(<span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> item.childMsg.match(<span class="regexp">/Hello/</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>You might think this will blow away the existing DOM and re-build everything. But worry not - Vue.js recognizes array elements that already have an associated Vue instance and will reuse those instances whenever possible.</p>
+<h2 id="Using_track-by">Using <code>track-by</code></h2><p>In some cases, you might need to replace the Array with completely new objects - e.g. ones returned from an API call. Since by default <code>v-repeat</code> determines the reusability of an existing child instance and its DOM nodes by tracking the identity of its data object, this could cause the entire list to be re-rendered. However, if each of your data objects has a unique id property, then you can use a <code>track-by</code> param to give Vue.js a hint so that it can reuse existing instances as much as possible.</p>
 <p>For example, if your data looks like this:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  items: [</span><br><span class="line">    &#123; _uid: <span class="string">'88f869d'</span>, ... &#125;,</span><br><span class="line">    &#123; _uid: <span class="string">'7496c10'</span>, ... &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Then you can give the hint like this:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-for</span>=<span class="value">"item in items"</span> <span class="attribute">track-by</span>=<span class="value">"_uid"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- content --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>Later on, when you replace the <code>items</code> array and Vue.js encounters a new object with <code>_uid: &#39;88f869d&#39;</code>, it knows it can reuse the existing scope and DOM elements associated with the same <code>_uid</code>.</p>
-<h3 id="track-by_$index">track-by $index</h3><p>If you don’t have a unique key to track by, you can also use <code>track-by=&quot;$index&quot;</code>, which will force <code>v-for</code> into in-place update mode: fragments are no longer moved around, they simply get flushed with the new value at the corresponding index. This mode can also handle duplicate values in the source array.</p>
-<p>This can make Array replacement extremely efficient, but it comes at a trade-off. Because DOM nodes are no longer moved to reflect the change in order, temporary state like DOM input values and component private state can become out of sync. So, be careful when using <code>track-by=&quot;$index&quot;</code> if the <code>v-for</code> block contains form input elements or child components.</p>
-<h3 id="Caveats">Caveats</h3><p>Due to limitations of JavaScript, Vue.js <strong>cannot</strong> detect the following changes to an Array:</p>
-<ol>
-<li>When you directly set an item with the index, e.g. <code>vm.items[0] = {}</code>;</li>
-<li>When you modify the length of the Array, e.g. <code>vm.items.length = 0</code>.</li>
-</ol>
-<p>To deal with caveat (1), Vue.js augments observed Arrays with a <code>$set()</code> method:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// same as `example1.items[0] = ...` but triggers view update</span></span><br><span class="line">example1.items.$set(<span class="number">0</span>, &#123; childMsg: <span class="string">'Changed!'</span>&#125;)</span><br></pre></td></tr></table></figure>
-<p>To deal with caveat (2), just replace <code>items</code> with an empty array instead.</p>
-<p>In addition to <code>$set()</code>, Vue.js also augments Arrays with a convenience method <code>$remove()</code>, which searches for and removes an item from target Array by calling <code>splice()</code> internally. So instead of:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> index = <span class="keyword">this</span>.items.indexOf(item)</span><br><span class="line"><span class="keyword">if</span> (index !== -<span class="number">1</span>) &#123;</span><br><span class="line">  <span class="keyword">this</span>.items.splice(index, <span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>You can just do:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.items.$remove(item)</span><br></pre></td></tr></table></figure>
-<h2 id="Object_v-for">Object v-for</h2><p>You can also use <code>v-for</code> to iterate through the properties of an Object. In addition to <code>$index</code>, each scope will have access to another special property <code>$key</code>.</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span> <span class="attribute">id</span>=<span class="value">"repeat-object"</span> <span class="attribute">class</span>=<span class="value">"demo"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-for</span>=<span class="value">"value in object"</span>&gt;</span></span><br><span class="line">    &#123;&#123; $key &#125;&#125; : &#123;&#123; value &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#repeat-object'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    object: &#123;</span><br><span class="line">      FirstName: <span class="string">'John'</span>,</span><br><span class="line">      LastName: <span class="string">'Doe'</span>,</span><br><span class="line">      Age: <span class="number">30</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p><strong>Result:</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-repeat</span>=<span class="value">"items"</span> <span class="attribute">track-by</span>=<span class="value">"_uid"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- content --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Later on, when you replace the <code>items</code> array and Vue.js encounters a new object with <code>_uid: &#39;88f869d&#39;</code>, it knows it can reuse the existing instance with the same <code>_uid</code>.</p>
+<p>If you don’t have a unique key to track by, you can also use <code>track-by=&quot;$index&quot;</code>. Make sure to use this carefully though, because when tracking by <code>$index</code>, instead of moving the child instances and DOM nodes, Vue will simply reuse them in place in the order they were first created. Avoid using <code>track-by=&quot;$index&quot;</code> in two situations: when your repeated block contains form inputs that can cause the list to re-render; or when you are repeating a component with mutable state in addition to the repeated data being assigned to it.</p>
+<p class="tip">Using <code>track-by</code> properly can greatly increase the performance when re-rendering large <code>v-repeat</code> lists using completely new data.</p>
 
-<ul id="repeat-object" class="demo">
-  <li v-for="value in object">
-    {{ $key }} : {{ value }}
-  </li>
-</ul>
+<h2 id="Iterating_Through_An_Object">Iterating Through An Object</h2><p>You can also use <code>v-repeat</code> to iterate through the properties of an Object. Each repeated instance will have a special property <code>$key</code>. For primitive values, you also get <code>$value</code> which is similar to primitive values in Arrays.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span> <span class="attribute">id</span>=<span class="value">"repeat-object"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-repeat</span>=<span class="value">"primitiveValues"</span>&gt;</span>&#123;&#123;$key&#125;&#125; : &#123;&#123;$value&#125;&#125;<span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span>&gt;</span>===<span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-repeat</span>=<span class="value">"objectValues"</span>&gt;</span>&#123;&#123;$key&#125;&#125; : &#123;&#123;msg&#125;&#125;<span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#repeat-object'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    primitiveValues: &#123;</span><br><span class="line">      FirstName: <span class="string">'John'</span>,</span><br><span class="line">      LastName: <span class="string">'Doe'</span>,</span><br><span class="line">      Age: <span class="number">30</span></span><br><span class="line">    &#125;,</span><br><span class="line">    objectValues: &#123;</span><br><span class="line">      one: &#123;</span><br><span class="line">        msg: <span class="string">'Hello'</span></span><br><span class="line">      &#125;,</span><br><span class="line">      two: &#123;</span><br><span class="line">        msg: <span class="string">'Bye'</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><strong>Result:</strong></p>
+<p><ul id="repeat-object" class="demo"><li v-repeat="primitiveValues">{&#123;$key&#125;} : {&#123;$value&#125;}</li><li>===</li><li v-repeat="objectValues">{&#123;$key&#125;} : {&#123;msg&#125;}</li></ul></p>
 <script>
 new Vue({
   el: '#repeat-object',
   data: {
-    object: {
+    primitiveValues: {
       FirstName: 'John',
       LastName: 'Doe',
       Age: 30
+    },
+    objectValues: {
+      one: {
+        msg: 'Hello'
+      },
+      two: {
+        msg: 'Bye'
+      }
     }
   }
 })
 </script>
 
-<p class="tip">When iterating over an Object, the order is based on the key enumeration order of <code>Object.keys()</code>, which is <strong>not</strong> guaranteed to be consistent in all JavaScript engine implementations.</p>
+<p class="tip">In ECMAScript 5 there is no way to detect when a new property is added to an Object, or when a property is deleted from an Object. To deal with that, observed objects will be augmented with three methods: <code>$add(key, value)</code>, <code>$set(key, value)</code> and <code>$delete(key)</code>. These methods can be used to add / delete properties from observed objects while triggering the desired View updates. The difference between <code>$add</code> and <code>$set</code> is that <code>$add</code> will return early if the key already exists on the object, so just calling <code>obj.$add(key)</code> won’t overwrite the existing value with <code>undefined</code>.</p>
 
-<h2 id="Range_v-for">Range v-for</h2><p><code>v-for</code> can also take an integer Number. In this case it will repeat the template that many times.</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-for</span>=<span class="value">"n in 10"</span>&gt;</span>&#123;&#123; n &#125;&#125; <span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>Result:</p>
-
-<div id="range" class="demo">
-  <span v-for="n in 10">{{ n }} </span>
-</div>
+<h2 id="Iterating_Over_a_Range">Iterating Over a Range</h2><p><code>v-repeat</code> can also take an integer Number. In this case it will repeat the template that many times.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"range"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-repeat</span>=<span class="value">"val"</span>&gt;</span>Hi! &#123;&#123;$index&#125;&#125;<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#range'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    val: <span class="number">3</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><strong>Result:</strong></p>
+<p><ul id="range" class="demo"><li v-repeat="val">Hi! {&#123;$index&#125;}</li></ul></p>
 <script>
-new Vue({ el: '#range' })
+new Vue({
+  el: '#range',
+  data: { val: 3 }
+});
 </script>
 
-<h2 id="Displaying_Filtered/Sorted_Results">Displaying Filtered/Sorted Results</h2><p>Sometimes we only need to display a filtered or sorted version of the Array without actually mutating or resetting the original data. There are two options to achieve this:</p>
-<ol>
-<li>Create a computed property that returns the filtered or sorted Array;</li>
-<li>Use the built-in <code>filterBy</code> and <code>orderBy</code> filters.</li>
-</ol>
-<p>A computed property would give you finer-grained control and more flexibility since it’s full JavaScript; but the filters can be more convenient for common use cases. For detailed usage of the Array filters, check out their <a href="/api/#filterBy">documentation</a>.</p>
+<h2 id="Array_Filters">Array Filters</h2><p>Sometimes we only need to display a filtered or sorted version of the Array without actually mutating or resetting the original data. Vue provides two built-in filters to simplify such usage: <code>filterBy</code> and <code>orderBy</code>. Check out their <a href="/api/filters.html#filterBy">documentations</a> for more details.</p>
+<p>Next up: <a href="/guide/events.html">Listening for Events</a>.</p>
 
-    
-      <div class="guide-links">
-        
-          <span>← <a href="/guide/conditional.html">Conditional Rendering</a></span>
-        
-        
-          <span style="float:right"><a href="/guide/events.html">Methods and Event Handling</a> →</span>
-        
-      </div>
-    
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/vuejs/vuejs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>
-
                 
             </div>
             <script src="/js/smooth-scroll.min.js"></script>

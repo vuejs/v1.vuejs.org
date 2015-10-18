@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Form Input Bindings - vue.js</title>
+        <title>Handling Forms - vue.js</title>
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -41,11 +41,10 @@
   </form>
 </li>
 <li><a href="/guide/" class="nav-link current">Guide</a></li>
-<li><a href="/api/" class="nav-link">API</a></li>
+<li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
-<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
-<li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
-<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
+<li><a href="/blog/" class="nav-link">Blog</a></li>
+<li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
 
     </ul>
 </div>
@@ -60,11 +59,10 @@
   </form>
 </li>
 <li><a href="/guide/" class="nav-link current">Guide</a></li>
-<li><a href="/api/" class="nav-link">API</a></li>
+<li><a href="/api/" class="nav-link">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
-<li><a href="https://github.com/vuejs/vue" class="nav-link" target="_blank">GitHub</a></li>
-<li><a href="http://forum.vuejs.org" class="nav-link" target="_blank">Forum</a></li>
-<li><a href="https://gitter.im/vuejs/vue" class="nav-link" target="_blank">Chat</a></li>
+<li><a href="/blog/" class="nav-link">Blog</a></li>
+<li><a href="https://github.com/yyx990803/vue" target="_blank" class="nav-link">GitHub</a></li>
 
     </ul>
     <div class="list">
@@ -76,51 +74,31 @@
                 </li>
             
                 <li>
-                    <a href="/guide/index.html" class="sidebar-link">Introduction</a>
+                    <a href="/guide/index.html" class="sidebar-link">Getting Started</a>
                 </li>
             
                 <li>
-                    <a href="/guide/instance.html" class="sidebar-link">The Vue Instance</a>
+                    <a href="/guide/directives.html" class="sidebar-link">Directives</a>
                 </li>
             
                 <li>
-                    <a href="/guide/syntax.html" class="sidebar-link">Data Binding Syntax</a>
+                    <a href="/guide/filters.html" class="sidebar-link">Filters</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/list.html" class="sidebar-link">Displaying a List</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/events.html" class="sidebar-link">Listening for Events</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/forms.html" class="sidebar-link current">Handling Forms</a>
                 </li>
             
                 <li>
                     <a href="/guide/computed.html" class="sidebar-link">Computed Properties</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/class-and-style.html" class="sidebar-link">Class and Style Bindings</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/conditional.html" class="sidebar-link">Conditional Rendering</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/list.html" class="sidebar-link">List Rendering</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/events.html" class="sidebar-link">Methods and Event Handling</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/forms.html" class="sidebar-link current">Form Input Bindings</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/transitions.html" class="sidebar-link">Transitions</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/components.html" class="sidebar-link">Components</a>
-                </li>
-            
-                <li>
-                    <a href="/guide/reactivity.html" class="sidebar-link">Reactivity in Depth</a>
                 </li>
             
                 <li>
@@ -132,192 +110,112 @@
                 </li>
             
                 <li>
-                    <a href="/guide/mixins.html" class="sidebar-link">Mixins</a>
+                    <a href="/guide/components.html" class="sidebar-link">Component System</a>
                 </li>
             
                 <li>
-                    <a href="/guide/plugins.html" class="sidebar-link">Plugins</a>
+                    <a href="/guide/transitions.html" class="sidebar-link">Transition System</a>
                 </li>
             
                 <li>
-                    <a href="/guide/application.html" class="sidebar-link">Building Large-Scale Apps</a>
+                    <a href="/guide/application.html" class="sidebar-link">Building Larger Apps</a>
                 </li>
             
                 <li>
-                    <a href="/guide/comparison.html" class="sidebar-link">Comparison with Other Frameworks</a>
+                    <a href="/guide/extending.html" class="sidebar-link">Extending Vue</a>
                 </li>
             
+                <li>
+                    <a href="/guide/best-practices.html" class="sidebar-link new">Tips & Best Practices</a>
+                </li>
+            
+                <li>
+                    <a href="/guide/faq.html" class="sidebar-link">Common FAQs</a>
+                </li>
+            
+            <li><a href="http://legacy.vuejs.org">Looking for 0.11 docs?</a></li>
+            <li style="margin:10px 0 3px">
+              <script data-gittip-username="yyx990803"
+                data-gittip-widget="button"
+                src="//gttp.co/v1.js"></script>
+            </li>
         </ul>
     </div>
 </div>
 
 
 <div class="content guide with-sidebar">
-    <h1>Form Input Bindings</h1>
+    <h1>Handling Forms</h1>
     <div id="ad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
     </div>
-    <h2 id="Basics_Usage">Basics Usage</h2><p>You can use the <code>v-model</code> directive to create two-way data bindings on form input elements. It automatically picks the correct way to update the element based on the input type. Although a bit magical, <code>v-model</code> is essentially syntax sugar for updating data on user input events, plus special care for some edge cases.</p>
-<h3 id="Text">Text</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span>&gt;</span>Message is: &#123;&#123; message &#125;&#125;<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">br</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">v-model</span>=<span class="value">"message"</span> <span class="attribute">placeholder</span>=<span class="value">"edit me"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<div id="example-1" class="demo">
-  <span>Message is: {{ message }}</span><br>
-  <input type="text" v-model="message" placeholder="edit me">
-</div>
+    <h2 id="The_Basics">The Basics</h2><p>You can use the <code>v-model</code> directive to create two-way data bindings on form input elements. It automatically picks the correct way to update the element based on the input type.</p>
+<p><strong>Example</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">form</span> <span class="attribute">id</span>=<span class="value">"demo"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- text --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">v-model</span>=<span class="value">"msg"</span>&gt;</span></span><br><span class="line">    &#123;&#123;msg&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- checkbox --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"checkbox"</span> <span class="attribute">v-model</span>=<span class="value">"checked"</span>&gt;</span></span><br><span class="line">    &#123;&#123;checked ? "yes" : "no"&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- radio buttons --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"radio"</span> <span class="attribute">name</span>=<span class="value">"picked"</span> <span class="attribute">value</span>=<span class="value">"one"</span> <span class="attribute">v-model</span>=<span class="value">"picked"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"radio"</span> <span class="attribute">name</span>=<span class="value">"picked"</span> <span class="attribute">value</span>=<span class="value">"two"</span> <span class="attribute">v-model</span>=<span class="value">"picked"</span>&gt;</span></span><br><span class="line">    &#123;&#123;picked&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- select --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">select</span> <span class="attribute">v-model</span>=<span class="value">"selected"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">option</span>&gt;</span>one<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">option</span>&gt;</span>two<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">select</span>&gt;</span></span><br><span class="line">    &#123;&#123;selected&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- multiple select --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">select</span> <span class="attribute">v-model</span>=<span class="value">"multiSelect"</span> <span class="attribute">multiple</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">option</span>&gt;</span>one<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">option</span>&gt;</span>two<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">option</span>&gt;</span>three<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">select</span>&gt;</span></span><br><span class="line">    &#123;&#123;multiSelect&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span>&gt;</span><span class="tag">&lt;<span class="title">pre</span>&gt;</span>data: &#123;&#123;$data | json 2&#125;&#125;<span class="tag">&lt;/<span class="title">pre</span>&gt;</span><span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#demo'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    msg      : <span class="string">'hi!'</span>,</span><br><span class="line">    checked  : <span class="literal">true</span>,</span><br><span class="line">    picked   : <span class="string">'one'</span>,</span><br><span class="line">    selected : <span class="string">'two'</span>,</span><br><span class="line">    multiSelect: [<span class="string">'one'</span>, <span class="string">'three'</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><strong>Result</strong></p>
+<p><form id="demo"><p><input type="text" v-model="msg"> {&#123;msg&#125;}</p><p><input type="checkbox" v-model="checked"> {&#123;checked ? &quot;yes&quot; : &quot;no&quot;&#125;}</p><p><input type="radio" v-model="picked" name="picked" value="one"><input type="radio" v-model="picked" name="picked" value="two"> {&#123;picked&#125;}</p><p><select v-model="selected"><option>one</option><option>two</option></select> {&#123;selected&#125;}</p><p><select v-model="multiSelect" multiple><option>one</option><option>two</option><option>three</option></select>{&#123;multiSelect&#125;}</p><p>data:<pre style="font-size:13px;background:transparent;line-height:1.5em">{&#123;$data | json 2&#125;}</pre></p></form></p>
 <script>
 new Vue({
-  el: '#example-1',
+  el: '#demo',
   data: {
-    message: ''
+    msg      : 'hi!',
+    checked  : true,
+    picked   : 'one',
+    selected : 'two',
+    multiSelect: ['one', 'three']
   }
 })
 </script>
 
-<h3 id="Checkbox">Checkbox</h3><p>Single checkbox, boolean value:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"checkbox"</span> <span class="attribute">id</span>=<span class="value">"checkbox"</span> <span class="attribute">v-model</span>=<span class="value">"checked"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">label</span> <span class="attribute">for</span>=<span class="value">"checkbox"</span>&gt;</span>&#123;&#123; checked &#125;&#125;<span class="tag">&lt;/<span class="title">label</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<div id="example-2" class="demo">
-  <input type="checkbox" id="checkbox" v-model="checked">
-  <label for="checkbox">{{ checked }}</label>
-</div>
-<script>
-new Vue({
-  el: '#example-2',
-  data: {
-    checked: false
-  }
-})
-</script>
-
-<p>Mutiple checkboxes, bound to the same Array:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"checkbox"</span> <span class="attribute">id</span>=<span class="value">"jack"</span> <span class="attribute">value</span>=<span class="value">"Jack"</span> <span class="attribute">v-model</span>=<span class="value">"checkedNames"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">label</span> <span class="attribute">for</span>=<span class="value">"jack"</span>&gt;</span>Jack<span class="tag">&lt;/<span class="title">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"checkbox"</span> <span class="attribute">id</span>=<span class="value">"john"</span> <span class="attribute">value</span>=<span class="value">"John"</span> <span class="attribute">v-model</span>=<span class="value">"checkedNames"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">label</span> <span class="attribute">for</span>=<span class="value">"john"</span>&gt;</span>John<span class="tag">&lt;/<span class="title">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"checkbox"</span> <span class="attribute">id</span>=<span class="value">"mike"</span> <span class="attribute">value</span>=<span class="value">"Mike"</span> <span class="attribute">v-model</span>=<span class="value">"checkedNames"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">label</span> <span class="attribute">for</span>=<span class="value">"mike"</span>&gt;</span>Mike<span class="tag">&lt;/<span class="title">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">br</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">span</span>&gt;</span>Checked names: &#123;&#123; checkedNames | json &#125;&#125;<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<div id="example-3" class="demo">
-  <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
-  <label for="jack">Jack</label>
-  <input type="checkbox" id="john" value="John" v-model="checkedNames">
-  <label for="john">John</label>
-  <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
-  <label for="mike">Mike</label>
-  <br>
-  <span>Checked names: {{ checkedNames | json }}</span>
-</div>
-<script>
-new Vue({
-  el: '#example-3',
-  data: {
-    checkedNames: []
-  }
-})
-</script>
-
-<h3 id="Radio">Radio</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"radio"</span> <span class="attribute">id</span>=<span class="value">"one"</span> <span class="attribute">value</span>=<span class="value">"One"</span> <span class="attribute">v-model</span>=<span class="value">"picked"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">label</span> <span class="attribute">for</span>=<span class="value">"one"</span>&gt;</span>One<span class="tag">&lt;/<span class="title">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">br</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"radio"</span> <span class="attribute">id</span>=<span class="value">"two"</span> <span class="attribute">value</span>=<span class="value">"Two"</span> <span class="attribute">v-model</span>=<span class="value">"picked"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">label</span> <span class="attribute">for</span>=<span class="value">"two"</span>&gt;</span>Two<span class="tag">&lt;/<span class="title">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">br</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">span</span>&gt;</span>Picked: &#123;&#123; picked &#125;&#125;<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<div id="example-4" class="demo">
-  <input type="radio" id="one" value="One" v-model="picked">
-  <label for="one">One</label>
-  <br>
-  <input type="radio" id="two" value="Two" v-model="picked">
-  <label for="two">Two</label>
-  <br>
-  <span>Picked: {{ picked }}</span>
-</div>
-<script>
-new Vue({
-  el: '#example-4',
-  data: {
-    picked: ''
-  }
-})
-</script>
-
-<h3 id="Select">Select</h3><p>Single select:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">select</span> <span class="attribute">v-model</span>=<span class="value">"selected"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">option</span> <span class="attribute">selected</span>&gt;</span>A<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">option</span>&gt;</span>B<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">option</span>&gt;</span>C<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">span</span>&gt;</span>Selected: &#123;&#123; selected &#125;&#125;<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<div id="example-5" class="demo">
-  <select v-model="selected">
-    <option selected>A</option>
-    <option>B</option>
-    <option>C</option>
-  </select>
-  <span>Selected: {{ selected }}</span>
-</div>
-<script>
-new Vue({
-  el: '#example-5',
-  data: {
-    selected: null
-  }
-})
-</script>
-
-<p>Multiple select (bound to Array):</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">select</span> <span class="attribute">v-model</span>=<span class="value">"selected"</span> <span class="attribute">multiple</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">option</span> <span class="attribute">selected</span>&gt;</span>A<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">option</span>&gt;</span>B<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">option</span>&gt;</span>C<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">br</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">span</span>&gt;</span>Selected: &#123;&#123; selected | json &#125;&#125;<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<div id="example-6" class="demo">
-  <select v-model="selected" multiple style="width: 50px">
-    <option selected>A</option>
-    <option>B</option>
-    <option>C</option>
-  </select>
-  <br>
-  <span>Selected: {{ selected | json }}</span>
-</div>
-<script>
-new Vue({
-  el: '#example-6',
-  data: {
-    selected: []
-  }
-})
-</script>
-
-<p>Dynamic options rendered with <code>v-for</code>:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">select</span> <span class="attribute">v-model</span>=<span class="value">"selected"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">option</span> <span class="attribute">v-for</span>=<span class="value">"option in options"</span> <span class="attribute">v-bind:value</span>=<span class="value">"option.value"</span>&gt;</span></span><br><span class="line">    &#123;&#123; option.text &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">span</span>&gt;</span>Selected: &#123;&#123; selected &#125;&#125;<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'...'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    selected: <span class="string">'A'</span>,</span><br><span class="line">    options: [</span><br><span class="line">      &#123; text: <span class="string">'One'</span>, value: <span class="string">'A'</span> &#125;,</span><br><span class="line">      &#123; text: <span class="string">'Two'</span>, value: <span class="string">'B'</span> &#125;,</span><br><span class="line">      &#123; text: <span class="string">'Three'</span>, value: <span class="string">'C'</span> &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<div id="example-7" class="demo">
-  <select v-model="selected">
-    <option v-for="option in options" v-bind:value="option.value">
-      {{ option.text }}
-    </option>
-  </select>
-  <span>Selected: {{ selected }}</span>
-</div>
-<script>
-new Vue({
-  el: '#example-7',
-  data: {
-    selected: 'A',
-    options: [
-      { text: 'One', value: 'A' },
-      { text: 'Two', value: 'B' },
-      { text: 'Three', value: 'C' }
-    ]
-  }
-})
-</script>
-
-<h2 id="Value_Bindings">Value Bindings</h2><p>For radio, checkbox and select options, the <code>v-model</code> binding values are usually static strings (or booleans for checkbox):</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- `picked` is a string "a" when checked --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"radio"</span> <span class="attribute">v-model</span>=<span class="value">"picked"</span> <span class="attribute">value</span>=<span class="value">"a"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- `toggle` is either true or false --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"checkbox"</span> <span class="attribute">v-model</span>=<span class="value">"toggle"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- `selected` is a string "abc" when selected --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">select</span> <span class="attribute">v-model</span>=<span class="value">"selected"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">"abc"</span>&gt;</span>ABC<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>But sometimes we may want to bind the value to a dynamic property on the Vue instance. We can use <code>v-bind</code> to achieve that. In addition, using <code>v-bind</code> allows us to bind the input value to non-string values.</p>
-<h3 id="Checkbox-1">Checkbox</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span></span><br><span class="line">  <span class="attribute">type</span>=<span class="value">"checkbox"</span></span><br><span class="line">  <span class="attribute">v-model</span>=<span class="value">"toggle"</span></span><br><span class="line">  <span class="attribute">v-bind:true-value</span>=<span class="value">"a"</span></span><br><span class="line">  <span class="attribute">v-bind:false-value</span>=<span class="value">"b"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// when checked:</span></span><br><span class="line">vm.toggle === vm.a</span><br><span class="line"><span class="comment">// when unchecked:</span></span><br><span class="line">vm.toggle === vm.b</span><br></pre></td></tr></table></figure>
-<h3 id="Radio-1">Radio</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"radio"</span> <span class="attribute">v-model</span>=<span class="value">"pick"</span> <span class="attribute">v-bind:value</span>=<span class="value">"a"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// when checked:</span></span><br><span class="line">vm.pick === vm.a</span><br></pre></td></tr></table></figure>
-<h3 id="Select_Options">Select Options</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">select</span> <span class="attribute">v-model</span>=<span class="value">"selected"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- inline object literal --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">option</span> <span class="attribute">v-bind:value</span>=<span class="value">"&#123; number: 123 &#125;"</span>&gt;</span>123<span class="tag">&lt;/<span class="title">option</span>&gt;</span>&gt;</span><br><span class="line"><span class="tag">&lt;/<span class="title">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// when selected:</span></span><br><span class="line"><span class="keyword">typeof</span> vm.selected <span class="comment">// -&gt; 'object'</span></span><br><span class="line">vm.selected.number <span class="comment">// -&gt; 123</span></span><br></pre></td></tr></table></figure>
-<h2 id="Param_Attributes">Param Attributes</h2><h3 id="lazy">lazy</h3><p>By default, <code>v-model</code> syncs the input with the data after each <code>input</code> event. You can add a <code>lazy</code> attribute to change the behavior to sync after <code>change</code> events:</p>
+<h2 id="Lazy_Updates">Lazy Updates</h2><p>By default, <code>v-model</code> syncs the input with the data after each <code>input</code> event. You can add a <code>lazy</code> attribute to change the behavior to sync after <code>change</code> events:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- synced after "change" instead of "input" --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-model</span>=<span class="value">"msg"</span> <span class="attribute">lazy</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="number">number</h3><p>If you want user input to be automatically persisted as numbers, you can add a <code>number</code> attribute to your <code>v-model</code> managed inputs:</p>
+<h2 id="Casting_Value_as_Number">Casting Value as Number</h2><p>If you want user input to be automatically persisted as numbers, you can add a <code>number</code> attribute to your <code>v-model</code> managed inputs:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-model</span>=<span class="value">"age"</span> <span class="attribute">number</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="debounce">debounce</h3><p>The <code>debounce</code> param allows you to set a minimum delay after each keystroke before the input’s value is synced to the model. This can be useful when you are performing expensive operations on each update, for example making an Ajax request for type-ahead autocompletion.</p>
+<h2 id="Bind_to_Expressions">Bind to Expressions</h2><blockquote>
+<p>^0.12.12 only</p>
+</blockquote>
+<p>When using <code>v-model</code> on checkbox and radio inputs, the bound value is either a boolean or a string:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- toggle is either true or false --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"checkbox"</span> <span class="attribute">v-model</span>=<span class="value">"toggle"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- pick is "red" when this radio box is selected --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"radio"</span> <span class="attribute">v-model</span>=<span class="value">"pick"</span> <span class="attribute">value</span>=<span class="value">"red"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>This can be a bit limiting - sometimes we may want to bind the underlying value to something else. Here’s how you can do that:</p>
+<p><strong>Checkbox</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"checkbox"</span> <span class="attribute">v-model</span>=<span class="value">"toggle"</span> <span class="attribute">true-exp</span>=<span class="value">"a"</span> <span class="attribute">false-exp</span>=<span class="value">"b"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// when checked:</span></span><br><span class="line">vm.toggle === vm.a</span><br><span class="line"><span class="comment">// when unchecked:</span></span><br><span class="line">vm.toggle === vm.b</span><br></pre></td></tr></table></figure>
+<p><strong>Radio</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"radio"</span> <span class="attribute">v-model</span>=<span class="value">"pick"</span> <span class="attribute">exp</span>=<span class="value">"a"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// when checked:</span></span><br><span class="line">vm.pick === vm.a</span><br></pre></td></tr></table></figure>
+<h2 id="Dynamic_Select_Options">Dynamic Select Options</h2><p>When you need to dynamically render a list of options for a <code>&lt;select&gt;</code> element, it’s recommended to use an <code>options</code> attribute together with <code>v-model</code> so that when the options change dynamically, <code>v-model</code> is properly synced:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">select</span> <span class="attribute">v-model</span>=<span class="value">"selected"</span> <span class="attribute">options</span>=<span class="value">"myOptions"</span>&gt;</span><span class="tag">&lt;/<span class="title">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>In your data, <code>myOptions</code> should be an keypath/expression that points to an Array to use as its options.</p>
+<p>The options Array can contain plain strings:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">options = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>]</span><br></pre></td></tr></table></figure>
+<p>Or, it can contain objects in the format of <code>{text:&#39;&#39;, value:&#39;&#39;}</code>. This object format allows you to have the option text displayed differently from its underlying value:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">options = [</span><br><span class="line">  &#123; text: <span class="string">'A'</span>, value: <span class="string">'a'</span> &#125;,</span><br><span class="line">  &#123; text: <span class="string">'B'</span>, value: <span class="string">'b'</span> &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>Will render:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">select</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">"a"</span>&gt;</span>A<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">"b"</span>&gt;</span>B<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>The <code>value</code> can also be Objects:</p>
+<blockquote>
+<p>0.12.11+ only</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">options = [</span><br><span class="line">  &#123; text: <span class="string">'A'</span>, value: &#123; msg: <span class="string">'hello'</span> &#125;&#125;,</span><br><span class="line">  &#123; text: <span class="string">'B'</span>, value: &#123; msg: <span class="string">'bye'</span> &#125;&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h3 id="Option_Groups">Option Groups</h3><p>Alternatively, the object can be in the format of <code>{ label:&#39;&#39;, options:[...] }</code>. In this case it will be rendered as an <code>&lt;optgroup&gt;</code>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123; label: <span class="string">'A'</span>, options: [<span class="string">'a'</span>, <span class="string">'b'</span>]&#125;,</span><br><span class="line">  &#123; label: <span class="string">'B'</span>, options: [<span class="string">'c'</span>, <span class="string">'d'</span>]&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>Will render:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">select</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">optgroup</span> <span class="attribute">label</span>=<span class="value">"A"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">"a"</span>&gt;</span>a<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">"b"</span>&gt;</span>b<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">optgroup</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">optgroup</span> <span class="attribute">label</span>=<span class="value">"B"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">"c"</span>&gt;</span>c<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">"d"</span>&gt;</span>d<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">optgroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="Options_Filter">Options Filter</h3><p>It’s quite likely that your source data does not come in this desired format, and you will have to transform the data in order to generate dynamic options. In order to DRY-up the transformation, the <code>options</code> param supports filters, and it can be helpful to put your transformation logic into a reusable <a href="/guide/custom-filter.html">custom filter</a>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Vue.filter(<span class="string">'extract'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">value, keyToExtract</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> value.map(<span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> item[keyToExtract]</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">select</span></span><br><span class="line">  <span class="attribute">v-model</span>=<span class="value">"selectedUser"</span></span><br><span class="line">  <span class="attribute">options</span>=<span class="value">"users | extract 'name'"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>The above filter transforms data like <code>[{ name: &#39;Bruce&#39; }, { name: &#39;Chuck&#39; }]</code> into <code>[&#39;Bruce&#39;, &#39;Chuck&#39;]</code> so it becomes properly formatted.</p>
+<h3 id="Static_Default_Option">Static Default Option</h3><blockquote>
+<p>0.12.10+ only</p>
+</blockquote>
+<p>You can provide one static default option in addition to the dyanmically generated options:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">select</span> <span class="attribute">v-model</span>=<span class="value">"selectedUser"</span> <span class="attribute">options</span>=<span class="value">"users"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">""</span>&gt;</span>Select a user...<span class="tag">&lt;/<span class="title">option</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Dynamic options created from <code>users</code> will be appended after the static option. The static option will be selected by default if the <code>v-model</code> value is falsy (excluding <code>0</code>).</p>
+<h2 id="Input_Debounce">Input Debounce</h2><p>The <code>debounce</code> param allows you to set a minimum delay after each keystroke before the input’s value is synced to the model. This can be useful when you are performing expensive operations on each update, for example making an Ajax request for type-ahead autocompletion.</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-model</span>=<span class="value">"msg"</span> <span class="attribute">debounce</span>=<span class="value">"500"</span>&gt;</span></span><br></pre></td></tr></table></figure>
- 
-<div id="debounce-demo" class="demo">
-  {{ msg }}<br>
-  <input v-model="msg" debounce="500">
-</div>
+<p><strong>Result</strong></p>
+<p><div id="debounce-demo" class="demo">{&#123;msg&#125;}<br><input v-model="msg" debounce="500"></div></p>
 <script>
 new Vue({
   el:'#debounce-demo',
@@ -325,21 +223,11 @@ new Vue({
 })
 </script>
 
-<p>Note that the <code>debounce</code> param does not debounce the user’s input events: it debounces the “write” operation to the underlying data. Therefore you should use <code>vm.$watch()</code> to react to data changes when using <code>debounce</code>. For debouncing real DOM events you should use the <a href="/api/#debounce">debounce filter</a>.</p>
+<p>Note that the <code>debounce</code> param does not debounce the user’s input events: it debounces the “write” operation to the underlying data. Therefore you should use <code>vm.$watch()</code> to react to data changes when using <code>debounce</code>. For debouncing real DOM events you should use the <a href="/api/filters.html#debounce">debounce filter</a>.</p>
+<p>Next: <a href="/guide/computed.html">Computed Properties</a>.</p>
 
-    
-      <div class="guide-links">
-        
-          <span>← <a href="/guide/events.html">Methods and Event Handling</a></span>
-        
-        
-          <span style="float:right"><a href="/guide/transitions.html">Transitions</a> →</span>
-        
-      </div>
-    
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/vuejs/vuejs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>
-
                 
             </div>
             <script src="/js/smooth-scroll.min.js"></script>
