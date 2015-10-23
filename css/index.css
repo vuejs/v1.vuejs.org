@@ -226,6 +226,53 @@ a.button:hover {
   color: #aaa;
   font-weight: normal;
 }
+#nav .nav-link {
+  cursor: pointer;
+}
+#nav .nav-dropdown-container .nav-link:hover {
+  border-bottom: none;
+}
+#nav .nav-dropdown-container:hover .nav-dropdown {
+  display: block;
+}
+#nav .nav-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  padding: 10px 0;
+  border: 1px solid #ddd;
+  border-bottom-color: #ccc;
+  text-align: left;
+  border-radius: 4px;
+}
+#nav .nav-dropdown li {
+  line-height: 1.8em;
+  margin: 0;
+  display: block;
+}
+#nav .nav-dropdown a {
+  color: #7f8c8d;
+  font-size: 0.9em;
+  display: block;
+  padding: 0 30px 0 20px;
+}
+#nav .nav-dropdown a:hover {
+  color: #42b983;
+}
+#nav .arrow {
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -1px;
+  margin-left: 6px;
+  margin-right: -14px;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid #ccc;
+}
 html,
 body {
   height: 100%;
@@ -235,10 +282,13 @@ body {
   list-style-type: none;
   text-align: center;
   padding: 0;
+  margin: 0;
 }
 #nav li,
 #translations li {
   display: inline-block;
+  position: relative;
+  line-height: 40px;
 }
 #nav li:last-child .nav-link,
 #translations li:last-child .nav-link {
@@ -272,7 +322,7 @@ body {
   width: 200px;
 }
 #logo-wrap {
-  margin: 4em 0;
+  margin: 3.5em 0 4em;
 }
 #hero {
   text-align: center;
@@ -523,13 +573,10 @@ body {
     font-size: 14px;
   }
   #nav {
-    margin: 3em 1.8em 0;
+    margin: 2em 1.8em 0;
   }
   #translations {
     margin-bottom: 2em;
-  }
-  #logo-wrap {
-    margin: 4em 0;
   }
   #logo {
     width: 120px;
