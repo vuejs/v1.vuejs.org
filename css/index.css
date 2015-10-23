@@ -111,7 +111,7 @@ strong {
 }
 code,
 pre {
-  font-family: 'Source Code Pro', Monaco, courier, monospace;
+  font-family: 'Roboto Mono', Monaco, courier, monospace;
   font-size: 0.8em;
   background-color: #f8f8f8;
   -webkit-font-smoothing: initial;
@@ -132,7 +132,7 @@ p {
 }
 a.button {
   display: inline-block;
-  font-family: 'Source Code Pro', Monaco, courier, monospace;
+  font-family: 'Roboto Mono', Monaco, courier, monospace;
   font-weight: 700;
   color: #fff;
   background-color: #4fc08d;
@@ -168,6 +168,7 @@ a.button:hover {
 }
 .highlight .code pre {
   padding: 1.2em 1.4em;
+  line-height: 1.5em;
   margin: 0;
 }
 .highlight.html .code:after,
