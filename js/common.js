@@ -22,17 +22,11 @@
 
   // build sidebar
   var currentPageAnchor = menu.querySelector('.sidebar-link.current')
-  var isAPI = document.querySelector('.content').classList.contains('api')
-  if (currentPageAnchor || isAPI) {
+  if (currentPageAnchor) {
     var allLinks = []
-    var sectionContainer
-    if (isAPI) {
-      sectionContainer = document.querySelector('.menu-root')
-    } else {
-      sectionContainer = document.createElement('ul')
-      sectionContainer.className = 'menu-sub'
-      currentPageAnchor.parentNode.appendChild(sectionContainer)
-    }
+    var sectionContainer = document.createElement('ul')
+    sectionContainer.className = 'menu-sub'
+    currentPageAnchor.parentNode.appendChild(sectionContainer)
     var h2s = content.querySelectorAll('h2')
     if (h2s.length) {
       each.call(h2s, function (h) {
@@ -41,7 +35,7 @@
         allLinks.push(h)
         allLinks.push.apply(allLinks, h3s)
         if (h3s.length) {
-          sectionContainer.appendChild(makeSubLinks(h3s, isAPI))
+          sectionContainer.appendChild(makeSubLinks(h3s))
         }
       })
     } else {
@@ -106,14 +100,9 @@
 
   function makeLink (h) {
     var link = document.createElement('li')
-    var text = h.textContent.replace(/\(.*\)$/, '')
-    // make sure the ids are link-able...
-    h.id = h.id
-      .replace(/\(.*\)$/, '')
-      .replace(/\$/, '')
     link.innerHTML =
       '<a class="section-link" data-scroll href="#' + h.id + '">' +
-        text +
+        h.textContent.replace(/\(.*\)$/, '') +
       '</a>'
     return link
   }
@@ -130,11 +119,8 @@
     return h3s
   }
 
-  function makeSubLinks (h3s, small) {
+  function makeSubLinks (h3s) {
     var container = document.createElement('ul')
-    if (small) {
-      container.className = 'menu-sub'
-    }
     h3s.forEach(function (h) {
       container.appendChild(makeLink(h))
     })
@@ -168,17 +154,5 @@
   })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
 
   _st('install','HgpxvBc7pUaPUWmG9sgv','2.0.0');
-
-  // version select
-  document.querySelector('.version-select').addEventListener('change', function (e) {
-    var version = e.target.value
-    if (version.indexOf('1.') !== 0) {
-      version = version.replace('.', '')
-      var section = window.location.pathname.match(/\/(\w+?)\//)[1]
-      window.location.assign('http://' + version + '.vuejs.org/' + section + '/')
-    } else {
-      // TODO when 1.x is out
-    }
-  })
 
 })()
