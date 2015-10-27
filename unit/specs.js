@@ -113,7 +113,7 @@
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var extend = _.extend
 	
 	/**
@@ -200,27 +200,132 @@
 	extend(p, __webpack_require__(68))
 	extend(p, __webpack_require__(69))
 	
-	Vue.version = '1.0.0-rc.2'
+	Vue.version = '1.0.0'
 	module.exports = _.Vue = Vue
-
+	
+	/* istanbul ignore if */
+	if (process.env.NODE_ENV !== 'production') {
+	  if (_.inBrowser && window.__VUE_DEVTOOLS_GLOBAL_HOOK__) {
+	    window.__VUE_DEVTOOLS_GLOBAL_HOOK__.emit('init', Vue)
+	  }
+	}
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 3 */
+/***/ function(module, exports) {
+
+	// shim for using process in browser
+	
+	var process = module.exports = {};
+	var queue = [];
+	var draining = false;
+	var currentQueue;
+	var queueIndex = -1;
+	
+	function cleanUpNextTick() {
+	    draining = false;
+	    if (currentQueue.length) {
+	        queue = currentQueue.concat(queue);
+	    } else {
+	        queueIndex = -1;
+	    }
+	    if (queue.length) {
+	        drainQueue();
+	    }
+	}
+	
+	function drainQueue() {
+	    if (draining) {
+	        return;
+	    }
+	    var timeout = setTimeout(cleanUpNextTick);
+	    draining = true;
+	
+	    var len = queue.length;
+	    while(len) {
+	        currentQueue = queue;
+	        queue = [];
+	        while (++queueIndex < len) {
+	            if (currentQueue) {
+	                currentQueue[queueIndex].run();
+	            }
+	        }
+	        queueIndex = -1;
+	        len = queue.length;
+	    }
+	    currentQueue = null;
+	    draining = false;
+	    clearTimeout(timeout);
+	}
+	
+	process.nextTick = function (fun) {
+	    var args = new Array(arguments.length - 1);
+	    if (arguments.length > 1) {
+	        for (var i = 1; i < arguments.length; i++) {
+	            args[i - 1] = arguments[i];
+	        }
+	    }
+	    queue.push(new Item(fun, args));
+	    if (queue.length === 1 && !draining) {
+	        setTimeout(drainQueue, 0);
+	    }
+	};
+	
+	// v8 likes predictible objects
+	function Item(fun, array) {
+	    this.fun = fun;
+	    this.array = array;
+	}
+	Item.prototype.run = function () {
+	    this.fun.apply(null, this.array);
+	};
+	process.title = 'browser';
+	process.browser = true;
+	process.env = {};
+	process.argv = [];
+	process.version = ''; // empty string to avoid regexp issues
+	process.versions = {};
+	
+	function noop() {}
+	
+	process.on = noop;
+	process.addListener = noop;
+	process.once = noop;
+	process.off = noop;
+	process.removeListener = noop;
+	process.removeAllListeners = noop;
+	process.emit = noop;
+	
+	process.binding = function (name) {
+	    throw new Error('process.binding is not supported');
+	};
+	
+	process.cwd = function () { return '/' };
+	process.chdir = function (dir) {
+	    throw new Error('process.chdir is not supported');
+	};
+	process.umask = function() { return 0; };
+
+
+/***/ },
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var lang = __webpack_require__(4)
+	var lang = __webpack_require__(5)
 	var extend = lang.extend
 	
 	extend(exports, lang)
-	extend(exports, __webpack_require__(5))
 	extend(exports, __webpack_require__(6))
+	extend(exports, __webpack_require__(7))
 	extend(exports, __webpack_require__(13))
 	extend(exports, __webpack_require__(14))
 	extend(exports, __webpack_require__(15))
 
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports) {
 
 	/**
@@ -614,7 +719,7 @@
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports) {
 
 	// can we use __proto__?
@@ -705,10 +810,10 @@
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var config = __webpack_require__(8)
 	var transition = __webpack_require__(12)
 	
@@ -1071,104 +1176,7 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
-
-/***/ },
-/* 7 */
-/***/ function(module, exports) {
-
-	// shim for using process in browser
-	
-	var process = module.exports = {};
-	var queue = [];
-	var draining = false;
-	var currentQueue;
-	var queueIndex = -1;
-	
-	function cleanUpNextTick() {
-	    draining = false;
-	    if (currentQueue.length) {
-	        queue = currentQueue.concat(queue);
-	    } else {
-	        queueIndex = -1;
-	    }
-	    if (queue.length) {
-	        drainQueue();
-	    }
-	}
-	
-	function drainQueue() {
-	    if (draining) {
-	        return;
-	    }
-	    var timeout = setTimeout(cleanUpNextTick);
-	    draining = true;
-	
-	    var len = queue.length;
-	    while(len) {
-	        currentQueue = queue;
-	        queue = [];
-	        while (++queueIndex < len) {
-	            if (currentQueue) {
-	                currentQueue[queueIndex].run();
-	            }
-	        }
-	        queueIndex = -1;
-	        len = queue.length;
-	    }
-	    currentQueue = null;
-	    draining = false;
-	    clearTimeout(timeout);
-	}
-	
-	process.nextTick = function (fun) {
-	    var args = new Array(arguments.length - 1);
-	    if (arguments.length > 1) {
-	        for (var i = 1; i < arguments.length; i++) {
-	            args[i - 1] = arguments[i];
-	        }
-	    }
-	    queue.push(new Item(fun, args));
-	    if (queue.length === 1 && !draining) {
-	        setTimeout(drainQueue, 0);
-	    }
-	};
-	
-	// v8 likes predictible objects
-	function Item(fun, array) {
-	    this.fun = fun;
-	    this.array = array;
-	}
-	Item.prototype.run = function () {
-	    this.fun.apply(null, this.array);
-	};
-	process.title = 'browser';
-	process.browser = true;
-	process.env = {};
-	process.argv = [];
-	process.version = ''; // empty string to avoid regexp issues
-	process.versions = {};
-	
-	function noop() {}
-	
-	process.on = noop;
-	process.addListener = noop;
-	process.once = noop;
-	process.off = noop;
-	process.removeListener = noop;
-	process.removeAllListeners = noop;
-	process.emit = noop;
-	
-	process.binding = function (name) {
-	    throw new Error('process.binding is not supported');
-	};
-	
-	process.cwd = function () { return '/' };
-	process.chdir = function (dir) {
-	    throw new Error('process.chdir is not supported');
-	};
-	process.umask = function() { return 0; };
-
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 8 */
@@ -1568,7 +1576,7 @@
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Cache = __webpack_require__(10)
 	var cache = new Cache(1000)
 	var filterTokenRE = /[^\s'"]+|'[^']*'|"[^"]*"/g
@@ -1708,7 +1716,7 @@
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	/**
 	 * Append with transition.
@@ -1793,7 +1801,7 @@
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var config = __webpack_require__(8)
 	var extend = _.extend
 	
@@ -2027,7 +2035,6 @@
 	      }
 	      def = components[key]
 	      if (_.isPlainObject(def)) {
-	        def.name = def.name || key
 	        components[key] = _.Vue.extend(def)
 	      }
 	    }
@@ -2147,13 +2154,13 @@
 	    assets[camelizedId.charAt(0).toUpperCase() + camelizedId.slice(1)]
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	
 	/**
 	 * Check if an element is a component, if yes return its
@@ -2304,7 +2311,7 @@
 	  return Object.prototype.toString.call(val).slice(8, -1)
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 15 */
@@ -2358,13 +2365,13 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var config = __webpack_require__(8)
 	
 	/**
@@ -2522,7 +2529,7 @@
 /* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	_.extend(exports, __webpack_require__(18))
 	_.extend(exports, __webpack_require__(52))
@@ -2532,7 +2539,7 @@
 /* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var publicDirectives = __webpack_require__(19)
 	var internalDirectives = __webpack_require__(38)
 	var compileProps = __webpack_require__(51)
@@ -3242,7 +3249,7 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 19 */
@@ -3278,7 +3285,7 @@
 /* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	module.exports = {
 	
@@ -3298,7 +3305,7 @@
 /* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var templateParser = __webpack_require__(22)
 	
 	module.exports = {
@@ -3344,7 +3351,7 @@
 /* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Cache = __webpack_require__(10)
 	var templateCache = new Cache(1000)
 	var idSelectorCache = new Cache(1000)
@@ -3638,7 +3645,7 @@
 /* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var FragmentFactory = __webpack_require__(24)
 	var isObject = _.isObject
 	var uid = 0
@@ -4237,13 +4244,13 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var compiler = __webpack_require__(17)
 	var templateParser = __webpack_require__(22)
 	var Fragment = __webpack_require__(25)
@@ -4305,7 +4312,7 @@
 /* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var transition = __webpack_require__(12)
 	
 	/**
@@ -4486,7 +4493,7 @@
 /* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var FragmentFactory = __webpack_require__(24)
 	
 	module.exports = {
@@ -4553,13 +4560,13 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var transition = __webpack_require__(12)
 	
 	module.exports = {
@@ -4591,7 +4598,7 @@
 /* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	
 	var handlers = {
 	  text: __webpack_require__(29),
@@ -4674,13 +4681,13 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	module.exports = {
 	
@@ -4813,7 +4820,7 @@
 /* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	module.exports = {
 	
@@ -4853,7 +4860,7 @@
 /* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	module.exports = {
 	
@@ -4977,7 +4984,7 @@
 /* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	module.exports = {
 	
@@ -5045,7 +5052,7 @@
 /* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	
 	// keyCode aliases
 	var keyCodes = {
@@ -5169,13 +5176,13 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	
 	// xlink
 	var xlinkNS = 'http://www.w3.org/1999/xlink'
@@ -5197,7 +5204,7 @@
 	  'false-value': '_falseValue'
 	}
 	
-	// check for attribtues that prohibit interpolations
+	// check for attributes that prohibit interpolations
 	var disallowedInterpAttrRE = /^v-|^:|^@|^(is|transition|transition-mode|debounce|track-by|stagger|enter-stagger|leave-stagger)$/
 	
 	module.exports = {
@@ -5237,8 +5244,8 @@
 	        // warn style
 	        if (attr === 'style') {
 	          _.warn(
-	            raw + 'interpolation in "style" attribtue will cause ' +
-	            'the attribtue to be discarded in Internet Explorer. ' +
+	            raw + 'interpolation in "style" attribute will cause ' +
+	            'the attribute to be discarded in Internet Explorer. ' +
 	            'Use v-bind:style instead.'
 	          )
 	        }
@@ -5282,13 +5289,13 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	module.exports = {
 	
@@ -5324,7 +5331,7 @@
 	/* WEBPACK VAR INJECTION */(function(process) {if (process.env.NODE_ENV !== 'production') {
 	  module.exports = {
 	    bind: function () {
-	      __webpack_require__(3).warn(
+	      __webpack_require__(4).warn(
 	        'v-ref:' + this.arg + ' must be used on a child ' +
 	        'component. Found on <' + this.el.tagName.toLowerCase() + '>.'
 	      )
@@ -5332,7 +5339,7 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 37 */
@@ -5363,7 +5370,7 @@
 /* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var prefixes = ['-webkit-', '-moz-', '-ms-']
 	var camelPrefixes = ['Webkit', 'Moz', 'ms']
 	var importantRE = /!important;?$/
@@ -5477,7 +5484,7 @@
 /* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var addClass = _.addClass
 	var removeClass = _.removeClass
 	
@@ -5552,7 +5559,7 @@
 /* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var templateParser = __webpack_require__(22)
 	
 	module.exports = {
@@ -5662,6 +5669,7 @@
 	  resolveComponent: function (id, cb) {
 	    var self = this
 	    this.pendingComponentCb = _.cancellable(function (Component) {
+	      self.ComponentName = id
 	      self.Component = Component
 	      cb()
 	    })
@@ -5725,6 +5733,7 @@
 	    if (this.Component) {
 	      // default options
 	      var options = {
+	        name: this.ComponentName,
 	        el: templateParser.clone(this.el),
 	        template: this.inlineTemplate,
 	        // make sure to add the child with correct parent
@@ -5848,6 +5857,11 @@
 	  transition: function (target, cb) {
 	    var self = this
 	    var current = this.childVM
+	    // for devtool inspection
+	    if (process.env.NODE_ENV !== 'production') {
+	      if (current) current._inactive = true
+	      target._inactive = false
+	    }
 	    this.childVM = target
 	    switch (self.params.transitionMode) {
 	      case 'in-out':
@@ -5884,7 +5898,7 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 42 */
@@ -5895,7 +5909,7 @@
 	// The purpose is to make the initial prop values available
 	// inside `created` hooks and `data` functions.
 	
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Watcher = __webpack_require__(43)
 	var bindingModes = __webpack_require__(8)._propBindingModes
 	
@@ -5960,7 +5974,7 @@
 /* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var config = __webpack_require__(8)
 	var Dep = __webpack_require__(44)
 	var expParser = __webpack_require__(45)
@@ -6305,13 +6319,13 @@
 	
 	module.exports = Watcher
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var uid = 0
 	
 	/**
@@ -6378,7 +6392,7 @@
 /* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var Path = __webpack_require__(46)
 	var Cache = __webpack_require__(10)
 	var expressionCache = new Cache(1000)
@@ -6643,13 +6657,13 @@
 	    exp.slice(0, 5) !== 'Math.'
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var Cache = __webpack_require__(10)
 	var pathCache = new Cache(1000)
 	var identRE = exports.identRE = /^[$_a-zA-Z]+[\w$]*$/
@@ -7008,13 +7022,13 @@
 	  return true
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var config = __webpack_require__(8)
 	
 	// we have two separate queues: one for directive updates
@@ -7050,6 +7064,13 @@
 	  runBatcherQueue(queue)
 	  internalQueueDepleted = true
 	  runBatcherQueue(userQueue)
+	  // dev tool hook
+	  /* istanbul ignore if */
+	  if (process.env.NODE_ENV !== 'production') {
+	    if (_.inBrowser && window.__VUE_DEVTOOLS_GLOBAL_HOOK__) {
+	      window.__VUE_DEVTOOLS_GLOBAL_HOOK__.emit('flush')
+	    }
+	  }
 	  resetBatcherState()
 	}
 	
@@ -7113,13 +7134,13 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Transition = __webpack_require__(49)
 	
 	module.exports = {
@@ -7145,7 +7166,7 @@
 /* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var queue = __webpack_require__(50)
 	var addClass = _.addClass
 	var removeClass = _.removeClass
@@ -7518,7 +7539,7 @@
 /* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var queue = []
 	var queued = false
 	
@@ -7559,7 +7580,7 @@
 /* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var dirParser = __webpack_require__(11)
 	var propDef = __webpack_require__(42)
 	var propBindingModes = __webpack_require__(8)._propBindingModes
@@ -7766,13 +7787,13 @@
 	    : def
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var templateParser = __webpack_require__(22)
 	var specialCharRE = /[^\w\-:\.]/
 	
@@ -7921,7 +7942,7 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 53 */
@@ -7935,7 +7956,7 @@
 /* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var templateParser = __webpack_require__(22)
 	
 	// This is the elementDirective that handles <content>
@@ -8065,7 +8086,7 @@
 /* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var vIf = __webpack_require__(26)
 	var FragmentFactory = __webpack_require__(24)
 	
@@ -8109,13 +8130,13 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	/**
 	 * Stringify value.
@@ -8239,7 +8260,7 @@
 /* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Path = __webpack_require__(46)
 	var toArray = __webpack_require__(23)._postProcess
 	
@@ -8350,7 +8371,8 @@
 /* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var mergeOptions = __webpack_require__(3).mergeOptions
+	var mergeOptions = __webpack_require__(4).mergeOptions
+	var uid = 0
 	
 	/**
 	 * The main init sequence. This is called for every
@@ -8377,6 +8399,9 @@
 	  this.$els = {}        // element references
 	  this._watchers = []   // all watchers as an array
 	  this._directives = [] // all directives
+	
+	  // a uid
+	  this._uid = uid++
 	
 	  // a flag to avoid this being observed
 	  this._isVue = true
@@ -8466,7 +8491,7 @@
 /* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var inDoc = _.inDoc
 	var eventRE = /^v-on:|^@/
 	
@@ -8630,13 +8655,13 @@
 	  this.$emit('hook:' + hook)
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var compiler = __webpack_require__(17)
 	var Observer = __webpack_require__(61)
 	var Dep = __webpack_require__(44)
@@ -8878,13 +8903,13 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Dep = __webpack_require__(44)
 	var arrayMethods = __webpack_require__(62)
 	var arrayKeys = Object.getOwnPropertyNames(arrayMethods)
@@ -9125,7 +9150,7 @@
 /* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var arrayProto = Array.prototype
 	var arrayMethods = Object.create(arrayProto)
 	
@@ -9227,7 +9252,7 @@
 /* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Directive = __webpack_require__(64)
 	var compiler = __webpack_require__(17)
 	
@@ -9448,7 +9473,7 @@
 /* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var Watcher = __webpack_require__(43)
 	var expParser = __webpack_require__(45)
 	function noop () {}
@@ -9496,6 +9521,11 @@
 	  this._host = host
 	  this._scope = scope
 	  this._frag = frag
+	  // store directives on node in dev mode
+	  if (process.env.NODE_ENV !== 'production' && this.el) {
+	    this.el._vue_directives = this.el._vue_directives || []
+	    this.el._vue_directives.push(this)
+	  }
 	}
 	
 	/**
@@ -9755,19 +9785,22 @@
 	        unwatchFns[i]()
 	      }
 	    }
+	    if (process.env.NODE_ENV !== 'production' && this.el) {
+	      this.el._vue_directives.$remove(this)
+	    }
 	    this.vm = this.el = this._watcher = this._listeners = null
 	  }
 	}
 	
 	module.exports = Directive
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	
 	/**
 	 * Apply a list of filter (descriptors) to a value.
@@ -9861,13 +9894,13 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Watcher = __webpack_require__(43)
 	var Path = __webpack_require__(46)
 	var textParser = __webpack_require__(9)
@@ -10047,7 +10080,7 @@
 /* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var transition = __webpack_require__(12)
 	
 	/**
@@ -10257,7 +10290,7 @@
 /* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	/**
 	 * Listen on the given `event` with `fn`.
@@ -10432,7 +10465,7 @@
 /* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(3)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var compiler = __webpack_require__(17)
 	
 	/**
@@ -10501,14 +10534,14 @@
 	  )
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(2)
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var nextTick = _.nextTick
 	
 	describe('Data API', function () {
@@ -10716,7 +10749,7 @@
 	 */
 	
 	var Vue = __webpack_require__(2)
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	if (_.inBrowser) {
 	  describe('DOM API', function () {
@@ -11097,7 +11130,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(2)
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var config = __webpack_require__(8)
 	
 	describe('Global API', function () {
@@ -11212,7 +11245,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(2)
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var compiler = __webpack_require__(17)
 	
 	if (_.inBrowser) {
@@ -11747,10 +11780,10 @@
 /* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var config = __webpack_require__(8)
 	var batcher = __webpack_require__(47)
-	var nextTick = __webpack_require__(3).nextTick
+	var nextTick = __webpack_require__(4).nextTick
 	
 	describe('Batcher', function () {
 	
@@ -11916,7 +11949,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(2)
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var compiler = __webpack_require__(17)
 	var compile = compiler.compile
 	var publicDirectives = __webpack_require__(19)
@@ -12472,7 +12505,7 @@
 
 	var transclude = __webpack_require__(17).transclude
 	var Vue = __webpack_require__(2)
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	if (_.inBrowser) {
 	  describe('Transclude', function () {
@@ -12776,7 +12809,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(2)
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var compiler = __webpack_require__(17)
 	
 	describe('Partial', function () {
@@ -12904,7 +12937,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(2)
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	describe('Slot Distribution', function () {
 	
@@ -13297,7 +13330,7 @@
 /* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var def = __webpack_require__(40)
 	
 	if (_.inBrowser) {
@@ -13364,7 +13397,7 @@
 /* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Vue = __webpack_require__(2)
 	
 	if (_.inBrowser) {
@@ -13872,7 +13905,7 @@
 /* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Vue = __webpack_require__(2)
 	
 	if (_.inBrowser) {
@@ -14432,7 +14465,7 @@
 /* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var def = __webpack_require__(39)
 	var Vue = __webpack_require__(2)
 	
@@ -14560,7 +14593,7 @@
 /* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Vue = _.Vue
 	var Directive = __webpack_require__(64)
 	var def = __webpack_require__(48)
@@ -14691,7 +14724,7 @@
 /* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var def = __webpack_require__(34)
 	
 	if (_.inBrowser) {
@@ -14749,7 +14782,7 @@
 /* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var compile = __webpack_require__(17).compile
 	var Vue = __webpack_require__(2)
 	
@@ -14779,7 +14812,7 @@
 /* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Vue = __webpack_require__(2)
 	
 	if (_.inBrowser) {
@@ -14916,7 +14949,7 @@
 /* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Vue = __webpack_require__(2)
 	
 	if (_.inBrowser) {
@@ -16267,7 +16300,7 @@
 /* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var def = __webpack_require__(21)
 	
 	if (_.inBrowser) {
@@ -16316,7 +16349,7 @@
 /* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Vue = __webpack_require__(2)
 	
 	if (_.inBrowser) {
@@ -16740,7 +16773,7 @@
 /* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Vue = __webpack_require__(2)
 	
 	// unset jQuery to bypass jQuery check for normal test cases
@@ -17493,7 +17526,7 @@
 /* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Vue = __webpack_require__(2)
 	
 	function trigger (target, event, process) {
@@ -17736,7 +17769,7 @@
 /* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Vue = __webpack_require__(2)
 	
 	if (_.inBrowser) {
@@ -17760,7 +17793,7 @@
 /* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Vue = __webpack_require__(2)
 	
 	if (_.inBrowser) {
@@ -17893,7 +17926,7 @@
 /* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Vue = __webpack_require__(2)
 	var transition = __webpack_require__(12)
 	var def = __webpack_require__(27)
@@ -17949,7 +17982,7 @@
 /* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var def = __webpack_require__(20)
 	
 	if (_.inBrowser) {
@@ -18218,7 +18251,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(2)
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	describe('Instance Events', function () {
 	
@@ -19251,7 +19284,7 @@
 
 	var Observer = __webpack_require__(61)
 	var Dep = __webpack_require__(44)
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	describe('Observer', function () {
 	
@@ -19526,7 +19559,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var expParser = __webpack_require__(45)
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	var testCases = [
 	  {
@@ -20002,7 +20035,7 @@
 /* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var templateParser = __webpack_require__(22)
 	var parse = templateParser.parse
 	var testString = '<div>hello</div><p class="test">world</p>'
@@ -20309,7 +20342,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(2)
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var transition = __webpack_require__(12)
 	var Transition = __webpack_require__(49)
 	
@@ -20846,7 +20879,7 @@
 /* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	describe('Util - component', function () {
 	
@@ -20897,7 +20930,7 @@
 /* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var config = __webpack_require__(8)
 	var infoPrefix = '[Vue info]: '
 	var warnPrefix = '[Vue warn]: '
@@ -20946,7 +20979,7 @@
 /* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	if (_.inBrowser) {
 	
@@ -21074,7 +21107,7 @@
 /* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	describe('Util - Environment', function () {
 	
@@ -21098,7 +21131,7 @@
 /* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	
 	describe('Util - Language Enhancement', function () {
 	
@@ -21264,7 +21297,7 @@
 /* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(3)
+	var _ = __webpack_require__(4)
 	var Vue = __webpack_require__(2)
 	var merge = _.mergeOptions
 	var resolveAsset = _.resolveAsset
@@ -21416,7 +21449,6 @@
 	      }
 	    })
 	    expect(typeof res.components.test).toBe('function')
-	    expect(res.components.test.options.name).toBe('test')
 	    expect(res.components.test.super).toBe(Vue)
 	  })
 	
