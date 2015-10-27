@@ -200,7 +200,7 @@
 	extend(p, __webpack_require__(68))
 	extend(p, __webpack_require__(69))
 	
-	Vue.version = '1.0.0'
+	Vue.version = '1.0.1'
 	module.exports = _.Vue = Vue
 	
 	/* istanbul ignore if */
@@ -354,7 +354,7 @@
 	    return
 	  }
 	  ob.convert(key, val)
-	  ob.notify()
+	  ob.dep.notify()
 	  if (ob.vms) {
 	    var i = ob.vms.length
 	    while (i--) {
@@ -381,7 +381,7 @@
 	  if (!ob) {
 	    return
 	  }
-	  ob.notify()
+	  ob.dep.notify()
 	  if (ob.vms) {
 	    var i = ob.vms.length
 	    while (i--) {
@@ -841,7 +841,7 @@
 	 * Check if a node is in the document.
 	 * Note: document.documentElement.contains should work here
 	 * but always returns false for comment nodes in phantomjs,
-	 * making unit tests difficult. This is fixed byy doing the
+	 * making unit tests difficult. This is fixed by doing the
 	 * contains() check on the node's parentNode instead of
 	 * the node itself.
 	 *
@@ -2084,10 +2084,12 @@
 	    var asset
 	    while (i--) {
 	      asset = assets[i]
-	      var id = asset.name || (asset.options && asset.options.name)
+	      var id = typeof asset === 'function'
+	        ? ((asset.options && asset.options.name) || asset.id)
+	        : (asset.name || asset.id)
 	      if (!id) {
 	        process.env.NODE_ENV !== 'production' && _.warn(
-	          'Array-syntax assets must provide a "name" field.'
+	          'Array-syntax assets must provide a "name" or "id" field.'
 	        )
 	      } else {
 	        res[id] = asset
@@ -3768,9 +3770,10 @@
 	        // update $key
 	        if (key) {
 	          frag.scope.$key = key
-	          if (iterator) {
-	            frag.scope[iterator] = key
-	          }
+	        }
+	        // update interator
+	        if (iterator) {
+	          frag.scope[iterator] = key || i
 	        }
 	        // update data for track-by, object repeat &
 	        // primitive values.
@@ -9002,42 +9005,7 @@
 	Observer.prototype.observeArray = function (items) {
 	  var i = items.length
 	  while (i--) {
-	    var ob = Observer.create(items[i])
-	    if (ob) {
-	      (ob.parents || (ob.parents = [])).push(this)
-	    }
-	  }
-	}
-	
-	/**
-	 * Remove self from the parent list of removed objects.
-	 *
-	 * @param {Array} items
-	 */
-	
-	Observer.prototype.unobserveArray = function (items) {
-	  var i = items.length
-	  while (i--) {
-	    var ob = items[i] && items[i].__ob__
-	    if (ob) {
-	      ob.parents.$remove(this)
-	    }
-	  }
-	}
-	
-	/**
-	 * Notify self dependency, and also parent Array dependency
-	 * if any.
-	 */
-	
-	Observer.prototype.notify = function () {
-	  this.dep.notify()
-	  var parents = this.parents
-	  if (parents) {
-	    var i = parents.length
-	    while (i--) {
-	      parents[i].notify()
-	    }
+	    Observer.create(items[i])
 	  }
 	}
 	
@@ -9128,6 +9096,12 @@
 	        if (childOb) {
 	          childOb.dep.depend()
 	        }
+	        if (_.isArray(val)) {
+	          for (var e, i = 0, l = val.length; i < l; i++) {
+	            e = val[i]
+	            e && e.__ob__ && e.__ob__.dep.depend()
+	          }
+	        }
 	      }
 	      return val
 	    },
@@ -9180,7 +9154,7 @@
 	    }
 	    var result = original.apply(this, args)
 	    var ob = this.__ob__
-	    var inserted, removed
+	    var inserted
 	    switch (method) {
 	      case 'push':
 	        inserted = args
@@ -9190,17 +9164,11 @@
 	        break
 	      case 'splice':
 	        inserted = args.slice(2)
-	        removed = result
-	        break
-	      case 'pop':
-	      case 'shift':
-	        removed = [result]
 	        break
 	    }
 	    if (inserted) ob.observeArray(inserted)
-	    if (removed) ob.unobserveArray(removed)
 	    // notify change
-	    ob.notify()
+	    ob.dep.notify()
 	    return result
 	  })
 	})
@@ -15560,15 +15528,15 @@
 	      assertObjectMutations(vm, el, done)
 	    })
 	
-	    it('key val syntax with array', function () {
-	      new Vue({
+	    it('key val syntax with array', function (done) {
+	      var vm = new Vue({
 	        el: el,
-	        template: '<div v-for="(ind,val) in items">{{ind}} {{val}}</div>',
+	        template: '<div v-for="(i, item) in items">{{i}} {{item.a}}</div>',
 	        data: {
-	          items: ['x', 'y']
+	          items: [{a: 1}, {a: 2}]
 	        }
 	      })
-	      expect(el.innerHTML).toBe('<div>0 x</div><div>1 y</div>')
+	      assertMutations(vm, el, done)
 	    })
 	
 	    it('key val syntax with nested v-for s', function () {
@@ -21626,7 +21594,20 @@
 	      components: [{}]
 	    }
 	    merge(a, b)
-	    expect(hasWarned(_, 'must provide a "name" field')).toBe(true)
+	    expect(hasWarned(_, 'must provide a "name" or "id" field')).toBe(true)
+	  })
+	
+	  it('warn Array async component without id', function () {
+	    var a = {
+	      components: {
+	        a: Vue.extend({})
+	      }
+	    }
+	    var b = {
+	      components: [function () {}]
+	    }
+	    merge(a, b)
+	    expect(hasWarned(_, 'must provide a "name" or "id" field')).toBe(true)
 	  })
 	
 	})
