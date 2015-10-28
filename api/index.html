@@ -1184,9 +1184,12 @@
 <p>Register a reference to a child component on its parent for direct access. Does not expect an expression. Must provide an argument as the id to register with. The component instance will be accessible on its parent’s <code>$refs</code> object.</p>
 <p>When used on a component together with <code>v-for</code>, the registered value will be an Array containing all the child component instances corresponding to the Array they are bound to. If the data source for <code>v-for</code> is an Object, the registered value will be an Object containing key-instance pairs mirroring the source Object.</p>
 </li>
+<li><p><strong>Note:</strong></p>
+<p>Because HTML is case-insensitive, camelCase usage like <code>v-ref:someRef</code> will be converted to all lowercase. You can use <code>v-ref:some-ref</code> which properly sets <code>this.$refs.someRef</code>.</p>
+</li>
 <li><p><strong>Example:</strong></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">comp</span> <span class="attribute">v-ref:child</span>&gt;</span><span class="tag">&lt;/<span class="title">comp</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// access from parent:</span></span><br><span class="line"><span class="keyword">this</span>.$refs.child</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">comp</span> <span class="attribute">v-ref:child</span>&gt;</span><span class="tag">&lt;/<span class="title">comp</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">comp</span> <span class="attribute">v-ref:some-child</span>&gt;</span><span class="tag">&lt;/<span class="title">comp</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// access from parent:</span></span><br><span class="line"><span class="keyword">this</span>.$refs.child</span><br><span class="line"><span class="keyword">this</span>.$refs.someChild</span><br></pre></td></tr></table></figure>
 <p>With <code>v-for</code>:</p>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">comp</span> <span class="attribute">v-ref:list</span> <span class="attribute">v-for</span>=<span class="value">"item in list"</span>&gt;</span><span class="tag">&lt;/<span class="title">comp</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// this will be an array in parent</span></span><br><span class="line"><span class="keyword">this</span>.$refs.list</span><br></pre></td></tr></table></figure>
@@ -1202,9 +1205,12 @@
 <li><p><strong>Usage:</strong></p>
 <p>Register a reference to a DOM element on its owner Vue instance’s <code>$els</code> object for easier access.</p>
 </li>
+<li><p><strong>Note:</strong></p>
+<p>Because HTML is case-insensitive, camelCase usage like <code>v-el:someEl</code> will be converted to all lowercase. You can use <code>v-el:some-el</code> which properly sets <code>this.$refs.someEl</code>.</p>
+</li>
 <li><p><strong>Example:</strong></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-el:msg</span>&gt;</span>hello<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">this</span>.$els.msg.textContent <span class="comment">// -&gt; "hello"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-el:msg</span>&gt;</span>hello<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-el:other-msg</span>&gt;</span>world<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">this</span>.$els.msg.textContent <span class="comment">// -&gt; "hello"</span></span><br><span class="line"><span class="keyword">this</span>.$els.otherMsg.textContent <span class="comment">// -&gt; "world"</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="v-pre">v-pre</h3><ul>

@@ -8304,12 +8304,11 @@
 	        if ((key === '$key' && contains(item.$key, search)) ||
 	            contains(Path.get(val, key), search)) {
 	          res.push(item)
+	          break
 	        }
 	      }
-	    } else {
-	      if (contains(item, search)) {
-	        res.push(item)
-	      }
+	    } else if (contains(item, search)) {
+	      res.push(item)
 	    }
 	  }
 	  return res
@@ -18140,6 +18139,8 @@
 	    ]
 	    // multiple string keys
 	    var res
+	    res = filter(arr, '', 'in', 'firstname', 'lastname')
+	    assertArray(res, [arr[0], arr[1], arr[2]])
 	    res = filter(arr, 'A', 'in', 'firstname', 'lastname')
 	    assertArray(res, [arr[0], arr[2]])
 	    // array of keys
