@@ -1206,7 +1206,7 @@
 <p>Register a reference to a DOM element on its owner Vue instance’s <code>$els</code> object for easier access.</p>
 </li>
 <li><p><strong>Note:</strong></p>
-<p>Because HTML is case-insensitive, camelCase usage like <code>v-el:someEl</code> will be converted to all lowercase. You can use <code>v-el:some-el</code> which properly sets <code>this.$refs.someEl</code>.</p>
+<p>Because HTML is case-insensitive, camelCase usage like <code>v-el:someEl</code> will be converted to all lowercase. You can use <code>v-el:some-el</code> which properly sets <code>this.$els.someEl</code>.</p>
 </li>
 <li><p><strong>Example:</strong></p>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-el:msg</span>&gt;</span>hello<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-el:other-msg</span>&gt;</span>world<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
