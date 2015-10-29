@@ -1125,9 +1125,9 @@
 <h3 id="v-bind">v-bind</h3><ul>
 <li><p><strong>Shorthand:</strong> <code>:</code></p>
 </li>
-<li><p><strong>Expects:</strong> <code>*</code></p>
+<li><p><strong>Expects:</strong> <code>* (with argument) | Object (without argument)</code></p>
 </li>
-<li><p><strong>Argument:</strong> <code>attrOrProp (required)</code></p>
+<li><p><strong>Argument:</strong> <code>attrOrProp (optional)</code></p>
 </li>
 <li><p><strong>Modifiers:</strong></p>
 <ul>
@@ -1136,12 +1136,13 @@
 </ul>
 </li>
 <li><p><strong>Usage:</strong></p>
-<p>Dynamically bind an attribute or a component prop to an expression.</p>
+<p>Dynamically bind one or more attributes, or a component prop to an expression.</p>
 <p>When used to bind the <code>class</code> or <code>style</code> attribute, it supports additional value types such as Array or Objects. See linked guide section below for more details.</p>
 <p>When used for prop binding, the prop must be properly declared in the child component. Prop bindings can specify a different binding type using one of the modifiers.</p>
+<p>When used without an argument, can be used to bind an object containing attribute name-value pairs. Note in this mode <code>class</code> and <code>style</code> does not support Array or Objects.</p>
 </li>
 <li><p><strong>Example:</strong></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- bind an attribute --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">img</span> <span class="attribute">v-bind:src</span>=<span class="value">"imageSrc"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- shorthand --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">img</span> <span class="attribute">:src</span>=<span class="value">"imageSrc"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- class binding --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">:class</span>=<span class="value">"&#123; red: isRed &#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">:class</span>=<span class="value">"[classA, classB]"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- style binding --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">:style</span>=<span class="value">"&#123; fontSize: size + 'px' &#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">:style</span>=<span class="value">"[styleObjectA, styleObjectB]"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- prop binding. "prop" must be declared in my-component. --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">my-component</span> <span class="attribute">:prop</span>=<span class="value">"someThing"</span>&gt;</span><span class="tag">&lt;/<span class="title">my-component</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- two-way prop binding --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">my-component</span> <span class="attribute">:prop.sync</span>=<span class="value">"someThing"</span>&gt;</span><span class="tag">&lt;/<span class="title">my-component</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- one-time prop binding --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">my-component</span> <span class="attribute">:prop.once</span>=<span class="value">"someThing"</span>&gt;</span><span class="tag">&lt;/<span class="title">my-component</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- bind an attribute --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">img</span> <span class="attribute">v-bind:src</span>=<span class="value">"imageSrc"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- shorthand --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">img</span> <span class="attribute">:src</span>=<span class="value">"imageSrc"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- class binding --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">:class</span>=<span class="value">"&#123; red: isRed &#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">:class</span>=<span class="value">"[classA, classB]"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- style binding --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">:style</span>=<span class="value">"&#123; fontSize: size + 'px' &#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">:style</span>=<span class="value">"[styleObjectA, styleObjectB]"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- binding an object of attributes --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-bind</span>=<span class="value">"&#123; id: someProp, 'other-attr': otherProp &#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- prop binding. "prop" must be declared in my-component. --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">my-component</span> <span class="attribute">:prop</span>=<span class="value">"someThing"</span>&gt;</span><span class="tag">&lt;/<span class="title">my-component</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- two-way prop binding --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">my-component</span> <span class="attribute">:prop.sync</span>=<span class="value">"someThing"</span>&gt;</span><span class="tag">&lt;/<span class="title">my-component</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- one-time prop binding --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">my-component</span> <span class="attribute">:prop.once</span>=<span class="value">"someThing"</span>&gt;</span><span class="tag">&lt;/<span class="title">my-component</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>See also:</strong></p>
 <ul>
@@ -1352,6 +1353,19 @@
 </li>
 <li><p><strong>Example:</strong></p>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> @<span class="attribute">keyup</span>=<span class="value">"onKeyup | debounce 500"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="limitBy">limitBy</h3><ul>
+<li><p><strong>Limited to:</strong> directives that expect <code>Array</code> values, e.g. <code>v-for</code></p>
+</li>
+<li><p><strong>Arguments:</strong></p>
+<ul>
+<li><code>{Number} limit</code></li>
+</ul>
+</li>
+<li><p><strong>Usage:</strong></p>
+<p>Limit the array to the first N items, as specified by the argument.</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- only display first 10 items --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-for</span>=<span class="value">"item in items | limitBy 10"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="filterBy">filterBy</h3><ul>
