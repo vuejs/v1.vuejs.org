@@ -5219,6 +5219,10 @@
 	  bind: function () {
 	    var attr = this.arg
 	    var tag = this.el.tagName
+	    // should be deep watch on object mode
+	    if (!attr) {
+	      this.deep = true
+	    }
 	    // handle interpolation bindings
 	    if (this.descriptor.interp) {
 	      // only allow binding on native attributes
@@ -5506,6 +5510,8 @@
 	var removeClass = _.removeClass
 	
 	module.exports = {
+	
+	  deep: true,
 	
 	  update: function (value) {
 	    if (value && typeof value === 'string') {
@@ -6318,19 +6324,18 @@
 	 * getters, so that every nested property inside the object
 	 * is collected as a "deep" dependency.
 	 *
-	 * @param {Object} obj
+	 * @param {*} val
 	 */
 	
-	function traverse (obj) {
-	  var key, val, i
-	  for (key in obj) {
-	    val = obj[key]
-	    if (_.isArray(val)) {
-	      i = val.length
-	      while (i--) traverse(val[i])
-	    } else if (_.isObject(val)) {
-	      traverse(val)
-	    }
+	function traverse (val) {
+	  var i, keys
+	  if (_.isArray(val)) {
+	    i = val.length
+	    while (i--) traverse(val[i])
+	  } else if (_.isObject(val)) {
+	    keys = Object.keys(val)
+	    i = keys.length
+	    while (i--) traverse(val[keys[i]])
 	  }
 	}
 	
@@ -7280,7 +7285,7 @@
 	
 	p.enterNextTick = function () {
 	
-	  // Importnatn hack:
+	  // Important hack:
 	  // in Chrome, if a just-entered element is applied the
 	  // leave class while its interpolated property still has
 	  // a very small value (within one frame), Chrome will
@@ -9630,15 +9635,15 @@
 	  while (i--) {
 	    key = params[i]
 	    mappedKey = _.camelize(key)
-	    val = _.attr(this.el, key)
+	    val = _.getBindAttr(this.el, key)
 	    if (val != null) {
-	      // static
-	      this.params[mappedKey] = val === '' ? true : val
-	    } else {
 	      // dynamic
-	      val = _.getBindAttr(this.el, key)
+	      this._setupParamWatcher(mappedKey, val)
+	    } else {
+	      // static
+	      val = _.attr(this.el, key)
 	      if (val != null) {
-	        this._setupParamWatcher(mappedKey, val)
+	        this.params[mappedKey] = val === '' ? true : val
 	      }
 	    }
 	  }
@@ -12650,11 +12655,14 @@
 	
 	describe('Directive', function () {
 	
-	  var el = {} // simply a mock to be able to run in Node
-	  var vm, def
-	
+	  var el, vm, def
 	  beforeEach(function () {
+	    el = document.createElement('div')
 	    def = {
+	      params: ['foo'],
+	      paramWatchers: {
+	        foo: jasmine.createSpy('foo')
+	      },
 	      bind: jasmine.createSpy('bind'),
 	      update: jasmine.createSpy('update'),
 	      unbind: jasmine.createSpy('unbind')
@@ -12799,6 +12807,34 @@
 	    d._bind()
 	    expect(d.update).toBe(def.update)
 	    expect(def.update).toHaveBeenCalled()
+	  })
+	
+	  it('static params', function () {
+	    el.setAttribute('foo', 'hello')
+	    var d = new Directive({
+	      name: 'test',
+	      def: def,
+	      expression: 'a'
+	    }, vm, el)
+	    d._bind()
+	    expect(d.params.foo).toBe('hello')
+	  })
+	
+	  it('dynamic params', function (done) {
+	    el.setAttribute(':foo', 'a')
+	    var d = new Directive({
+	      name: 'test',
+	      def: def,
+	      expression: 'a'
+	    }, vm, el)
+	    d._bind()
+	    expect(d.params.foo).toBe(vm.a)
+	    vm.a = 2
+	    nextTick(function () {
+	      expect(def.paramWatchers.foo).toHaveBeenCalledWith(2, 1)
+	      expect(d.params.foo).toBe(vm.a)
+	      done()
+	    })
 	  })
 	})
 
@@ -19318,6 +19354,36 @@
 	          }
 	        }
 	      }
+	    })
+	  })
+	
+	  it('deep watch for class, style and bind', function (done) {
+	    var el = document.createElement('div')
+	    var vm = new Vue({
+	      el: el,
+	      template: '<div :class="classes" :style="styles" v-bind="attrs"></div>',
+	      data: {
+	        classes: { a: true, b: false },
+	        styles: { color: 'red', fontSize: '14px' },
+	        attrs: { a: 1, b: 2 }
+	      }
+	    })
+	    var div = el.firstChild
+	    expect(div.className).toBe('a')
+	    expect(div.style.color).toBe('red')
+	    expect(div.style.fontSize).toBe('14px')
+	    expect(div.getAttribute('a')).toBe('1')
+	    expect(div.getAttribute('b')).toBe('2')
+	    vm.classes.b = true
+	    vm.styles.color = 'green'
+	    vm.attrs.a = 3
+	    Vue.nextTick(function () {
+	      expect(div.className).toBe('a b')
+	      expect(div.style.color).toBe('green')
+	      expect(div.style.fontSize).toBe('14px')
+	      expect(div.getAttribute('a')).toBe('3')
+	      expect(div.getAttribute('b')).toBe('2')
+	      done()
 	    })
 	  })
 	})
