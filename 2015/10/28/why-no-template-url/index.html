@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Vue.js 0.10.6, and what's next - vue.js</title>
+        <title>Why Vue.js doesn't support templateURL - vue.js</title>
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -88,7 +88,7 @@
         <ul>
         
             <li>
-                <a href="/2015/10/28/why-no-template-url/" class="sidebar-link">Why Vue.js doesn't support templateURL</a>
+                <a href="/2015/10/28/why-no-template-url/" class="sidebar-link current">Why Vue.js doesn't support templateURL</a>
             </li>
         
             <li>
@@ -108,7 +108,7 @@
             </li>
         
             <li>
-                <a href="/2014/07/29/vue-next/" class="sidebar-link current">Vue.js 0.10.6, and what's next</a>
+                <a href="/2014/07/29/vue-next/" class="sidebar-link">Vue.js 0.10.6, and what's next</a>
             </li>
         
             <li>
@@ -119,27 +119,19 @@
     </div>
 </div>
 <div class="content blog post">
-    <h1>Vue.js 0.10.6, and what's next</h1>
+    <h1>Why Vue.js doesn't support templateURL</h1>
     <div id="ad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
     </div>
-    <h4>Jul 29, 2014</h4>
-    <h2 id="0-10-6">0.10.6</h2><p>Vue.js 0.10.6 has been released! This is another small bug-fix release and will be the last maintainance version before the next major release.</p>
+    <h4>Oct 28, 2015</h4>
+    <p>A very common question from new Vue users, especially those who used Angular before, is “can I have <code>templateURL</code>?”. I have answered this so many times and I figure it’s better to write something about it.</p>
 <a id="more"></a>
-<ul>
-<li>fix <code>v-style</code> error when value is falsy or a number. ( thanks to <a href="https://github.com/dmfilipenko" target="_blank" rel="external">@dmfilipenko</a> )</li>
-<li>fix the built-in <code>currency</code> filter error when value is a string ( thanks to <a href="https://github.com/dmfilipenko" target="_blank" rel="external">@dmfilipenko</a> )</li>
-<li>fix <code>Vue.require</code> for building with Component v1.0+ ( thanks to <a href="https://github.com/kewah" target="_blank" rel="external">@kewah</a> )</li>
-<li>Allow template nodes to be passed as a template option ( thanks to <a href="https://github.com/jordangarcia" target="_blank" rel="external">@jordangarcia</a> )</li>
-<li><code>vm.$destroy()</code> now accepts an optional argument <code>noRemove</code>. When passed in as <code>true</code> it will leave the vm’s DOM node intact after the vm is destroyed.</li>
-</ul>
-<h2 id="Vue-next">Vue-next</h2><p>Some of you might have noticed there is a <a href="https://github.com/yyx990803/vue/tree/next" target="_blank" rel="external">next</a> branch in the repo. And yes, I am re-writing Vue.js from scratch. There are two main reasons:</p>
-<ul>
-<li>Fix some issues that are caused by design flaws in the current version. Because these changes affect the design of some core modules, it is actually easier to rewrite than to apply on the current codebase.</li>
-<li>Improve general code quality (in particular, <code>compiler.js</code> as of now is a big pile of mess, and comments are not consistent across the codebase.)</li>
-</ul>
-<p>Take note that the <code>next</code> branch is still in <strong>very</strong> early stage. The internals will change a lot, and when it comes out it <strong>will</strong> break current applications. Despite that I will try to keep the API changes to a minimum. Major differences with current 0.10 branch are documented in <a href="https://github.com/yyx990803/vue/blob/next/changes.md" target="_blank" rel="external"><code>changes.md</code></a>. The list is obviously incomplete and subject to change, some of them are simply ideas, but it at least gives you a taste of what to expect, and I’d appreicate your feedback on any of the topics.</p>
-<p>Share your thoughts at <a href="https://github.com/vuejs/Discussion/issues" target="_blank" rel="external">vuejs/Discussion</a>.</p>
+<p>In Angular, <code>templateURL</code> or <code>ng-include</code> allows the user to dynamically load a remote template file at runtime. This seems pretty convenient as a built-in feature, but let’s rethink what problem it solves.</p>
+<p>First, it allows us to write our template in a separate HTML file. This gives us proper syntax highlighting in editors, which is probably why many prefer to do so. But is splitting your JavaScript code and the template really the best way? For a Vue.js component, its template and its JavaScript is tightly coupled by nature - it’s in fact much simpler if things are just in the same file. The context switching of jumping back and forth between two files actually makes the development experience much worse. Conceptually, components are the basic building block of a Vue.js app, not templates. Every Vue.js template is coupled to an accompanying JavaScript context - there’s no point in splitting them further apart.</p>
+<p>Second, because <code>templateURL</code> loads the template via Ajax at runtime, you don’t need a build step in order to split up your files. This is convenient during development, but comes at a serious cost when you want to deploy it to production. Before HTTP/2 is universally supported, the number of HTTP requests is still probably the most critical factor in your app’s initial load performance. Now imagine you use <code>templateURL</code> for every component in your app - the browser needs to perform dozens of HTTP requests before even being able to display anything! In case you don’t know, most browsers limit the number of parallel requests it can perform to a single server. When you exceed that limit, your app’s initial rendering will suffer for every extra round trip the browser has to wait for. Sure, there are build tools that can help you pre-register all those templates in <code>$templateCache</code> - but that shows us a build step is, in fact, inevitable for any serious frontend development.</p>
+<p>So, without <code>templateURL</code>, how do we deal with the development experience problem? Writing templates as inline JavaScript strings is terrible, faking templates with <code>&lt;script type=&quot;x/template&quot;&gt;</code> also feels like a hack. Well, maybe it’s time to up the game a bit and use a proper module bundler like <a href="http://webpack.github.io/" target="_blank" rel="external">Webpack</a> or <a href="http://browserify.org/" target="_blank" rel="external">Browserify</a>. It might seem daunting if you’ve never dealt with them before, but trust me it’s worth it to take the leap. Proper modularization is a necessity if you want to build anything large and maintainable. More importantly, you get to write your <a href="http://vuejs.org/guide/application.html#Single_File_Components">Vue components in a single file</a>, with proper syntax highlighting and the extra benefits of custom pre-processors, hot-reloading, ES2015 by default, autoprefixing and scoped CSS, which makes the development experience 10 times better.</p>
+<p>Finally, Vue does allow you to <a href="http://vuejs.org/guide/components.html#Async_Components">lazy load your components</a>, and with Webpack it is trivially easy. Although this is only a concern when your initial bundle is so large that you are better off splitting it apart.</p>
+<p>Think in components, not templates.</p>
 
 </div>
 
