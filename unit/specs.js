@@ -2753,16 +2753,17 @@
 	    }
 	  } else if (process.env.NODE_ENV !== 'production' && containerAttrs) {
 	    // warn container directives for fragment instances
-	    containerAttrs.forEach(function (attr) {
-	      if (attr.name.indexOf('v-') === 0 || attr.name === 'transition') {
-	        _.warn(
-	          attr.name + ' is ignored on component ' +
-	          '<' + options.el.tagName.toLowerCase() + '> because ' +
-	          'the component is a fragment instance: ' +
-	          'http://vuejs.org/guide/components.html#Fragment_Instance'
-	        )
-	      }
-	    })
+	    var names = containerAttrs.map(function (attr) {
+	      return '"' + attr.name + '"'
+	    }).join(', ')
+	    var plural = containerAttrs.length > 1
+	    _.warn(
+	      'Attribute' + (plural ? 's ' : ' ') + names +
+	      (plural ? ' are' : ' is') + ' ignored on component ' +
+	      '<' + options.el.tagName.toLowerCase() + '> because ' +
+	      'the component is a fragment instance: ' +
+	      'http://vuejs.org/guide/components.html#Fragment_Instance'
+	    )
 	  }
 	
 	  return function rootLinkFn (vm, el, scope) {
@@ -3853,8 +3854,8 @@
 	    var parentScope = this._scope || this.vm
 	    var scope = Object.create(parentScope)
 	    // ref holder for the scope
-	    scope.$refs = {}
-	    scope.$els = {}
+	    scope.$refs = Object.create(parentScope.$refs)
+	    scope.$els = Object.create(parentScope.$els)
 	    // make sure point $parent to parent scope
 	    scope.$parent = parentScope
 	    // for two-way binding on alias
@@ -12471,15 +12472,20 @@
 	    it('warn directives on fragment instances', function () {
 	      new Vue({
 	        el: el,
-	        template: '<test v-show="ok"></test>',
+	        template: '<test id="hi" class="ok" :prop="123"></test>',
 	        components: {
 	          test: {
 	            replace: true,
-	            template: '123'
+	            props: ['prop'],
+	            template: '{{prop}}'
 	          }
 	        }
 	      })
-	      expect(hasWarned(_, 'v-show is ignored on component <test>')).toBe(true)
+	      expect(_.warn.calls.count()).toBe(1)
+	      expect(
+	        hasWarned(_, 'Attributes "id", "class" are ignored on component <test>', true) ||
+	        hasWarned(_, 'Attributes "class", "id" are ignored on component <test>')
+	      ).toBe(true)
 	    })
 	
 	    it('should compile component container directives using correct context', function () {
@@ -15859,6 +15865,41 @@
 	      })
 	    })
 	
+	    it('access parent\'s $refs', function () {
+	      var vm = new Vue({
+	        el: document.createElement('div'),
+	        template: '<c1 v-ref:c1><div v-for="n in 2">{{$refs.c1.d}}</div></c1>',
+	        components: {
+	          c1: {
+	            template: '<div><slot></slot></div>',
+	            data: function () {
+	              return {
+	                d: 1
+	              }
+	            }
+	          }
+	        }
+	      })
+	      expect(vm.$refs.c1 instanceof Vue).toBe(true)
+	      expect(vm.$refs.c1.$el.innerHTML).toContain('<div>1</div><div>1</div>')
+	    })
+	
+	    it('access parent scope\'s $els', function (done) {
+	      var vm = new Vue({
+	        el: document.createElement('div'),
+	        template: '<div data-d=1 v-el:a><div v-for="n in 2">{{ready ? $els.a.dataset.d : 0}}</div></div>',
+	        data: {
+	          ready: false
+	        }
+	      })
+	      expect(vm.$els.a instanceof Element).toBe(true)
+	      expect(vm.$els.a.innerHTML).toContain('<div>0</div><div>0</div>')
+	      vm.ready = true
+	      vm.$nextTick(function () {
+	        expect(vm.$els.a.innerHTML).toContain('<div>1</div><div>1</div>')
+	        done()
+	      })
+	    })
 	  })
 	}
 	
