@@ -200,7 +200,7 @@
 	extend(p, __webpack_require__(68))
 	extend(p, __webpack_require__(69))
 	
-	Vue.version = '1.0.3'
+	Vue.version = '1.0.4'
 	module.exports = _.Vue = Vue
 	
 	/* istanbul ignore if */
@@ -2565,6 +2565,9 @@
 	  'if'
 	]
 	
+	// default directive priority
+	var DEFAULT_PRIORITY = 1000
+	
 	/**
 	 * Compile a template and return a reusable composite link
 	 * function, which recursively contains more link functions
@@ -2647,8 +2650,8 @@
 	 */
 	
 	function directiveComparator (a, b) {
-	  a = a.descriptor.def.priority || 0
-	  b = b.descriptor.def.priority || 0
+	  a = a.descriptor.def.priority || DEFAULT_PRIORITY
+	  b = b.descriptor.def.priority || DEFAULT_PRIORITY
 	  return a > b ? -1 : a === b ? 0 : 1
 	}
 	
@@ -9701,7 +9704,7 @@
 	      fn.call(scope, scope)
 	    }
 	    if (this.filters) {
-	      handler = this.vm._applyFilters(handler, null, this.filters)
+	      handler = scope._applyFilters(handler, null, this.filters)
 	    }
 	    this.update(handler)
 	    return true
@@ -15887,7 +15890,7 @@
 	    it('access parent scope\'s $els', function (done) {
 	      var vm = new Vue({
 	        el: document.createElement('div'),
-	        template: '<div data-d=1 v-el:a><div v-for="n in 2">{{ready ? $els.a.dataset.d : 0}}</div></div>',
+	        template: '<div data-d=1 v-el:a><div v-for="n in 2">{{ready ? $els.a.getAttribute("data-d") : 0}}</div></div>',
 	        data: {
 	          ready: false
 	        }
