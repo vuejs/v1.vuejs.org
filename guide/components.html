@@ -455,7 +455,12 @@ new Vue({
 })
 </script>
 
-<h2 id="Misc">Misc</h2><h3 id="Authoring_Reusable_Components">Authoring Reusable Components</h3><p>When authoring components, it is good to keep in mind whether you intend to reuse this component somewhere else later. It is OK for one-off components to have some tight coupling with each other, but reusable components should define a clean public interface.</p>
+<h2 id="Misc">Misc</h2><h3 id="Components_and_v-for">Components and v-for</h3><p>You can directly use <code>v-for</code> on the custom component, like any normal element:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">my-component</span> <span class="attribute">v-for</span>=<span class="value">"item in items"</span>&gt;</span><span class="tag">&lt;/<span class="title">my-component</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>However, this won’t pass any data to the component, because components have isolated scopes of their own. In order to pass the iterated data into the component, we should also use props:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">my-component</span></span><br><span class="line">  <span class="attribute">v-for</span>=<span class="value">"item in items"</span></span><br><span class="line">  <span class="attribute">:item</span>=<span class="value">"item"</span></span><br><span class="line">  <span class="attribute">:index</span>=<span class="value">"$index"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">my-component</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>The reason for not automatically injecting <code>item</code> into the component is because that makes the component tightly coupled to how <code>v-for</code> works. Being explicit about where its data comes from makes the component reusable in other situations.</p>
+<h3 id="Authoring_Reusable_Components">Authoring Reusable Components</h3><p>When authoring components, it is good to keep in mind whether you intend to reuse this component somewhere else later. It is OK for one-off components to have some tight coupling with each other, but reusable components should define a clean public interface.</p>
 <p>The API for a Vue.js component essentially comes in three parts - props, events and slots:</p>
 <ul>
 <li><p><strong>Props</strong> allow the external environment to feed data to the component;</p>

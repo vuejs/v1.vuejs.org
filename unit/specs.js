@@ -2375,7 +2375,7 @@
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(4)
+	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
 	var config = __webpack_require__(8)
 	
 	/**
@@ -2515,6 +2515,15 @@
 	    if (!definition) {
 	      return this.options[type + 's'][id]
 	    } else {
+	      /* istanbul ignore if */
+	      if (process.env.NODE_ENV !== 'production') {
+	        if (type === 'component' && _.commonTagRE.test(id)) {
+	          _.warn(
+	            'Do not use built-in HTML elements as component ' +
+	            'id: ' + id
+	          )
+	        }
+	      }
 	      if (
 	        type === 'component' &&
 	        _.isPlainObject(definition)
@@ -2527,7 +2536,8 @@
 	    }
 	  }
 	})
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 17 */
@@ -3980,11 +3990,11 @@
 	    if (inDoc && staggerAmount) {
 	      var op = frag.staggerCb = _.cancellable(function () {
 	        frag.staggerCb = null
-	        frag.remove(true)
+	        frag.remove()
 	      })
 	      setTimeout(op, staggerAmount)
 	    } else {
-	      frag.remove(true)
+	      frag.remove()
 	    }
 	  },
 	
@@ -4412,21 +4422,18 @@
 	
 	/**
 	 * Remove fragment, single node version
-	 *
-	 * @param {Boolean} [destroy]
 	 */
 	
-	function singleRemove (destroy) {
+	function singleRemove () {
 	  this.inserted = false
 	  var shouldCallRemove = _.inDoc(this.node)
 	  var self = this
+	  self.callHook(destroyChild)
 	  transition.remove(this.node, this.vm, function () {
 	    if (shouldCallRemove) {
 	      self.callHook(detach)
 	    }
-	    if (destroy) {
-	      self.destroy()
-	    }
+	    self.destroy()
 	  })
 	}
 	
@@ -4453,21 +4460,18 @@
 	
 	/**
 	 * Remove fragment, multi-nodes version
-	 *
-	 * @param {Boolean} [destroy]
 	 */
 	
-	function multiRemove (destroy) {
+	function multiRemove () {
 	  this.inserted = false
 	  var self = this
 	  var shouldCallRemove = _.inDoc(this.node)
+	  self.callHook(destroyChild)
 	  _.removeNodeRange(this.node, this.end, this.vm, this.frag, function () {
 	    if (shouldCallRemove) {
 	      self.callHook(detach)
 	    }
-	    if (destroy) {
-	      self.destroy()
-	    }
+	    self.destroy()
 	  })
 	}
 	
@@ -4481,6 +4485,20 @@
 	  if (!child._isAttached) {
 	    child._callHook('attached')
 	  }
+	}
+	
+	/**
+	 * Call destroy for all contained instances,
+	 * with remove:false and defer:true.
+	 * Defer is necessary because we need to
+	 * keep the children to call detach hooks
+	 * on them.
+	 *
+	 * @param {Vue} child
+	 */
+	
+	function destroyChild (child) {
+	  child.$destroy(false, true)
 	}
 	
 	/**
@@ -4544,7 +4562,7 @@
 	
 	  insert: function () {
 	    if (this.elseFrag) {
-	      this.elseFrag.remove(true)
+	      this.elseFrag.remove()
 	      this.elseFrag = null
 	    }
 	    this.frag = this.factory.create(this._host, this._scope, this._frag)
@@ -4553,10 +4571,10 @@
 	
 	  remove: function () {
 	    if (this.frag) {
-	      this.frag.remove(true)
+	      this.frag.remove()
 	      this.frag = null
 	    }
-	    if (this.elseFactory) {
+	    if (this.elseFactory && !this.elseFrag) {
 	      this.elseFrag = this.elseFactory.create(this._host, this._scope, this._frag)
 	      this.elseFrag.before(this.anchor)
 	    }
@@ -9385,6 +9403,7 @@
 	
 	exports._destroy = function (remove, deferCleanup) {
 	  if (this._isBeingDestroyed) {
+	    this._cleanup()
 	    return
 	  }
 	  this._callHook('beforeDestroy')
@@ -9403,10 +9422,6 @@
 	        scope.$refs[ref] = null
 	      }
 	    }
-	  }
-	  // remove self from owner fragment
-	  if (this._frag) {
-	    this._frag.children.$remove(this)
 	  }
 	  // destroy all children.
 	  i = this.$children.length
@@ -9448,6 +9463,15 @@
 	 */
 	
 	exports._cleanup = function () {
+	  if (this._isDestroyed) {
+	    return
+	  }
+	  // remove self from owner fragment
+	  // do it in cleanup so that we can call $destroy with
+	  // defer right when a fragment is about to be removed.
+	  if (this._frag) {
+	    this._frag.children.$remove(this)
+	  }
 	  // remove reference from data ob
 	  // frozen object may not have observer.
 	  if (this._data.__ob__) {
