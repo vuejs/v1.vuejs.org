@@ -2766,17 +2766,28 @@
 	    }
 	  } else if (process.env.NODE_ENV !== 'production' && containerAttrs) {
 	    // warn container directives for fragment instances
-	    var names = containerAttrs.map(function (attr) {
-	      return '"' + attr.name + '"'
-	    }).join(', ')
-	    var plural = containerAttrs.length > 1
-	    _.warn(
-	      'Attribute' + (plural ? 's ' : ' ') + names +
-	      (plural ? ' are' : ' is') + ' ignored on component ' +
-	      '<' + options.el.tagName.toLowerCase() + '> because ' +
-	      'the component is a fragment instance: ' +
-	      'http://vuejs.org/guide/components.html#Fragment_Instance'
-	    )
+	    var names = containerAttrs
+	      .filter(function (attr) {
+	        // allow vue-loader/vueify scoped css attributes
+	        return attr.name.indexOf('_v-') < 0 &&
+	          // allow event listeners
+	          !onRE.test(attr.name) &&
+	          // allow slots
+	          attr.name !== 'slot'
+	      })
+	      .map(function (attr) {
+	        return '"' + attr.name + '"'
+	      })
+	    if (names.length) {
+	      var plural = names.length > 1
+	      _.warn(
+	        'Attribute' + (plural ? 's ' : ' ') + names.join(', ') +
+	        (plural ? ' are' : ' is') + ' ignored on component ' +
+	        '<' + options.el.tagName.toLowerCase() + '> because ' +
+	        'the component is a fragment instance: ' +
+	        'http://vuejs.org/guide/components.html#Fragment_Instance'
+	      )
+	    }
 	  }
 	
 	  return function rootLinkFn (vm, el, scope) {
@@ -3037,8 +3048,10 @@
 	function checkComponent (el, options) {
 	  var component = _.checkComponent(el, options)
 	  if (component) {
+	    var ref = _.findRef(el)
 	    var descriptor = {
 	      name: 'component',
+	      ref: ref,
 	      expression: component.id,
 	      def: internalDirectives.component,
 	      modifiers: {
@@ -3046,6 +3059,9 @@
 	      }
 	    }
 	    var componentLinkFn = function (vm, el, host, scope, frag) {
+	      if (ref) {
+	        _.defineReactive((scope || vm).$refs, ref, null)
+	      }
 	      vm._bindDir(descriptor, el, host, scope, frag)
 	    }
 	    componentLinkFn.terminal = true
@@ -3112,7 +3128,14 @@
 	    // either an element directive, or if/for
 	    def: def || publicDirectives[dirName]
 	  }
+	  // check ref for v-for
+	  if (dirName === 'for') {
+	    descriptor.ref = _.findRef(el)
+	  }
 	  var fn = function terminalNodeLinkFn (vm, el, host, scope, frag) {
+	    if (descriptor.ref) {
+	      _.defineReactive((scope || vm).$refs, descriptor.ref, null)
+	    }
 	    vm._bindDir(descriptor, el, host, scope, frag)
 	  }
 	  fn.terminal = true
@@ -3720,9 +3743,6 @@
 	    _.replace(this.el, this.end)
 	    _.before(this.start, this.end)
 	
-	    // check ref
-	    this.ref = _.findRef(this.el)
-	
 	    // cache
 	    this.cache = Object.create(null)
 	
@@ -3896,7 +3916,7 @@
 	   */
 	
 	  updateRef: function () {
-	    var ref = this.ref
+	    var ref = this.descriptor.ref
 	    if (!ref) return
 	    var hash = (this._scope || this.vm).$refs
 	    var refs
@@ -3908,11 +3928,7 @@
 	        refs[frag.scope.$key] = findVmFromFrag(frag)
 	      })
 	    }
-	    if (!hash.hasOwnProperty(ref)) {
-	      _.defineReactive(hash, ref, refs)
-	    } else {
-	      hash[ref] = refs
-	    }
+	    hash[ref] = refs
 	  },
 	
 	  /**
@@ -4178,8 +4194,8 @@
 	  },
 	
 	  unbind: function () {
-	    if (this.ref) {
-	      (this._scope || this.vm).$refs[this.ref] = null
+	    if (this.descriptor.ref) {
+	      (this._scope || this.vm).$refs[this.descriptor.ref] = null
 	    }
 	    if (this.frags) {
 	      var i = this.frags.length
@@ -5629,12 +5645,6 @@
 	
 	  bind: function () {
 	    if (!this.el.__vue__) {
-	      // check ref
-	      this.ref = _.findRef(this.el)
-	      var refs = (this._scope || this.vm).$refs
-	      if (this.ref && !refs.hasOwnProperty(this.ref)) {
-	        _.defineReactive(refs, this.ref, null)
-	      }
 	      // keep-alive cache
 	      this.keepAlive = this.params.keepAlive
 	      if (this.keepAlive) {
@@ -5788,7 +5798,7 @@
 	        // if no inline-template, then the compiled
 	        // linker can be cached for better performance.
 	        _linkerCachable: !this.inlineTemplate,
-	        _ref: this.ref,
+	        _ref: this.descriptor.ref,
 	        _asComponent: true,
 	        _isRouterView: this._isRouterView,
 	        // if this is a transcluded component, context
@@ -17981,7 +17991,10 @@
 	      var vm = new Vue({
 	        el: el,
 	        data: { view: 'one' },
-	        template: '{{$refs.test.value}}<component :is="view" v-ref:test></component>',
+	        template:
+	          '{{$refs.test.value}}' +
+	          '<component :is="view" v-ref:test></component>' +
+	          '<div v-if="$refs.test.value > 1">ok</div>',
 	        components: {
 	          one: {
 	            id: 'one',
@@ -18004,7 +18017,7 @@
 	      vm.view = 'two'
 	      _.nextTick(function () {
 	        expect(vm.$refs.test.$options.id).toBe('two')
-	        expect(el.textContent).toBe('2')
+	        expect(el.textContent).toBe('2ok')
 	        vm.view = ''
 	        _.nextTick(function () {
 	          expect(vm.$refs.test).toBeNull()
