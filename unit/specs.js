@@ -3217,10 +3217,6 @@
 	      }
 	
 	      if (dirDef) {
-	        if (_.isLiteral(value)) {
-	          value = _.stripQuotes(value)
-	          modifiers.literal = true
-	        }
 	        pushDir(dirName, dirDef)
 	      }
 	    }
@@ -4183,11 +4179,8 @@
 	      }
 	      return res
 	    } else {
-	      var type = typeof value
-	      if (type === 'number') {
+	      if (typeof value === 'number') {
 	        value = range(value)
-	      } else if (type === 'string') {
-	        value = _.toArray(value)
 	      }
 	      return value || []
 	    }
@@ -5754,6 +5747,10 @@
 	        self.transition(newComponent, cb)
 	      })
 	    } else {
+	      // update ref for kept-alive component
+	      if (cached) {
+	        newComponent._updateRef()
+	      }
 	      this.transition(newComponent, cb)
 	    }
 	  },
@@ -5863,6 +5860,10 @@
 	    }
 	    var child = this.childVM
 	    if (!child || this.keepAlive) {
+	      if (child) {
+	        // remove ref
+	        child._updateRef(true)
+	      }
 	      return
 	    }
 	    // the sole purpose of `deferCleanup` is so that we can
@@ -5992,7 +5993,9 @@
 	        filters: prop.filters,
 	        // important: props need to be observed on the
 	        // v-for scope if present
-	        scope: this._scope
+	        scope: this._scope,
+	        // only fire callback when reference has changed
+	        refOnly: true
 	      }
 	    )
 	
@@ -6010,6 +6013,8 @@
 	          childKey,
 	          function (val) {
 	            parentWatcher.set(val)
+	          }, {
+	            refOnly: true
 	          }
 	        )
 	      })
@@ -6051,6 +6056,7 @@
 	 *                 - {Boolean} user
 	 *                 - {Boolean} sync
 	 *                 - {Boolean} lazy
+	 *                 - {Boolean} refOnly
 	 *                 - {Function} [preProcess]
 	 *                 - {Function} [postProcess]
 	 * @constructor
@@ -6210,6 +6216,7 @@
 	
 	Watcher.prototype.beforeGet = function () {
 	  Dep.target = this
+	  Dep.refOnly = !!this.refOnly
 	  this.newDeps = Object.create(null)
 	}
 	
@@ -6219,6 +6226,7 @@
 	
 	Watcher.prototype.afterGet = function () {
 	  Dep.target = null
+	  Dep.refOnly = false
 	  var ids = Object.keys(this.deps)
 	  var i = ids.length
 	  while (i--) {
@@ -7801,8 +7809,10 @@
 	        }
 	      } else if (prop.optimizedLiteral) {
 	        // optimized literal, cast it and just set once
-	        raw = _.stripQuotes(raw)
-	        value = _.toBoolean(_.toNumber(raw))
+	        var stripped = _.stripQuotes(raw)
+	        value = stripped === raw
+	          ? _.toBoolean(_.toNumber(raw))
+	          : stripped
 	        _.initProp(vm, prop, value)
 	      } else {
 	        // string literal, but we need to cater for
@@ -8523,17 +8533,15 @@
 	    this.$parent.$children.push(this)
 	  }
 	
-	  // set ref
-	  if (options._ref) {
-	    (this._scope || this._context).$refs[options._ref] = this
-	  }
-	
 	  // merge options.
 	  options = this.$options = mergeOptions(
 	    this.constructor.options,
 	    options,
 	    this
 	  )
+	
+	  // set ref
+	  this._updateRef()
 	
 	  // initialize data as empty object.
 	  // it will be filled up in _initScope().
@@ -9161,13 +9169,15 @@
 	    get: function metaGetter () {
 	      if (Dep.target) {
 	        dep.depend()
-	        if (childOb) {
-	          childOb.dep.depend()
-	        }
-	        if (_.isArray(val)) {
-	          for (var e, i = 0, l = val.length; i < l; i++) {
-	            e = val[i]
-	            e && e.__ob__ && e.__ob__.dep.depend()
+	        if (!Dep.refOnly) {
+	          if (childOb) {
+	            childOb.dep.depend()
+	          }
+	          if (_.isArray(val)) {
+	            for (var e, i = 0, l = val.length; i < l; i++) {
+	              e = val[i]
+	              e && e.__ob__ && e.__ob__.dep.depend()
+	            }
 	          }
 	        }
 	      }
@@ -9293,6 +9303,26 @@
 	var compiler = __webpack_require__(17)
 	
 	/**
+	 * Update v-ref for component.
+	 *
+	 * @param {Boolean} remove
+	 */
+	
+	exports._updateRef = function (remove) {
+	  var ref = this.$options._ref
+	  if (ref) {
+	    var refs = (this._scope || this._context).$refs
+	    if (remove) {
+	      if (refs[ref] === this) {
+	        refs[ref] = null
+	      }
+	    } else {
+	      refs[ref] = this
+	    }
+	  }
+	}
+	
+	/**
 	 * Transclude, compile and link element.
 	 *
 	 * If a pre-compiled linker is available, that means the
@@ -9413,7 +9443,9 @@
 	
 	exports._destroy = function (remove, deferCleanup) {
 	  if (this._isBeingDestroyed) {
-	    this._cleanup()
+	    if (!deferCleanup) {
+	      this._cleanup()
+	    }
 	    return
 	  }
 	  this._callHook('beforeDestroy')
@@ -9424,14 +9456,8 @@
 	  var parent = this.$parent
 	  if (parent && !parent._isBeingDestroyed) {
 	    parent.$children.$remove(this)
-	    // unregister ref
-	    var ref = this.$options._ref
-	    if (ref) {
-	      var scope = this._scope || this._context
-	      if (scope.$refs[ref] === this) {
-	        scope.$refs[ref] = null
-	      }
-	    }
+	    // unregister ref (remove: true)
+	    this._updateRef(true)
 	  }
 	  // destroy all children.
 	  i = this.$children.length
@@ -12082,7 +12108,6 @@
 	      expect(args[0].name).toBe('b')
 	      expect(args[0].expression).toBe('1')
 	      expect(args[0].def).toBe(defB)
-	      expect(args[0].modifiers.literal).toBe(true)
 	      expect(args[1]).toBe(el.firstChild)
 	      // 4 (explicit literal)
 	      args = vm._bindDir.calls.argsFor(3)
@@ -12237,12 +12262,14 @@
 	        testTwoWay: null,
 	        twoWayWarn: null,
 	        testOneTime: null,
-	        optimizeLiteral: null
+	        optimizeLiteral: null,
+	        optimizeLiteralStr: null
 	      }
 	      el.innerHTML = '<div ' +
 	        'v-bind:test-normal="a" ' +
 	        'test-literal="1" ' +
 	        ':optimize-literal="1" ' +
+	        ':optimize-literal-str="\'true\'"' +
 	        ':test-two-way.sync="a" ' +
 	        ':two-way-warn.sync="a + 1" ' +
 	        ':test-one-time.once="a"></div>'
@@ -12253,6 +12280,8 @@
 	      expect(vm._data.testLiteral).toBe('1')
 	      expect(vm.optimizeLiteral).toBe(1)
 	      expect(vm._data.optimizeLiteral).toBe(1)
+	      expect(vm.optimizeLiteralStr).toBe('true')
+	      expect(vm._data.optimizeLiteralStr).toBe('true')
 	      // one time
 	      expect(vm.testOneTime).toBe('from parent: a')
 	      expect(vm._data.testOneTime).toBe('from parent: a')
@@ -14534,6 +14563,30 @@
 	        }
 	      })
 	      expect(_.warn).not.toHaveBeenCalled()
+	    })
+	
+	    // #1683
+	    it('should only trigger sync on reference change', function (done) {
+	      var vm = new Vue({
+	        el: el,
+	        data: {
+	          items: [1, 2]
+	        },
+	        template: '<comp :items.sync="items"></comp>',
+	        components: {
+	          comp: {
+	            props: ['items']
+	          }
+	        }
+	      })
+	      var child = vm.$children[0]
+	      child.items.push(3) // this should not trigger parent to sync it down
+	      var newArray = child.items = [4]
+	      _.nextTick(function () {
+	        expect(child.items).toBe(newArray)
+	        expect(vm.items).toBe(newArray)
+	        done()
+	      })
 	    })
 	  })
 	}
@@ -17987,6 +18040,25 @@
 	      })
 	    })
 	
+	    it('with dynamic component + keep-alive', function (done) {
+	      var vm = new Vue({
+	        el: el,
+	        components: components,
+	        data: { test: 'test' },
+	        template: '<component :is="test" v-ref:test keep-alive></component>'
+	      })
+	      expect(vm.$refs.test.$options.id).toBe('test')
+	      vm.test = 'test2'
+	      _.nextTick(function () {
+	        expect(vm.$refs.test.$options.id).toBe('test2')
+	        vm.test = ''
+	        _.nextTick(function () {
+	          expect(vm.$refs.test).toBe(null)
+	          done()
+	        })
+	      })
+	    })
+	
 	    it('should be reactive when bound by dynamic component and hoisted', function (done) {
 	      var vm = new Vue({
 	        el: el,
@@ -18732,6 +18804,7 @@
 	    constructor: {
 	      options: { a: 1, b: 2 }
 	    },
+	    _updateRef: jasmine.createSpy(),
 	    _initEvents: jasmine.createSpy(),
 	    _callHook: jasmine.createSpy(),
 	    _initState: jasmine.createSpy(),
@@ -18764,6 +18837,7 @@
 	  it('should call other init methods', function () {
 	    expect(stub._initEvents).toHaveBeenCalled()
 	    expect(stub._initState).toHaveBeenCalled()
+	    expect(stub._updateRef).toHaveBeenCalled()
 	  })
 	
 	  it('should call created hook', function () {
