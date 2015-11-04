@@ -2375,7 +2375,7 @@
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var _ = __webpack_require__(4)
+	var _ = __webpack_require__(4)
 	var config = __webpack_require__(8)
 	
 	/**
@@ -2515,15 +2515,6 @@
 	    if (!definition) {
 	      return this.options[type + 's'][id]
 	    } else {
-	      /* istanbul ignore if */
-	      if (process.env.NODE_ENV !== 'production') {
-	        if (type === 'component' && _.commonTagRE.test(id)) {
-	          _.warn(
-	            'Do not use built-in HTML elements as component ' +
-	            'id: ' + id
-	          )
-	        }
-	      }
 	      if (
 	        type === 'component' &&
 	        _.isPlainObject(definition)
@@ -2536,8 +2527,7 @@
 	    }
 	  }
 	})
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+
 
 /***/ },
 /* 17 */
@@ -2766,28 +2756,17 @@
 	    }
 	  } else if (process.env.NODE_ENV !== 'production' && containerAttrs) {
 	    // warn container directives for fragment instances
-	    var names = containerAttrs
-	      .filter(function (attr) {
-	        // allow vue-loader/vueify scoped css attributes
-	        return attr.name.indexOf('_v-') < 0 &&
-	          // allow event listeners
-	          !onRE.test(attr.name) &&
-	          // allow slots
-	          attr.name !== 'slot'
-	      })
-	      .map(function (attr) {
-	        return '"' + attr.name + '"'
-	      })
-	    if (names.length) {
-	      var plural = names.length > 1
-	      _.warn(
-	        'Attribute' + (plural ? 's ' : ' ') + names.join(', ') +
-	        (plural ? ' are' : ' is') + ' ignored on component ' +
-	        '<' + options.el.tagName.toLowerCase() + '> because ' +
-	        'the component is a fragment instance: ' +
-	        'http://vuejs.org/guide/components.html#Fragment_Instance'
-	      )
-	    }
+	    var names = containerAttrs.map(function (attr) {
+	      return '"' + attr.name + '"'
+	    }).join(', ')
+	    var plural = containerAttrs.length > 1
+	    _.warn(
+	      'Attribute' + (plural ? 's ' : ' ') + names +
+	      (plural ? ' are' : ' is') + ' ignored on component ' +
+	      '<' + options.el.tagName.toLowerCase() + '> because ' +
+	      'the component is a fragment instance: ' +
+	      'http://vuejs.org/guide/components.html#Fragment_Instance'
+	    )
 	  }
 	
 	  return function rootLinkFn (vm, el, scope) {
@@ -3048,10 +3027,8 @@
 	function checkComponent (el, options) {
 	  var component = _.checkComponent(el, options)
 	  if (component) {
-	    var ref = _.findRef(el)
 	    var descriptor = {
 	      name: 'component',
-	      ref: ref,
 	      expression: component.id,
 	      def: internalDirectives.component,
 	      modifiers: {
@@ -3059,9 +3036,6 @@
 	      }
 	    }
 	    var componentLinkFn = function (vm, el, host, scope, frag) {
-	      if (ref) {
-	        _.defineReactive((scope || vm).$refs, ref, null)
-	      }
 	      vm._bindDir(descriptor, el, host, scope, frag)
 	    }
 	    componentLinkFn.terminal = true
@@ -3128,14 +3102,7 @@
 	    // either an element directive, or if/for
 	    def: def || publicDirectives[dirName]
 	  }
-	  // check ref for v-for
-	  if (dirName === 'for') {
-	    descriptor.ref = _.findRef(el)
-	  }
 	  var fn = function terminalNodeLinkFn (vm, el, host, scope, frag) {
-	    if (descriptor.ref) {
-	      _.defineReactive((scope || vm).$refs, descriptor.ref, null)
-	    }
 	    vm._bindDir(descriptor, el, host, scope, frag)
 	  }
 	  fn.terminal = true
@@ -3217,6 +3184,10 @@
 	      }
 	
 	      if (dirDef) {
+	        if (_.isLiteral(value)) {
+	          value = _.stripQuotes(value)
+	          modifiers.literal = true
+	        }
 	        pushDir(dirName, dirDef)
 	      }
 	    }
@@ -3739,6 +3710,9 @@
 	    _.replace(this.el, this.end)
 	    _.before(this.start, this.end)
 	
+	    // check ref
+	    this.ref = _.findRef(this.el)
+	
 	    // cache
 	    this.cache = Object.create(null)
 	
@@ -3912,7 +3886,7 @@
 	   */
 	
 	  updateRef: function () {
-	    var ref = this.descriptor.ref
+	    var ref = this.ref
 	    if (!ref) return
 	    var hash = (this._scope || this.vm).$refs
 	    var refs
@@ -3924,7 +3898,11 @@
 	        refs[frag.scope.$key] = findVmFromFrag(frag)
 	      })
 	    }
-	    hash[ref] = refs
+	    if (!hash.hasOwnProperty(ref)) {
+	      _.defineReactive(hash, ref, refs)
+	    } else {
+	      hash[ref] = refs
+	    }
 	  },
 	
 	  /**
@@ -4002,11 +3980,11 @@
 	    if (inDoc && staggerAmount) {
 	      var op = frag.staggerCb = _.cancellable(function () {
 	        frag.staggerCb = null
-	        frag.remove()
+	        frag.remove(true)
 	      })
 	      setTimeout(op, staggerAmount)
 	    } else {
-	      frag.remove()
+	      frag.remove(true)
 	    }
 	  },
 	
@@ -4179,16 +4157,19 @@
 	      }
 	      return res
 	    } else {
-	      if (typeof value === 'number') {
+	      var type = typeof value
+	      if (type === 'number') {
 	        value = range(value)
+	      } else if (type === 'string') {
+	        value = _.toArray(value)
 	      }
 	      return value || []
 	    }
 	  },
 	
 	  unbind: function () {
-	    if (this.descriptor.ref) {
-	      (this._scope || this.vm).$refs[this.descriptor.ref] = null
+	    if (this.ref) {
+	      (this._scope || this.vm).$refs[this.ref] = null
 	    }
 	    if (this.frags) {
 	      var i = this.frags.length
@@ -4431,18 +4412,21 @@
 	
 	/**
 	 * Remove fragment, single node version
+	 *
+	 * @param {Boolean} [destroy]
 	 */
 	
-	function singleRemove () {
+	function singleRemove (destroy) {
 	  this.inserted = false
 	  var shouldCallRemove = _.inDoc(this.node)
 	  var self = this
-	  self.callHook(destroyChild)
 	  transition.remove(this.node, this.vm, function () {
 	    if (shouldCallRemove) {
 	      self.callHook(detach)
 	    }
-	    self.destroy()
+	    if (destroy) {
+	      self.destroy()
+	    }
 	  })
 	}
 	
@@ -4469,18 +4453,21 @@
 	
 	/**
 	 * Remove fragment, multi-nodes version
+	 *
+	 * @param {Boolean} [destroy]
 	 */
 	
-	function multiRemove () {
+	function multiRemove (destroy) {
 	  this.inserted = false
 	  var self = this
 	  var shouldCallRemove = _.inDoc(this.node)
-	  self.callHook(destroyChild)
 	  _.removeNodeRange(this.node, this.end, this.vm, this.frag, function () {
 	    if (shouldCallRemove) {
 	      self.callHook(detach)
 	    }
-	    self.destroy()
+	    if (destroy) {
+	      self.destroy()
+	    }
 	  })
 	}
 	
@@ -4494,20 +4481,6 @@
 	  if (!child._isAttached) {
 	    child._callHook('attached')
 	  }
-	}
-	
-	/**
-	 * Call destroy for all contained instances,
-	 * with remove:false and defer:true.
-	 * Defer is necessary because we need to
-	 * keep the children to call detach hooks
-	 * on them.
-	 *
-	 * @param {Vue} child
-	 */
-	
-	function destroyChild (child) {
-	  child.$destroy(false, true)
 	}
 	
 	/**
@@ -4571,7 +4544,7 @@
 	
 	  insert: function () {
 	    if (this.elseFrag) {
-	      this.elseFrag.remove()
+	      this.elseFrag.remove(true)
 	      this.elseFrag = null
 	    }
 	    this.frag = this.factory.create(this._host, this._scope, this._frag)
@@ -4580,10 +4553,10 @@
 	
 	  remove: function () {
 	    if (this.frag) {
-	      this.frag.remove()
+	      this.frag.remove(true)
 	      this.frag = null
 	    }
-	    if (this.elseFactory && !this.elseFrag) {
+	    if (this.elseFactory) {
 	      this.elseFrag = this.elseFactory.create(this._host, this._scope, this._frag)
 	      this.elseFrag.before(this.anchor)
 	    }
@@ -5638,6 +5611,12 @@
 	
 	  bind: function () {
 	    if (!this.el.__vue__) {
+	      // check ref
+	      this.ref = _.findRef(this.el)
+	      var refs = (this._scope || this.vm).$refs
+	      if (this.ref && !refs.hasOwnProperty(this.ref)) {
+	        _.defineReactive(refs, this.ref, null)
+	      }
 	      // keep-alive cache
 	      this.keepAlive = this.params.keepAlive
 	      if (this.keepAlive) {
@@ -5747,10 +5726,6 @@
 	        self.transition(newComponent, cb)
 	      })
 	    } else {
-	      // update ref for kept-alive component
-	      if (cached) {
-	        newComponent._updateRef()
-	      }
 	      this.transition(newComponent, cb)
 	    }
 	  },
@@ -5795,7 +5770,7 @@
 	        // if no inline-template, then the compiled
 	        // linker can be cached for better performance.
 	        _linkerCachable: !this.inlineTemplate,
-	        _ref: this.descriptor.ref,
+	        _ref: this.ref,
 	        _asComponent: true,
 	        _isRouterView: this._isRouterView,
 	        // if this is a transcluded component, context
@@ -5860,10 +5835,6 @@
 	    }
 	    var child = this.childVM
 	    if (!child || this.keepAlive) {
-	      if (child) {
-	        // remove ref
-	        child._updateRef(true)
-	      }
 	      return
 	    }
 	    // the sole purpose of `deferCleanup` is so that we can
@@ -5993,9 +5964,7 @@
 	        filters: prop.filters,
 	        // important: props need to be observed on the
 	        // v-for scope if present
-	        scope: this._scope,
-	        // only fire callback when reference has changed
-	        refOnly: true
+	        scope: this._scope
 	      }
 	    )
 	
@@ -6013,8 +5982,6 @@
 	          childKey,
 	          function (val) {
 	            parentWatcher.set(val)
-	          }, {
-	            refOnly: true
 	          }
 	        )
 	      })
@@ -6056,7 +6023,6 @@
 	 *                 - {Boolean} user
 	 *                 - {Boolean} sync
 	 *                 - {Boolean} lazy
-	 *                 - {Boolean} refOnly
 	 *                 - {Function} [preProcess]
 	 *                 - {Function} [postProcess]
 	 * @constructor
@@ -6216,7 +6182,6 @@
 	
 	Watcher.prototype.beforeGet = function () {
 	  Dep.target = this
-	  Dep.refOnly = !!this.refOnly
 	  this.newDeps = Object.create(null)
 	}
 	
@@ -6226,7 +6191,6 @@
 	
 	Watcher.prototype.afterGet = function () {
 	  Dep.target = null
-	  Dep.refOnly = false
 	  var ids = Object.keys(this.deps)
 	  var i = ids.length
 	  while (i--) {
@@ -7809,10 +7773,8 @@
 	        }
 	      } else if (prop.optimizedLiteral) {
 	        // optimized literal, cast it and just set once
-	        var stripped = _.stripQuotes(raw)
-	        value = stripped === raw
-	          ? _.toBoolean(_.toNumber(raw))
-	          : stripped
+	        raw = _.stripQuotes(raw)
+	        value = _.toBoolean(_.toNumber(raw))
 	        _.initProp(vm, prop, value)
 	      } else {
 	        // string literal, but we need to cater for
@@ -8533,15 +8495,17 @@
 	    this.$parent.$children.push(this)
 	  }
 	
+	  // set ref
+	  if (options._ref) {
+	    (this._scope || this._context).$refs[options._ref] = this
+	  }
+	
 	  // merge options.
 	  options = this.$options = mergeOptions(
 	    this.constructor.options,
 	    options,
 	    this
 	  )
-	
-	  // set ref
-	  this._updateRef()
 	
 	  // initialize data as empty object.
 	  // it will be filled up in _initScope().
@@ -9169,15 +9133,13 @@
 	    get: function metaGetter () {
 	      if (Dep.target) {
 	        dep.depend()
-	        if (!Dep.refOnly) {
-	          if (childOb) {
-	            childOb.dep.depend()
-	          }
-	          if (_.isArray(val)) {
-	            for (var e, i = 0, l = val.length; i < l; i++) {
-	              e = val[i]
-	              e && e.__ob__ && e.__ob__.dep.depend()
-	            }
+	        if (childOb) {
+	          childOb.dep.depend()
+	        }
+	        if (_.isArray(val)) {
+	          for (var e, i = 0, l = val.length; i < l; i++) {
+	            e = val[i]
+	            e && e.__ob__ && e.__ob__.dep.depend()
 	          }
 	        }
 	      }
@@ -9303,26 +9265,6 @@
 	var compiler = __webpack_require__(17)
 	
 	/**
-	 * Update v-ref for component.
-	 *
-	 * @param {Boolean} remove
-	 */
-	
-	exports._updateRef = function (remove) {
-	  var ref = this.$options._ref
-	  if (ref) {
-	    var refs = (this._scope || this._context).$refs
-	    if (remove) {
-	      if (refs[ref] === this) {
-	        refs[ref] = null
-	      }
-	    } else {
-	      refs[ref] = this
-	    }
-	  }
-	}
-	
-	/**
 	 * Transclude, compile and link element.
 	 *
 	 * If a pre-compiled linker is available, that means the
@@ -9443,9 +9385,6 @@
 	
 	exports._destroy = function (remove, deferCleanup) {
 	  if (this._isBeingDestroyed) {
-	    if (!deferCleanup) {
-	      this._cleanup()
-	    }
 	    return
 	  }
 	  this._callHook('beforeDestroy')
@@ -9456,8 +9395,18 @@
 	  var parent = this.$parent
 	  if (parent && !parent._isBeingDestroyed) {
 	    parent.$children.$remove(this)
-	    // unregister ref (remove: true)
-	    this._updateRef(true)
+	    // unregister ref
+	    var ref = this.$options._ref
+	    if (ref) {
+	      var scope = this._scope || this._context
+	      if (scope.$refs[ref] === this) {
+	        scope.$refs[ref] = null
+	      }
+	    }
+	  }
+	  // remove self from owner fragment
+	  if (this._frag) {
+	    this._frag.children.$remove(this)
 	  }
 	  // destroy all children.
 	  i = this.$children.length
@@ -9499,15 +9448,6 @@
 	 */
 	
 	exports._cleanup = function () {
-	  if (this._isDestroyed) {
-	    return
-	  }
-	  // remove self from owner fragment
-	  // do it in cleanup so that we can call $destroy with
-	  // defer right when a fragment is about to be removed.
-	  if (this._frag) {
-	    this._frag.children.$remove(this)
-	  }
 	  // remove reference from data ob
 	  // frozen object may not have observer.
 	  if (this._data.__ob__) {
@@ -12108,6 +12048,7 @@
 	      expect(args[0].name).toBe('b')
 	      expect(args[0].expression).toBe('1')
 	      expect(args[0].def).toBe(defB)
+	      expect(args[0].modifiers.literal).toBe(true)
 	      expect(args[1]).toBe(el.firstChild)
 	      // 4 (explicit literal)
 	      args = vm._bindDir.calls.argsFor(3)
@@ -12262,14 +12203,12 @@
 	        testTwoWay: null,
 	        twoWayWarn: null,
 	        testOneTime: null,
-	        optimizeLiteral: null,
-	        optimizeLiteralStr: null
+	        optimizeLiteral: null
 	      }
 	      el.innerHTML = '<div ' +
 	        'v-bind:test-normal="a" ' +
 	        'test-literal="1" ' +
 	        ':optimize-literal="1" ' +
-	        ':optimize-literal-str="\'true\'"' +
 	        ':test-two-way.sync="a" ' +
 	        ':two-way-warn.sync="a + 1" ' +
 	        ':test-one-time.once="a"></div>'
@@ -12280,8 +12219,6 @@
 	      expect(vm._data.testLiteral).toBe('1')
 	      expect(vm.optimizeLiteral).toBe(1)
 	      expect(vm._data.optimizeLiteral).toBe(1)
-	      expect(vm.optimizeLiteralStr).toBe('true')
-	      expect(vm._data.optimizeLiteralStr).toBe('true')
 	      // one time
 	      expect(vm.testOneTime).toBe('from parent: a')
 	      expect(vm._data.testOneTime).toBe('from parent: a')
@@ -14563,30 +14500,6 @@
 	        }
 	      })
 	      expect(_.warn).not.toHaveBeenCalled()
-	    })
-	
-	    // #1683
-	    it('should only trigger sync on reference change', function (done) {
-	      var vm = new Vue({
-	        el: el,
-	        data: {
-	          items: [1, 2]
-	        },
-	        template: '<comp :items.sync="items"></comp>',
-	        components: {
-	          comp: {
-	            props: ['items']
-	          }
-	        }
-	      })
-	      var child = vm.$children[0]
-	      child.items.push(3) // this should not trigger parent to sync it down
-	      var newArray = child.items = [4]
-	      _.nextTick(function () {
-	        expect(child.items).toBe(newArray)
-	        expect(vm.items).toBe(newArray)
-	        done()
-	      })
 	    })
 	  })
 	}
@@ -18040,33 +17953,11 @@
 	      })
 	    })
 	
-	    it('with dynamic component + keep-alive', function (done) {
-	      var vm = new Vue({
-	        el: el,
-	        components: components,
-	        data: { test: 'test' },
-	        template: '<component :is="test" v-ref:test keep-alive></component>'
-	      })
-	      expect(vm.$refs.test.$options.id).toBe('test')
-	      vm.test = 'test2'
-	      _.nextTick(function () {
-	        expect(vm.$refs.test.$options.id).toBe('test2')
-	        vm.test = ''
-	        _.nextTick(function () {
-	          expect(vm.$refs.test).toBe(null)
-	          done()
-	        })
-	      })
-	    })
-	
 	    it('should be reactive when bound by dynamic component and hoisted', function (done) {
 	      var vm = new Vue({
 	        el: el,
 	        data: { view: 'one' },
-	        template:
-	          '{{$refs.test.value}}' +
-	          '<component :is="view" v-ref:test></component>' +
-	          '<div v-if="$refs.test.value > 1">ok</div>',
+	        template: '{{$refs.test.value}}<component :is="view" v-ref:test></component>',
 	        components: {
 	          one: {
 	            id: 'one',
@@ -18089,7 +17980,7 @@
 	      vm.view = 'two'
 	      _.nextTick(function () {
 	        expect(vm.$refs.test.$options.id).toBe('two')
-	        expect(el.textContent).toBe('2ok')
+	        expect(el.textContent).toBe('2')
 	        vm.view = ''
 	        _.nextTick(function () {
 	          expect(vm.$refs.test).toBeNull()
@@ -18804,7 +18695,6 @@
 	    constructor: {
 	      options: { a: 1, b: 2 }
 	    },
-	    _updateRef: jasmine.createSpy(),
 	    _initEvents: jasmine.createSpy(),
 	    _callHook: jasmine.createSpy(),
 	    _initState: jasmine.createSpy(),
@@ -18837,7 +18727,6 @@
 	  it('should call other init methods', function () {
 	    expect(stub._initEvents).toHaveBeenCalled()
 	    expect(stub._initState).toHaveBeenCalled()
-	    expect(stub._updateRef).toHaveBeenCalled()
 	  })
 	
 	  it('should call created hook', function () {
