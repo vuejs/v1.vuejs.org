@@ -1367,11 +1367,12 @@
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{Number} limit</code></li>
+<li><code>{Number} [offset]</code></li>
 </ul>
 </li>
 <li><p><strong>Usage:</strong></p>
-<p>Limit the array to the first N items, as specified by the argument.</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- only display first 10 items --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-for</span>=<span class="value">"item in items | limitBy 10"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Limit the array to the first N items, as specified by the argument. An optional second argument can be provided to set a starting offset.</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- only display first 10 items --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-for</span>=<span class="value">"item in items | limitBy 10"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- display items 5 to 15 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-for</span>=<span class="value">"item in items | limitBy 10 5"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="filterBy">filterBy</h3><ul>
