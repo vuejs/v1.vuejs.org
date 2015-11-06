@@ -200,7 +200,7 @@
 	extend(p, __webpack_require__(68))
 	extend(p, __webpack_require__(69))
 	
-	Vue.version = '1.0.6'
+	Vue.version = '1.0.7'
 	module.exports = _.Vue = Vue
 	
 	/* istanbul ignore if */
@@ -3128,8 +3128,8 @@
 	    // either an element directive, or if/for
 	    def: def || publicDirectives[dirName]
 	  }
-	  // check ref for v-for
-	  if (dirName === 'for') {
+	  // check ref for v-for and router-view
+	  if (dirName === 'for' || dirName === 'router-view') {
 	    descriptor.ref = _.findRef(el)
 	  }
 	  var fn = function terminalNodeLinkFn (vm, el, host, scope, frag) {
@@ -5671,10 +5671,11 @@
 	      // transition related state
 	      this.pendingRemovals = 0
 	      this.pendingRemovalCb = null
-	      // check dynamic component params
-	        // create a ref anchor
+	      // create a ref anchor
 	      this.anchor = _.createAnchor('v-component')
 	      _.replace(this.el, this.anchor)
+	      // remove is attribute
+	      this.el.removeAttribute('is')
 	      // if static, build right now.
 	      if (this.literal) {
 	        this.setComponent(this.expression)
@@ -7756,9 +7757,7 @@
 	          'Prop "' + name + '" expects a two-way binding type.'
 	        )
 	      }
-	    /* eslint-disable no-cond-assign */
-	    } else if (value = _.attr(el, attr)) {
-	    /* eslint-enable no-cond-assign */
+	    } else if ((value = _.attr(el, attr)) !== null) {
 	      // has literal binding!
 	      prop.raw = value
 	    } else if (options.required) {
@@ -12269,6 +12268,7 @@
 	      var props = {
 	        testNormal: null,
 	        testLiteral: null,
+	        testBoolean: { type: Boolean },
 	        testTwoWay: null,
 	        twoWayWarn: null,
 	        testOneTime: null,
@@ -12278,6 +12278,7 @@
 	      el.innerHTML = '<div ' +
 	        'v-bind:test-normal="a" ' +
 	        'test-literal="1" ' +
+	        'test-boolean ' +
 	        ':optimize-literal="1" ' +
 	        ':optimize-literal-str="\'true\'"' +
 	        ':test-two-way.sync="a" ' +
@@ -12288,6 +12289,8 @@
 	      // literal
 	      expect(vm.testLiteral).toBe('1')
 	      expect(vm._data.testLiteral).toBe('1')
+	      expect(vm.testBoolean).toBe(true)
+	      expect(vm._data.testBoolean).toBe(true)
 	      expect(vm.optimizeLiteral).toBe(1)
 	      expect(vm._data.optimizeLiteral).toBe(1)
 	      expect(vm.optimizeLiteralStr).toBe('true')
@@ -14608,6 +14611,23 @@
 	        expect(vm.items).toBe(newArray)
 	        done()
 	      })
+	    })
+	
+	    it('treat boolean props properly', function () {
+	      var vm = new Vue({
+	        el: el,
+	        template: '<comp v-ref:child prop-a></comp>',
+	        components: {
+	          comp: {
+	            props: {
+	              propA: Boolean,
+	              propB: Boolean
+	            }
+	          }
+	        }
+	      })
+	      expect(vm.$refs.child.propA).toBe(true)
+	      expect(vm.$refs.child.propB).toBe(false)
 	    })
 	  })
 	}
