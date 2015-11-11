@@ -1102,9 +1102,11 @@
 	 */
 	
 	exports.createAnchor = function (content, persist) {
-	  return config.debug
+	  var anchor = config.debug
 	    ? document.createComment(content)
 	    : document.createTextNode(persist ? ' ' : '')
+	  anchor.__vue_anchor = true
+	  return anchor
 	}
 	
 	/**
@@ -1215,6 +1217,14 @@
 	   */
 	
 	  warnExpressionErrors: true,
+	
+	  /**
+	   * Whether or not to handle fully object properties which
+	   * are already backed by getters and seters. Depending on
+	   * use case and environment, this might introduce non-neglible
+	   * performance penalties.
+	   */
+	  convertAllProperties: false,
 	
 	  /**
 	   * Internal flag to indicate the delimiters have been
@@ -4376,7 +4386,10 @@
 	    parentFrag.childFrags.push(this)
 	  }
 	  this.unlink = linker(vm, frag, host, scope, this)
-	  var single = this.single = frag.childNodes.length === 1
+	  var single = this.single =
+	    frag.childNodes.length === 1 &&
+	    // do not go single mode if the only node is an anchor
+	    !(frag.childNodes[0].__vue_anchor)
 	  if (single) {
 	    this.node = frag.childNodes[0]
 	    this.before = singleBefore
@@ -4634,15 +4647,9 @@
 	  },
 	
 	  apply: function (el, value) {
-	    function done () {
+	    transition.apply(el, value ? 1 : -1, function () {
 	      el.style.display = value ? '' : 'none'
-	    }
-	    // do not apply transition if not in doc
-	    if (_.inDoc(el)) {
-	      transition.apply(el, value ? 1 : -1, done, this.vm)
-	    } else {
-	      done()
-	    }
+	    }, this.vm)
 	  }
 	}
 
@@ -5122,11 +5129,17 @@
 	
 	function keyFilter (handler, keys) {
 	  var codes = keys.map(function (key) {
-	    var code = keyCodes[key]
-	    if (!code) {
-	      code = parseInt(key, 10)
+	    var charCode = key.charCodeAt(0)
+	    if (charCode > 47 && charCode < 58) {
+	      return parseInt(key, 10)
 	    }
-	    return code
+	    if (key.length === 1) {
+	      charCode = key.toUpperCase().charCodeAt(0)
+	      if (charCode > 64 && charCode < 91) {
+	        return charCode
+	      }
+	    }
+	    return keyCodes[key]
 	  })
 	  return function keyHandler (e) {
 	    if (codes.indexOf(e.keyCode) > -1) {
@@ -5201,13 +5214,8 @@
 	    }
 	
 	    this.reset()
-	    var scope = this._scope || this.vm
-	    this.handler = function (e) {
-	      scope.$event = e
-	      var res = handler(e)
-	      scope.$event = null
-	      return res
-	    }
+	    this.handler = handler
+	
 	    if (this.iframeBind) {
 	      this.iframeBind()
 	    } else {
@@ -5674,8 +5682,15 @@
 	      // create a ref anchor
 	      this.anchor = _.createAnchor('v-component')
 	      _.replace(this.el, this.anchor)
-	      // remove is attribute
+	      // remove is attribute.
+	      // this is removed during compilation, but because compilation is
+	      // cached, when the component is used elsewhere this attribute
+	      // will remain at link time.
 	      this.el.removeAttribute('is')
+	      // remove ref, same as above
+	      if (this.descriptor.ref) {
+	        this.el.removeAttribute('v-ref:' + _.hyphenate(this.descriptor.ref))
+	      }
 	      // if static, build right now.
 	      if (this.literal) {
 	        this.setComponent(this.expression)
@@ -6200,26 +6215,17 @@
 	  }
 	  // two-way sync for v-for alias
 	  var forContext = scope.$forContext
-	  if (process.env.NODE_ENV !== 'production') {
-	    if (
-	      forContext &&
-	      forContext.filters &&
-	      (new RegExp(forContext.alias + '\\b')).test(this.expression)
-	    ) {
-	      _.warn(
+	  if (forContext && forContext.alias === this.expression) {
+	    if (forContext.filters) {
+	      process.env.NODE_ENV !== 'production' && _.warn(
 	        'It seems you are using two-way binding on ' +
 	        'a v-for alias (' + this.expression + '), and the ' +
 	        'v-for has filters. This will not work properly. ' +
 	        'Either remove the filters or use an array of ' +
 	        'objects and bind to object properties instead.'
 	      )
+	      return
 	    }
-	  }
-	  if (
-	    forContext &&
-	    forContext.alias === this.expression &&
-	    !forContext.filters
-	  ) {
 	    if (scope.$key) { // original is an object
 	      forContext.rawValue[scope.$key] = value
 	    } else {
@@ -7604,8 +7610,8 @@
 	
 	function isHidden (el) {
 	  return !(
-	    el.offsetWidth &&
-	    el.offsetHeight &&
+	    el.offsetWidth ||
+	    el.offsetHeight ||
 	    el.getClientRects().length
 	  )
 	}
@@ -9000,6 +9006,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
+	var config = __webpack_require__(8)
 	var Dep = __webpack_require__(44)
 	var arrayMethods = __webpack_require__(62)
 	var arrayKeys = Object.getOwnPropertyNames(arrayMethods)
@@ -9048,7 +9055,7 @@
 	  }
 	  var ob
 	  if (
-	    value.hasOwnProperty('__ob__') &&
+	    Object.prototype.hasOwnProperty.call(value, '__ob__') &&
 	    value.__ob__ instanceof Observer
 	  ) {
 	    ob = value.__ob__
@@ -9173,28 +9180,48 @@
 	
 	function defineReactive (obj, key, val) {
 	  var dep = new Dep()
+	
+	  // cater for pre-defined getter/setters
+	  var getter, setter
+	  if (config.convertAllProperties) {
+	    var property = Object.getOwnPropertyDescriptor(obj, key)
+	    if (property && property.configurable === false) {
+	      return
+	    }
+	    getter = property.get
+	    setter = property.set
+	  }
+	
 	  var childOb = Observer.create(val)
 	  Object.defineProperty(obj, key, {
 	    enumerable: true,
 	    configurable: true,
-	    get: function metaGetter () {
+	    get: function reactiveGetter () {
+	      var value = getter ? getter.call(obj) : val
 	      if (Dep.target) {
 	        dep.depend()
 	        if (childOb) {
 	          childOb.dep.depend()
 	        }
-	        if (_.isArray(val)) {
-	          for (var e, i = 0, l = val.length; i < l; i++) {
-	            e = val[i]
+	        if (_.isArray(value)) {
+	          for (var e, i = 0, l = value.length; i < l; i++) {
+	            e = value[i]
 	            e && e.__ob__ && e.__ob__.dep.depend()
 	          }
 	        }
 	      }
-	      return val
+	      return value
 	    },
-	    set: function metaSetter (newVal) {
-	      if (newVal === val) return
-	      val = newVal
+	    set: function reactiveSetter (newVal) {
+	      var value = getter ? getter.call(obj) : val
+	      if (newVal === value) {
+	        return
+	      }
+	      if (setter) {
+	        setter.call(obj, newVal)
+	      } else {
+	        val = newVal
+	      }
 	      childOb = Observer.create(newVal)
 	      dep.notify()
 	    }
@@ -9769,8 +9796,10 @@
 	  ) {
 	    var fn = expParser.parse(expression).get
 	    var scope = this._scope || this.vm
-	    var handler = function () {
+	    var handler = function (e) {
+	      scope.$event = e
 	      fn.call(scope, scope)
+	      scope.$event = null
 	    }
 	    if (this.filters) {
 	      handler = scope._applyFilters(handler, null, this.filters)
@@ -17871,6 +17900,27 @@
 	      })
 	    })
 	
+	    it('with key modifier (letter)', function (done) {
+	      new Vue({
+	        el: el,
+	        template: '<a v-on:keyup.a="test">{{a}}</a>',
+	        data: {a: 1},
+	        methods: {
+	          test: function () {
+	            this.a++
+	          }
+	        }
+	      })
+	      var a = el.firstChild
+	      trigger(a, 'keyup', function (e) {
+	        e.keyCode = 65
+	      })
+	      _.nextTick(function () {
+	        expect(a.textContent).toBe('2')
+	        done()
+	      })
+	    })
+	
 	    it('stop modifier', function () {
 	      var outer = jasmine.createSpy('outer')
 	      var inner = jasmine.createSpy('inner')
@@ -19642,6 +19692,7 @@
 	var Observer = __webpack_require__(61)
 	var Dep = __webpack_require__(44)
 	var _ = __webpack_require__(4)
+	var config = __webpack_require__(8)
 	
 	describe('Observer', function () {
 	
@@ -19677,6 +19728,157 @@
 	    // should return existing ob on already observed objects
 	    var ob2 = Observer.create(obj)
 	    expect(ob2).toBe(ob)
+	  })
+	
+	  it('create on null', function () {
+	    // on null
+	    var obj = Object.create(null)
+	    obj.a = {}
+	    obj.b = {}
+	    var ob = Observer.create(obj)
+	    expect(ob instanceof Observer).toBe(true)
+	    expect(ob.value).toBe(obj)
+	    expect(obj.__ob__).toBe(ob)
+	    // should've walked children
+	    expect(obj.a.__ob__ instanceof Observer).toBe(true)
+	    expect(obj.b.__ob__ instanceof Observer).toBe(true)
+	    // should return existing ob on already observed objects
+	    var ob2 = Observer.create(obj)
+	    expect(ob2).toBe(ob)
+	  })
+	
+	  it('create on already observed object', function () {
+	    var previousConvertAllProperties = config.convertAllProperties
+	    config.convertAllProperties = true
+	
+	    // on object
+	    var obj = {}
+	    var val = 0
+	    var getCount = 0
+	    Object.defineProperty(obj, 'a', {
+	      configurable: true,
+	      enumerable: true,
+	      get: function () {
+	        getCount++
+	        return val
+	      },
+	      set: function (v) {
+	        val = v
+	      }
+	    })
+	
+	    var ob = Observer.create(obj)
+	    expect(ob instanceof Observer).toBe(true)
+	    expect(ob.value).toBe(obj)
+	    expect(obj.__ob__).toBe(ob)
+	
+	    getCount = 0
+	    // Each read of 'a' should result in only one get underlying get call
+	    obj.a
+	    expect(getCount).toBe(1)
+	    obj.a
+	    expect(getCount).toBe(2)
+	
+	    // should return existing ob on already observed objects
+	    var ob2 = Observer.create(obj)
+	    expect(ob2).toBe(ob)
+	
+	    // should call underlying setter
+	    obj.a = 10
+	    expect(val).toBe(10)
+	
+	    config.convertAllProperties = previousConvertAllProperties
+	  })
+	
+	  it('create on property with only getter', function () {
+	    var previousConvertAllProperties = config.convertAllProperties
+	    config.convertAllProperties = true
+	
+	    // on object
+	    var obj = {}
+	    Object.defineProperty(obj, 'a', {
+	      configurable: true,
+	      enumerable: true,
+	      get: function () {
+	        return 123
+	      }
+	    })
+	
+	    var ob = Observer.create(obj)
+	    expect(ob instanceof Observer).toBe(true)
+	    expect(ob.value).toBe(obj)
+	    expect(obj.__ob__).toBe(ob)
+	
+	    // should be able to read
+	    expect(obj.a).toBe(123)
+	
+	    // should return existing ob on already observed objects
+	    var ob2 = Observer.create(obj)
+	    expect(ob2).toBe(ob)
+	
+	    // since there is no setter, you shouldn't be able to write to it
+	    // PhantomJS throws when a property with no setter is set
+	    // but other real browsers don't
+	    try {
+	      obj.a = 101
+	    } catch (e) {}
+	    expect(obj.a).toBe(123)
+	
+	    config.convertAllProperties = previousConvertAllProperties
+	  })
+	
+	  it('create on property with only setter', function () {
+	    var previousConvertAllProperties = config.convertAllProperties
+	    config.convertAllProperties = true
+	
+	    // on object
+	    var obj = {}
+	    var val = 10
+	    Object.defineProperty(obj, 'a', { // eslint-disable-line accessor-pairs
+	      configurable: true,
+	      enumerable: true,
+	      set: function (v) {
+	        val = v
+	      }
+	    })
+	
+	    var ob = Observer.create(obj)
+	    expect(ob instanceof Observer).toBe(true)
+	    expect(ob.value).toBe(obj)
+	    expect(obj.__ob__).toBe(ob)
+	
+	    // reads should return undefined
+	    expect(obj.a).toBe(undefined)
+	
+	    // should return existing ob on already observed objects
+	    var ob2 = Observer.create(obj)
+	    expect(ob2).toBe(ob)
+	
+	    // writes should call the set function
+	    obj.a = 100
+	    expect(val).toBe(100)
+	
+	    config.convertAllProperties = previousConvertAllProperties
+	  })
+	
+	  it('create on property which is marked not configurable', function () {
+	    var previousConvertAllProperties = config.convertAllProperties
+	    config.convertAllProperties = true
+	
+	    // on object
+	    var obj = {}
+	    Object.defineProperty(obj, 'a', {
+	      configurable: false,
+	      enumerable: true,
+	      val: 10
+	    })
+	
+	    var ob = Observer.create(obj)
+	    expect(ob instanceof Observer).toBe(true)
+	    expect(ob.value).toBe(obj)
+	    expect(obj.__ob__).toBe(ob)
+	
+	    config.convertAllProperties = previousConvertAllProperties
 	  })
 	
 	  it('create on array', function () {
@@ -19721,6 +19923,45 @@
 	    // set on the swapped object
 	    obj.a.b = 5
 	    expect(watcher.update.calls.count()).toBe(3)
+	  })
+	
+	  it('observing object prop change on defined property', function () {
+	    var previousConvertAllProperties = config.convertAllProperties
+	    config.convertAllProperties = true
+	
+	    var obj = { val: 2 }
+	    Object.defineProperty(obj, 'a', {
+	      configurable: true,
+	      enumerable: true,
+	      get: function () {
+	        return this.val
+	      },
+	      set: function (v) {
+	        this.val = v
+	        return this.val
+	      }
+	    })
+	
+	    Observer.create(obj)
+	    // mock a watcher!
+	    var watcher = {
+	      deps: [],
+	      addDep: function (dep) {
+	        this.deps.push(dep)
+	        dep.addSub(this)
+	      },
+	      update: jasmine.createSpy()
+	    }
+	    // collect dep
+	    Dep.target = watcher
+	    expect(obj.a).toBe(2) // Make sure 'this' is preserved
+	    Dep.target = null
+	    obj.a = 3
+	    expect(obj.val).toBe(3) // make sure 'setter' was called
+	    obj.val = 5
+	    expect(obj.a).toBe(5) // make sure 'getter' was called
+	
+	    config.convertAllProperties = previousConvertAllProperties
 	  })
 	
 	  it('observing set/delete', function () {
