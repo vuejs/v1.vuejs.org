@@ -200,7 +200,7 @@
 	extend(p, __webpack_require__(68))
 	extend(p, __webpack_require__(69))
 	
-	Vue.version = '1.0.7'
+	Vue.version = '1.0.8'
 	module.exports = _.Vue = Vue
 	
 	/* istanbul ignore if */
@@ -1123,7 +1123,6 @@
 	    for (var i = 0, l = attrs.length; i < l; i++) {
 	      var name = attrs[i].name
 	      if (refRE.test(name)) {
-	        node.removeAttribute(name)
 	        return _.camelize(name.replace(refRE, ''))
 	      }
 	    }
@@ -2062,18 +2061,23 @@
 	
 	function guardProps (options) {
 	  var props = options.props
-	  var i
+	  var i, val
 	  if (_.isArray(props)) {
 	    options.props = {}
 	    i = props.length
 	    while (i--) {
-	      options.props[props[i]] = null
+	      val = props[i]
+	      if (typeof val === 'string') {
+	        options.props[val] = null
+	      } else if (val.name) {
+	        options.props[val.name] = val
+	      }
 	    }
 	  } else if (_.isPlainObject(props)) {
 	    var keys = Object.keys(props)
 	    i = keys.length
 	    while (i--) {
-	      var val = props[keys[i]]
+	      val = props[keys[i]]
 	      if (typeof val === 'function') {
 	        props[keys[i]] = { type: val }
 	      }
@@ -2890,10 +2894,27 @@
 	 */
 	
 	function compileTextNode (node, options) {
-	  var tokens = textParser.parse(node.data)
+	  // skip marked text nodes
+	  if (node._skip) {
+	    return removeText
+	  }
+	
+	  var tokens = textParser.parse(node.wholeText)
 	  if (!tokens) {
 	    return null
 	  }
+	
+	  // mark adjacent text nodes as skipped,
+	  // because we are using node.wholeText to compile
+	  // all adjacent text nodes together. This fixes
+	  // issues in IE where sometimes it splits up a single
+	  // text node into multiple ones.
+	  var next = node.nextSibling
+	  while (next && next.nodeType === 3) {
+	    next._skip = true
+	    next = next.nextSibling
+	  }
+	
 	  var frag = document.createDocumentFragment()
 	  var el, token
 	  for (var i = 0, l = tokens.length; i < l; i++) {
@@ -2904,6 +2925,17 @@
 	    frag.appendChild(el)
 	  }
 	  return makeTextNodeLinkFn(tokens, frag, options)
+	}
+	
+	/**
+	 * Linker for an skipped text node.
+	 *
+	 * @param {Vue} vm
+	 * @param {Text} node
+	 */
+	
+	function removeText (vm, node) {
+	  _.remove(node)
 	}
 	
 	/**
@@ -6226,11 +6258,13 @@
 	      )
 	      return
 	    }
-	    if (scope.$key) { // original is an object
-	      forContext.rawValue[scope.$key] = value
-	    } else {
-	      forContext.rawValue.$set(scope.$index, value)
-	    }
+	    forContext._withLock(function () {
+	      if (scope.$key) { // original is an object
+	        forContext.rawValue[scope.$key] = value
+	      } else {
+	        forContext.rawValue.$set(scope.$index, value)
+	      }
+	    })
 	  }
 	}
 	
@@ -8839,7 +8873,7 @@
 	}
 	
 	/**
-	 * Swap the isntance's $data. Called in $data's setter.
+	 * Swap the instance's $data. Called in $data's setter.
 	 *
 	 * @param {Object} newData
 	 */
@@ -9188,8 +9222,8 @@
 	    if (property && property.configurable === false) {
 	      return
 	    }
-	    getter = property.get
-	    setter = property.set
+	    getter = property && property.get
+	    setter = property && property.set
 	  }
 	
 	  var childOb = Observer.create(val)
@@ -12242,6 +12276,37 @@
 	      expect(el.innerHTML).toBe('  and yeah')
 	    })
 	
+	    it('text interpolation, adjacent nodes', function () {
+	      data.b = 'yeah'
+	      el.appendChild(document.createTextNode('{{a'))
+	      el.appendChild(document.createTextNode('}} and {{'))
+	      el.appendChild(document.createTextNode('*b}}'))
+	      var def = Vue.options.directives.text
+	      var linker = compile(el, Vue.options)
+	      linker(vm, el)
+	      // expect 1 call because one-time bindings do not generate a directive.
+	      expect(vm._bindDir.calls.count()).toBe(1)
+	      var args = vm._bindDir.calls.argsFor(0)
+	      expect(args[0].name).toBe('text')
+	      expect(args[0].expression).toBe('a')
+	      expect(args[0].def).toBe(def)
+	      // skip the node because it's generated in the linker fn via cloneNode
+	      // expect $eval to be called during onetime
+	      expect(vm.$eval).toHaveBeenCalledWith('b')
+	      // {{a}} is mocked so it's a space.
+	      // but we want to make sure {{*b}} worked.
+	      expect(el.innerHTML).toBe('  and yeah')
+	    })
+	
+	    it('adjacent text nodes with no interpolation', function () {
+	      el.appendChild(document.createTextNode('a'))
+	      el.appendChild(document.createTextNode('b'))
+	      el.appendChild(document.createTextNode('c'))
+	      var linker = compile(el, Vue.options)
+	      linker(vm, el)
+	      expect(el.innerHTML).toBe('abc')
+	    })
+	
 	    it('inline html', function () {
 	      data.html = '<div>yoyoyo</div>'
 	      el.innerHTML = '{{{html}}} {{{*html}}}'
@@ -14505,6 +14570,36 @@
 	      expect(el.textContent).toBe('AAA')
 	    })
 	
+	    it('mixed syntax', function () {
+	      new Vue({
+	        el: el,
+	        template: '<test :b="a" :c="d"></test>',
+	        data: {
+	          a: 'AAA',
+	          d: 'DDD'
+	        },
+	        components: {
+	          test: {
+	            props: [
+	              'b',
+	              {
+	                name: 'c',
+	                type: Number
+	              },
+	              {
+	                name: 'd',
+	                required: true
+	              }
+	            ],
+	            template: '<p>{{b}}</p><p>{{c}}</p>'
+	          }
+	        }
+	      })
+	      expect(hasWarned(_, 'Missing required prop')).toBe(true)
+	      expect(hasWarned(_, 'Expected Number')).toBe(true)
+	      expect(el.textContent).toBe('AAA')
+	    })
+	
 	    it('should not overwrite default value for an absent Boolean prop', function () {
 	      var vm = new Vue({
 	        el: el,
@@ -15176,6 +15271,7 @@
 
 	var _ = __webpack_require__(4)
 	var Vue = __webpack_require__(2)
+	var config = __webpack_require__(8)
 	
 	if (_.inBrowser) {
 	  describe('v-for', function () {
@@ -15184,9 +15280,22 @@
 	    beforeEach(function () {
 	      el = document.createElement('div')
 	      spyOn(_, 'warn')
+	      config.convertAllProperties = false
 	    })
 	
 	    it('objects', function (done) {
+	      var vm = new Vue({
+	        el: el,
+	        data: {
+	          items: [{a: 1}, {a: 2}]
+	        },
+	        template: '<div v-for="item in items">{{$index}} {{item.a}}</div>'
+	      })
+	      assertMutations(vm, el, done)
+	    })
+	
+	    it('objects with convertAllProperties on', function (done) {
+	      config.convertAllProperties = true
 	      var vm = new Vue({
 	        el: el,
 	        data: {
