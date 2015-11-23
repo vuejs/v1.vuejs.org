@@ -456,6 +456,7 @@ body {
 }
 #example #demo {
   padding: 0 20px;
+  word-wrap: break-word;
 }
 #example #demo input {
   font-size: 0.75em;

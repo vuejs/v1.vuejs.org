@@ -139,7 +139,7 @@
 	
 	var _utilIndex = __webpack_require__(4);
 	
-	_instanceVue2['default'].version = '1.0.8';
+	_instanceVue2['default'].version = '1.0.10';
 	
 	/**
 	 * Vue and every constructor that extends Vue has an
