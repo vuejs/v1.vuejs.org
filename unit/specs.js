@@ -179,11 +179,7 @@
 	
 	exports.__esModule = true;
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
 	var _internalInit = __webpack_require__(3);
 	
@@ -239,30 +235,11 @@
 	 * @public
 	 */
 	
-	var Vue = (function () {
-	  function Vue(options) {
-	    _classCallCheck(this, Vue);
+	function Vue(options) {
+	  this._init(options);
+	}
 	
-	    this._init(options);
-	  }
-	
-	  // install internals
-	
-	  _createClass(Vue, [{
-	    key: '$data',
-	    get: function get() {
-	      return this._data;
-	    },
-	    set: function set(newData) {
-	      if (newData !== this._data) {
-	        this._setData(newData);
-	      }
-	    }
-	  }]);
-	
-	  return Vue;
-	})();
-	
+	// install internals
 	_internalInit2['default'](Vue);
 	_internalState2['default'](Vue);
 	_internalEvents2['default'](Vue);
@@ -326,7 +303,6 @@
 	    // events bookkeeping
 	    this._events = {}; // registered callbacks
 	    this._eventsCount = {}; // for $broadcast optimization
-	    this._shouldPropagate = false; // for event propagation
 	
 	    // fragment instance properties
 	    this._isFragment = false;
@@ -1904,8 +1880,6 @@
 	'use strict';
 	
 	exports.__esModule = true;
-	exports.log = log;
-	exports.warn = warn;
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
@@ -1913,39 +1887,28 @@
 	
 	var _config2 = _interopRequireDefault(_config);
 	
-	/**
-	 * Enable debug utilities.
-	 */
+	var warn = undefined;
 	
-	var hasConsole = typeof console !== 'undefined';
-	
-	/**
-	 * Log a message.
-	 *
-	 * @param {String} msg
-	 */
-	
-	function log(msg) {
-	  if (hasConsole && _config2['default'].debug) {
-	    console.log('[Vue info]: ' + msg);
-	  }
+	if (true) {
+	  (function () {
+	    var hasConsole = typeof console !== 'undefined';
+	    exports.warn = warn = function (msg, e) {
+	      if (hasConsole && (!_config2['default'].silent || _config2['default'].debug)) {
+	        console.warn('[Vue warn]: ' + msg);
+	        /* istanbul ignore if */
+	        if (_config2['default'].debug) {
+	          if (e) {
+	            throw e;
+	          } else {
+	            console.warn(new Error('Warning Stack Trace').stack);
+	          }
+	        }
+	      }
+	    };
+	  })();
 	}
 	
-	/**
-	 * We've got a problem here.
-	 *
-	 * @param {String} msg
-	 */
-	
-	function warn(msg, e) {
-	  if (hasConsole && (!_config2['default'].silent || _config2['default'].debug)) {
-	    console.warn('[Vue warn]: ' + msg);
-	    /* istanbul ignore if */
-	    if (_config2['default'].debug) {
-	      console.warn((e || new Error('Warning Stack Trace')).stack);
-	    }
-	  }
-	}
+	exports.warn = warn;
 
 /***/ },
 /* 13 */
@@ -2375,7 +2338,7 @@
 	
 	function assertAsset(val, type, id) {
 	  if (!val) {
-	    _debug.warn('Failed to resolve ' + type + ': ' + id);
+	    ("development") !== 'production' && _debug.warn('Failed to resolve ' + type + ': ' + id);
 	  }
 	}
 
@@ -2463,10 +2426,8 @@
 	 */
 	
 	function initProp(vm, prop, value) {
-	  if (assertProp(prop, value)) {
-	    var key = prop.path;
-	    vm[key] = vm._data[key] = value;
-	  }
+	  var key = prop.path;
+	  vm[key] = vm._data[key] = assertProp(prop, value) ? value : undefined;
 	}
 	
 	/**
@@ -2942,6 +2903,23 @@
 	var _utilIndex = __webpack_require__(4);
 	
 	exports['default'] = function (Vue) {
+	
+	  /**
+	   * Accessor for `$data` property, since setting $data
+	   * requires observing the new object and updating
+	   * proxied properties.
+	   */
+	
+	  Object.defineProperty(Vue.prototype, '$data', {
+	    get: function get() {
+	      return this._data;
+	    },
+	    set: function set(newData) {
+	      if (newData !== this._data) {
+	        this._setData(newData);
+	      }
+	    }
+	  });
 	
 	  /**
 	   * Setup the scope of an instance, which contains:
@@ -5906,7 +5884,14 @@
 	 */
 	
 	function findVmFromFrag(frag) {
-	  return frag.node.__vue__ || frag.node.nextSibling.__vue__;
+	  var node = frag.node;
+	  // handle multi-node frag
+	  if (frag.end) {
+	    while (!node.__vue__ && node !== frag.end && node.nextSibling) {
+	      node = node.nextSibling;
+	    }
+	  }
+	  return node.__vue__;
 	}
 	
 	/**
@@ -10064,22 +10049,23 @@
 	   * Trigger an event on self.
 	   *
 	   * @param {String} event
+	   * @return {Boolean} shouldPropagate
 	   */
 	
 	  Vue.prototype.$emit = function (event) {
 	    var cbs = this._events[event];
-	    this._shouldPropagate = !cbs;
+	    var shouldPropagate = !cbs;
 	    if (cbs) {
 	      cbs = cbs.length > 1 ? _utilIndex.toArray(cbs) : cbs;
 	      var args = _utilIndex.toArray(arguments, 1);
 	      for (var i = 0, l = cbs.length; i < l; i++) {
 	        var res = cbs[i].apply(this, args);
 	        if (res === true) {
-	          this._shouldPropagate = true;
+	          shouldPropagate = true;
 	        }
 	      }
 	    }
-	    return this;
+	    return shouldPropagate;
 	  };
 	
 	  /**
@@ -10096,8 +10082,8 @@
 	    var children = this.$children;
 	    for (var i = 0, l = children.length; i < l; i++) {
 	      var child = children[i];
-	      child.$emit.apply(child, arguments);
-	      if (child._shouldPropagate) {
+	      var shouldPropagate = child.$emit.apply(child, arguments);
+	      if (shouldPropagate) {
 	        child.$broadcast.apply(child, arguments);
 	      }
 	    }
@@ -10115,8 +10101,8 @@
 	    this.$emit.apply(this, arguments);
 	    var parent = this.$parent;
 	    while (parent) {
-	      parent.$emit.apply(parent, arguments);
-	      parent = parent._shouldPropagate ? parent.$parent : null;
+	      var shouldPropagate = parent.$emit.apply(parent, arguments);
+	      parent = shouldPropagate ? parent.$parent : null;
 	    }
 	    return this;
 	  };
@@ -15168,7 +15154,6 @@
 	  beforeEach(function () {
 	    el = document.createElement('div')
 	    spyWarns()
-	    spyOn(_, 'log')
 	  })
 	
 	  it('normal', function (done) {
@@ -21658,7 +21643,6 @@
 
 	var _ = __webpack_require__(4)
 	var config = __webpack_require__(8)
-	var infoPrefix = '[Vue info]: '
 	var warnPrefix = '[Vue warn]: '
 	
 	if (typeof console !== 'undefined') {
@@ -21671,18 +21655,6 @@
 	      if (console.trace) {
 	        spyOn(console, 'trace')
 	      }
-	    })
-	
-	    it('log when debug is true', function () {
-	      config.debug = true
-	      _.log('hello')
-	      expect(console.log).toHaveBeenCalledWith(infoPrefix + 'hello')
-	    })
-	
-	    it('not log when debug is false', function () {
-	      config.debug = false
-	      _.log('bye')
-	      expect(console.log).not.toHaveBeenCalled()
 	    })
 	
 	    it('warn when silent is false', function () {
