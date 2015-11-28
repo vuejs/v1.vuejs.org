@@ -489,12 +489,16 @@ new Vue({
 <h3 id="Recursive_Component">Recursive Component</h3><p>Components can recursively invoke itself in its own template, however, it can only do so when it has the <code>name</code> option:</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> StackOverflow = Vue.extend(&#123;</span><br><span class="line">  name: <span class="string">'stack-overflow'</span>,</span><br><span class="line">  template:</span><br><span class="line">    <span class="string">'&lt;div&gt;'</span> +</span><br><span class="line">      <span class="comment">// recursively invoke self</span></span><br><span class="line">      <span class="string">'&lt;stack-overflow&gt;&lt;/stack-overflow&gt;'</span> +</span><br><span class="line">    <span class="string">'&lt;/div&gt;'</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p>A component like the above will result in a “max stack size exceeded” error, so make sure recursive invocation is conditional. When you register a component globally using <code>Vue.component()</code>, the global ID is automatically set as the component’s <code>name</code> option.</p>
-<h3 id="Fragment_Instance">Fragment Instance</h3><p>When you use the <code>template</code> option, the content of the template will replace the element the Vue instance is mounted on. It is therefore recommended to always include a single root-level element in templates.</p>
-<p>There are a few conditions that will turn a Vue instance into a <strong>fragment instance</strong>:</p>
+<h3 id="Fragment_Instance">Fragment Instance</h3><p>When you use the <code>template</code> option, the content of the template will replace the element the Vue instance is mounted on. It is therefore recommended to always have a single root-level, plain element in templates.</p>
+<p>Instead of templates like this:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span>&gt;</span>root node 1<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span>&gt;</span>root node 2<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Prefer this:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span>&gt;</span></span><br><span class="line">  I have a single root node!</span><br><span class="line">  <span class="tag">&lt;<span class="title">div</span>&gt;</span>node 1<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">div</span>&gt;</span>node 2<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>There are multiple conditions that will turn a Vue instance into a <strong>fragment instance</strong>:</p>
 <ol>
 <li>Template contains multiple top-level elements.</li>
 <li>Template contains only plain text.</li>
-<li>Template contains only another component.</li>
+<li>Template contains only another component (which can potentially be a fragment instance itself).</li>
 <li>Template contains only an element directive, e.g. <code>&lt;partial&gt;</code> or vue-router’s <code>&lt;router-view&gt;</code>.</li>
 <li>Template root node has a flow-control directive, e.g. <code>v-if</code> or <code>v-for</code>.</li>
 </ol>
