@@ -229,7 +229,7 @@ var exampleVM2 = new Vue({
 })
 </script>
 
-<p>Here we are encountering something new. The <code>v-if</code> attribute you are seeing are called <strong>Directives</strong>. Directives are prefixed with <code>v-</code> to indicate that they are special attributes provided by Vue.js, and as you may have guessed, they apply special reactive behavior to the rendered DOM. Go ahead and set <code>exampleVM2.greeting</code> to <code>false</code> in the console. You should see the “Hello!” message disappear.</p>
+<p>Here we are encountering something new. The <code>v-if</code> attribute you are seeing is called a <strong>Directive</strong>. Directives are prefixed with <code>v-</code> to indicate that they are special attributes provided by Vue.js, and as you may have guessed, they apply special reactive behavior to the rendered DOM. Go ahead and set <code>exampleVM2.greeting</code> to <code>false</code> in the console. You should see the “Hello!” message disappear.</p>
 <p>This second example demonstrates that not only can we bind DOM text to the data, we can also bind the <strong>structure</strong> of the DOM to the data. Moreover, Vue.js also provides a powerful transition effect system that can automatically apply transition effects when elements are inserted/removed by Vue.</p>
 <p>There are quite a few other directives, each with its own special functionality. For example the <code>v-for</code> directive for displaying items in an Array, or the <code>v-bind</code> directive for binding HTML attributes. We will discuss the full data-binding syntax with more details later.</p>
 <h2 id="Component_System">Component System</h2><p>The Component System is another important concept in Vue.js, because it’s an abstraction that allows us to build large-scale applications composed of small, self-contained, and often reusable components. If we think about it, almost any type of application interface can be abstracted into a tree of components:</p>
@@ -255,7 +255,12 @@ var exampleVM2 = new Vue({
         
       </div>
     
-    <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/vuejs/vuejs.org" target="_blank">Fork this site on Github</a>!</div>
+    <div class="footer">
+      Caught a mistake or want to contribute to the documentation?
+      <a href="https://github.com/vuejs/vuejs.org/blob/master/src/guide/overview.md" target="_blank">
+        Edit this page on Github!
+      </a>
+    </div>
 </div>
 
                 
