@@ -139,7 +139,7 @@
 	
 	var _utilIndex = __webpack_require__(4);
 	
-	_instanceVue2['default'].version = '1.0.10';
+	_instanceVue2['default'].version = '1.0.11';
 	
 	/**
 	 * Vue and every constructor that extends Vue has an
@@ -479,6 +479,7 @@
 	      vm._digest();
 	    }
 	  }
+	  return val;
 	}
 	
 	/**
@@ -935,6 +936,7 @@
 	exports.inDoc = inDoc;
 	exports.getAttr = getAttr;
 	exports.getBindAttr = getBindAttr;
+	exports.hasBindAttr = hasBindAttr;
 	exports.before = before;
 	exports.after = after;
 	exports.remove = remove;
@@ -1031,6 +1033,18 @@
 	    val = getAttr(node, 'v-bind:' + name);
 	  }
 	  return val;
+	}
+	
+	/**
+	 * Check the presence of a bind attribute.
+	 *
+	 * @param {Node} node
+	 * @param {String} name
+	 * @return {Boolean}
+	 */
+	
+	function hasBindAttr(node, name) {
+	  return node.hasAttribute(name) || node.hasAttribute(':' + name) || node.hasAttribute('v-bind:' + name);
 	}
 	
 	/**
@@ -1145,7 +1159,7 @@
 	 * Add class with compatibility for IE & SVG
 	 *
 	 * @param {Element} el
-	 * @param {Strong} cls
+	 * @param {String} cls
 	 */
 	
 	function addClass(el, cls) {
@@ -1163,7 +1177,7 @@
 	 * Remove class with compatibility for IE & SVG
 	 *
 	 * @param {Element} el
-	 * @param {Strong} cls
+	 * @param {String} cls
 	 */
 	
 	function removeClass(el, cls) {
@@ -1464,6 +1478,7 @@
 	exports.compileRegex = compileRegex;
 	exports.parseText = parseText;
 	exports.tokensToExp = tokensToExp;
+	exports.removeTags = removeTags;
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
@@ -1622,6 +1637,17 @@
 	      ',false)'; // write?
 	    }
 	  }
+	}
+	
+	/**
+	 * Replace all interpolation tags in a piece of text.
+	 *
+	 * @param {String} text
+	 * @return {String}
+	 */
+	
+	function removeTags(text) {
+	  return text.replace(tagRE, '');
 	}
 
 /***/ },
@@ -2682,7 +2708,7 @@
 	  var ob;
 	  if (_utilIndex.hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
 	    ob = value.__ob__;
-	  } else if ((_utilIndex.isArray(value) || _utilIndex.isPlainObject(value)) && !Object.isFrozen(value) && !value._isVue) {
+	  } else if ((_utilIndex.isArray(value) || _utilIndex.isPlainObject(value)) && Object.isExtensible(value) && !value._isVue) {
 	    ob = new Observer(value);
 	  }
 	  if (ob && vm) {
@@ -4682,6 +4708,11 @@
 	function checkElementDirectives(el, options) {
 	  var tag = el.tagName.toLowerCase();
 	  if (_utilIndex.commonTagRE.test(tag)) return;
+	  // special case: give named slot a higher priority
+	  // than unnamed slots
+	  if (tag === 'slot' && _utilIndex.hasBindAttr(el, 'name')) {
+	    tag = '_namedSlot';
+	  }
 	  var def = _utilIndex.resolveAsset(options, 'elementDirectives', tag);
 	  if (def) {
 	    return makeTerminalNodeLinkFn(el, tag, '', options, def);
@@ -4821,10 +4852,18 @@
 	    if (tokens) {
 	      value = _parsersText.tokensToExp(tokens);
 	      if (name === 'class') {
-	        pushDir('class', _directivesInternalIndex2['default']['class']);
+	        pushDir('class', _directivesInternalIndex2['default']['class'], true);
 	      } else {
 	        arg = name;
 	        pushDir('bind', _directivesPublicIndex2['default'].bind, true);
+	      }
+	      // warn against mixing mustaches with v-bind
+	      if (true) {
+	        if (name === 'class' && Array.prototype.some.call(attrs, function (attr) {
+	          return attr.name === ':class' || attr.name === 'v-bind:class';
+	        })) {
+	          _utilIndex.warn('class="' + rawValue + '": Do not mix mustache interpolation ' + 'and v-bind for "class" on the same element. Use one or the other.');
+	        }
 	      }
 	    } else
 	
@@ -6590,7 +6629,7 @@
 	    };
 	    this.on('change', this.listener);
 	
-	    if (el.checked) {
+	    if (el.hasAttribute('checked')) {
 	      this.afterBind = this.listener;
 	    }
 	  },
@@ -6764,7 +6803,7 @@
 	    };
 	
 	    this.on('change', this.listener);
-	    if (el.checked) {
+	    if (el.hasAttribute('checked')) {
 	      this.afterBind = this.listener;
 	    }
 	  },
@@ -7274,7 +7313,6 @@
 	  deep: true,
 	
 	  update: function update(value) {
-	    console.log(111);
 	    if (value && typeof value === 'string') {
 	      this.handleObject(stringToObject(value));
 	    } else if (_utilIndex.isPlainObject(value)) {
@@ -7476,6 +7514,9 @@
 	    if (activateHook && !cached) {
 	      this.waitingFor = newComponent;
 	      activateHook.call(newComponent, function () {
+	        if (self.waitingFor !== newComponent) {
+	          return;
+	        }
 	        self.waitingFor = null;
 	        self.transition(newComponent, cb);
 	      });
@@ -8484,7 +8525,7 @@
 	      // non-element template
 	      replacer.nodeType !== 1 ||
 	      // single nested component
-	      tag === 'component' || _utilIndex.resolveAsset(options, 'components', tag) || replacer.hasAttribute('is') || replacer.hasAttribute(':is') || replacer.hasAttribute('v-bind:is') ||
+	      tag === 'component' || _utilIndex.resolveAsset(options, 'components', tag) || _utilIndex.hasBindAttr(replacer, 'is') ||
 	      // element directive
 	      _utilIndex.resolveAsset(options, 'elementDirectives', tag) ||
 	      // for block
@@ -8880,6 +8921,30 @@
 	      }
 	      return;
 	    }
+	
+	    var destroyReady;
+	    var pendingRemoval;
+	
+	    var self = this;
+	    // Cleanup should be called either synchronously or asynchronoysly as
+	    // callback of this.$remove(), or if remove and deferCleanup are false.
+	    // In any case it should be called after all other removing, unbinding and
+	    // turning of is done
+	    var cleanupIfPossible = function cleanupIfPossible() {
+	      if (destroyReady && !pendingRemoval && !deferCleanup) {
+	        self._cleanup();
+	      }
+	    };
+	
+	    // remove DOM element
+	    if (remove && this.$el) {
+	      pendingRemoval = true;
+	      this.$remove(function () {
+	        pendingRemoval = false;
+	        cleanupIfPossible();
+	      });
+	    }
+	
 	    this._callHook('beforeDestroy');
 	    this._isBeingDestroyed = true;
 	    var i;
@@ -8913,15 +8978,9 @@
 	    if (this.$el) {
 	      this.$el.__vue__ = null;
 	    }
-	    // remove DOM element
-	    var self = this;
-	    if (remove && this.$el) {
-	      this.$remove(function () {
-	        self._cleanup();
-	      });
-	    } else if (!deferCleanup) {
-	      this._cleanup();
-	    }
+	
+	    destroyReady = true;
+	    cleanupIfPossible();
 	  };
 	
 	  /**
@@ -8980,6 +9039,8 @@
 	var _watcher = __webpack_require__(20);
 	
 	var _watcher2 = _interopRequireDefault(_watcher);
+	
+	var _parsersText = __webpack_require__(9);
 	
 	var _parsersExpression = __webpack_require__(21);
 	
@@ -9050,7 +9111,13 @@
 	  // remove attribute
 	  if ((name !== 'cloak' || this.vm._isCompiled) && this.el && this.el.removeAttribute) {
 	    var attr = descriptor.attr || 'v-' + name;
-	    this.el.removeAttribute(attr);
+	    if (attr !== 'class') {
+	      this.el.removeAttribute(attr);
+	    } else {
+	      // for class interpolations, only remove the parts that
+	      // need to be interpolated.
+	      this.el.className = _parsersText.removeTags(this.el.className).trim().replace(/\s+/g, ' ');
+	    }
 	  }
 	
 	  // copy def properties
@@ -9482,6 +9549,12 @@
 	      return extendOptions._Ctor;
 	    }
 	    var name = extendOptions.name || Super.options.name;
+	    if (true) {
+	      if (!/^[a-zA-Z][\w-]+$/.test(name)) {
+	        _utilIndex.warn('Invalid component name: ' + name);
+	        name = null;
+	      }
+	    }
 	    var Sub = createClass(name || 'VueComponent');
 	    Sub.prototype = Object.create(Super.prototype);
 	    Sub.prototype.constructor = Sub;
@@ -10247,14 +10320,13 @@
 	
 	var _slot = __webpack_require__(65);
 	
-	var _slot2 = _interopRequireDefault(_slot);
-	
 	var _partial = __webpack_require__(66);
 	
 	var _partial2 = _interopRequireDefault(_partial);
 	
 	exports['default'] = {
-	  slot: _slot2['default'],
+	  slot: _slot.slot,
+	  _namedSlot: _slot.namedSlot, // same as slot but with higher priority
 	  partial: _partial2['default']
 	};
 	module.exports = exports['default'];
@@ -10276,55 +10348,46 @@
 	// instance being stored as `$options._content` during
 	// the transclude phase.
 	
-	exports['default'] = {
+	// We are exporting two versions, one for named and one
+	// for unnamed, because the unnamed slots must be compiled
+	// AFTER all named slots have selected their content. So
+	// we need to give them different priorities in the compilation
+	// process. (See #1965)
+	
+	var slot = {
 	
 	  priority: 1750,
-	
-	  params: ['name'],
 	
 	  bind: function bind() {
 	    var host = this.vm;
 	    var raw = host.$options._content;
-	    var content;
 	    if (!raw) {
 	      this.fallback();
 	      return;
 	    }
 	    var context = host._context;
-	    var slotName = this.params.name;
+	    var slotName = this.params && this.params.name;
 	    if (!slotName) {
-	      // Default content
-	      var self = this;
-	      var compileDefaultContent = function compileDefaultContent() {
-	        self.compile(extractFragment(raw.childNodes, raw, true), context, host);
-	      };
-	      if (!host._isCompiled) {
-	        // defer until the end of instance compilation,
-	        // because the default outlet must wait until all
-	        // other possible outlets with selectors have picked
-	        // out their contents.
-	        host.$once('hook:compiled', compileDefaultContent);
-	      } else {
-	        compileDefaultContent();
-	      }
+	      // Default slot
+	      this.tryCompile(extractFragment(raw.childNodes, raw, true), context, host);
 	    } else {
+	      // Named slot
 	      var selector = '[slot="' + slotName + '"]';
 	      var nodes = raw.querySelectorAll(selector);
 	      if (nodes.length) {
-	        content = extractFragment(nodes, raw);
-	        if (content.hasChildNodes()) {
-	          this.compile(content, context, host);
-	        } else {
-	          this.fallback();
-	        }
+	        this.tryCompile(extractFragment(nodes, raw), context, host);
 	      } else {
 	        this.fallback();
 	      }
 	    }
 	  },
 	
-	  fallback: function fallback() {
-	    this.compile(_utilIndex.extractContent(this.el, true), this.vm);
+	  tryCompile: function tryCompile(content, context, host) {
+	    if (content.hasChildNodes()) {
+	      this.compile(content, context, host);
+	    } else {
+	      this.fallback();
+	    }
 	  },
 	
 	  compile: function compile(content, context, host) {
@@ -10339,6 +10402,10 @@
 	    }
 	  },
 	
+	  fallback: function fallback() {
+	    this.compile(_utilIndex.extractContent(this.el, true), this.vm);
+	  },
+	
 	  unbind: function unbind() {
 	    if (this.unlink) {
 	      this.unlink();
@@ -10346,6 +10413,13 @@
 	  }
 	};
 	
+	exports.slot = slot;
+	var namedSlot = _utilIndex.extend(_utilIndex.extend({}, slot), {
+	  priority: slot.priority + 1,
+	  params: ['name']
+	});
+	
+	exports.namedSlot = namedSlot;
 	/**
 	 * Extract qualified content nodes from a node list.
 	 *
@@ -10382,7 +10456,6 @@
 	    frag.appendChild(node);
 	  }
 	}
-	module.exports = exports['default'];
 
 /***/ },
 /* 66 */
@@ -11340,6 +11413,10 @@
 	
 	describe('Global API', function () {
 	
+	  beforeEach(function () {
+	    spyWarns()
+	  })
+	
 	  it('exposed utilities', function () {
 	    expect(Vue.util).toBe(_)
 	    expect(Vue.nextTick).toBe(_.nextTick)
@@ -11373,6 +11450,15 @@
 	    })
 	    expect(t2.$options.a).toBe(3)
 	    expect(t2.$options.b).toBe(2)
+	  })
+	
+	  it('extend warn invalid names', function () {
+	    Vue.extend({ name: '123' })
+	    expect(hasWarned('Invalid component name: 123')).toBe(true)
+	    Vue.extend({ name: '_fesf' })
+	    expect(hasWarned('Invalid component name: _fesf')).toBe(true)
+	    Vue.extend({ name: 'Some App' })
+	    expect(hasWarned('Invalid component name: Some App')).toBe(true)
 	  })
 	
 	  it('use', function () {
@@ -11641,6 +11727,37 @@
 	      expect(opts.beforeDestroy).toHaveBeenCalled()
 	      expect(opts.destroyed).toHaveBeenCalled()
 	      expect(opts.detached).toHaveBeenCalled()
+	    })
+	
+	    // #1966
+	    it('grandchild hooks', function () {
+	      var grandChildBeforeDestroy = jasmine.createSpy()
+	      var grandChildDestroyed = jasmine.createSpy()
+	      var grandChildDetached = jasmine.createSpy()
+	
+	      var opts = {
+	        template: '<div><test></test></div>',
+	        components: {
+	          test: {
+	            template: '<div><test-inner></test-inner></div>',
+	            components: {
+	              'test-inner': {
+	                beforeDestroy: grandChildBeforeDestroy,
+	                destroyed: grandChildDestroyed,
+	                detached: grandChildDetached
+	              }
+	            }
+	          }
+	        }
+	      }
+	      var el = opts.el = document.createElement('div')
+	      document.body.appendChild(el)
+	      var vm = new Vue(opts)
+	      vm.$destroy(true)
+	
+	      expect(grandChildBeforeDestroy).toHaveBeenCalled()
+	      expect(grandChildDestroyed).toHaveBeenCalled()
+	      expect(grandChildDetached).toHaveBeenCalled()
 	    })
 	
 	    it('parent', function () {
@@ -12667,12 +12784,12 @@
 	      }
 	    })
 	    expect(el.firstChild.id).toBe('aaa')
-	    expect(el.firstChild.className).toBe('d ccc b')
+	    expect(el.firstChild.className).toBe('b d ccc')
 	    vm.a = 'aa'
 	    vm.c = 'cc'
 	    _.nextTick(function () {
 	      expect(el.firstChild.id).toBe('aa')
-	      expect(el.firstChild.className).toBe('d b cc')
+	      expect(el.firstChild.className).toBe('b d cc')
 	      done()
 	    })
 	  })
@@ -12705,13 +12822,12 @@
 	  it('attribute interpolation: warn mixed usage with v-bind', function () {
 	    new Vue({
 	      el: el,
-	      template: '<div class="{{a}}" :class="b"></div>',
+	      template: '<div class="{{a}}" :class="bcd"></div>',
 	      data: {
-	        a: 'hi',
-	        b: 'ho'
+	        a: 'hi'
 	      }
 	    })
-	    expect(el.firstChild.className).toBe('hi ho')
+	    expect(hasWarned('Do not mix mustache interpolation and v-bind')).toBe(true)
 	  })
 	
 	  it('warn directives on fragment instances', function () {
@@ -13278,6 +13394,17 @@
 	    expect(el.lastChild.textContent).toBe('slot b')
 	  })
 	
+	  it('fallback content with mixed named/unnamed slots', function () {
+	    el.innerHTML = '<p slot="b">slot b</p>'
+	    options.template =
+	      '<slot><p>fallback a</p></slot>' +
+	      '<slot name="b">fallback b</slot>'
+	    mount()
+	    expect(el.childNodes.length).toBe(2)
+	    expect(el.firstChild.textContent).toBe('fallback a')
+	    expect(el.lastChild.textContent).toBe('slot b')
+	  })
+	
 	  it('selector matching multiple elements', function () {
 	    el.innerHTML = '<p slot="t">1</p><div></div><p slot="t">2</p>'
 	    options.template = '<slot name="t"></slot>'
@@ -13377,27 +13504,28 @@
 	      el: el,
 	      data: {
 	        a: 1,
+	        b: 2,
 	        show: true
 	      },
-	      template: '<test :show="show">{{a}}</test>',
+	      template: '<test :show="show"><p slot="b">{{b}}</a><p>{{a}}</p></test>',
 	      components: {
 	        test: {
 	          props: ['show'],
-	          template: '<div v-if="show"><slot></cotent></div>'
+	          template: '<div v-if="show"><slot></slot><slot name="b"></slot></div>'
 	        }
 	      }
 	    })
-	    expect(el.textContent).toBe('1')
+	    expect(el.textContent).toBe('12')
 	    vm.a = 2
 	    _.nextTick(function () {
-	      expect(el.textContent).toBe('2')
+	      expect(el.textContent).toBe('22')
 	      vm.show = false
 	      _.nextTick(function () {
 	        expect(el.textContent).toBe('')
 	        vm.show = true
 	        vm.a = 3
 	        _.nextTick(function () {
-	          expect(el.textContent).toBe('3')
+	          expect(el.textContent).toBe('32')
 	          done()
 	        })
 	      })
@@ -13997,11 +14125,16 @@
 	      // cleans up the component being waited on.
 	      // see #1152
 	      vm.view = 'view-a'
+	      // store the ready callback for view-a
+	      var callback = next
 	      _.nextTick(function () {
 	        vm.view = 'view-b'
 	        _.nextTick(function () {
 	          expect(vm.$children.length).toBe(1)
 	          expect(vm.$children[0].$el.textContent).toBe('BBB')
+	          // calling view-a's ready callback here should not throw
+	          // because it should've been cancelled (#1994)
+	          expect(callback).not.toThrow()
 	          done()
 	        })
 	      })
@@ -19572,7 +19705,56 @@
 	    expect(logs.join()).toBe('0,5,6,5,6,1')
 	    logs = []
 	    vm.$destroy(true)
-	    expect(logs.join()).toBe('3,8,9,8,9,2,7,7,4')
+	    expect(logs.join()).toBe('2,7,7,3,8,9,8,9,4')
+	    Vue.options.replace = false
+	  })
+	
+	  // #1966
+	  it('call lifecycle hooks for child and grandchild components', function () {
+	    Vue.options.replace = true
+	    var el = document.createElement('div')
+	    var logs = []
+	    function log (n) {
+	      return function () {
+	        logs.push(n)
+	      }
+	    }
+	    document.body.appendChild(el)
+	    var vm = new Vue({
+	      el: el,
+	      attached: log(0),
+	      ready: log(1),
+	      detached: log(2),
+	      beforeDestroy: log(3),
+	      destroyed: log(4),
+	      template: '<div><test></test></div>',
+	      components: {
+	        test: {
+	          attached: log(5),
+	          ready: log(6),
+	          detached: log(7),
+	          beforeDestroy: log(8),
+	          destroyed: log(9),
+	          template: '<div><test-inner></test-inner></div>',
+	          components: {
+	            'test-inner': {
+	              attached: log(10),
+	              ready: log(11),
+	              detached: log(12),
+	              beforeDestroy: log(13),
+	              destroyed: log(14),
+	              template: '<span>hi</span>'
+	            }
+	          }
+	
+	        }
+	      }
+	    })
+	    expect(vm.$el.innerHTML).toBe('<div><span>hi</span></div>')
+	    expect(logs.join()).toBe('0,5,10,11,6,1')
+	    logs = []
+	    vm.$destroy(true)
+	    expect(logs.join()).toBe('2,7,12,3,8,13,14,9,4')
 	    Vue.options.replace = false
 	  })
 	
