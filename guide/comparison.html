@@ -191,7 +191,7 @@
     <div id="ad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
     </div>
-    <h2 id="Angular">Angular</h2><p>There are a few reasons to use Vue over Angular, although they might not apply for everyone:</p>
+    <h2 id="Angular"><a href="#Angular" class="headerlink" title="Angular"></a>Angular</h2><p>There are a few reasons to use Vue over Angular, although they might not apply for everyone:</p>
 <ul>
 <li><p>Vue.js is much simpler than Angular, both in terms of API and design. You can learn almost everything about it really fast and get productive.</p>
 </li>
@@ -205,7 +205,7 @@
 </li>
 </ul>
 <p>Interestingly, there are quite some similarities in how Angular 2 and Vue are addressing these Angular 1 issues.</p>
-<h2 id="React">React</h2><p>React and Vue.js do share a similarity in that they both provide reactive &amp; composable View components. There are, of course, many differences as well.</p>
+<h2 id="React"><a href="#React" class="headerlink" title="React"></a>React</h2><p>React and Vue.js do share a similarity in that they both provide reactive &amp; composable View components. There are, of course, many differences as well.</p>
 <p>First, the internal implementation is fundamentally different. React’s rendering leverages the Virtual DOM - an in-memory representation of what the actual DOM should look like. When the state changes, React does a full re-render of the Virtual DOM, diffs it, and then patches the real DOM.</p>
 <p>The virtual-DOM approach provides a functional way to describe your view at any point of time, which is really nice. Because it doesn’t use observables and re-renders the entire app on every update, the view is by definition guaranteed to be in sync with the data. It also opens up possibilities to isomorphic JavaScript applications.</p>
 <p>Instead of a Virtual DOM, Vue.js uses the actual DOM as the template and keeps references to actual nodes for data bindings. This limits Vue.js to environments where DOM is present. However, contrary to the common misconception that Virtual-DOM makes React faster than anything else, Vue.js actually out-performs React when it comes to hot updates, and requires almost no hand-tuned optimization. With React, you need to implement <code>shouldComponentUpdate</code> everywhere or use immutable data structures to achieve fully optimized re-renders.</p>
@@ -222,7 +222,7 @@
 <li><p>The trend in React development is pushing you to put everything in JavaScript, including your CSS. There has been many CSS-in-JS solutions out there but all more or less have its own problems. And most importantly, it deviates from the standard CSS authoring experience and makes it very awkward to leverage existing work in the CSS community. Vue’s <a href="http://vuejs.org/guide/application.html#Single_File_Components">single file components</a> gives you component-encapsulated CSS while still allowing you to use your pre-processors of choice.</p>
 </li>
 </ul>
-<h2 id="Ember">Ember</h2><p>Ember is a full-featured framework that is designed to be highly opinionated. It provides a lot of established conventions, and once you are familiar enough with them, it can make you very productive. However, it also means the learning curve is high and the flexibility suffers. It’s a trade-off when you try to pick between an opinionated framework and a library with a loosely coupled set of tools that work together. The latter gives you more freedom but also requires you to make more architectural decisions.</p>
+<h2 id="Ember"><a href="#Ember" class="headerlink" title="Ember"></a>Ember</h2><p>Ember is a full-featured framework that is designed to be highly opinionated. It provides a lot of established conventions, and once you are familiar enough with them, it can make you very productive. However, it also means the learning curve is high and the flexibility suffers. It’s a trade-off when you try to pick between an opinionated framework and a library with a loosely coupled set of tools that work together. The latter gives you more freedom but also requires you to make more architectural decisions.</p>
 <p>That said, it would probably make a better comparison between Vue.js core and Ember’s templating and object model layer:</p>
 <ul>
 <li><p>Vue provides unobtrusive reactivity on plain JavaScript objects, and fully automatic computed properties. In Ember you need to wrap everything in Ember Objects and manually declare dependencies for computed properties.</p>
@@ -232,10 +232,10 @@
 <li><p>Performance wise, Vue outperforms Ember by a fair margin, even after the latest Glimmer engine update in Ember 2.0. Vue automatically batches updates, while in Ember you need to manually manage run loops in performance-critical situations.</p>
 </li>
 </ul>
-<h2 id="Polymer">Polymer</h2><p>Polymer is yet another Google-sponsored project and in fact was a source of inspiration for Vue.js as well. Vue.js’ components can be loosely compared to Polymer’s custom elements, and both provide a very similar development style. The biggest difference is that Polymer is built upon the latest Web Components features, and requires non-trivial polyfills to work (with degraded performance) in browsers that don’t support those features natively. In contrast, Vue.js works without any dependencies down to IE9.</p>
+<h2 id="Polymer"><a href="#Polymer" class="headerlink" title="Polymer"></a>Polymer</h2><p>Polymer is yet another Google-sponsored project and in fact was a source of inspiration for Vue.js as well. Vue.js’ components can be loosely compared to Polymer’s custom elements, and both provide a very similar development style. The biggest difference is that Polymer is built upon the latest Web Components features, and requires non-trivial polyfills to work (with degraded performance) in browsers that don’t support those features natively. In contrast, Vue.js works without any dependencies down to IE9.</p>
 <p>Also, in Polymer 1.0 the team has really made its data-binding system very limited in order to compensate for the performance. For example, the only expressions supported in Polymer templates are the boolean negation and single method calls. Its computed property implementation is also not very flexible.</p>
 <p>Finally, when deploying to production, Polymer elements need to be bundled via a Polymer-specific tool called vulcanizer. In comparison, single file Vue components can leverage everything the Webpack ecosystem has to offer, and thus you can easily use ES6 and any CSS pre-processors you want in your Vue components.</p>
-<h2 id="Riot">Riot</h2><p>Riot 2.0 provides a similar component-based development model (which is called a “tag” in Riot), with a minimal and beautifully designed API. I think Riot and Vue share a lot in design philosophies. However, despite being a bit heavier than Riot, Vue does offer some significant advantages over Riot:</p>
+<h2 id="Riot"><a href="#Riot" class="headerlink" title="Riot"></a>Riot</h2><p>Riot 2.0 provides a similar component-based development model (which is called a “tag” in Riot), with a minimal and beautifully designed API. I think Riot and Vue share a lot in design philosophies. However, despite being a bit heavier than Riot, Vue does offer some significant advantages over Riot:</p>
 <ul>
 <li>True conditional rendering (Riot renders all if branches and simply show/hide them)</li>
 <li>A far-more powerful router (Riot’s routing API is just way too minimal)</li>

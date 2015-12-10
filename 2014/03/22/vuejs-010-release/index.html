@@ -127,7 +127,7 @@
     <p>Vue.js 0.10.0 (Blade Runner) has been released! This release comes with many useful additions based on the suggestions from the users, notably interpolation in literal directives, dynamic components with the new <code>v-view</code> directive, array filters, and the option to configure interpolation delimiters. Internally, the codebase has received many refactoring and improvements which makes Vue.js <a href="http://vuejs.org/perf/">even faster</a>.</p>
 <a id="more"></a>
 <p>See the <a href="/guide/installation.html">Installation</a> page for the latest builds.</p>
-<h3 id="New">New</h3><ul>
+<h3 id="New"><a href="#New" class="headerlink" title="New"></a>New</h3><ul>
 <li>Literal directives can now contain interpolation tags. These tags will be evaluated only once at compile time. An example usage is conditionally decide which component to instantiate with <code>v-component=&quot;{{type}}&quot;</code>. <a href="/guide/directives.html#Literal_Directives">Doc</a>.</li>
 <li>Attributes listed in the <code>paramAttributes</code> option now accept mustache interpolations too. They will also only be evaluated once.</li>
 <li><code>v-repeat</code> now accepts an argument which will be used as the identifier for the wrapped object. This allows more explicit property access in repeaters. <a href="/guide/list.html#Using_an_Identifier">Doc</a>.</li>
@@ -137,7 +137,7 @@
 <li>You can now access the event in <code>v-on</code> handler expressions as <code>$event</code>. Example: <code>&lt;a v-on=&quot;click:handle(&#39;hello&#39;, $event)&quot;&gt;Hello&lt;/a&gt;</code></li>
 <li>Interpolation delimiters can now be customized via the <code>delimiters</code> global config option. Example: <code>Vue.config({ delimiters: [&quot;[&quot;, &quot;]&quot;] })</code> will change the matched interpolation tags to <code>[[ ]]</code> for text bindings and <code>[[[ ]]]</code> for html bindings.</li>
 </ul>
-<h3 id="Changed">Changed</h3><ul>
+<h3 id="Changed"><a href="#Changed" class="headerlink" title="Changed"></a>Changed</h3><ul>
 <li><code>{{>yield}}</code> syntax has been deprecated. A Web Components spec compatible content insertion mechanism using <code>&lt;content&gt;</code> elements has been introduced. <a href="/guide/components.html#Content_Insertion">Doc</a>.</li>
 <li>To use a component as a custom element, the component ID must now contain a hyphen (<code>-</code>). This is consistent with the current custom element spec draft.</li>
 <li><code>v-repeat</code> Arrays’ augmented methods have been renamed from <code>set</code> to <code>$set(index, value)</code> and <code>remove</code> to <code>$remove(index | value)</code>. The prefix better differentiates them from native methods. The <code>replace</code> method has been removed.</li>
@@ -146,12 +146,12 @@
 <li><code>v-with</code> can no longer be used alone. It now must be used with either <code>v-component</code> or <code>v-view</code>. <code>v-component</code> can also be used as an empty directive just to create a child VM using the default <code>Vue</code> constructor.</li>
 <li>Production build now strips all warnings and debug logs. To leverage <code>debug: true</code>, use the development version. The development version now has more detailed warning messages.</li>
 </ul>
-<h3 id="Fixed">Fixed</h3><ul>
+<h3 id="Fixed"><a href="#Fixed" class="headerlink" title="Fixed"></a>Fixed</h3><ul>
 <li><code>event.stopPropagation()</code> and <code>event.preventDefault()</code> inside <code>v-on</code> handlers now work as expected.</li>
 <li><code>parent</code> option now works properly when used in <code>Vue.extend</code></li>
 <li>Mustache bindings inside <code>&lt;textarea&gt;</code> are now properly interpolated before being set as value.</li>
 </ul>
-<h3 id="Internal">Internal</h3><ul>
+<h3 id="Internal"><a href="#Internal" class="headerlink" title="Internal"></a>Internal</h3><ul>
 <li><code>v-component</code>, <code>v-with</code> and <code>v-if</code> have been re-written for a cleaner compile flow.</li>
 <li><code>v-repeat</code> has been re-written to use refined diff algorithm which triggers minimum DOM manipulations when the array is set to a different instance containing overlapping elements. This makes it efficient to pipe an Array through filters.</li>
 <li><code>template</code> option now directly clones native <code>&lt;template&gt;</code>‘s content when available.</li>
