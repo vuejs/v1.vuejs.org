@@ -164,9 +164,11 @@
 	
 	// devtools global hook
 	/* istanbul ignore if */
-	if (true) {
-	  if (_utilIndex.inBrowser && window.__VUE_DEVTOOLS_GLOBAL_HOOK__) {
+	if (("development") !== 'production' && _utilIndex.inBrowser) {
+	  if (window.__VUE_DEVTOOLS_GLOBAL_HOOK__) {
 	    window.__VUE_DEVTOOLS_GLOBAL_HOOK__.emit('init', _instanceVue2['default']);
+	  } else if (/Chrome\/\d+/.test(navigator.userAgent)) {
+	    console.log('Download the Vue Devtools for a better development experience:\n' + 'https://github.com/vuejs/vue-devtools');
 	  }
 	}
 	module.exports = exports['default'];
@@ -956,6 +958,8 @@
 	
 	var _config2 = _interopRequireDefault(_config);
 	
+	var _env = __webpack_require__(6);
+	
 	var _debug = __webpack_require__(12);
 	
 	var _lang = __webpack_require__(5);
@@ -1119,6 +1123,25 @@
 	}
 	
 	/**
+	 * In IE9, setAttribute('class') will result in empty class
+	 * if the element also has the :class attribute; However in
+	 * PhantomJS, setting `className` does not work on SVG elements...
+	 * So we have to do a conditional check here.
+	 *
+	 * @param {Element} el
+	 * @param {String} cls
+	 */
+	
+	function setClass(el, cls) {
+	  /* istanbul ignore if */
+	  if (_env.isIE9 && el.hasOwnProperty('className')) {
+	    el.className = cls;
+	  } else {
+	    el.setAttribute('class', cls);
+	  }
+	}
+	
+	/**
 	 * Add class with compatibility for IE & SVG
 	 *
 	 * @param {Element} el
@@ -1131,7 +1154,7 @@
 	  } else {
 	    var cur = ' ' + (el.getAttribute('class') || '') + ' ';
 	    if (cur.indexOf(' ' + cls + ' ') < 0) {
-	      el.setAttribute('class', (cur + cls).trim());
+	      setClass(el, (cur + cls).trim());
 	    }
 	  }
 	}
@@ -1152,7 +1175,7 @@
 	    while (cur.indexOf(tar) >= 0) {
 	      cur = cur.replace(tar, ' ');
 	    }
-	    el.setAttribute('class', cur.trim());
+	    setClass(el, cur.trim());
 	  }
 	  if (!el.className) {
 	    el.removeAttribute('class');
@@ -1744,7 +1767,7 @@
 	 */
 	
 	var str, dir;
-	var c, i, l, lastFilterIndex;
+	var c, prev, i, l, lastFilterIndex;
 	var inSingle, inDouble, curly, square, paren;
 	
 	/**
@@ -1824,13 +1847,14 @@
 	  dir = {};
 	
 	  for (i = 0, l = str.length; i < l; i++) {
+	    prev = c;
 	    c = str.charCodeAt(i);
 	    if (inSingle) {
 	      // check single quote
-	      if (c === 0x27) inSingle = !inSingle;
+	      if (c === 0x27 && prev !== 0x5C) inSingle = !inSingle;
 	    } else if (inDouble) {
 	      // check double quote
-	      if (c === 0x22) inDouble = !inDouble;
+	      if (c === 0x22 && prev !== 0x5C) inDouble = !inDouble;
 	    } else if (c === 0x7C && // pipe
 	    str.charCodeAt(i + 1) !== 0x7C && str.charCodeAt(i - 1) !== 0x7C) {
 	      if (dir.expression == null) {
@@ -3501,11 +3525,11 @@
 	
 	var wsRE = /\s/g;
 	var newlineRE = /\n/g;
-	var saveRE = /[\{,]\s*[\w\$_]+\s*:|('[^']*'|"[^"]*")|new |typeof |void /g;
+	var saveRE = /[\{,]\s*[\w\$_]+\s*:|('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")|new |typeof |void /g;
 	var restoreRE = /"(\d+)"/g;
-	var pathTestRE = /^[A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*|\['.*?'\]|\[".*?"\]|\[\d+\]|\[[A-Za-z_$][\w$]*\])*$/;
-	var pathReplaceRE = /[^\w$\.]([A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*|\['.*?'\]|\[".*?"\])*)/g;
-	var booleanLiteralRE = /^(true|false)$/;
+	var pathTestRE = /^[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*|\['.*?'\]|\[".*?"\]|\[\d+\]|\[[A-Za-z_$][\w$]*\])*$/;
+	var identRE = /[^\w$\.](?:[A-Za-z_$][\w$]*)/g;
+	var booleanLiteralRE = /^(?:true|false)$/;
 	
 	/**
 	 * Save / Rewrite / Restore
@@ -3588,7 +3612,7 @@
 	  var body = exp.replace(saveRE, save).replace(wsRE, '');
 	  // rewrite all paths
 	  // pad 1 space here becaue the regex matches 1 extra char
-	  body = (' ' + body).replace(pathReplaceRE, rewrite).replace(restoreRE, restore);
+	  body = (' ' + body).replace(identRE, rewrite).replace(restoreRE, restore);
 	  return makeGetterFn(body);
 	}
 	
@@ -4796,15 +4820,11 @@
 	    // attribute interpolations
 	    if (tokens) {
 	      value = _parsersText.tokensToExp(tokens);
-	      arg = name;
-	      pushDir('bind', _directivesPublicIndex2['default'].bind, true);
-	      // warn against mixing mustaches with v-bind
-	      if (true) {
-	        if (name === 'class' && Array.prototype.some.call(attrs, function (attr) {
-	          return attr.name === ':class' || attr.name === 'v-bind:class';
-	        })) {
-	          _utilIndex.warn('class="' + rawValue + '": Do not mix mustache interpolation ' + 'and v-bind for "class" on the same element. Use one or the other.');
-	        }
+	      if (name === 'class') {
+	        pushDir('class', _directivesInternalIndex2['default']['class']);
+	      } else {
+	        arg = name;
+	        pushDir('bind', _directivesPublicIndex2['default'].bind, true);
 	      }
 	    } else
 	
@@ -7254,6 +7274,7 @@
 	  deep: true,
 	
 	  update: function update(value) {
+	    console.log(111);
 	    if (value && typeof value === 'string') {
 	      this.handleObject(stringToObject(value));
 	    } else if (_utilIndex.isPlainObject(value)) {
@@ -9604,7 +9625,9 @@
 	      if (asStatement && !_parsersExpression.isSimplePath(exp)) {
 	        var self = this;
 	        return function statementHandler() {
+	          self.$arguments = _utilIndex.toArray(arguments);
 	          res.get.call(self, self);
+	          self.$arguments = null;
 	        };
 	      } else {
 	        try {
@@ -9661,6 +9684,7 @@
 	    }
 	    var watcher = new _watcher2['default'](vm, expOrFn, cb, {
 	      deep: options && options.deep,
+	      sync: options && options.sync,
 	      filters: parsed && parsed.filters
 	    });
 	    if (options && options.immediate) {
@@ -12643,12 +12667,12 @@
 	      }
 	    })
 	    expect(el.firstChild.id).toBe('aaa')
-	    expect(el.firstChild.className).toBe('b ccc d')
+	    expect(el.firstChild.className).toBe('d ccc b')
 	    vm.a = 'aa'
 	    vm.c = 'cc'
 	    _.nextTick(function () {
 	      expect(el.firstChild.id).toBe('aa')
-	      expect(el.firstChild.className).toBe('b cc d')
+	      expect(el.firstChild.className).toBe('d b cc')
 	      done()
 	    })
 	  })
@@ -12681,12 +12705,13 @@
 	  it('attribute interpolation: warn mixed usage with v-bind', function () {
 	    new Vue({
 	      el: el,
-	      template: '<div class="{{a}}" :class="bcd"></div>',
+	      template: '<div class="{{a}}" :class="b"></div>',
 	      data: {
-	        a: 'hi'
+	        a: 'hi',
+	        b: 'ho'
 	      }
 	    })
-	    expect(hasWarned('Do not mix mustache interpolation and v-bind')).toBe(true)
+	    expect(el.firstChild.className).toBe('hi ho')
 	  })
 	
 	  it('warn directives on fragment instances', function () {
@@ -18929,6 +18954,24 @@
 	      expect(vm.a).toBe(1)
 	    })
 	
+	    it('passing $arguments', function () {
+	      new Vue({
+	        el: document.createElement('div'),
+	        template: '<comp @ready="onReady($arguments[1])"></comp>',
+	        methods: {
+	          onReady: spy
+	        },
+	        components: {
+	          comp: {
+	            compiled: function () {
+	              this.$emit('ready', 123, 1234)
+	            }
+	          }
+	        }
+	      })
+	      expect(spy).toHaveBeenCalledWith(1234)
+	    })
+	
 	    describe('attached/detached', function () {
 	
 	      it('in DOM', function () {
@@ -20266,6 +20309,14 @@
 	    expect(res.filters[0].args).toBeUndefined()
 	  })
 	
+	  it('escape string', function () {
+	    var res = parse("'a\\'b' | test")
+	    expect(res.expression).toBe("'a\\'b'")
+	    expect(res.filters.length).toBe(1)
+	    expect(res.filters[0].name).toBe('test')
+	    expect(res.filters[0].args).toBeUndefined()
+	  })
+	
 	  it('cache', function () {
 	    var res1 = parse('a || b | c')
 	    var res2 = parse('a || b | c')
@@ -20451,6 +20502,27 @@
 	    },
 	    expected: 8,
 	    paths: ['$a', 'b', 'c', 'e']
+	  },
+	  {
+	    // string with escaped quotes
+	    exp: "'a\\'b' + c",
+	    scope: {
+	      c: '\'c'
+	    },
+	    expected: "a\'b\'c",
+	    paths: ['c']
+	  },
+	  {
+	    // dynamic sub path
+	    exp: "a['b' + i + 'c']",
+	    scope: {
+	      i: 0,
+	      a: {
+	        'b0c': 123
+	      }
+	    },
+	    expected: 123,
+	    paths: ['a', 'i']
 	  },
 	  {
 	    // Math global, simple path
