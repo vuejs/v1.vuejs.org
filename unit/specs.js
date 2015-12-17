@@ -139,7 +139,7 @@
 	
 	var _utilIndex = __webpack_require__(4);
 	
-	_instanceVue2['default'].version = '1.0.11';
+	_instanceVue2['default'].version = '1.0.12';
 	
 	/**
 	 * Vue and every constructor that extends Vue has an
@@ -944,6 +944,7 @@
 	exports.replace = replace;
 	exports.on = on;
 	exports.off = off;
+	exports.setClass = setClass;
 	exports.addClass = addClass;
 	exports.removeClass = removeClass;
 	exports.extractContent = extractContent;
@@ -1148,7 +1149,7 @@
 	
 	function setClass(el, cls) {
 	  /* istanbul ignore if */
-	  if (_env.isIE9 && el.hasOwnProperty('className')) {
+	  if (_env.isIE9 && !(el instanceof SVGElement)) {
 	    el.className = cls;
 	  } else {
 	    el.setAttribute('class', cls);
@@ -2254,8 +2255,8 @@
 	    var ids = Object.keys(components);
 	    for (var i = 0, l = ids.length; i < l; i++) {
 	      var key = ids[i];
-	      if (_component.commonTagRE.test(key)) {
-	        ("development") !== 'production' && _debug.warn('Do not use built-in HTML elements as component ' + 'id: ' + key);
+	      if (_component.commonTagRE.test(key) || _component.reservedTagRE.test(key)) {
+	        ("development") !== 'production' && _debug.warn('Do not use built-in or reserved HTML elements as component ' + 'id: ' + key);
 	        continue;
 	      }
 	      def = components[key];
@@ -2402,6 +2403,7 @@
 	exports.checkComponentAttr = checkComponentAttr;
 	exports.initProp = initProp;
 	exports.assertProp = assertProp;
+	exports.coerceProp = coerceProp;
 	
 	var _debug = __webpack_require__(12);
 	
@@ -2412,8 +2414,10 @@
 	var _lang = __webpack_require__(5);
 	
 	var commonTagRE = /^(div|p|span|img|a|b|i|br|ul|ol|li|h1|h2|h3|h4|h5|h6|code|pre|table|th|td|tr|form|label|input|select|option|nav|article|section|header|footer)$/;
-	
 	exports.commonTagRE = commonTagRE;
+	var reservedTagRE = /^(slot|partial|component)$/;
+	
+	exports.reservedTagRE = reservedTagRE;
 	/**
 	 * Check if an element is a component, if yes return its
 	 * component id.
@@ -2426,7 +2430,7 @@
 	function checkComponentAttr(el, options) {
 	  var tag = el.tagName.toLowerCase();
 	  var hasAttrs = el.hasAttributes();
-	  if (!commonTagRE.test(tag) && tag !== 'component') {
+	  if (!commonTagRE.test(tag) && !reservedTagRE.test(tag)) {
 	    if (_options.resolveAsset(options, 'components', tag)) {
 	      return { id: tag };
 	    } else {
@@ -2477,6 +2481,7 @@
 	
 	function initProp(vm, prop, value) {
 	  var key = prop.path;
+	  value = coerceProp(prop, value);
 	  vm[key] = vm._data[key] = assertProp(prop, value) ? value : undefined;
 	}
 	
@@ -2532,6 +2537,23 @@
 	    }
 	  }
 	  return true;
+	}
+	
+	/**
+	 * Force parsing value with coerce option.
+	 *
+	 * @param {*} value
+	 * @param {Object} options
+	 * @return {*}
+	 */
+	
+	function coerceProp(prop, value) {
+	  var coerce = prop.options.coerce;
+	  if (!coerce) {
+	    return value;
+	  }
+	  // coerce is a function
+	  return coerce(value);
 	}
 	
 	function formatType(val) {
@@ -3420,11 +3442,11 @@
 	  if (this.active) {
 	    var value = this.get();
 	    if (value !== this.value ||
-	    // Deep watchers and Array watchers should fire even
+	    // Deep watchers and watchers on Object/Arrays should fire even
 	    // when the value is the same, because the value may
 	    // have mutated; but only do so if this is a
 	    // non-shallow update (caused by a vm digest).
-	    (_utilIndex.isArray(value) || this.deep) && !this.shallow) {
+	    (_utilIndex.isObject(value) || this.deep) && !this.shallow) {
 	      // set new value
 	      var oldValue = this.value;
 	      this.value = value;
@@ -5186,7 +5208,7 @@
 	}
 	
 	var tagRE = /<([\w:]+)/;
-	var entityRE = /&\w+;|&#\d+;|&#x[\dA-F]+;/;
+	var entityRE = /&#?\w+?;/;
 	
 	/**
 	 * Convert a string template to a DocumentFragment.
@@ -6353,9 +6375,14 @@
 	  },
 	
 	  apply: function apply(el, value) {
-	    _transitionIndex.applyTransition(el, value ? 1 : -1, function () {
+	    if (_utilIndex.inDoc(el)) {
+	      _transitionIndex.applyTransition(el, value ? 1 : -1, toggle, this.vm);
+	    } else {
+	      toggle();
+	    }
+	    function toggle() {
 	      el.style.display = value ? '' : 'none';
-	    }, this.vm);
+	    }
 	  }
 	};
 	module.exports = exports['default'];
@@ -6518,13 +6545,18 @@
 	      });
 	      this.on('blur', function () {
 	        self.focused = false;
-	        self.listener();
+	        // do not sync value after fragment removal (#2017)
+	        if (!self._frag || self._frag.inserted) {
+	          self.rawListener();
+	        }
 	      });
 	    }
 	
 	    // Now attach the main listener
-	    this.listener = function () {
-	      if (composing) return;
+	    this.listener = this.rawListener = function () {
+	      if (composing || !self._bound) {
+	        return;
+	      }
 	      var val = number || isRange ? _utilIndex.toNumber(el.value) : el.value;
 	      self.set(val);
 	      // force update on next tick to avoid lock & same value
@@ -6967,13 +6999,12 @@
 	var xlinkNS = 'http://www.w3.org/1999/xlink';
 	var xlinkRE = /^xlink:/;
 	
-	// these input element attributes should also set their
-	// corresponding properties
-	var inputProps = {
-	  value: 1,
-	  checked: 1,
-	  selected: 1
-	};
+	// check for attributes that prohibit interpolations
+	var disallowedInterpAttrRE = /^v-|^:|^@|^(is|transition|transition-mode|debounce|track-by|stagger|enter-stagger|leave-stagger)$/;
+	
+	// these attributes should also set their corresponding properties
+	// because they only affect the initial state of the element
+	var attrWithPropsRE = /^(value|checked|selected|muted)$/;
 	
 	// these attributes should set a hidden property for
 	// binding v-model to object values
@@ -6982,9 +7013,6 @@
 	  'true-value': '_trueValue',
 	  'false-value': '_falseValue'
 	};
-	
-	// check for attributes that prohibit interpolations
-	var disallowedInterpAttrRE = /^v-|^:|^@|^(is|transition|transition-mode|debounce|track-by|stagger|enter-stagger|leave-stagger)$/;
 	
 	exports['default'] = {
 	
@@ -7038,9 +7066,9 @@
 	  handleObject: _internalStyle2['default'].handleObject,
 	
 	  handleSingle: function handleSingle(attr, value) {
-	    if (inputProps[attr] && attr in this.el) {
-	      this.el[attr] = attr === 'value' ? value || '' : // IE9 will set input.value to "null" for null...
-	      value;
+	    if (!this.descriptor.interp && attrWithPropsRE.test(attr) && attr in this.el) {
+	      this.el[attr] = attr === 'value' ? value == null // IE9 will set input.value to "null" for null...
+	      ? '' : value : value;
 	    }
 	    // set model props
 	    var modelProp = modelProps[attr];
@@ -7764,6 +7792,7 @@
 	    var twoWay = prop.mode === bindingModes.TWO_WAY;
 	
 	    var parentWatcher = this.parentWatcher = new _watcher2['default'](parent, parentKey, function (val) {
+	      val = _utilIndex.coerceProp(prop, val);
 	      if (_utilIndex.assertProp(prop, val)) {
 	        child[childKey] = val;
 	      }
@@ -8824,6 +8853,11 @@
 	    el = _compilerIndex.transclude(el, options);
 	    this._initElement(el);
 	
+	    // handle v-pre on root node (#2026)
+	    if (el.nodeType === 1 && _utilIndex.getAttr(el, 'v-pre') !== null) {
+	      return;
+	    }
+	
 	    // root is always compiled per-instance, because
 	    // container attrs and props can be different every time.
 	    var contextOptions = this._context && this._context.$options;
@@ -9116,7 +9150,7 @@
 	    } else {
 	      // for class interpolations, only remove the parts that
 	      // need to be interpolated.
-	      this.el.className = _parsersText.removeTags(this.el.className).trim().replace(/\s+/g, ' ');
+	      _utilIndex.setClass(this.el, _parsersText.removeTags(this.el.getAttribute('class')).trim().replace(/\s+/g, ' '));
 	    }
 	  }
 	
@@ -9135,6 +9169,7 @@
 	  if (this.bind) {
 	    this.bind();
 	  }
+	  this._bound = true;
 	
 	  if (this.literal) {
 	    this.update && this.update(descriptor.raw);
@@ -9170,7 +9205,6 @@
 	      this.update(watcher.value);
 	    }
 	  }
-	  this._bound = true;
 	};
 	
 	/**
@@ -9639,8 +9673,8 @@
 	      } else {
 	        /* istanbul ignore if */
 	        if (true) {
-	          if (type === 'component' && _utilIndex.commonTagRE.test(id)) {
-	            _utilIndex.warn('Do not use built-in HTML elements as component ' + 'id: ' + id);
+	          if (type === 'component' && (_utilIndex.commonTagRE.test(id) || _utilIndex.reservedTagRE.test(id))) {
+	            _utilIndex.warn('Do not use built-in or reserved HTML elements as component ' + 'id: ' + id);
 	          }
 	        }
 	        if (type === 'component' && _utilIndex.isPlainObject(definition)) {
@@ -14611,7 +14645,7 @@
 	
 	  describe('assertions', function () {
 	
-	    function makeInstance (value, type, validator) {
+	    function makeInstance (value, type, validator, coerce) {
 	      return new Vue({
 	        el: document.createElement('div'),
 	        template: '<test :test="val"></test>',
@@ -14623,7 +14657,8 @@
 	            props: {
 	              test: {
 	                type: type,
-	                validator: validator
+	                validator: validator,
+	                coerce: coerce
 	              }
 	            }
 	          }
@@ -14705,6 +14740,17 @@
 	        return v === 123
 	      })
 	      expect(hasWarned('Expected String')).toBe(true)
+	    })
+	
+	    it('type check + coerce', function () {
+	      makeInstance(123, String, null, String)
+	      expect(getWarnCount()).toBe(0)
+	      makeInstance('123', Number, null, Number)
+	      expect(getWarnCount()).toBe(0)
+	      makeInstance('123', Boolean, null, function (val) {
+	        return val === '123'
+	      })
+	      expect(getWarnCount()).toBe(0)
 	    })
 	
 	    it('required', function () {
@@ -15211,7 +15257,10 @@
 	  var el, dir
 	  beforeEach(function () {
 	    el = document.createElement('div')
-	    dir = {el: el}
+	    dir = {
+	      el: el,
+	      descriptor: {}
+	    }
 	    _.extend(dir, def)
 	  })
 	
@@ -18027,8 +18076,19 @@
 	    }, 30)
 	    setTimeout(function () {
 	      expect(spy.calls.count()).toBe(1)
+	      expect(spy).toHaveBeenCalledWith('d', 'a')
 	      expect(vm.test).toBe('d')
-	      done()
+	      setTimeout(function () {
+	        el.firstChild.value = 'e'
+	        // blur should trigger change instantly without debounce
+	        trigger(el.firstChild, 'blur')
+	        _.nextTick(function () {
+	          expect(spy.calls.count()).toBe(2)
+	          expect(spy).toHaveBeenCalledWith('e', 'd')
+	          expect(vm.test).toBe('e')
+	          done()
+	        })
+	      }, 10)
 	    }, 200)
 	  })
 	
@@ -18057,6 +18117,34 @@
 	        expect(el.lastChild.checked).toBe(true)
 	        done()
 	      })
+	    })
+	  })
+	
+	  it('should not sync value on blur when parent fragment is removed', function (done) {
+	    el.style.display = ''
+	    var vm = new Vue({
+	      el: el,
+	      replace: false,
+	      template:
+	        '<form v-if="ok" @submit.prevent="save">' +
+	          '<input v-model="msg">' +
+	        '</form>',
+	      data: {
+	        ok: true,
+	        msg: 'hi'
+	      },
+	      methods: {
+	        save: function () {
+	          this.ok = false
+	          this.msg = ''
+	        }
+	      }
+	    })
+	    el.querySelector('input').focus()
+	    trigger(el.querySelector('form'), 'submit')
+	    _.nextTick(function () {
+	      expect(vm.msg).toBe('')
+	      done()
 	    })
 	  })
 	})
@@ -18331,6 +18419,10 @@
 	
 	describe('v-pre', function () {
 	
+	  beforeEach(function () {
+	    spyWarns()
+	  })
+	
 	  it('should work', function () {
 	    var vm = new Vue({
 	      el: document.createElement('div'),
@@ -18340,6 +18432,19 @@
 	      }
 	    })
 	    expect(vm.$el.firstChild.textContent).toBe('{{a}}')
+	  })
+	
+	  it('should work on root node', function () {
+	    var vm = new Vue({
+	      el: document.createElement('div'),
+	      template: '<div v-pre>{{a}}</div>',
+	      replace: true,
+	      data: {
+	        a: 123
+	      }
+	    })
+	    expect(vm.$el.textContent).toBe('{{a}}')
+	    expect(getWarnCount()).toBe(0)
 	  })
 	})
 
@@ -19973,6 +20078,35 @@
 	      done()
 	    })
 	  })
+	
+	  it('IE9 class & :class merge during transclusion', function () {
+	    var vm = new Vue({
+	      el: document.createElement('div'),
+	      template: '<test class="outer"></test>',
+	      components: {
+	        test: {
+	          replace: true,
+	          template: '<div :class="{\'inner\': true}"></div>'
+	        }
+	      }
+	    })
+	    expect(vm.$el.firstChild.className).toBe('outer inner')
+	  })
+	
+	  it('SVG class interpolation', function () {
+	    var vm = new Vue({
+	      el: document.createElement('div'),
+	      template: '<icon class="abc" icon="def"></icon>',
+	      components: {
+	        icon: {
+	          props: ['class', 'icon'],
+	          replace: true,
+	          template: '<svg class="si-icon {{icon}} {{class}}"><use xlink:href=""></use></svg>'
+	        }
+	      }
+	    })
+	    expect(vm.$el.firstChild.getAttribute('class')).toBe('si-icon abc def')
+	  })
 	})
 
 
@@ -21050,6 +21184,11 @@
 	    expect(res instanceof DocumentFragment).toBeTruthy()
 	    expect(res.childNodes.length).toBe(1)
 	    expect(res.firstChild.nodeValue).toBe('hello / hello')
+	    // #2021
+	    res = parse('&#xe604;')
+	    expect(res instanceof DocumentFragment).toBeTruthy()
+	    expect(res.childNodes.length).toBe(1)
+	    expect(res.firstChild.nodeValue).toBe('')
 	  })
 	
 	  it('should parse textContent if argument is a script node', function () {
@@ -22415,7 +22554,15 @@
 	        a: { template: 'hi' }
 	      }
 	    })
-	    expect(hasWarned('Do not use built-in HTML elements')).toBe(true)
+	    expect(hasWarned('Do not use built-in or reserved HTML elements as component id: a')).toBe(true)
+	    merge({
+	      components: null
+	    }, {
+	      components: {
+	        slot: { template: 'hi' }
+	      }
+	    })
+	    expect(hasWarned('Do not use built-in or reserved HTML elements as component id: slot')).toBe(true)
 	  })
 	
 	  it('should ignore non-function el & data in class merge', function () {
@@ -22919,6 +23066,20 @@
 	          expect(spy.calls.count()).toBe(3)
 	          done()
 	        })
+	      })
+	    })
+	  })
+	
+	  it('fire change for prop addition/deletion in non-deep mode', function (done) {
+	    new Watcher(vm, 'b', spy)
+	    Vue.set(vm.b, 'e', 123)
+	    nextTick(function () {
+	      expect(spy).toHaveBeenCalledWith(vm.b, vm.b)
+	      expect(spy.calls.count()).toBe(1)
+	      Vue.delete(vm.b, 'e')
+	      nextTick(function () {
+	        expect(spy.calls.count()).toBe(2)
+	        done()
 	      })
 	    })
 	  })
