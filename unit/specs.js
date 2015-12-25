@@ -106,7 +106,7 @@
 	}
 	
 	// require all test files
-	var testsContext = __webpack_require__(69)
+	var testsContext = __webpack_require__(70)
 	testsContext.keys().forEach(testsContext)
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
@@ -129,17 +129,17 @@
 	
 	var _directivesPublicIndex2 = _interopRequireDefault(_directivesPublicIndex);
 	
-	var _directivesElementIndex = __webpack_require__(64);
+	var _directivesElementIndex = __webpack_require__(65);
 	
 	var _directivesElementIndex2 = _interopRequireDefault(_directivesElementIndex);
 	
-	var _filtersIndex = __webpack_require__(67);
+	var _filtersIndex = __webpack_require__(68);
 	
 	var _filtersIndex2 = _interopRequireDefault(_filtersIndex);
 	
 	var _utilIndex = __webpack_require__(4);
 	
-	_instanceVue2['default'].version = '1.0.12';
+	_instanceVue2['default'].version = '1.0.13';
 	
 	/**
 	 * Vue and every constructor that extends Vue has an
@@ -191,35 +191,35 @@
 	
 	var _internalState2 = _interopRequireDefault(_internalState);
 	
-	var _internalEvents = __webpack_require__(55);
+	var _internalEvents = __webpack_require__(56);
 	
 	var _internalEvents2 = _interopRequireDefault(_internalEvents);
 	
-	var _internalLifecycle = __webpack_require__(56);
+	var _internalLifecycle = __webpack_require__(57);
 	
 	var _internalLifecycle2 = _interopRequireDefault(_internalLifecycle);
 	
-	var _internalMisc = __webpack_require__(58);
+	var _internalMisc = __webpack_require__(59);
 	
 	var _internalMisc2 = _interopRequireDefault(_internalMisc);
 	
-	var _apiGlobal = __webpack_require__(59);
+	var _apiGlobal = __webpack_require__(60);
 	
 	var _apiGlobal2 = _interopRequireDefault(_apiGlobal);
 	
-	var _apiData = __webpack_require__(60);
+	var _apiData = __webpack_require__(61);
 	
 	var _apiData2 = _interopRequireDefault(_apiData);
 	
-	var _apiDom = __webpack_require__(61);
+	var _apiDom = __webpack_require__(62);
 	
 	var _apiDom2 = _interopRequireDefault(_apiDom);
 	
-	var _apiEvents = __webpack_require__(62);
+	var _apiEvents = __webpack_require__(63);
 	
 	var _apiEvents2 = _interopRequireDefault(_apiEvents);
 	
-	var _apiLifecycle = __webpack_require__(63);
+	var _apiLifecycle = __webpack_require__(64);
 	
 	var _apiLifecycle2 = _interopRequireDefault(_apiLifecycle);
 	
@@ -1479,7 +1479,6 @@
 	exports.compileRegex = compileRegex;
 	exports.parseText = parseText;
 	exports.tokensToExp = tokensToExp;
-	exports.removeTags = removeTags;
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
@@ -1638,17 +1637,6 @@
 	      ',false)'; // write?
 	    }
 	  }
-	}
-	
-	/**
-	 * Replace all interpolation tags in a piece of text.
-	 *
-	 * @param {String} text
-	 * @return {String}
-	 */
-	
-	function removeTags(text) {
-	  return text.replace(tagRE, '');
 	}
 
 /***/ },
@@ -2626,8 +2614,7 @@
 	
 	Observer.prototype.walk = function (obj) {
 	  var keys = Object.keys(obj);
-	  var i = keys.length;
-	  while (i--) {
+	  for (var i = 0, l = keys.length; i < l; i++) {
 	    this.convert(keys[i], obj[keys[i]]);
 	  }
 	};
@@ -2639,8 +2626,7 @@
 	 */
 	
 	Observer.prototype.observeArray = function (items) {
-	  var i = items.length;
-	  while (i--) {
+	  for (var i = 0, l = items.length; i < l; i++) {
 	    observe(items[i]);
 	  }
 	};
@@ -2704,10 +2690,8 @@
 	 */
 	
 	function copyAugment(target, src, keys) {
-	  var i = keys.length;
-	  var key;
-	  while (i--) {
-	    key = keys[i];
+	  for (var i = 0, l = keys.length; i < l; i++) {
+	    var key = keys[i];
 	    _utilIndex.def(target, key, src[key]);
 	  }
 	}
@@ -2929,7 +2913,7 @@
 	
 	_utilIndex.def(arrayProto, '$set', function $set(index, val) {
 	  if (index >= this.length) {
-	    this.length = index + 1;
+	    this.length = Number(index) + 1;
 	  }
 	  return this.splice(index, 1, val)[0];
 	});
@@ -4226,7 +4210,7 @@
 	
 	_defaults(exports, _interopExportWildcard(_compile, _defaults));
 	
-	var _transclude = __webpack_require__(54);
+	var _transclude = __webpack_require__(55);
 	
 	_defaults(exports, _interopExportWildcard(_transclude, _defaults));
 
@@ -4247,11 +4231,11 @@
 	
 	var _directivesPublicIndex2 = _interopRequireDefault(_directivesPublicIndex);
 	
-	var _directivesInternalIndex = __webpack_require__(46);
+	var _directivesInternalIndex = __webpack_require__(47);
 	
 	var _directivesInternalIndex2 = _interopRequireDefault(_directivesInternalIndex);
 	
-	var _compileProps = __webpack_require__(53);
+	var _compileProps = __webpack_require__(54);
 	
 	var _parsersText = __webpack_require__(9);
 	
@@ -4873,12 +4857,8 @@
 	    // attribute interpolations
 	    if (tokens) {
 	      value = _parsersText.tokensToExp(tokens);
-	      if (name === 'class') {
-	        pushDir('class', _directivesInternalIndex2['default']['class'], true);
-	      } else {
-	        arg = name;
-	        pushDir('bind', _directivesPublicIndex2['default'].bind, true);
-	      }
+	      arg = name;
+	      pushDir('bind', _directivesPublicIndex2['default'].bind, true);
 	      // warn against mixing mustaches with v-bind
 	      if (true) {
 	        if (name === 'class' && Array.prototype.some.call(attrs, function (attr) {
@@ -5028,45 +5008,45 @@
 	
 	var _for2 = _interopRequireDefault(_for);
 	
-	var _if = __webpack_require__(33);
+	var _if = __webpack_require__(34);
 	
 	var _if2 = _interopRequireDefault(_if);
 	
-	var _show = __webpack_require__(34);
+	var _show = __webpack_require__(35);
 	
 	var _show2 = _interopRequireDefault(_show);
 	
 	// two-way binding
 	
-	var _modelIndex = __webpack_require__(35);
+	var _modelIndex = __webpack_require__(36);
 	
 	var _modelIndex2 = _interopRequireDefault(_modelIndex);
 	
 	// event handling
 	
-	var _on = __webpack_require__(40);
+	var _on = __webpack_require__(41);
 	
 	var _on2 = _interopRequireDefault(_on);
 	
 	// attributes
 	
-	var _bind = __webpack_require__(41);
+	var _bind = __webpack_require__(42);
 	
 	var _bind2 = _interopRequireDefault(_bind);
 	
 	// ref & el
 	
-	var _el = __webpack_require__(43);
+	var _el = __webpack_require__(44);
 	
 	var _el2 = _interopRequireDefault(_el);
 	
-	var _ref = __webpack_require__(44);
+	var _ref = __webpack_require__(45);
 	
 	var _ref2 = _interopRequireDefault(_ref);
 	
 	// cloak
 	
-	var _cloak = __webpack_require__(45);
+	var _cloak = __webpack_require__(46);
 	
 	var _cloak2 = _interopRequireDefault(_cloak);
 	
@@ -5436,13 +5416,15 @@
 	
 	var _fragmentFactory2 = _interopRequireDefault(_fragmentFactory);
 	
+	var _priorities = __webpack_require__(33);
+	
 	var _utilIndex = __webpack_require__(4);
 	
 	var uid = 0;
 	
 	var vFor = {
 	
-	  priority: 2000,
+	  priority: _priorities.FOR,
 	
 	  params: ['track-by', 'stagger', 'enter-stagger', 'leave-stagger'],
 	
@@ -6269,6 +6251,34 @@
 
 /***/ },
 /* 33 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	exports.__esModule = true;
+	var ON = 700;
+	exports.ON = ON;
+	var MODEL = 800;
+	exports.MODEL = MODEL;
+	var BIND = 850;
+	exports.BIND = BIND;
+	var TRANSITION = 1100;
+	exports.TRANSITION = TRANSITION;
+	var EL = 1500;
+	exports.EL = EL;
+	var COMPONENT = 1500;
+	exports.COMPONENT = COMPONENT;
+	var PARTIAL = 1750;
+	exports.PARTIAL = PARTIAL;
+	var SLOT = 1750;
+	exports.SLOT = SLOT;
+	var FOR = 2000;
+	exports.FOR = FOR;
+	var IF = 2000;
+	exports.IF = IF;
+
+/***/ },
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6281,11 +6291,13 @@
 	
 	var _fragmentFactory2 = _interopRequireDefault(_fragmentFactory);
 	
+	var _priorities = __webpack_require__(33);
+	
 	var _utilIndex = __webpack_require__(4);
 	
 	exports['default'] = {
 	
-	  priority: 2000,
+	  priority: _priorities.IF,
 	
 	  bind: function bind() {
 	    var el = this.el;
@@ -6346,7 +6358,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6388,7 +6400,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6399,19 +6411,21 @@
 	
 	var _utilIndex = __webpack_require__(4);
 	
-	var _text = __webpack_require__(36);
+	var _priorities = __webpack_require__(33);
+	
+	var _text = __webpack_require__(37);
 	
 	var _text2 = _interopRequireDefault(_text);
 	
-	var _radio = __webpack_require__(37);
+	var _radio = __webpack_require__(38);
 	
 	var _radio2 = _interopRequireDefault(_radio);
 	
-	var _select = __webpack_require__(38);
+	var _select = __webpack_require__(39);
 	
 	var _select2 = _interopRequireDefault(_select);
 	
-	var _checkbox = __webpack_require__(39);
+	var _checkbox = __webpack_require__(40);
 	
 	var _checkbox2 = _interopRequireDefault(_checkbox);
 	
@@ -6424,7 +6438,7 @@
 	
 	exports['default'] = {
 	
-	  priority: 800,
+	  priority: _priorities.MODEL,
 	  twoWay: true,
 	  handlers: handlers,
 	  params: ['lazy', 'number', 'debounce'],
@@ -6492,7 +6506,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6629,7 +6643,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6673,7 +6687,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6788,7 +6802,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6856,7 +6870,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6864,6 +6878,8 @@
 	exports.__esModule = true;
 	
 	var _utilIndex = __webpack_require__(4);
+	
+	var _priorities = __webpack_require__(33);
 	
 	// keyCode aliases
 	var keyCodes = {
@@ -6916,7 +6932,7 @@
 	exports['default'] = {
 	
 	  acceptStatement: true,
-	  priority: 700,
+	  priority: _priorities.ON,
 	
 	  bind: function bind() {
 	    // deal with iframes
@@ -6980,7 +6996,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6991,7 +7007,9 @@
 	
 	var _utilIndex = __webpack_require__(4);
 	
-	var _internalStyle = __webpack_require__(42);
+	var _priorities = __webpack_require__(33);
+	
+	var _internalStyle = __webpack_require__(43);
 	
 	var _internalStyle2 = _interopRequireDefault(_internalStyle);
 	
@@ -7016,7 +7034,7 @@
 	
 	exports['default'] = {
 	
-	  priority: 850,
+	  priority: _priorities.BIND,
 	
 	  bind: function bind() {
 	    var attr = this.arg;
@@ -7066,41 +7084,50 @@
 	  handleObject: _internalStyle2['default'].handleObject,
 	
 	  handleSingle: function handleSingle(attr, value) {
-	    if (!this.descriptor.interp && attrWithPropsRE.test(attr) && attr in this.el) {
-	      this.el[attr] = attr === 'value' ? value == null // IE9 will set input.value to "null" for null...
+	    var el = this.el;
+	    var interp = this.descriptor.interp;
+	    if (!interp && attrWithPropsRE.test(attr) && attr in el) {
+	      el[attr] = attr === 'value' ? value == null // IE9 will set input.value to "null" for null...
 	      ? '' : value : value;
 	    }
 	    // set model props
 	    var modelProp = modelProps[attr];
-	    if (modelProp) {
-	      this.el[modelProp] = value;
+	    if (!interp && modelProp) {
+	      el[modelProp] = value;
 	      // update v-model if present
-	      var model = this.el.__v_model;
+	      var model = el.__v_model;
 	      if (model) {
 	        model.listener();
 	      }
 	    }
 	    // do not set value attribute for textarea
-	    if (attr === 'value' && this.el.tagName === 'TEXTAREA') {
-	      this.el.removeAttribute(attr);
+	    if (attr === 'value' && el.tagName === 'TEXTAREA') {
+	      el.removeAttribute(attr);
 	      return;
 	    }
 	    // update attribute
 	    if (value != null && value !== false) {
-	      if (xlinkRE.test(attr)) {
-	        this.el.setAttributeNS(xlinkNS, attr, value);
+	      if (attr === 'class') {
+	        // handle edge case #1960:
+	        // class interpolation should not overwrite Vue transition class
+	        if (el.__v_trans) {
+	          value += ' ' + el.__v_trans.id + '-transition';
+	        }
+	        _utilIndex.setClass(el, value);
+	      } else if (xlinkRE.test(attr)) {
+	        el.setAttributeNS(xlinkNS, attr, value);
 	      } else {
-	        this.el.setAttribute(attr, value);
+	        el.setAttribute(attr, value);
 	      }
 	    } else {
-	      this.el.removeAttribute(attr);
+	      el.removeAttribute(attr);
 	    }
 	  }
 	};
 	module.exports = exports['default'];
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7217,7 +7244,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7226,9 +7253,11 @@
 	
 	var _utilIndex = __webpack_require__(4);
 	
+	var _priorities = __webpack_require__(33);
+	
 	exports['default'] = {
 	
-	  priority: 1500,
+	  priority: _priorities.EL,
 	
 	  bind: function bind() {
 	    /* istanbul ignore if */
@@ -7254,7 +7283,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7271,7 +7300,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7280,7 +7309,7 @@
 	exports['default'] = {
 	  bind: function bind() {
 	    var el = this.el;
-	    this.vm.$once('hook:compiled', function () {
+	    this.vm.$once('pre-hook:compiled', function () {
 	      el.removeAttribute('v-cloak');
 	    });
 	  }
@@ -7288,7 +7317,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7297,23 +7326,23 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _style = __webpack_require__(42);
+	var _style = __webpack_require__(43);
 	
 	var _style2 = _interopRequireDefault(_style);
 	
-	var _class = __webpack_require__(47);
+	var _class = __webpack_require__(48);
 	
 	var _class2 = _interopRequireDefault(_class);
 	
-	var _component = __webpack_require__(48);
+	var _component = __webpack_require__(49);
 	
 	var _component2 = _interopRequireDefault(_component);
 	
-	var _prop = __webpack_require__(49);
+	var _prop = __webpack_require__(50);
 	
 	var _prop2 = _interopRequireDefault(_prop);
 	
-	var _transition = __webpack_require__(50);
+	var _transition = __webpack_require__(51);
 	
 	var _transition2 = _interopRequireDefault(_transition);
 	
@@ -7327,7 +7356,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7404,7 +7433,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7413,11 +7442,13 @@
 	
 	var _parsersTemplate = __webpack_require__(29);
 	
+	var _priorities = __webpack_require__(33);
+	
 	var _utilIndex = __webpack_require__(4);
 	
 	exports['default'] = {
 	
-	  priority: 1500,
+	  priority: _priorities.COMPONENT,
 	
 	  params: ['keep-alive', 'transition-mode', 'inline-template'],
 	
@@ -7753,7 +7784,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// NOTE: the prop internal directive is compiled and linked
@@ -7812,7 +7843,7 @@
 	      // important: defer the child watcher creation until
 	      // the created hook (after data observation)
 	      var self = this;
-	      child.$once('hook:created', function () {
+	      child.$once('pre-hook:created', function () {
 	        self.childWatcher = new _watcher2['default'](child, childKey, function (val) {
 	          parentWatcher.set(val);
 	        }, {
@@ -7835,7 +7866,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7846,13 +7877,15 @@
 	
 	var _utilIndex = __webpack_require__(4);
 	
-	var _transitionTransition = __webpack_require__(51);
+	var _priorities = __webpack_require__(33);
+	
+	var _transitionTransition = __webpack_require__(52);
 	
 	var _transitionTransition2 = _interopRequireDefault(_transitionTransition);
 	
 	exports['default'] = {
 	
-	  priority: 1100,
+	  priority: _priorities.TRANSITION,
 	
 	  update: function update(id, oldId) {
 	    var el = this.el;
@@ -7870,7 +7903,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7878,7 +7911,7 @@
 	exports.__esModule = true;
 	exports['default'] = Transition;
 	
-	var _queue = __webpack_require__(52);
+	var _queue = __webpack_require__(53);
 	
 	var _utilIndex = __webpack_require__(4);
 	
@@ -8224,7 +8257,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8270,7 +8303,7 @@
 	}
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8286,7 +8319,7 @@
 	
 	var _parsersDirective = __webpack_require__(11);
 	
-	var _directivesInternalProp = __webpack_require__(49);
+	var _directivesInternalProp = __webpack_require__(50);
 	
 	var _directivesInternalProp2 = _interopRequireDefault(_directivesInternalProp);
 	
@@ -8466,7 +8499,7 @@
 	}
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8616,7 +8649,7 @@
 	}
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8776,6 +8809,7 @@
 	   */
 	
 	  Vue.prototype._callHook = function (hook) {
+	    this.$emit('pre-hook:' + hook);
 	    var handlers = this.$options[hook];
 	    if (handlers) {
 	      for (var i = 0, j = handlers.length; i < j; i++) {
@@ -8789,7 +8823,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8800,7 +8834,7 @@
 	
 	var _utilIndex = __webpack_require__(4);
 	
-	var _directive = __webpack_require__(57);
+	var _directive = __webpack_require__(58);
 	
 	var _directive2 = _interopRequireDefault(_directive);
 	
@@ -9058,7 +9092,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9073,8 +9107,6 @@
 	var _watcher = __webpack_require__(20);
 	
 	var _watcher2 = _interopRequireDefault(_watcher);
-	
-	var _parsersText = __webpack_require__(9);
 	
 	var _parsersExpression = __webpack_require__(21);
 	
@@ -9145,13 +9177,7 @@
 	  // remove attribute
 	  if ((name !== 'cloak' || this.vm._isCompiled) && this.el && this.el.removeAttribute) {
 	    var attr = descriptor.attr || 'v-' + name;
-	    if (attr !== 'class') {
-	      this.el.removeAttribute(attr);
-	    } else {
-	      // for class interpolations, only remove the parts that
-	      // need to be interpolated.
-	      _utilIndex.setClass(this.el, _parsersText.removeTags(this.el.getAttribute('class')).trim().replace(/\s+/g, ' '));
-	    }
+	    this.el.removeAttribute(attr);
 	  }
 	
 	  // copy def properties
@@ -9261,7 +9287,8 @@
 	      called = true;
 	    }
 	  }, {
-	    immediate: true
+	    immediate: true,
+	    user: false
 	  });(this._paramUnwatchFns || (this._paramUnwatchFns = [])).push(unwatch);
 	};
 	
@@ -9380,7 +9407,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9482,7 +9509,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9529,7 +9556,7 @@
 	
 	var _fragmentFactory2 = _interopRequireDefault(_fragmentFactory);
 	
-	var _directivesInternalIndex = __webpack_require__(46);
+	var _directivesInternalIndex = __webpack_require__(47);
 	
 	var _directivesInternalIndex2 = _interopRequireDefault(_directivesInternalIndex);
 	
@@ -9691,7 +9718,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9792,7 +9819,8 @@
 	    var watcher = new _watcher2['default'](vm, expOrFn, cb, {
 	      deep: options && options.deep,
 	      sync: options && options.sync,
-	      filters: parsed && parsed.filters
+	      filters: parsed && parsed.filters,
+	      user: !options || options.user !== false
 	    });
 	    if (options && options.immediate) {
 	      cb.call(vm, watcher.value);
@@ -9886,7 +9914,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10086,7 +10114,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10264,7 +10292,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10343,7 +10371,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10352,9 +10380,9 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _slot = __webpack_require__(65);
+	var _slot = __webpack_require__(66);
 	
-	var _partial = __webpack_require__(66);
+	var _partial = __webpack_require__(67);
 	
 	var _partial2 = _interopRequireDefault(_partial);
 	
@@ -10366,12 +10394,14 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
+	
+	var _priorities = __webpack_require__(33);
 	
 	var _parsersTemplate = __webpack_require__(29);
 	
@@ -10390,7 +10420,7 @@
 	
 	var slot = {
 	
-	  priority: 1750,
+	  priority: _priorities.SLOT,
 	
 	  bind: function bind() {
 	    var host = this.vm;
@@ -10492,7 +10522,7 @@
 	}
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10501,7 +10531,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _publicIf = __webpack_require__(33);
+	var _publicIf = __webpack_require__(34);
 	
 	var _publicIf2 = _interopRequireDefault(_publicIf);
 	
@@ -10509,11 +10539,13 @@
 	
 	var _fragmentFactory2 = _interopRequireDefault(_fragmentFactory);
 	
+	var _priorities = __webpack_require__(33);
+	
 	var _utilIndex = __webpack_require__(4);
 	
 	exports['default'] = {
 	
-	  priority: 1750,
+	  priority: _priorities.PARTIAL,
 	
 	  params: ['name'],
 	
@@ -10553,7 +10585,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10562,7 +10594,7 @@
 	
 	var _utilIndex = __webpack_require__(4);
 	
-	var _arrayFilters = __webpack_require__(68);
+	var _arrayFilters = __webpack_require__(69);
 	
 	var digitsRE = /(\d{3})(?=\d)/g;
 	
@@ -10674,7 +10706,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10809,63 +10841,63 @@
 	}
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./api/data_spec": 70,
-		"./api/dom_spec": 71,
-		"./api/events_spec": 72,
-		"./api/global_spec": 73,
-		"./api/lifecycle_spec": 74,
-		"./async_component_spec": 75,
-		"./batcher_spec": 76,
-		"./cache_spec": 77,
-		"./compiler/compile_spec": 78,
-		"./compiler/transclude_spec": 79,
-		"./directive_spec": 80,
-		"./directives/element/partial_spec": 81,
-		"./directives/element/slot_spec": 82,
-		"./directives/internal/class_spec": 83,
-		"./directives/internal/component_spec": 84,
-		"./directives/internal/prop_spec": 85,
-		"./directives/internal/style_spec": 86,
-		"./directives/internal/transition_spec": 87,
-		"./directives/public/bind_spec": 88,
-		"./directives/public/cloak_spec": 89,
-		"./directives/public/el_spec": 90,
-		"./directives/public/for/for_ref_spec": 91,
-		"./directives/public/for/for_spec": 92,
-		"./directives/public/for/for_stagger_spec": 93,
-		"./directives/public/html_spec": 94,
-		"./directives/public/if_spec": 95,
-		"./directives/public/model_spec": 96,
-		"./directives/public/on_spec": 97,
-		"./directives/public/pre_spec": 98,
-		"./directives/public/ref_spec": 99,
-		"./directives/public/show_spec": 100,
-		"./directives/public/text_spec": 101,
-		"./filters/filters_spec": 102,
-		"./instance/events_spec": 103,
-		"./instance/init_spec": 104,
-		"./instance/misc_spec": 105,
-		"./instance/state_spec": 106,
-		"./misc_spec": 107,
-		"./observer/dep_spec": 108,
-		"./observer/observer_spec": 109,
-		"./parsers/directive_spec": 110,
-		"./parsers/expression_spec": 111,
-		"./parsers/path_spec": 112,
-		"./parsers/template_spec": 113,
-		"./parsers/text_spec": 114,
-		"./transition/transition_spec": 115,
-		"./util/component_spec": 116,
-		"./util/debug_spec": 117,
-		"./util/dom_spec": 118,
-		"./util/env_spec": 119,
-		"./util/lang_spec": 120,
-		"./util/options_spec": 121,
-		"./watcher_spec": 122
+		"./api/data_spec": 71,
+		"./api/dom_spec": 72,
+		"./api/events_spec": 73,
+		"./api/global_spec": 74,
+		"./api/lifecycle_spec": 75,
+		"./async_component_spec": 76,
+		"./batcher_spec": 77,
+		"./cache_spec": 78,
+		"./compiler/compile_spec": 79,
+		"./compiler/transclude_spec": 80,
+		"./directive_spec": 81,
+		"./directives/element/partial_spec": 82,
+		"./directives/element/slot_spec": 83,
+		"./directives/internal/class_spec": 84,
+		"./directives/internal/component_spec": 85,
+		"./directives/internal/prop_spec": 86,
+		"./directives/internal/style_spec": 87,
+		"./directives/internal/transition_spec": 88,
+		"./directives/public/bind_spec": 89,
+		"./directives/public/cloak_spec": 90,
+		"./directives/public/el_spec": 91,
+		"./directives/public/for/for_ref_spec": 92,
+		"./directives/public/for/for_spec": 93,
+		"./directives/public/for/for_stagger_spec": 94,
+		"./directives/public/html_spec": 95,
+		"./directives/public/if_spec": 96,
+		"./directives/public/model_spec": 97,
+		"./directives/public/on_spec": 98,
+		"./directives/public/pre_spec": 99,
+		"./directives/public/ref_spec": 100,
+		"./directives/public/show_spec": 101,
+		"./directives/public/text_spec": 102,
+		"./filters/filters_spec": 103,
+		"./instance/events_spec": 104,
+		"./instance/init_spec": 105,
+		"./instance/misc_spec": 106,
+		"./instance/state_spec": 107,
+		"./misc_spec": 108,
+		"./observer/dep_spec": 109,
+		"./observer/observer_spec": 110,
+		"./parsers/directive_spec": 111,
+		"./parsers/expression_spec": 112,
+		"./parsers/path_spec": 113,
+		"./parsers/template_spec": 114,
+		"./parsers/text_spec": 115,
+		"./transition/transition_spec": 116,
+		"./util/component_spec": 117,
+		"./util/debug_spec": 118,
+		"./util/dom_spec": 119,
+		"./util/env_spec": 120,
+		"./util/lang_spec": 121,
+		"./util/options_spec": 122,
+		"./watcher_spec": 123
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -10878,11 +10910,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 69;
+	webpackContext.id = 70;
 
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
@@ -11056,7 +11088,7 @@
 
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11264,7 +11296,7 @@
 
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
@@ -11438,7 +11470,7 @@
 
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
@@ -11566,7 +11598,7 @@
 
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
@@ -11903,7 +11935,7 @@
 
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
@@ -12130,7 +12162,7 @@
 
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var config = __webpack_require__(8)
@@ -12238,7 +12270,7 @@
 
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Cache = __webpack_require__(10)
@@ -12297,7 +12329,7 @@
 
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
@@ -12305,7 +12337,7 @@
 	var compiler = __webpack_require__(24)
 	var compile = compiler.compile
 	var publicDirectives = __webpack_require__(26)
-	var internalDirectives = __webpack_require__(46)
+	var internalDirectives = __webpack_require__(47)
 	
 	describe('Compile', function () {
 	
@@ -12811,19 +12843,19 @@
 	  it('attribute interpolation', function (done) {
 	    var vm = new Vue({
 	      el: el,
-	      template: '<div id="{{a}}" class="b {{c}} d"></div>',
+	      template: '<div id="{{a}}" class="b bla-{{c}} d"></div>',
 	      data: {
 	        a: 'aaa',
 	        c: 'ccc'
 	      }
 	    })
 	    expect(el.firstChild.id).toBe('aaa')
-	    expect(el.firstChild.className).toBe('b d ccc')
+	    expect(el.firstChild.className).toBe('b bla-ccc d')
 	    vm.a = 'aa'
 	    vm.c = 'cc'
 	    _.nextTick(function () {
 	      expect(el.firstChild.id).toBe('aa')
-	      expect(el.firstChild.className).toBe('b d cc')
+	      expect(el.firstChild.className).toBe('b bla-cc d')
 	      done()
 	    })
 	  })
@@ -12903,7 +12935,7 @@
 
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var transclude = __webpack_require__(24).transclude
@@ -13042,11 +13074,11 @@
 
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
-	var Directive = __webpack_require__(57)
+	var Directive = __webpack_require__(58)
 	var nextTick = Vue.nextTick
 	
 	describe('Directive', function () {
@@ -13236,7 +13268,7 @@
 
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
@@ -13364,7 +13396,7 @@
 
 
 /***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
@@ -13770,11 +13802,11 @@
 
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
-	var def = __webpack_require__(47)
+	var def = __webpack_require__(48)
 	
 	describe(':class', function () {
 	
@@ -13834,7 +13866,7 @@
 
 
 /***/ },
-/* 84 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
@@ -14345,7 +14377,7 @@
 
 
 /***/ },
-/* 85 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
@@ -14985,11 +15017,11 @@
 
 
 /***/ },
-/* 86 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
-	var def = __webpack_require__(42)
+	var def = __webpack_require__(43)
 	var Vue = __webpack_require__(1)
 	
 	function checkPrefixedProp (prop) {
@@ -15116,13 +15148,13 @@
 
 
 /***/ },
-/* 87 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
 	var Vue = __webpack_require__(1)
-	var Directive = __webpack_require__(57)
-	var def = __webpack_require__(50)
+	var Directive = __webpack_require__(58)
+	var def = __webpack_require__(51)
 	
 	describe('transition', function () {
 	
@@ -15245,11 +15277,11 @@
 
 
 /***/ },
-/* 88 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
-	var def = __webpack_require__(41)
+	var def = __webpack_require__(42)
 	var xlinkNS = 'http://www.w3.org/1999/xlink'
 	
 	describe('v-bind', function () {
@@ -15322,7 +15354,7 @@
 
 
 /***/ },
-/* 89 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var compile = __webpack_require__(24).compile
@@ -15349,7 +15381,7 @@
 
 
 /***/ },
-/* 90 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
@@ -15397,7 +15429,7 @@
 
 
 /***/ },
-/* 91 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
@@ -15483,7 +15515,7 @@
 
 
 /***/ },
-/* 92 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
@@ -16711,7 +16743,7 @@
 
 
 /***/ },
-/* 93 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
@@ -16883,7 +16915,7 @@
 
 
 /***/ },
-/* 94 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
@@ -16941,7 +16973,7 @@
 
 
 /***/ },
-/* 95 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
@@ -17362,7 +17394,7 @@
 
 
 /***/ },
-/* 96 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
@@ -18151,7 +18183,7 @@
 
 
 /***/ },
-/* 97 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
@@ -18412,7 +18444,7 @@
 
 
 /***/ },
-/* 98 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
@@ -18450,7 +18482,7 @@
 
 
 /***/ },
-/* 99 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
@@ -18603,12 +18635,12 @@
 
 
 /***/ },
-/* 100 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
 	var transition = __webpack_require__(13)
-	var def = __webpack_require__(34)
+	var def = __webpack_require__(35)
 	
 	describe('v-show', function () {
 	
@@ -18662,7 +18694,7 @@
 
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
@@ -18697,10 +18729,10 @@
 
 
 /***/ },
-/* 102 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var filters = __webpack_require__(67)
+	var filters = __webpack_require__(68)
 	
 	describe('Filters', function () {
 	
@@ -18950,7 +18982,7 @@
 
 
 /***/ },
-/* 103 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
@@ -19285,7 +19317,7 @@
 
 
 /***/ },
-/* 104 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
@@ -19344,7 +19376,7 @@
 
 
 /***/ },
-/* 105 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
@@ -19404,7 +19436,7 @@
 
 
 /***/ },
-/* 106 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
@@ -19686,7 +19718,7 @@
 
 
 /***/ },
-/* 107 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// test cases for edge cases & bug fixes
@@ -20105,13 +20137,25 @@
 	        }
 	      }
 	    })
-	    expect(vm.$el.firstChild.getAttribute('class')).toBe('si-icon abc def')
+	    expect(vm.$el.firstChild.getAttribute('class')).toBe('si-icon def abc')
+	  })
+	
+	  // #1960
+	  it('class interpolation should preserve transition class', function () {
+	    var vm = new Vue({
+	      el: document.createElement('div'),
+	      template: '<div class="{{test}}" transition="test"></div>',
+	      data: {
+	        test: 'hi'
+	      }
+	    })
+	    expect(vm.$el.firstChild.className).toBe('hi test-transition')
 	  })
 	})
 
 
 /***/ },
-/* 108 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Dep = __webpack_require__(17)
@@ -20150,7 +20194,7 @@
 
 
 /***/ },
-/* 109 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
@@ -20542,7 +20586,7 @@
 
 
 /***/ },
-/* 110 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var parse = __webpack_require__(11).parseDirective
@@ -20642,7 +20686,7 @@
 
 
 /***/ },
-/* 111 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var expParser = __webpack_require__(21)
@@ -20962,7 +21006,7 @@
 
 
 /***/ },
-/* 112 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Path = __webpack_require__(22)
@@ -21135,7 +21179,7 @@
 
 
 /***/ },
-/* 113 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var templateParser = __webpack_require__(29)
@@ -21314,7 +21358,7 @@
 
 
 /***/ },
-/* 114 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var textParser = __webpack_require__(9)
@@ -21442,13 +21486,13 @@
 
 
 /***/ },
-/* 115 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
 	var _ = __webpack_require__(4)
 	var transition = __webpack_require__(13)
-	var Transition = __webpack_require__(51)
+	var Transition = __webpack_require__(52)
 	
 	if (!_.isIE9) {
 	  describe('Transition', function () {
@@ -21980,7 +22024,7 @@
 
 
 /***/ },
-/* 116 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
@@ -22031,7 +22075,7 @@
 
 
 /***/ },
-/* 117 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
@@ -22067,7 +22111,7 @@
 
 
 /***/ },
-/* 118 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
@@ -22192,7 +22236,7 @@
 
 
 /***/ },
-/* 119 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
@@ -22216,7 +22260,7 @@
 
 
 /***/ },
-/* 120 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
@@ -22388,7 +22432,7 @@
 
 
 /***/ },
-/* 121 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(4)
@@ -22776,7 +22820,7 @@
 
 
 /***/ },
-/* 122 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1)
