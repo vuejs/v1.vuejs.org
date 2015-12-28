@@ -191,7 +191,10 @@
     <div id="ad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
     </div>
-    <p>The Vue.js core library is designed to be focused and flexible - it’s just a view layer library that doesn’t enforce any application-level architecture. While this can be great for integrating with existing projects, it could be a challenge for those with less experience to build larger scale applications from scratch.</p>
+    <blockquote>
+<p><strong>NEW:</strong> Get up and running with single file Vue components, hot-reload, lint-on-save and unit testing in minutes with <a href="https://github.com/vuejs/vue-cli" target="_blank" rel="external">vue-cli</a>!</p>
+</blockquote>
+<p>The Vue.js core library is designed to be focused and flexible - it’s just a view layer library that doesn’t enforce any application-level architecture. While this can be great for integrating with existing projects, it could be a challenge for those with less experience to build larger scale applications from scratch.</p>
 <p>The Vue.js ecosystem provides a set of tools, libraries on how to build large SPAs with Vue. This part is where we start get a bit “framework”-ish, but it’s really just an opinionated list of recommendations; you still get to pick what to use for each part of the stack.</p>
 <h2 id="Modularization"><a href="#Modularization" class="headerlink" title="Modularization"></a>Modularization</h2><p>For large projects it’s necessary to utilize a modularized build system to better organize your code. The recommended approach of doing so is by writing your source code in CommonJS or ES6 modules and bundle them using <a href="http://webpack.github.io/" target="_blank" rel="external">Webpack</a> or <a href="http://browserify.org/" target="_blank" rel="external">Browserify</a>.</p>
 <p>Webpack and Browserify are more than just module bundlers, though. They both provide source transform APIs that allow you to transform your source code with other pre-processors. For example, you can write your code with future ES2015/2016 syntax using <a href="https://github.com/babel/babel-loader" target="_blank" rel="external">babel-loader</a> or <a href="https://github.com/babel/babelify" target="_blank" rel="external">babelify</a>.</p>
@@ -201,7 +204,7 @@
 <p>If you are into pre-processors, you can even do this:</p>
 <p><img src="/images/vue-component-with-pre-processors.png"></p>
 <p>You can build these single-file Vue components with Webpack + <a href="https://github.com/vuejs/vue-loader" target="_blank" rel="external">vue-loader</a> or Browserify + <a href="https://github.com/vuejs/vueify" target="_blank" rel="external">vueify</a>. It is recommended to use the Webpack setup because Webpack’s loader API enables better file dependency tracking / caching and some advanced features that are not feasible with Browserify transforms.</p>
-<p>You can find examples of the build setups on GitHub:</p>
+<p>The fastest way to get up and running with a pre-configured build setup is using the official <a href="https://github.com/vuejs/vue-cli" target="_blank" rel="external">vue-cli</a>. You can also find examples of the build setups on GitHub:</p>
 <ul>
 <li><a href="https://github.com/vuejs/vue-loader-example" target="_blank" rel="external">Webpack + vue-loader</a></li>
 <li><a href="https://github.com/vuejs/vueify-example" target="_blank" rel="external">Browserify + vueify</a></li>
