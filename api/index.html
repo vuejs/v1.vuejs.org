@@ -745,7 +745,7 @@
 <h2 id="Instance_Methods_/_Data"><a href="#Instance_Methods_/_Data" class="headerlink" title="Instance Methods / Data"></a>Instance Methods / Data</h2><h3 id="vm-_24watch_28_expOrFn_2C_callback_2C__5Boptions_5D__29"><a href="#vm-_24watch_28_expOrFn_2C_callback_2C__5Boptions_5D__29" class="headerlink" title="vm.$watch( expOrFn, callback, [options] )"></a>vm.$watch( expOrFn, callback, [options] )</h3><ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
-<li><code>{String|Function} expOrFn</code></li>
+<li><code>{String | Function} expOrFn</code></li>
 <li><code>{Function} callback</code></li>
 <li><code>{Object} [options]</code><ul>
 <li><code>{Boolean} deep</code></li>
@@ -946,7 +946,7 @@
 <h2 id="Instance_Methods_/_DOM"><a href="#Instance_Methods_/_DOM" class="headerlink" title="Instance Methods / DOM"></a>Instance Methods / DOM</h2><h3 id="vm-_24appendTo_28_elementOrSelector_2C__5Bcallback_5D__29"><a href="#vm-_24appendTo_28_elementOrSelector_2C__5Bcallback_5D__29" class="headerlink" title="vm.$appendTo( elementOrSelector, [callback] )"></a>vm.$appendTo( elementOrSelector, [callback] )</h3><ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
-<li><code>{Element|String} elementOrSelector</code></li>
+<li><code>{Element | String} elementOrSelector</code></li>
 <li><code>{Function} [callback]</code></li>
 </ul>
 </li>
@@ -959,7 +959,7 @@
 <h3 id="vm-_24before_28_elementOrSelector_2C__5Bcallback_5D__29"><a href="#vm-_24before_28_elementOrSelector_2C__5Bcallback_5D__29" class="headerlink" title="vm.$before( elementOrSelector, [callback] )"></a>vm.$before( elementOrSelector, [callback] )</h3><ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
-<li><code>{Element|String} elementOrSelector</code></li>
+<li><code>{Element | String} elementOrSelector</code></li>
 <li><code>{Function} [callback]</code></li>
 </ul>
 </li>
@@ -972,7 +972,7 @@
 <h3 id="vm-_24after_28_elementOrSelector_2C__5Bcallback_5D__29"><a href="#vm-_24after_28_elementOrSelector_2C__5Bcallback_5D__29" class="headerlink" title="vm.$after( elementOrSelector, [callback] )"></a>vm.$after( elementOrSelector, [callback] )</h3><ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
-<li><code>{Element|String} elementOrSelector</code></li>
+<li><code>{Element | String} elementOrSelector</code></li>
 <li><code>{Function} [callback]</code></li>
 </ul>
 </li>
@@ -1016,7 +1016,7 @@
 <h2 id="Instance_Methods_/_Lifecycle"><a href="#Instance_Methods_/_Lifecycle" class="headerlink" title="Instance Methods / Lifecycle"></a>Instance Methods / Lifecycle</h2><h3 id="vm-_24mount_28__5BelementOrSelector_5D__29"><a href="#vm-_24mount_28__5BelementOrSelector_5D__29" class="headerlink" title="vm.$mount( [elementOrSelector] )"></a>vm.$mount( [elementOrSelector] )</h3><ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
-<li><code>{Element|String} [elementOrSelector]</code></li>
+<li><code>{Element | String} [elementOrSelector]</code></li>
 </ul>
 </li>
 <li><p><strong>Returns:</strong> <code>vm</code> - the instance itself</p>
@@ -1265,6 +1265,12 @@
 <li><p><strong>Attributes:</strong></p>
 <ul>
 <li><code>is</code></li>
+</ul>
+</li>
+<li><p><strong>Param Attributes:</strong></p>
+<ul>
+<li><a href="/guide/components.html#keep-alive"><code>keep-alive</code></a></li>
+<li><a href="/guide/components.html#transition-mode"><code>transition-mode</code></a></li>
 </ul>
 </li>
 <li><p><strong>Usage:</strong></p>
