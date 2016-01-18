@@ -139,7 +139,7 @@
 	
 	var _utilIndex = __webpack_require__(5);
 	
-	_instanceVue2['default'].version = '1.0.14';
+	_instanceVue2['default'].version = '1.0.15';
 	
 	/**
 	 * Vue and every constructor that extends Vue has an
@@ -2082,23 +2082,29 @@
 	 */
 	
 	p.put = function (key, value) {
-	  var entry = {
-	    key: key,
-	    value: value
-	  };
-	  this._keymap[key] = entry;
-	  if (this.tail) {
-	    this.tail.newer = entry;
-	    entry.older = this.tail;
-	  } else {
-	    this.head = entry;
-	  }
-	  this.tail = entry;
+	  var removed;
 	  if (this.size === this.limit) {
-	    return this.shift();
-	  } else {
+	    removed = this.shift();
+	  }
+	
+	  var entry = this.get(key, true);
+	  if (!entry) {
+	    entry = {
+	      key: key
+	    };
+	    this._keymap[key] = entry;
+	    if (this.tail) {
+	      this.tail.newer = entry;
+	      entry.older = this.tail;
+	    } else {
+	      this.head = entry;
+	    }
+	    this.tail = entry;
 	    this.size++;
 	  }
+	  entry.value = value;
+	
+	  return removed;
 	};
 	
 	/**
@@ -2114,6 +2120,7 @@
 	    this.head.older = undefined;
 	    entry.newer = entry.older = undefined;
 	    this._keymap[entry.key] = undefined;
+	    this.size--;
 	  }
 	  return entry;
 	};
@@ -5721,10 +5728,8 @@
 	    var suffix = wrap[2];
 	    var node = document.createElement('div');
 	
-	    if (!raw) {
-	      templateString = templateString.trim();
-	    }
-	    node.innerHTML = prefix + templateString + suffix;
+	    var templateStringToUse = raw ? templateString : templateString.trim();
+	    node.innerHTML = prefix + templateStringToUse + suffix;
 	    while (depth--) {
 	      node = node.lastChild;
 	    }
@@ -6245,6 +6250,14 @@
 	   */
 	
 	  move: function move(frag, prevEl) {
+	    // fix a common issue with Sortable:
+	    // if prevEl doesn't have nextSibling, this means it's
+	    // been dragged after the end anchor. Just re-position
+	    // the end anchor to the end of the container.
+	    /* istanbul ignore if */
+	    if (!prevEl.nextSibling) {
+	      this.end.parentNode.appendChild(this.end);
+	    }
 	    frag.before(prevEl.nextSibling, false);
 	  },
 	
@@ -6737,6 +6750,7 @@
 	  if (this.parentFrag) {
 	    this.parentFrag.childFrags.$remove(this);
 	  }
+	  this.node.__vfrag__ = null;
 	  this.unlink();
 	};
 	
@@ -6786,12 +6800,12 @@
 	exports.COMPONENT = COMPONENT;
 	var PARTIAL = 1750;
 	exports.PARTIAL = PARTIAL;
-	var SLOT = 1750;
-	exports.SLOT = SLOT;
 	var FOR = 2000;
 	exports.FOR = FOR;
 	var IF = 2000;
 	exports.IF = IF;
+	var SLOT = 2100;
+	exports.SLOT = SLOT;
 
 /***/ },
 /* 70 */
@@ -7538,11 +7552,10 @@
 	var xlinkRE = /^xlink:/;
 	
 	// check for attributes that prohibit interpolations
-	var disallowedInterpAttrRE = /^v-|^:|^@|^(is|transition|transition-mode|debounce|track-by|stagger|enter-stagger|leave-stagger)$/;
-	
+	var disallowedInterpAttrRE = /^v-|^:|^@|^(?:is|transition|transition-mode|debounce|track-by|stagger|enter-stagger|leave-stagger)$/;
 	// these attributes should also set their corresponding properties
 	// because they only affect the initial state of the element
-	var attrWithPropsRE = /^(value|checked|selected|muted)$/;
+	var attrWithPropsRE = /^(?:value|checked|selected|muted)$/;
 	
 	// these attributes should set a hidden property for
 	// binding v-model to object values
@@ -12978,6 +12991,16 @@
 	    expect(toString(c)).toBe('adam:29 < john:26 < angela:24 < bob:48')
 	  })
 	
+	  it('put with same key', function () {
+	    var same = new Cache(4)
+	    same.put('john', 29)
+	    same.put('john', 26)
+	    same.put('john', 24)
+	    same.put('john', 48)
+	    expect(same.size).toBe(1)
+	    expect(toString(same)).toBe('john:48')
+	  })
+	
 	  it('get', function () {
 	    expect(c.get('adam')).toBe(29)
 	    expect(c.get('john')).toBe(26)
@@ -12995,6 +13018,20 @@
 	    expect(c.size).toBe(4)
 	    expect(toString(c)).toBe('john:26 < bob:48 < angela:24 < ygwie:81')
 	    expect(c.get('adam')).toBeUndefined()
+	  })
+	
+	  it('shift', function () {
+	    var shift = new Cache(4)
+	    shift.put('adam', 29)
+	    shift.put('john', 26)
+	    shift.put('angela', 24)
+	    shift.put('bob', 48)
+	
+	    shift.shift()
+	    shift.shift()
+	    shift.shift()
+	    expect(shift.size).toBe(1)
+	    expect(toString(shift)).toBe('bob:48')
 	  })
 	})
 
@@ -20648,7 +20685,13 @@
 	    })
 	    expect(vm.$el.textContent).toBe('hi frozen')
 	    vm.msg = 'ho'
-	    vm.frozen.msg = 'changed'
+	    try {
+	      vm.frozen.msg = 'changed'
+	    } catch (error) {
+	      if (!(error instanceof TypeError)) {
+	        throw error
+	      }
+	    }
 	    Vue.nextTick(function () {
 	      expect(vm.$el.textContent).toBe('ho frozen')
 	      done()
@@ -20869,6 +20912,29 @@
 	      }
 	    })
 	    expect(vm.$el.firstChild.className).toBe('outer-hi')
+	  })
+	
+	  // #2163
+	  it('slot compilation order with v-if', function () {
+	    var vm = new Vue({
+	      el: document.createElement('div'),
+	      template:
+	        '<test>' +
+	          '<div slot="one">slot1</div>' +
+	          'default content' +
+	        '</test>',
+	      components: {
+	        test: {
+	          template:
+	            '<div>' +
+	              '<slot v-if="true"></slot> ' +
+	              '<slot name="one"></slot>' +
+	            '</div>',
+	          replace: true
+	        }
+	      }
+	    })
+	    expect(vm.$el.textContent).toBe('default content slot1')
 	  })
 	})
 
@@ -22072,6 +22138,15 @@
 	    res = parse(el.children[0])
 	    expect(res.childNodes.length).toBe(1)
 	    expect(res.firstChild.tagName).toBe('P')
+	  })
+	
+	  it('should reuse fragment from cache for the same string template', function () {
+	    var stringTemplate = '    <p>test</p>    '
+	    // When parsing a template, adds the created fragment to a cache
+	    var res = parse(stringTemplate)
+	
+	    var newRes = parse(stringTemplate)
+	    expect(newRes).toBe(res)
 	  })
 	})
 
