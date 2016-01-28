@@ -190,7 +190,7 @@
 <p>Create a “subclass” of the base Vue constructor. The argument should be an object containing component options.</p>
 <p>The special cases to note here are <code>el</code> and <code>data</code> options - they must be functions when used with <code>Vue.extend()</code>.</p>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"mount-point"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// create reusable constructor</span></span><br><span class="line"><span class="keyword">var</span> Profile = Vue.extend(&#123;</span><br><span class="line">  template: <span class="string">'&lt;p&gt;&#123;&#123;firstName&#125;&#125; &#123;&#123;lastName&#125;&#125; aka &#123;&#123;alias&#125;&#125;&lt;/p&gt;'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// create an instance of Profile</span></span><br><span class="line"><span class="keyword">var</span> profile = <span class="keyword">new</span> Profile(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    firstName: <span class="string">'Walter'</span>,</span><br><span class="line">    lastName: <span class="string">'White'</span>,</span><br><span class="line">    alias: <span class="string">'Heisenberg'</span></span><br><span class="line">  &#125;  </span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// mount it on an element</span></span><br><span class="line">profile.$mount(<span class="string">'#mount-point'</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// create reusable constructor</span></span><br><span class="line"><span class="keyword">var</span> Profile = Vue.extend(&#123;</span><br><span class="line">  template: <span class="string">'&lt;p&gt;&#123;&#123;firstName&#125;&#125; &#123;&#123;lastName&#125;&#125; aka &#123;&#123;alias&#125;&#125;&lt;/p&gt;'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// create an instance of Profile</span></span><br><span class="line"><span class="keyword">var</span> profile = <span class="keyword">new</span> Profile(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    firstName: <span class="string">'Walter'</span>,</span><br><span class="line">    lastName: <span class="string">'White'</span>,</span><br><span class="line">    alias: <span class="string">'Heisenberg'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// mount it on an element</span></span><br><span class="line">profile.$mount(<span class="string">'#mount-point'</span>)</span><br></pre></td></tr></table></figure>
 <p>Will result in:</p>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">p</span>&gt;</span>Walter White aka Heisenberg<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
@@ -447,7 +447,7 @@
 </li>
 </ul>
 <h3 id="replace"><a href="#replace" class="headerlink" title="replace"></a>replace</h3><ul>
-<li><p><strong>Type:</strong> <code>Boolean</code>  </p>
+<li><p><strong>Type:</strong> <code>Boolean</code></p>
 </li>
 <li><p><strong>Default:</strong> <code>true</code></p>
 </li>
@@ -468,7 +468,16 @@
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"insert"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span>&gt;</span>inserted<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h2 id="Options_/_Lifecycle_Hooks"><a href="#Options_/_Lifecycle_Hooks" class="headerlink" title="Options / Lifecycle Hooks"></a>Options / Lifecycle Hooks</h2><h3 id="created"><a href="#created" class="headerlink" title="created"></a>created</h3><ul>
+<h2 id="Options_/_Lifecycle_Hooks"><a href="#Options_/_Lifecycle_Hooks" class="headerlink" title="Options / Lifecycle Hooks"></a>Options / Lifecycle Hooks</h2><h3 id="init"><a href="#init" class="headerlink" title="init"></a>init</h3><ul>
+<li><p><strong>Type:</strong> <code>Function</code></p>
+</li>
+<li><p><strong>Details:</strong></p>
+<p>Called synchronously after the instance has just been initialized, before data observation and event / watcher setup.</p>
+</li>
+<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle_Diagram">Lifecycle Diagram</a></p>
+</li>
+</ul>
+<h3 id="created"><a href="#created" class="headerlink" title="created"></a>created</h3><ul>
 <li><p><strong>Type:</strong> <code>Function</code></p>
 </li>
 <li><p><strong>Details:</strong></p>
