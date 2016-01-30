@@ -1139,6 +1139,8 @@
 <ul>
 <li><code>.stop</code> - call <code>event.stopPropagation()</code>.</li>
 <li><code>.prevent</code> - call <code>event.preventDefault()</code>.</li>
+<li><code>.capture</code> - add event listener in capture mode.</li>
+<li><code>.self</code> - only trigger handler if event was dispatched from this element.</li>
 <li><code>.{keyCode | keyAlias}</code> - only trigger handler on certain keys.</li>
 </ul>
 </li>
@@ -1167,6 +1169,7 @@
 <ul>
 <li><code>.sync</code> - make the binding two-way. Only respected for prop bindings.</li>
 <li><code>.once</code> - make the binding one-time. Only respected for prop bindings.</li>
+<li><code>.camel</code> - convert the attribute name to camelCase when setting it. Only respected for normal attributes. Used for binding camelCase SVG attributes.</li>
 </ul>
 </li>
 <li><p><strong>Usage:</strong></p>
