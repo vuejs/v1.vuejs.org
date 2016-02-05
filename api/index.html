@@ -180,7 +180,9 @@
 <p>(Added in 1.0.8) Turning this option on will enable Vue to convert and observe objects that already contain getters/setters defined with <code>Object.defineProperty</code>. This is off by default because there is a small performance cost and this is not a commonly-needed feature.</p>
 </li>
 </ul>
-<h2 id="Global_API"><a href="#Global_API" class="headerlink" title="Global API"></a>Global API</h2><h3 id="Vue-extend_28_options__29"><a href="#Vue-extend_28_options__29" class="headerlink" title="Vue.extend( options )"></a>Vue.extend( options )</h3><ul>
+<h2 id="Global_API"><a href="#Global_API" class="headerlink" title="Global API"></a>Global API</h2><h3 id="Vue-extend">Vue.extend( options )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{Object} options</code></li>
@@ -197,7 +199,9 @@
 <li><p><strong>See also:</strong> <a href="/guide/components.html">Components</a></p>
 </li>
 </ul>
-<h3 id="Vue-nextTick_28_callback__29"><a href="#Vue-nextTick_28_callback__29" class="headerlink" title="Vue.nextTick( callback )"></a>Vue.nextTick( callback )</h3><ul>
+<h3 id="Vue-nextTick">Vue.nextTick( callback )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{Functon} callback</code></li>
@@ -210,7 +214,9 @@
 <li><p><strong>See also:</strong> <a href="/guide/reactivity.html#Async_Update_Queue">Async Update Queue</a></p>
 </li>
 </ul>
-<h3 id="Vue-set_28_object_2C_key_2C_value__29"><a href="#Vue-set_28_object_2C_key_2C_value__29" class="headerlink" title="Vue.set( object, key, value )"></a>Vue.set( object, key, value )</h3><ul>
+<h3 id="Vue-set">Vue.set( object, key, value )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{Object} object</code></li>
@@ -226,7 +232,9 @@
 <li><p><strong>See also:</strong> <a href="/guide/reactivity.html">Reactivity in Depth</a></p>
 </li>
 </ul>
-<h3 id="Vue-delete_28_object_2C_key__29"><a href="#Vue-delete_28_object_2C_key__29" class="headerlink" title="Vue.delete( object, key )"></a>Vue.delete( object, key )</h3><ul>
+<h3 id="Vue-delete">Vue.delete( object, key )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{Object} object</code></li>
@@ -239,7 +247,9 @@
 <li><p><strong>See also:</strong> <a href="/guide/reactivity.html">Reactivity in Depth</a></p>
 </li>
 </ul>
-<h3 id="Vue-directive_28_id_2C__5Bdefinition_5D__29"><a href="#Vue-directive_28_id_2C__5Bdefinition_5D__29" class="headerlink" title="Vue.directive( id, [definition] )"></a>Vue.directive( id, [definition] )</h3><ul>
+<h3 id="Vue-directive">Vue.directive( id, [definition] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} id</code></li>
@@ -253,7 +263,9 @@
 <li><p><strong>See also:</strong> <a href="/guide/custom-directive.html">Custom Directives</a></p>
 </li>
 </ul>
-<h3 id="Vue-elementDirective_28_id_2C__5Bdefinition_5D__29"><a href="#Vue-elementDirective_28_id_2C__5Bdefinition_5D__29" class="headerlink" title="Vue.elementDirective( id, [definition] )"></a>Vue.elementDirective( id, [definition] )</h3><ul>
+<h3 id="Vue-elementDirective">Vue.elementDirective( id, [definition] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} id</code></li>
@@ -267,7 +279,9 @@
 <li><p><strong>See also:</strong> <a href="/guide/custom-directive.html#Element_Directives">Element Directives</a></p>
 </li>
 </ul>
-<h3 id="Vue-filter_28_id_2C__5Bdefinition_5D__29"><a href="#Vue-filter_28_id_2C__5Bdefinition_5D__29" class="headerlink" title="Vue.filter( id, [definition] )"></a>Vue.filter( id, [definition] )</h3><ul>
+<h3 id="Vue-filter">Vue.filter( id, [definition] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} id</code></li>
@@ -281,7 +295,9 @@
 <li><p><strong>See also:</strong> <a href="/guide/custom-filter.html">Custom Filter</a></p>
 </li>
 </ul>
-<h3 id="Vue-component_28_id_2C__5Bdefinition_5D__29"><a href="#Vue-component_28_id_2C__5Bdefinition_5D__29" class="headerlink" title="Vue.component( id, [definition] )"></a>Vue.component( id, [definition] )</h3><ul>
+<h3 id="Vue-component">Vue.component( id, [definition] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} id</code></li>
@@ -295,7 +311,9 @@
 <li><p><strong>See also:</strong> <a href="/guide/components.html">Components</a>.</p>
 </li>
 </ul>
-<h3 id="Vue-transition_28_id_2C__5Bhooks_5D__29"><a href="#Vue-transition_28_id_2C__5Bhooks_5D__29" class="headerlink" title="Vue.transition( id, [hooks] )"></a>Vue.transition( id, [hooks] )</h3><ul>
+<h3 id="Vue-transition">Vue.transition( id, [hooks] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} id</code></li>
@@ -309,7 +327,9 @@
 <li><p><strong>See also:</strong> <a href="/guide/transitions.html">Transitions</a>.</p>
 </li>
 </ul>
-<h3 id="Vue-partial_28_id_2C__5Bpartial_5D__29"><a href="#Vue-partial_28_id_2C__5Bpartial_5D__29" class="headerlink" title="Vue.partial( id, [partial] )"></a>Vue.partial( id, [partial] )</h3><ul>
+<h3 id="Vue-partial">Vue.partial( id, [partial] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} id</code></li>
@@ -323,7 +343,9 @@
 <li><p><strong>See also:</strong> <a href="#partial">Special Elements - &lt;partial&gt;</a>.</p>
 </li>
 </ul>
-<h3 id="Vue-use_28_plugin_2C__5Boptions_5D__29"><a href="#Vue-use_28_plugin_2C__5Boptions_5D__29" class="headerlink" title="Vue.use( plugin, [options] )"></a>Vue.use( plugin, [options] )</h3><ul>
+<h3 id="Vue-use">Vue.use( plugin, [options] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{Object | Function} plugin</code></li>
@@ -336,7 +358,9 @@
 <li><p><strong>See also:</strong> <a href="/guide/plugins.html">Plugins</a>.</p>
 </li>
 </ul>
-<h3 id="Vue-mixin_28_mixin__29"><a href="#Vue-mixin_28_mixin__29" class="headerlink" title="Vue.mixin( mixin )"></a>Vue.mixin( mixin )</h3><ul>
+<h3 id="Vue-mixin">Vue.mixin( mixin )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{Object} mixin</code></li>
@@ -751,7 +775,9 @@
 <li><p><strong>See also:</strong> <a href="#v-el">v-el</a>.</p>
 </li>
 </ul>
-<h2 id="Instance_Methods_/_Data"><a href="#Instance_Methods_/_Data" class="headerlink" title="Instance Methods / Data"></a>Instance Methods / Data</h2><h3 id="vm-_24watch_28_expOrFn_2C_callback_2C__5Boptions_5D__29"><a href="#vm-_24watch_28_expOrFn_2C_callback_2C__5Boptions_5D__29" class="headerlink" title="vm.$watch( expOrFn, callback, [options] )"></a>vm.$watch( expOrFn, callback, [options] )</h3><ul>
+<h2 id="Instance_Methods_/_Data"><a href="#Instance_Methods_/_Data" class="headerlink" title="Instance Methods / Data"></a>Instance Methods / Data</h2><h3 id="vm-watch">vm.$watch( expOrFn, callback, [options] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String | Function} expOrFn</code></li>
@@ -786,7 +812,9 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">vm.$watch(<span class="string">'a'</span>, callback, &#123;</span><br><span class="line">  immediate: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// callback is fired immediately with current value of `a`</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h3 id="vm-_24get_28_expression__29"><a href="#vm-_24get_28_expression__29" class="headerlink" title="vm.$get( expression )"></a>vm.$get( expression )</h3><ul>
+<h3 id="vm-get">vm.$get( expression )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} expression</code></li>
@@ -799,7 +827,9 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> vm = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    a: &#123;</span><br><span class="line">      b: <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line">vm.$get(<span class="string">'a.b'</span>) <span class="comment">// -&gt; 1</span></span><br><span class="line">vm.$get(<span class="string">'a.b + 1'</span>) <span class="comment">// -&gt; 2</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h3 id="vm-_24set_28_keypath_2C_value__29"><a href="#vm-_24set_28_keypath_2C_value__29" class="headerlink" title="vm.$set( keypath, value )"></a>vm.$set( keypath, value )</h3><ul>
+<h3 id="vm-set">vm.$set( keypath, value )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} keypath</code></li>
@@ -822,7 +852,9 @@
 <li><p><strong>See also:</strong> <a href="/guide/reactivity.html">Reactivity in Depth</a></p>
 </li>
 </ul>
-<h3 id="vm-_24delete_28_key__29"><a href="#vm-_24delete_28_key__29" class="headerlink" title="vm.$delete( key )"></a>vm.$delete( key )</h3><ul>
+<h3 id="vm-delete">vm.$delete( key )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} key</code></li>
@@ -832,7 +864,9 @@
 <p>Delete a root level property on the Vue instance (and also its <code>$data</code>). Forces a digest cycle. Not recommended.</p>
 </li>
 </ul>
-<h3 id="vm-_24eval_28_expression__29"><a href="#vm-_24eval_28_expression__29" class="headerlink" title="vm.$eval( expression )"></a>vm.$eval( expression )</h3><ul>
+<h3 id="vm-eval">vm.$eval( expression )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} expression</code></li>
@@ -845,7 +879,9 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// assuming vm.msg = 'hello'</span></span><br><span class="line">vm.$<span class="built_in">eval</span>(<span class="string">'msg | uppercase'</span>) <span class="comment">// -&gt; 'HELLO'</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h3 id="vm-_24interpolate_28_templateString__29"><a href="#vm-_24interpolate_28_templateString__29" class="headerlink" title="vm.$interpolate( templateString )"></a>vm.$interpolate( templateString )</h3><ul>
+<h3 id="vm-interpolate">vm.$interpolate( templateString )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} templateString</code></li>
@@ -858,7 +894,9 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// assuming vm.msg = 'hello'</span></span><br><span class="line">vm.$interpolate(<span class="string">'&#123;&#123;msg&#125;&#125; world!'</span>) <span class="comment">// -&gt; 'hello world!'</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h3 id="vm-_24log_28__5Bkeypath_5D__29"><a href="#vm-_24log_28__5Bkeypath_5D__29" class="headerlink" title="vm.$log( [keypath] )"></a>vm.$log( [keypath] )</h3><ul>
+<h3 id="vm-log">vm.$log( [keypath] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} [keypath]</code></li>
@@ -869,7 +907,9 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">vm.$log() <span class="comment">// logs entire ViewModel data</span></span><br><span class="line">vm.$log(<span class="string">'item'</span>) <span class="comment">// logs vm.item</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h2 id="Instance_Methods_/_Events"><a href="#Instance_Methods_/_Events" class="headerlink" title="Instance Methods / Events"></a>Instance Methods / Events</h2><h3 id="vm-_24on_28_event_2C_callback__29"><a href="#vm-_24on_28_event_2C_callback__29" class="headerlink" title="vm.$on( event, callback )"></a>vm.$on( event, callback )</h3><ul>
+<h2 id="Instance_Methods_/_Events"><a href="#Instance_Methods_/_Events" class="headerlink" title="Instance Methods / Events"></a>Instance Methods / Events</h2><h3 id="vm-on">vm.$on( event, callback )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} event</code></li>
@@ -883,7 +923,9 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">vm.$on(<span class="string">'test'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">msg</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(msg)</span><br><span class="line">&#125;)</span><br><span class="line">vm.$emit(<span class="string">'test'</span>, <span class="string">'hi'</span>)</span><br><span class="line"><span class="comment">// -&gt; "hi"</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h3 id="vm-_24once_28_event_2C_callback__29"><a href="#vm-_24once_28_event_2C_callback__29" class="headerlink" title="vm.$once( event, callback )"></a>vm.$once( event, callback )</h3><ul>
+<h3 id="vm-once">vm.$once( event, callback )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} event</code></li>
@@ -894,7 +936,9 @@
 <p>Listen for a custom event, but only once. The listener will be removed once it triggers for the first time.</p>
 </li>
 </ul>
-<h3 id="vm-_24off_28__5Bevent_2C_callback_5D__29"><a href="#vm-_24off_28__5Bevent_2C_callback_5D__29" class="headerlink" title="vm.$off( [event, callback] )"></a>vm.$off( [event, callback] )</h3><ul>
+<h3 id="vm-off">vm.$off( [event, callback] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} [event]</code></li>
@@ -913,7 +957,9 @@
 </ul>
 </li>
 </ul>
-<h3 id="vm-_24emit_28_event_2C__5B_u2026args_5D__29"><a href="#vm-_24emit_28_event_2C__5B_u2026args_5D__29" class="headerlink" title="vm.$emit( event, […args] )"></a>vm.$emit( event, […args] )</h3><ul>
+<h3 id="vm-emit">vm.$emit( event, […args] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} event</code></li>
@@ -922,7 +968,9 @@
 <p>Trigger an event on the current instance. Any additional arguments will be passed into the listener’s callback function.</p>
 </li>
 </ul>
-<h3 id="vm-_24dispatch_28_event_2C__5B_u2026args_5D__29"><a href="#vm-_24dispatch_28_event_2C__5B_u2026args_5D__29" class="headerlink" title="vm.$dispatch( event, […args] )"></a>vm.$dispatch( event, […args] )</h3><ul>
+<h3 id="vm-dispatch">vm.$dispatch( event, […args] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} event</code></li>
@@ -938,7 +986,9 @@
 <li><p><strong>See also:</strong> <a href="/guide/components.html#Parent-Child_Communication">Parent-Child Communication</a></p>
 </li>
 </ul>
-<h3 id="vm-_24broadcast_28_event_2C__5B_u2026args_5D__29"><a href="#vm-_24broadcast_28_event_2C__5B_u2026args_5D__29" class="headerlink" title="vm.$broadcast( event, […args] )"></a>vm.$broadcast( event, […args] )</h3><ul>
+<h3 id="vm-broadcast">vm.$broadcast( event, […args] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} event</code></li>
@@ -952,7 +1002,9 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> parent = <span class="keyword">new</span> Vue()</span><br><span class="line"><span class="comment">// child1 and child2 are siblings</span></span><br><span class="line"><span class="keyword">var</span> child1 = <span class="keyword">new</span> Vue(&#123; parent: parent &#125;)</span><br><span class="line"><span class="keyword">var</span> child2 = <span class="keyword">new</span> Vue(&#123; parent: parent &#125;)</span><br><span class="line"><span class="comment">// child3 is nested under child2</span></span><br><span class="line"><span class="keyword">var</span> child3 = <span class="keyword">new</span> Vue(&#123; parent: child2 &#125;)</span><br><span class="line"></span><br><span class="line">child1.$on(<span class="string">'test'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'child1 notified'</span>)</span><br><span class="line">&#125;)</span><br><span class="line">child2.$on(<span class="string">'test'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'child2 notified'</span>)</span><br><span class="line">&#125;)</span><br><span class="line">child3.$on(<span class="string">'test'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'child3 notified'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">parent.$broadcast(<span class="string">'test'</span>)</span><br><span class="line"><span class="comment">// -&gt; "child1 notified"</span></span><br><span class="line"><span class="comment">// -&gt; "child2 notified"</span></span><br><span class="line"><span class="comment">// child3 is NOT notified, because child2 didn't return</span></span><br><span class="line"><span class="comment">// true in its callback</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h2 id="Instance_Methods_/_DOM"><a href="#Instance_Methods_/_DOM" class="headerlink" title="Instance Methods / DOM"></a>Instance Methods / DOM</h2><h3 id="vm-_24appendTo_28_elementOrSelector_2C__5Bcallback_5D__29"><a href="#vm-_24appendTo_28_elementOrSelector_2C__5Bcallback_5D__29" class="headerlink" title="vm.$appendTo( elementOrSelector, [callback] )"></a>vm.$appendTo( elementOrSelector, [callback] )</h3><ul>
+<h2 id="Instance_Methods_/_DOM"><a href="#Instance_Methods_/_DOM" class="headerlink" title="Instance Methods / DOM"></a>Instance Methods / DOM</h2><h3 id="vm-appendTo">vm.$appendTo( elementOrSelector, [callback] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{Element | String} elementOrSelector</code></li>
@@ -965,7 +1017,9 @@
 <p>Append the Vue instance’s DOM element or fragment to target element. The target can be either an element or a querySelector string. This method will trigger transitions if present. The callback is fired after the transition has completed (or immediately if no transition has been triggered).</p>
 </li>
 </ul>
-<h3 id="vm-_24before_28_elementOrSelector_2C__5Bcallback_5D__29"><a href="#vm-_24before_28_elementOrSelector_2C__5Bcallback_5D__29" class="headerlink" title="vm.$before( elementOrSelector, [callback] )"></a>vm.$before( elementOrSelector, [callback] )</h3><ul>
+<h3 id="vm-before">vm.$before( elementOrSelector, [callback] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{Element | String} elementOrSelector</code></li>
@@ -978,7 +1032,9 @@
 <p>Insert the Vue instance’s DOM element or fragment before target element. The target can be either an element or a querySelector string. This method will trigger transitions if present. The callback is fired after the transition has completed (or immediately if no transition has been triggered).</p>
 </li>
 </ul>
-<h3 id="vm-_24after_28_elementOrSelector_2C__5Bcallback_5D__29"><a href="#vm-_24after_28_elementOrSelector_2C__5Bcallback_5D__29" class="headerlink" title="vm.$after( elementOrSelector, [callback] )"></a>vm.$after( elementOrSelector, [callback] )</h3><ul>
+<h3 id="vm-after">vm.$after( elementOrSelector, [callback] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{Element | String} elementOrSelector</code></li>
@@ -991,7 +1047,9 @@
 <p>Insert the Vue instance’s DOM element or fragment after target element. The target can be either an element or a querySelector string. This method will trigger transitions if present. The callback is fired after the transition has completed (or immediately if no transition has been triggered).</p>
 </li>
 </ul>
-<h3 id="vm-_24remove_28__5Bcallback_5D__29"><a href="#vm-_24remove_28__5Bcallback_5D__29" class="headerlink" title="vm.$remove( [callback] )"></a>vm.$remove( [callback] )</h3><ul>
+<h3 id="vm-remove">vm.$remove( [callback] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{Function} [callback]</code></li>
@@ -1003,7 +1061,9 @@
 <p>Remove the Vue instance’s DOM element or fragment from the DOM. This method will trigger transitions if present. The callback is fired after the transition has completed (or immediately if no transition has been triggered).</p>
 </li>
 </ul>
-<h3 id="vm-_24nextTick_28_callback__29"><a href="#vm-_24nextTick_28_callback__29" class="headerlink" title="vm.$nextTick( callback )"></a>vm.$nextTick( callback )</h3><ul>
+<h3 id="vm-nextTick">vm.$nextTick( callback )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{Function} [callback]</code></li>
@@ -1022,7 +1082,9 @@
 </ul>
 </li>
 </ul>
-<h2 id="Instance_Methods_/_Lifecycle"><a href="#Instance_Methods_/_Lifecycle" class="headerlink" title="Instance Methods / Lifecycle"></a>Instance Methods / Lifecycle</h2><h3 id="vm-_24mount_28__5BelementOrSelector_5D__29"><a href="#vm-_24mount_28__5BelementOrSelector_5D__29" class="headerlink" title="vm.$mount( [elementOrSelector] )"></a>vm.$mount( [elementOrSelector] )</h3><ul>
+<h2 id="Instance_Methods_/_Lifecycle"><a href="#Instance_Methods_/_Lifecycle" class="headerlink" title="Instance Methods / Lifecycle"></a>Instance Methods / Lifecycle</h2><h3 id="vm-mount">vm.$mount( [elementOrSelector] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{Element | String} [elementOrSelector]</code></li>
@@ -1041,7 +1103,9 @@
 <li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle_Diagram">Lifecycle Diagram</a></p>
 </li>
 </ul>
-<h3 id="vm-_24destroy_28__5Bremove_5D__29"><a href="#vm-_24destroy_28__5Bremove_5D__29" class="headerlink" title="vm.$destroy( [remove] )"></a>vm.$destroy( [remove] )</h3><ul>
+<h3 id="vm-destroy">vm.$destroy( [remove] )</h3>
+
+<ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{Boolean} [remove] - default: false</code></li>
