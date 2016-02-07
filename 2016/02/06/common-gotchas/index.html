@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Vue.js 0.10.6, and what's next - vue.js</title>
+        <title>Common Beginner Gotchas - vue.js</title>
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -88,7 +88,7 @@
         <ul>
         
             <li>
-                <a href="/2016/02/06/common-gotchas/" class="sidebar-link">Common Beginner Gotchas</a>
+                <a href="/2016/02/06/common-gotchas/" class="sidebar-link current">Common Beginner Gotchas</a>
             </li>
         
             <li>
@@ -116,7 +116,7 @@
             </li>
         
             <li>
-                <a href="/2014/07/29/vue-next/" class="sidebar-link current">Vue.js 0.10.6, and what's next</a>
+                <a href="/2014/07/29/vue-next/" class="sidebar-link">Vue.js 0.10.6, and what's next</a>
             </li>
         
             <li>
@@ -127,27 +127,27 @@
     </div>
 </div>
 <div class="content blog post">
-    <h1>Vue.js 0.10.6, and what's next</h1>
+    <h1>Common Beginner Gotchas</h1>
     <div id="ad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
     </div>
-    <h4>Jul 29, 2014</h4>
-    <h2 id="0-10-6"><a href="#0-10-6" class="headerlink" title="0.10.6"></a>0.10.6</h2><p>Vue.js 0.10.6 has been released! This is another small bug-fix release and will be the last maintainance version before the next major release.</p>
+    <h4>Feb 6, 2016</h4>
+    <p>There are few type of questions that we frequently see from users who are new to Vue.js. Although they are all mentioned somewhere in the guide, it may not be very easy to find the corresponding section if you are not already familiar with them. Therefore we are aggregating them in this post and hopefully it can save you some time!</p>
 <a id="more"></a>
-<ul>
-<li>fix <code>v-style</code> error when value is falsy or a number. ( thanks to <a href="https://github.com/dmfilipenko" target="_blank" rel="external">@dmfilipenko</a> )</li>
-<li>fix the built-in <code>currency</code> filter error when value is a string ( thanks to <a href="https://github.com/dmfilipenko" target="_blank" rel="external">@dmfilipenko</a> )</li>
-<li>fix <code>Vue.require</code> for building with Component v1.0+ ( thanks to <a href="https://github.com/kewah" target="_blank" rel="external">@kewah</a> )</li>
-<li>Allow template nodes to be passed as a template option ( thanks to <a href="https://github.com/jordangarcia" target="_blank" rel="external">@jordangarcia</a> )</li>
-<li><code>vm.$destroy()</code> now accepts an optional argument <code>noRemove</code>. When passed in as <code>true</code> it will leave the vm’s DOM node intact after the vm is destroyed.</li>
-</ul>
-<h2 id="Vue-next"><a href="#Vue-next" class="headerlink" title="Vue-next"></a>Vue-next</h2><p>Some of you might have noticed there is a <a href="https://github.com/yyx990803/vue/tree/next" target="_blank" rel="external">next</a> branch in the repo. And yes, I am re-writing Vue.js from scratch. There are two main reasons:</p>
-<ul>
-<li>Fix some issues that are caused by design flaws in the current version. Because these changes affect the design of some core modules, it is actually easier to rewrite than to apply on the current codebase.</li>
-<li>Improve general code quality (in particular, <code>compiler.js</code> as of now is a big pile of mess, and comments are not consistent across the codebase.)</li>
-</ul>
-<p>Take note that the <code>next</code> branch is still in <strong>very</strong> early stage. The internals will change a lot, and when it comes out it <strong>will</strong> break current applications. Despite that I will try to keep the API changes to a minimum. Major differences with current 0.10 branch are documented in <a href="https://github.com/yyx990803/vue/blob/next/changes.md" target="_blank" rel="external"><code>changes.md</code></a>. The list is obviously incomplete and subject to change, some of them are simply ideas, but it at least gives you a taste of what to expect, and I’d appreicate your feedback on any of the topics.</p>
-<p>Share your thoughts at <a href="https://github.com/vuejs/Discussion/issues" target="_blank" rel="external">vuejs/Discussion</a>.</p>
+<h3 id="Why_isn_u2019t_the_DOM_updating_3F"><a href="#Why_isn_u2019t_the_DOM_updating_3F" class="headerlink" title="Why isn’t the DOM updating?"></a>Why isn’t the DOM updating?</h3><p>Most of the time, when you change a Vue instance’s data, the view updates. But there are two edge cases:</p>
+<ol>
+<li><p>When you are <strong>adding a new property</strong> that wasn’t present when the data was observed. Due to the limitation of ES5 and to ensure consistent behavior across browsers, Vue.js cannot detect property addition/deletions. The best practice is to always declare properties that need to be reactive upfront. In cases where you absolutely need to add or delete properties at runtime, use the global <a href="/api/#Vue-set"><code>Vue.set</code></a> or <a href="/api/#Vue-delete"><code>Vue.delete</code></a> methods.</p>
+</li>
+<li><p>When you modify an Array by directly setting an index (e.g. <code>arr[0] = val</code>) or modifying its <code>length</code> property. Similarly, Vue.js cannot pickup these changes. Always modify arrays by using an Array instance method, or replacing it entirely. Vue provides a convenience method <code>arr.$set(index, value)</code> which is just syntax sugar for <code>arr.splice(index, 1, value)</code>.</p>
+</li>
+</ol>
+<p>Further reading: <a href="/guide/reactivity.html">Reactivity in Depth</a>.</p>
+<h3 id="When_is_the_DOM_updated_3F"><a href="#When_is_the_DOM_updated_3F" class="headerlink" title="When is the DOM updated?"></a>When is the DOM updated?</h3><p>Vue.js uses an asynchronous queue to batch DOM updates. This means when you modify some data, the DOM updates do not happen instantly: they are applied asynchronously when the queue is flushed. So how do you know when the DOM has been updated? Use <code>Vue.nextTick</code> right after you modify the data. The callback function you pass to it will be called once the queue has been flushed.</p>
+<p>Further reading: <a href="/guide/reactivity.html#Async_Update_Queue">Async Update Queue</a>.</p>
+<h3 id="Why_does_data_need_to_be_a_function_3F"><a href="#Why_does_data_need_to_be_a_function_3F" class="headerlink" title="Why does <code>data</code> need to be a function?"></a>Why does <code>data</code> need to be a function?</h3><p>In the basic examples, we declare the <code>data</code> directly as a plain object. This is because we are creating only a single instance with <code>new Vue()</code>. However, when defining a <strong>component</strong>, <code>data</code> must be declared as a function that returns the initial data object. Why? Because there will be many instances created using the same definition. If we still use a plain object for <code>data</code>, that same object will be <strong>shared by reference</strong> across all instance created! By providing a <code>data</code> function, every time a new instance is created, we can simply call it to return a fresh copy of the initial data.</p>
+<p>Further reading: <a href="/guide/components.html#Component_Option_Caveats">Component Option Caveats</a>.</p>
+<h3 id="HTML_case_insensitivity"><a href="#HTML_case_insensitivity" class="headerlink" title="HTML case insensitivity"></a>HTML case insensitivity</h3><p>All Vue.js templates are valid, parsable HTML markup, and Vue.js relies on spec-compliant parsers to process its templates. However, as specified in the standard, HTML is case-insensitive when matching tag and attribute names. This means camelCase attributes like <code>:myProp=&quot;123&quot;</code> will be matched as <code>:myprop=&quot;123&quot;</code>. As a rule of thumb, you should use camelCase in JavaScript and kebab-case in templates. For example a prop defined in JavaScript as <code>myProp</code> should be bound in templates as <code>:my-prop</code>.</p>
+<p>We are discussing the possibility of eliminating this inconsistency by resolving props and components in a case-insensitive manner as well. Join the conversation <a href="https://github.com/vuejs/vue/issues/2308" target="_blank" rel="external">here</a>.</p>
 
 </div>
 

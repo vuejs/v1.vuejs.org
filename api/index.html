@@ -204,7 +204,7 @@
 <ul>
 <li><p><strong>Arguments:</strong></p>
 <ul>
-<li><code>{Functon} callback</code></li>
+<li><code>{Function} callback</code></li>
 </ul>
 </li>
 <li><p><strong>Usage:</strong></p>
@@ -375,12 +375,13 @@
 <h2 id="Options_/_Data"><a href="#Options_/_Data" class="headerlink" title="Options / Data"></a>Options / Data</h2><h3 id="data"><a href="#data" class="headerlink" title="data"></a>data</h3><ul>
 <li><p><strong>Type:</strong> <code>Object | Function</code></p>
 </li>
-<li><p><strong>Restriction:</strong> Only accepts <code>Function</code> when used in <code>Vue.extend()</code>.</p>
+<li><p><strong>Restriction:</strong> Only accepts <code>Function</code> when used in a component definition.</p>
 </li>
 <li><p><strong>Details:</strong></p>
 <p>The data object for the Vue instance. Vue.js will recursively convert its properties into getter/setters to make it “reactive”. <strong>The object must be plain</strong>: native objects, existing getter/setters and prototype properties are ignored. It is not recommended to observe complex objects.</p>
 <p>Once the instance is created, the original data object can be accessed as <code>vm.$data</code>. The Vue instance also proxies all the properties found on the data object.</p>
 <p>Properties that start with <code>_</code> or <code>$</code> will <strong>not</strong> be proxied on the Vue instance because they may conflict with Vue’s internal properties and API methods. You will have to access them as <code>vm.$data._property</code>.</p>
+<p>When defining a <strong>component</strong>, <code>data</code> must be declared as a function that returns the initial data object, because there will be many instances created using the same definition. If we still use a plain object for <code>data</code>, that same object will be <strong>shared by reference</strong> across all instance created! By providing a <code>data</code> function, every time a new instance is created, we can simply call it to return a fresh copy of the initial data.</p>
 <p>If required, a deep clone of the original object can be obtained by passing <code>vm.$data</code> through <code>JSON.parse(JSON.stringify(...))</code>.</p>
 </li>
 <li><p><strong>Example:</strong></p>
@@ -444,7 +445,7 @@
 <h2 id="Options_/_DOM"><a href="#Options_/_DOM" class="headerlink" title="Options / DOM"></a>Options / DOM</h2><h3 id="el"><a href="#el" class="headerlink" title="el"></a>el</h3><ul>
 <li><p><strong>Type:</strong> <code>String | HTMLElement | Function</code></p>
 </li>
-<li><p><strong>Restriction:</strong> only accepts type <code>Function</code> when used in <code>Vue.extend()</code>.</p>
+<li><p><strong>Restriction:</strong> only accepts type <code>Function</code> when used in a component definition.</p>
 </li>
 <li><p><strong>Details:</strong></p>
 <p>Provide the Vue instance an existing DOM element to mount on. It can be a CSS selector string, an actual HTMLElement, or a function that returns an HTMLElement. Note that the provided element merely serves as a mounting point; it will be replaced if a template is also provided, unless <code>replace</code> is set to false. The resolved element will be accessible as <code>vm.$el</code>.</p>
