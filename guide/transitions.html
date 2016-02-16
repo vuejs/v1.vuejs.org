@@ -327,7 +327,7 @@ new Vue({
 <h3 id="CSS_Animations"><a href="#CSS_Animations" class="headerlink" title="CSS Animations"></a>CSS Animations</h3><p>CSS animations are applied in the same way with CSS transitions, the difference being that <code>v-enter</code> is not removed immediately after the element is inserted, but on an <code>animationend</code> event.</p>
 <p>Example: (omitting prefixed CSS rules here)</p>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-show</span>=<span class="value">"show"</span> <span class="attribute">transition</span>=<span class="value">"bounce"</span>&gt;</span>Look at me!<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="class">.bounce-enter</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">animation</span>:<span class="value"> bounce-in .<span class="number">5s</span></span></span>;</span><br><span class="line">&#125;</span></span><br><span class="line"><span class="class">.bounce-leave</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">animation</span>:<span class="value"> bounce-out .<span class="number">5s</span></span></span>;</span><br><span class="line">&#125;</span></span><br><span class="line"><span class="at_rule">@<span class="keyword">keyframes</span> bounce-in </span>&#123;</span><br><span class="line">  0% <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">0</span>)</span></span>;</span><br><span class="line">  &#125;</span></span><br><span class="line">  50% <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">1.5</span>)</span></span>;</span><br><span class="line">  &#125;</span></span><br><span class="line">  100% <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">1</span>)</span></span>;</span><br><span class="line">  &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="at_rule">@<span class="keyword">keyframes</span> bounce-out </span>&#123;</span><br><span class="line">  0% <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">1</span>)</span></span>;</span><br><span class="line">  &#125;</span></span><br><span class="line">  50% <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">1.5</span>)</span></span>;</span><br><span class="line">  &#125;</span></span><br><span class="line">  100% <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">0</span>)</span></span>;</span><br><span class="line">  &#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="class">.bounce-transition</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">display</span>:<span class="value"> inline-block</span></span>; <span class="comment">/* otherwise scale animation won't work */</span></span><br><span class="line">&#125;</span></span><br><span class="line"><span class="class">.bounce-enter</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">animation</span>:<span class="value"> bounce-in .<span class="number">5s</span></span></span>;</span><br><span class="line">&#125;</span></span><br><span class="line"><span class="class">.bounce-leave</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">animation</span>:<span class="value"> bounce-out .<span class="number">5s</span></span></span>;</span><br><span class="line">&#125;</span></span><br><span class="line"><span class="at_rule">@<span class="keyword">keyframes</span> bounce-in </span>&#123;</span><br><span class="line">  0% <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">0</span>)</span></span>;</span><br><span class="line">  &#125;</span></span><br><span class="line">  50% <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">1.5</span>)</span></span>;</span><br><span class="line">  &#125;</span></span><br><span class="line">  100% <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">1</span>)</span></span>;</span><br><span class="line">  &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="at_rule">@<span class="keyword">keyframes</span> bounce-out </span>&#123;</span><br><span class="line">  0% <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">1</span>)</span></span>;</span><br><span class="line">  &#125;</span></span><br><span class="line">  50% <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">1.5</span>)</span></span>;</span><br><span class="line">  &#125;</span></span><br><span class="line">  100% <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">0</span>)</span></span>;</span><br><span class="line">  &#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <div id="anim" class="demo">
   <span v-show="show" transition="bounce">Look at me!</span>
@@ -336,6 +336,9 @@ new Vue({
 </div>
 
 <style>
+  .bounce-transition {
+    display: inline-block;
+  }
   .bounce-enter {
     -webkit-animation: bounce-in .5s;
     animation: bounce-in .5s;
@@ -346,52 +349,58 @@ new Vue({
   }
   @keyframes bounce-in {
     0% {
-      transform: scale(0);
       -webkit-transform: scale(0);
+      transform: scale(0);
     }
     50% {
-      transform: scale(1.5);
       -webkit-transform: scale(1.5);
+      transform: scale(1.5);
     }
     100% {
-      transform: scale(1);
       -webkit-transform: scale(1);
+      transform: scale(1);
     }
   }
   @keyframes bounce-out {
     0% {
-      transform: scale(1);
       -webkit-transform: scale(1);
+      transform: scale(1);
     }
     50% {
-      transform: scale(1.5);
       -webkit-transform: scale(1.5);
+      transform: scale(1.5);
     }
     100% {
-      transform: scale(0);
       -webkit-transform: scale(0);
+      transform: scale(0);
     }
   }
   @-webkit-keyframes bounce-in {
     0% {
       -webkit-transform: scale(0);
+      transform: scale(0);
     }
     50% {
       -webkit-transform: scale(1.5);
+      transform: scale(1.5);
     }
     100% {
       -webkit-transform: scale(1);
+      transform: scale(1);
     }
   }
   @-webkit-keyframes bounce-out {
     0% {
       -webkit-transform: scale(1);
+      transform: scale(1);
     }
     50% {
       -webkit-transform: scale(1.5);
+      transform: scale(1.5);
     }
     100% {
       -webkit-transform: scale(0);
+      transform: scale(0);
     }
   }
 </style>
