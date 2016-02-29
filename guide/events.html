@@ -263,7 +263,9 @@ new Vue({
 <li>left</li>
 <li>right</li>
 </ul>
-<p>In addition, single letter key aliases are also supported in 1.0.8+.</p>
+<p><strong>1.0.8+:</strong> Single letter key aliases are also supported.</p>
+<p><strong>1.0.17+:</strong> You can also define custom key modifier aliases:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// enable @keyup.f1</span></span><br><span class="line">Vue.directive(<span class="string">'on'</span>).keyCodes.f1 = <span class="number">112</span></span><br></pre></td></tr></table></figure>
 <h2 id="Why_Listeners_in_HTML_3F"><a href="#Why_Listeners_in_HTML_3F" class="headerlink" title="Why Listeners in HTML?"></a>Why Listeners in HTML?</h2><p>You might be concerned that this whole event listening approach violates the good old rules about “separation of concern”. Rest assured - since all Vue.js handler functions and expressions are strictly bound to the ViewModel that’s handling the current View, it won’t cause any maintenance difficulty. In fact, there are several benefits in using <code>v-on</code>:</p>
 <ol>
 <li><p>It makes it easier to locate the handler function implementations within your JS code by simply skimming the HTML template.</p>

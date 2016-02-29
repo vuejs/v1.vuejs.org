@@ -171,16 +171,6 @@
 <p>When async mode is off, Vue will perform all DOM updates synchronously upon detecting data change. This may help with debugging in some scenarios, but could also cause degraded performance and affect the order in which watcher callbacks are called. <strong><code>async: false</code> is not recommended in production.</strong></p>
 </li>
 </ul>
-<h3 id="convertAllProperties"><a href="#convertAllProperties" class="headerlink" title="convertAllProperties"></a>convertAllProperties</h3><ul>
-<li><p><strong>Type:</strong> <code>Boolean</code></p>
-</li>
-<li><p><strong>Default:</strong> <code>false</code></p>
-</li>
-<li><p><strong>Usage:</strong></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">Vue.config.convertAllProperties = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-<p>(Added in 1.0.8) Turning this option on will enable Vue to convert and observe objects that already contain getters/setters defined with <code>Object.defineProperty</code>. This is off by default because there is a small performance cost and this is not a commonly-needed feature.</p>
-</li>
-</ul>
 <h2 id="Global_API"><a href="#Global_API" class="headerlink" title="Global API"></a>Global API</h2><h3 id="Vue-extend">Vue.extend( options )</h3>
 
 <ul>
@@ -1185,8 +1175,9 @@
 </ul>
 </li>
 <li><p><strong>Usage:</strong></p>
-<p>Render the element or template block multiple times based on the source data. The expression must use the special syntax to provide an alias for the current element being iterated on:</p>
+<p>Render the element or template block multiple times based on the source data. The directive’s value must use the special syntax <code>alias (in|of) expression</code> to provide an alias for the current element being iterated on:</p>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-for</span>=<span class="value">"item in items"</span>&gt;</span></span><br><span class="line">  &#123;&#123; item.text &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Note using <code>of</code> as the delimiter is only supported in 1.0.17+.</p>
 <p>Alternatively, you can also specify an alias for the index (or the key if used on an Object):</p>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-for</span>=<span class="value">"(index, item) in items"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-for</span>=<span class="value">"(key, val) in object"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>The detailed usage for <code>v-for</code> is explained in the guide section linked below.</p>
