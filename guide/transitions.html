@@ -317,7 +317,7 @@ new Vue({
 </li>
 </ul>
 <p>In addition, if you remove an element when its enter transition is in progress, the <code>enterCancelled</code> hook will be called to give you the opportunity to clean up changes or timers created in <code>enter</code>. Vice-versa for leaving transitions.</p>
-<p>All of the above hook functions are called with their <code>this</code> contexts set to the associated Vue instances. If the element is the root node of a Vue instance, that instance will be used as the context. Otherwise, the context will be the owner instance of the transition directive.</p>
+<p>All of the above hook functions are called with their <code>this</code> contexts set to the associated Vue instances. It follows the same rule of compilation scopes: a transition’s <code>this</code> context will point to the scope it is compiled in.</p>
 <p>Finally, the <code>enter</code> and <code>leave</code> can optionally take a second callback argument. When you do so, you are indicating that you want to explicitly control when the transition should end, so instead of waiting for the CSS <code>transitionend</code> event, Vue.js will expect you to eventually call the callback to finish the transition. For example:</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">enter: <span class="function"><span class="keyword">function</span> (<span class="params">el</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// no second argument, transition end</span></span><br><span class="line">  <span class="comment">// determined by CSS transitionend event</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>vs.</p>
