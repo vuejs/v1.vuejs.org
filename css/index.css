@@ -297,7 +297,7 @@ a.button:hover {
   width: 14px;
   height: 14px;
   position: absolute;
-  top: 3px;
+  top: 2px;
   left: 5px;
 }
 #donate .wrapper a {
@@ -666,6 +666,7 @@ body {
   #social {
     max-width: 340px;
     margin: 1.2em auto;
+    line-height: 1.8em;
   }
   .cool {
     margin-top: 0;
