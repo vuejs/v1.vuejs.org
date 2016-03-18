@@ -13,7 +13,7 @@
         <script>
             window.PAGE_TYPE = "api"
         </script>
-        <link rel="stylesheet" href="/css/page.css" type="text/css">
+        <link rel="stylesheet" href="/css/page.css">
         <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -112,7 +112,7 @@
     <div id="ad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
     </div>
-    <h2 id="Global_Config"><a href="#Global_Config" class="headerlink" title="Global Config"></a>Global Config</h2><p><code>Vue.config</code> is an object containing Vue’s global configurations. You can modify its properties listed below before bootstrapping your application:</p>
+    <h2 id="Global-Config"><a href="#Global-Config" class="headerlink" title="Global Config"></a>Global Config</h2><p><code>Vue.config</code> is an object containing Vue’s global configurations. You can modify its properties listed below before bootstrapping your application:</p>
 <h3 id="debug"><a href="#debug" class="headerlink" title="debug"></a>debug</h3><ul>
 <li><p><strong>Type:</strong> <code>Boolean</code></p>
 </li>
@@ -181,7 +181,7 @@
 <p>Configure whether to allow <a href="https://github.com/vuejs/vue-devtools" target="_blank" rel="external">vue-devtools</a> inspection. This option’s default value is <code>true</code> in development builds and <code>false</code> in production builds. You can set it to <code>true</code> to enable inspection for production builds.</p>
 </li>
 </ul>
-<h2 id="Global_API"><a href="#Global_API" class="headerlink" title="Global API"></a>Global API</h2><h3 id="Vue-extend">Vue.extend( options )</h3>
+<h2 id="Global-API"><a href="#Global-API" class="headerlink" title="Global API"></a>Global API</h2><h3 id="Vue-extend">Vue.extend( options )</h3>
 
 <ul>
 <li><p><strong>Arguments:</strong></p>
@@ -192,10 +192,10 @@
 <li><p><strong>Usage:</strong></p>
 <p>Create a “subclass” of the base Vue constructor. The argument should be an object containing component options.</p>
 <p>The special cases to note here are <code>el</code> and <code>data</code> options - they must be functions when used with <code>Vue.extend()</code>.</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"mount-point"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"mount-point"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// create reusable constructor</span></span><br><span class="line"><span class="keyword">var</span> Profile = Vue.extend(&#123;</span><br><span class="line">  template: <span class="string">'&lt;p&gt;&#123;&#123;firstName&#125;&#125; &#123;&#123;lastName&#125;&#125; aka &#123;&#123;alias&#125;&#125;&lt;/p&gt;'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// create an instance of Profile</span></span><br><span class="line"><span class="keyword">var</span> profile = <span class="keyword">new</span> Profile(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    firstName: <span class="string">'Walter'</span>,</span><br><span class="line">    lastName: <span class="string">'White'</span>,</span><br><span class="line">    alias: <span class="string">'Heisenberg'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// mount it on an element</span></span><br><span class="line">profile.$mount(<span class="string">'#mount-point'</span>)</span><br></pre></td></tr></table></figure>
 <p>Will result in:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">p</span>&gt;</span>Walter White aka Heisenberg<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Walter White aka Heisenberg<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>See also:</strong> <a href="/guide/components.html">Components</a></p>
 </li>
@@ -373,7 +373,7 @@
 <li><p><strong>See also:</strong> <a href="/guide/mixins.html#Global_Mixin">Global Mixins</a></p>
 </li>
 </ul>
-<h2 id="Options_/_Data"><a href="#Options_/_Data" class="headerlink" title="Options / Data"></a>Options / Data</h2><h3 id="data"><a href="#data" class="headerlink" title="data"></a>data</h3><ul>
+<h2 id="Options-Data"><a href="#Options-Data" class="headerlink" title="Options / Data"></a>Options / Data</h2><h3 id="data"><a href="#data" class="headerlink" title="data"></a>data</h3><ul>
 <li><p><strong>Type:</strong> <code>Object | Function</code></p>
 </li>
 <li><p><strong>Restriction:</strong> Only accepts <code>Function</code> when used in a component definition.</p>
@@ -443,7 +443,7 @@
 <li><p><strong>See also:</strong> <a href="#vm-watch">Instance Methods - vm.$watch</a></p>
 </li>
 </ul>
-<h2 id="Options_/_DOM"><a href="#Options_/_DOM" class="headerlink" title="Options / DOM"></a>Options / DOM</h2><h3 id="el"><a href="#el" class="headerlink" title="el"></a>el</h3><ul>
+<h2 id="Options-DOM"><a href="#Options-DOM" class="headerlink" title="Options / DOM"></a>Options / DOM</h2><h3 id="el"><a href="#el" class="headerlink" title="el"></a>el</h3><ul>
 <li><p><strong>Type:</strong> <code>String | HTMLElement | Function</code></p>
 </li>
 <li><p><strong>Restriction:</strong> only accepts type <code>Function</code> when used in a component definition.</p>
@@ -483,18 +483,18 @@
 <p>Determines whether to replace the element being mounted on with the template. If set to <code>false</code>, the template will overwrite the element’s inner content without replacing the element itself.</p>
 </li>
 <li><p><strong>Example</strong>:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"replace"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"replace"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#replace'</span>,</span><br><span class="line">  template: <span class="string">'&lt;p&gt;replaced&lt;/p&gt;'</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p>Will result in:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">p</span>&gt;</span>replaced<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>replaced<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>In comparison, when <code>replace</code> is set to <code>false</code>:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"insert"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"insert"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#insert'</span>,</span><br><span class="line">  replace: <span class="literal">false</span>,</span><br><span class="line">  template: <span class="string">'&lt;p&gt;inserted&lt;/p&gt;'</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p>Will result in:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"insert"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span>&gt;</span>inserted<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"insert"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>inserted<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h2 id="Options_/_Lifecycle_Hooks"><a href="#Options_/_Lifecycle_Hooks" class="headerlink" title="Options / Lifecycle Hooks"></a>Options / Lifecycle Hooks</h2><h3 id="init"><a href="#init" class="headerlink" title="init"></a>init</h3><ul>
+<h2 id="Options-Lifecycle-Hooks"><a href="#Options-Lifecycle-Hooks" class="headerlink" title="Options / Lifecycle Hooks"></a>Options / Lifecycle Hooks</h2><h3 id="init"><a href="#init" class="headerlink" title="init"></a>init</h3><ul>
 <li><p><strong>Type:</strong> <code>Function</code></p>
 </li>
 <li><p><strong>Details:</strong></p>
@@ -572,7 +572,7 @@
 <li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle_Diagram">Lifecycle Diagram</a></p>
 </li>
 </ul>
-<h2 id="Options_/_Assets"><a href="#Options_/_Assets" class="headerlink" title="Options / Assets"></a>Options / Assets</h2><h3 id="directives"><a href="#directives" class="headerlink" title="directives"></a>directives</h3><ul>
+<h2 id="Options-Assets"><a href="#Options-Assets" class="headerlink" title="Options / Assets"></a>Options / Assets</h2><h3 id="directives"><a href="#directives" class="headerlink" title="directives"></a>directives</h3><ul>
 <li><p><strong>Type:</strong> <code>Object</code></p>
 </li>
 <li><p><strong>Details:</strong></p>
@@ -647,7 +647,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="Options_/_Misc"><a href="#Options_/_Misc" class="headerlink" title="Options / Misc"></a>Options / Misc</h2><h3 id="parent"><a href="#parent" class="headerlink" title="parent"></a>parent</h3><ul>
+<h2 id="Options-Misc"><a href="#Options-Misc" class="headerlink" title="Options / Misc"></a>Options / Misc</h2><h3 id="parent"><a href="#parent" class="headerlink" title="parent"></a>parent</h3><ul>
 <li><p><strong>Type:</strong> <code>Vue instance</code></p>
 </li>
 <li><p><strong>Details:</strong></p>
@@ -698,14 +698,14 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> Ctor = Vue.extend(&#123;</span><br><span class="line">  name: <span class="string">'stack-overflow'</span>,</span><br><span class="line">  template:</span><br><span class="line">    <span class="string">'&lt;div&gt;'</span> +</span><br><span class="line">      <span class="comment">// recursively invoke self</span></span><br><span class="line">      <span class="string">'&lt;stack-overflow&gt;&lt;/stack-overflow&gt;'</span> +</span><br><span class="line">    <span class="string">'&lt;/div&gt;'</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// this will actually result in a max stack size exceeded</span></span><br><span class="line"><span class="comment">// error, but let's assume it works...</span></span><br><span class="line"><span class="keyword">var</span> vm = <span class="keyword">new</span> Ctor()</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(vm) <span class="comment">// -&gt; StackOverflow &#123;$el: null, ...&#125;</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h2 id="Instance_Properties"><a href="#Instance_Properties" class="headerlink" title="Instance Properties"></a>Instance Properties</h2><h3 id="vm-_24data"><a href="#vm-_24data" class="headerlink" title="vm.$data"></a>vm.$data</h3><ul>
+<h2 id="Instance-Properties"><a href="#Instance-Properties" class="headerlink" title="Instance Properties"></a>Instance Properties</h2><h3 id="vm-data"><a href="#vm-data" class="headerlink" title="vm.$data"></a>vm.$data</h3><ul>
 <li><p><strong>Type:</strong> <code>Object</code></p>
 </li>
 <li><p><strong>Details:</strong></p>
 <p>The data object that the Vue instance is observing. You can swap it with a new object. The Vue instance proxies access to the properties on its data object.</p>
 </li>
 </ul>
-<h3 id="vm-_24el"><a href="#vm-_24el" class="headerlink" title="vm.$el"></a>vm.$el</h3><ul>
+<h3 id="vm-el"><a href="#vm-el" class="headerlink" title="vm.$el"></a>vm.$el</h3><ul>
 <li><p><strong>Type:</strong> <code>HTMLElement</code></p>
 </li>
 <li><p><strong>Read only</strong></p>
@@ -714,7 +714,7 @@
 <p>The DOM element that the Vue instance is managing. Note that for <a href="/guide/components.html#Fragment_Instance">Fragment Instances</a>, <code>vm.$el</code> will return an anchor node that indicates the starting position of the fragment.</p>
 </li>
 </ul>
-<h3 id="vm-_24options"><a href="#vm-_24options" class="headerlink" title="vm.$options"></a>vm.$options</h3><ul>
+<h3 id="vm-options"><a href="#vm-options" class="headerlink" title="vm.$options"></a>vm.$options</h3><ul>
 <li><p><strong>Type:</strong> <code>Object</code></p>
 </li>
 <li><p><strong>Read only</strong></p>
@@ -724,7 +724,7 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  customOption: <span class="string">'foo'</span>,</span><br><span class="line">  created: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.$options.customOption) <span class="comment">// -&gt; 'foo'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h3 id="vm-_24parent"><a href="#vm-_24parent" class="headerlink" title="vm.$parent"></a>vm.$parent</h3><ul>
+<h3 id="vm-parent"><a href="#vm-parent" class="headerlink" title="vm.$parent"></a>vm.$parent</h3><ul>
 <li><p><strong>Type:</strong> <code>Vue instance</code></p>
 </li>
 <li><p><strong>Read only</strong></p>
@@ -733,7 +733,7 @@
 <p>The parent instance, if the current instance has one.</p>
 </li>
 </ul>
-<h3 id="vm-_24root"><a href="#vm-_24root" class="headerlink" title="vm.$root"></a>vm.$root</h3><ul>
+<h3 id="vm-root"><a href="#vm-root" class="headerlink" title="vm.$root"></a>vm.$root</h3><ul>
 <li><p><strong>Type:</strong> <code>Vue instance</code></p>
 </li>
 <li><p><strong>Read only</strong></p>
@@ -742,7 +742,7 @@
 <p>The root Vue instance of the current component tree. If the current instance has no parents this value will be itself.</p>
 </li>
 </ul>
-<h3 id="vm-_24children"><a href="#vm-_24children" class="headerlink" title="vm.$children"></a>vm.$children</h3><ul>
+<h3 id="vm-children"><a href="#vm-children" class="headerlink" title="vm.$children"></a>vm.$children</h3><ul>
 <li><p><strong>Type:</strong> <code>Array&lt;Vue instance&gt;</code></p>
 </li>
 <li><p><strong>Read only</strong></p>
@@ -751,7 +751,7 @@
 <p>The direct child components of the current instance.</p>
 </li>
 </ul>
-<h3 id="vm-_24refs"><a href="#vm-_24refs" class="headerlink" title="vm.$refs"></a>vm.$refs</h3><ul>
+<h3 id="vm-refs"><a href="#vm-refs" class="headerlink" title="vm.$refs"></a>vm.$refs</h3><ul>
 <li><p><strong>Type:</strong> <code>Object</code></p>
 </li>
 <li><p><strong>Read only</strong></p>
@@ -766,7 +766,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="vm-_24els"><a href="#vm-_24els" class="headerlink" title="vm.$els"></a>vm.$els</h3><ul>
+<h3 id="vm-els"><a href="#vm-els" class="headerlink" title="vm.$els"></a>vm.$els</h3><ul>
 <li><p><strong>Type:</strong> <code>Object</code></p>
 </li>
 <li><p><strong>Read only</strong></p>
@@ -777,7 +777,7 @@
 <li><p><strong>See also:</strong> <a href="#v-el">v-el</a>.</p>
 </li>
 </ul>
-<h2 id="Instance_Methods_/_Data"><a href="#Instance_Methods_/_Data" class="headerlink" title="Instance Methods / Data"></a>Instance Methods / Data</h2><h3 id="vm-watch">vm.$watch( expOrFn, callback, [options] )</h3>
+<h2 id="Instance-Methods-Data"><a href="#Instance-Methods-Data" class="headerlink" title="Instance Methods / Data"></a>Instance Methods / Data</h2><h3 id="vm-watch">vm.$watch( expOrFn, callback, [options] )</h3>
 
 <ul>
 <li><p><strong>Arguments:</strong></p>
@@ -909,7 +909,7 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">vm.$log() <span class="comment">// logs entire ViewModel data</span></span><br><span class="line">vm.$log(<span class="string">'item'</span>) <span class="comment">// logs vm.item</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h2 id="Instance_Methods_/_Events"><a href="#Instance_Methods_/_Events" class="headerlink" title="Instance Methods / Events"></a>Instance Methods / Events</h2><h3 id="vm-on">vm.$on( event, callback )</h3>
+<h2 id="Instance-Methods-Events"><a href="#Instance-Methods-Events" class="headerlink" title="Instance Methods / Events"></a>Instance Methods / Events</h2><h3 id="vm-on">vm.$on( event, callback )</h3>
 
 <ul>
 <li><p><strong>Arguments:</strong></p>
@@ -1004,7 +1004,7 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> parent = <span class="keyword">new</span> Vue()</span><br><span class="line"><span class="comment">// child1 and child2 are siblings</span></span><br><span class="line"><span class="keyword">var</span> child1 = <span class="keyword">new</span> Vue(&#123; parent: parent &#125;)</span><br><span class="line"><span class="keyword">var</span> child2 = <span class="keyword">new</span> Vue(&#123; parent: parent &#125;)</span><br><span class="line"><span class="comment">// child3 is nested under child2</span></span><br><span class="line"><span class="keyword">var</span> child3 = <span class="keyword">new</span> Vue(&#123; parent: child2 &#125;)</span><br><span class="line"></span><br><span class="line">child1.$on(<span class="string">'test'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'child1 notified'</span>)</span><br><span class="line">&#125;)</span><br><span class="line">child2.$on(<span class="string">'test'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'child2 notified'</span>)</span><br><span class="line">&#125;)</span><br><span class="line">child3.$on(<span class="string">'test'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'child3 notified'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">parent.$broadcast(<span class="string">'test'</span>)</span><br><span class="line"><span class="comment">// -&gt; "child1 notified"</span></span><br><span class="line"><span class="comment">// -&gt; "child2 notified"</span></span><br><span class="line"><span class="comment">// child3 is NOT notified, because child2 didn't return</span></span><br><span class="line"><span class="comment">// true in its callback</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h2 id="Instance_Methods_/_DOM"><a href="#Instance_Methods_/_DOM" class="headerlink" title="Instance Methods / DOM"></a>Instance Methods / DOM</h2><h3 id="vm-appendTo">vm.$appendTo( elementOrSelector, [callback] )</h3>
+<h2 id="Instance-Methods-DOM"><a href="#Instance-Methods-DOM" class="headerlink" title="Instance Methods / DOM"></a>Instance Methods / DOM</h2><h3 id="vm-appendTo">vm.$appendTo( elementOrSelector, [callback] )</h3>
 
 <ul>
 <li><p><strong>Arguments:</strong></p>
@@ -1084,7 +1084,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="Instance_Methods_/_Lifecycle"><a href="#Instance_Methods_/_Lifecycle" class="headerlink" title="Instance Methods / Lifecycle"></a>Instance Methods / Lifecycle</h2><h3 id="vm-mount">vm.$mount( [elementOrSelector] )</h3>
+<h2 id="Instance-Methods-Lifecycle"><a href="#Instance-Methods-Lifecycle" class="headerlink" title="Instance Methods / Lifecycle"></a>Instance Methods / Lifecycle</h2><h3 id="vm-mount">vm.$mount( [elementOrSelector] )</h3>
 
 <ul>
 <li><p><strong>Arguments:</strong></p>
@@ -1128,7 +1128,7 @@
 <p>Internally, <code>{{ Mustache }}</code> interpolations are also compiled as a <code>v-text</code> directive on a textNode. The directive form requires a wrapper element, but offers slightly better performance and avoids FOUC (Flash of Uncompiled Content).</p>
 </li>
 <li><p><strong>Example:</strong></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-text</span>=<span class="value">"msg"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- same as --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">span</span>&gt;</span>&#123;&#123;msg&#125;&#125;<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">v-text</span>=<span class="string">"msg"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- same as --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">span</span>&gt;</span>&#123;&#123;msg&#125;&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="v-html"><a href="#v-html" class="headerlink" title="v-html"></a>v-html</h3><ul>
@@ -1140,7 +1140,7 @@
 <p class="tip">Dynamically rendering arbitrary HTML on your website can be very dangerous because it can easily lead to <a href="https://en.wikipedia.org/wiki/Cross-site_scripting" target="_blank" rel="external">XSS attacks</a>. Only use <code>v-html</code> on trusted content and <strong>never</strong> on user-provided content.</p>
 </li>
 <li><p><strong>Example:</strong></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-html</span>=<span class="value">"html"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- same as --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span>&gt;</span>&#123;&#123;&#123;html&#125;&#125;&#125;<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-html</span>=<span class="string">"html"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- same as --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;&#123;&#123;html&#125;&#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="v-if"><a href="#v-if" class="headerlink" title="v-if"></a>v-if</h3><ul>
@@ -1168,7 +1168,7 @@
 </li>
 <li><p><strong>Usage:</strong></p>
 <p>Denote the “else block” for <code>v-if</code> and <code>v-show</code>.</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-if</span>=<span class="value">"Math.random() &gt; 0.5"</span>&gt;</span></span><br><span class="line">  Sorry</span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-else</span>&gt;</span></span><br><span class="line">  Not sorry</span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-if</span>=<span class="string">"Math.random() &gt; 0.5"</span>&gt;</span></span><br><span class="line">  Sorry</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-else</span>&gt;</span></span><br><span class="line">  Not sorry</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>See also:</strong> <a href="/guide/conditional.html#v-else">Conditional Rendering - v-else</a></p>
 </li>
@@ -1186,10 +1186,10 @@
 </li>
 <li><p><strong>Usage:</strong></p>
 <p>Render the element or template block multiple times based on the source data. The directive’s value must use the special syntax <code>alias (in|of) expression</code> to provide an alias for the current element being iterated on:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-for</span>=<span class="value">"item in items"</span>&gt;</span></span><br><span class="line">  &#123;&#123; item.text &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-for</span>=<span class="string">"item in items"</span>&gt;</span></span><br><span class="line">  &#123;&#123; item.text &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Note using <code>of</code> as the delimiter is only supported in 1.0.17+.</p>
 <p>Alternatively, you can also specify an alias for the index (or the key if used on an Object):</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-for</span>=<span class="value">"(index, item) in items"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-for</span>=<span class="value">"(key, val) in object"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-for</span>=<span class="string">"(index, item) in items"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-for</span>=<span class="string">"(key, val) in object"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>The detailed usage for <code>v-for</code> is explained in the guide section linked below.</p>
 </li>
 <li><p><strong>See also:</strong> <a href="/guide/list.html">List Rendering</a>.</p>
@@ -1218,9 +1218,9 @@
 <p><strong>1.0.11+</strong> When listening the custom events, inline statements have access to the special <code>$arguments</code> property, which is an array of the additional arguments passed to the child components’ <code>$emit</code> call.</p>
 </li>
 <li><p><strong>Example:</strong></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- method handler --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">button</span> <span class="attribute">v-on:click</span>=<span class="value">"doThis"</span>&gt;</span><span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- inline statement --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">button</span> <span class="attribute">v-on:click</span>=<span class="value">"doThat('hello', $event)"</span>&gt;</span><span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- shorthand --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">button</span> @<span class="attribute">click</span>=<span class="value">"doThis"</span>&gt;</span><span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- stop propagation --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">button</span> @<span class="attribute">click.stop</span>=<span class="value">"doThis"</span>&gt;</span><span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- prevent default --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">button</span> @<span class="attribute">click.prevent</span>=<span class="value">"doThis"</span>&gt;</span><span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- prevent default without expression --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">form</span> @<span class="attribute">submit.prevent</span>&gt;</span><span class="tag">&lt;/<span class="title">form</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- chain modifiers --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">button</span> @<span class="attribute">click.stop.prevent</span>=<span class="value">"doThis"</span>&gt;</span><span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- key modifier using keyAlias --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> @<span class="attribute">keyup.enter</span>=<span class="value">"onEnter"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- key modifier using keyCode --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> @<span class="attribute">keyup.13</span>=<span class="value">"onEnter"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- method handler --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">v-on:click</span>=<span class="string">"doThis"</span>&gt;</span><span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- inline statement --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">v-on:click</span>=<span class="string">"doThat('hello', $event)"</span>&gt;</span><span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- shorthand --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">"doThis"</span>&gt;</span><span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- stop propagation --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click.stop</span>=<span class="string">"doThis"</span>&gt;</span><span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- prevent default --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click.prevent</span>=<span class="string">"doThis"</span>&gt;</span><span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- prevent default without expression --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> @<span class="attr">submit.prevent</span>&gt;</span><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- chain modifiers --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click.stop.prevent</span>=<span class="string">"doThis"</span>&gt;</span><span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- key modifier using keyAlias --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> @<span class="attr">keyup.enter</span>=<span class="string">"onEnter"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- key modifier using keyCode --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> @<span class="attr">keyup.13</span>=<span class="string">"onEnter"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Listening to custom events on a child component (the handler is called when “my-event” is emitted on the child):</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">my-component</span> @<span class="attribute">my-event</span>=<span class="value">"handleThis"</span>&gt;</span><span class="tag">&lt;/<span class="title">my-component</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- inline statement --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">my-component</span> @<span class="attribute">my-event</span>=<span class="value">"handleThis(123, $arguments)"</span>&gt;</span><span class="tag">&lt;/<span class="title">my-component</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">my-component</span> @<span class="attr">my-event</span>=<span class="string">"handleThis"</span>&gt;</span><span class="tag">&lt;/<span class="name">my-component</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- inline statement --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">my-component</span> @<span class="attr">my-event</span>=<span class="string">"handleThis(123, $arguments)"</span>&gt;</span><span class="tag">&lt;/<span class="name">my-component</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>See also:</strong> <a href="/guide/events.html">Methods and Event Handling</a></p>
 </li>
@@ -1246,7 +1246,7 @@
 <p>When used without an argument, can be used to bind an object containing attribute name-value pairs. Note in this mode <code>class</code> and <code>style</code> does not support Array or Objects.</p>
 </li>
 <li><p><strong>Example:</strong></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- bind an attribute --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">img</span> <span class="attribute">v-bind:src</span>=<span class="value">"imageSrc"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- shorthand --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">img</span> <span class="attribute">:src</span>=<span class="value">"imageSrc"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- class binding --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">:class</span>=<span class="value">"&#123; red: isRed &#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">:class</span>=<span class="value">"[classA, classB]"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- style binding --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">:style</span>=<span class="value">"&#123; fontSize: size + 'px' &#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">:style</span>=<span class="value">"[styleObjectA, styleObjectB]"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- binding an object of attributes --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-bind</span>=<span class="value">"&#123; id: someProp, 'other-attr': otherProp &#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- prop binding. "prop" must be declared in my-component. --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">my-component</span> <span class="attribute">:prop</span>=<span class="value">"someThing"</span>&gt;</span><span class="tag">&lt;/<span class="title">my-component</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- two-way prop binding --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">my-component</span> <span class="attribute">:prop.sync</span>=<span class="value">"someThing"</span>&gt;</span><span class="tag">&lt;/<span class="title">my-component</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- one-time prop binding --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">my-component</span> <span class="attribute">:prop.once</span>=<span class="value">"someThing"</span>&gt;</span><span class="tag">&lt;/<span class="title">my-component</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- bind an attribute --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">v-bind:src</span>=<span class="string">"imageSrc"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- shorthand --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">:src</span>=<span class="string">"imageSrc"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- class binding --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">:class</span>=<span class="string">"&#123; red: isRed &#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">:class</span>=<span class="string">"[classA, classB]"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- style binding --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">:style</span>=<span class="string">"&#123; fontSize: size + 'px' &#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">:style</span>=<span class="string">"[styleObjectA, styleObjectB]"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- binding an object of attributes --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-bind</span>=<span class="string">"&#123; id: someProp, 'other-attr': otherProp &#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- prop binding. "prop" must be declared in my-component. --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">my-component</span> <span class="attr">:prop</span>=<span class="string">"someThing"</span>&gt;</span><span class="tag">&lt;/<span class="name">my-component</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- two-way prop binding --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">my-component</span> <span class="attr">:prop.sync</span>=<span class="string">"someThing"</span>&gt;</span><span class="tag">&lt;/<span class="name">my-component</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- one-time prop binding --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">my-component</span> <span class="attr">:prop.once</span>=<span class="string">"someThing"</span>&gt;</span><span class="tag">&lt;/<span class="name">my-component</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>See also:</strong></p>
 <ul>
@@ -1293,10 +1293,10 @@
 <p>Because HTML is case-insensitive, camelCase usage like <code>v-ref:someRef</code> will be converted to all lowercase. You can use <code>v-ref:some-ref</code> which properly sets <code>this.$refs.someRef</code>.</p>
 </li>
 <li><p><strong>Example:</strong></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">comp</span> <span class="attribute">v-ref:child</span>&gt;</span><span class="tag">&lt;/<span class="title">comp</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">comp</span> <span class="attribute">v-ref:some-child</span>&gt;</span><span class="tag">&lt;/<span class="title">comp</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">comp</span> <span class="attr">v-ref:child</span>&gt;</span><span class="tag">&lt;/<span class="name">comp</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">comp</span> <span class="attr">v-ref:some-child</span>&gt;</span><span class="tag">&lt;/<span class="name">comp</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// access from parent:</span></span><br><span class="line"><span class="keyword">this</span>.$refs.child</span><br><span class="line"><span class="keyword">this</span>.$refs.someChild</span><br></pre></td></tr></table></figure>
 <p>With <code>v-for</code>:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">comp</span> <span class="attribute">v-ref:list</span> <span class="attribute">v-for</span>=<span class="value">"item in list"</span>&gt;</span><span class="tag">&lt;/<span class="title">comp</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">comp</span> <span class="attr">v-ref:list</span> <span class="attr">v-for</span>=<span class="string">"item in list"</span>&gt;</span><span class="tag">&lt;/<span class="name">comp</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// this will be an array in parent</span></span><br><span class="line"><span class="keyword">this</span>.$refs.list</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>See also:</strong> <a href="/guide/components.html#Child_Component_Refs">Child Component Refs</a></p>
@@ -1314,7 +1314,7 @@
 <p>Because HTML is case-insensitive, camelCase usage like <code>v-el:someEl</code> will be converted to all lowercase. You can use <code>v-el:some-el</code> which properly sets <code>this.$els.someEl</code>.</p>
 </li>
 <li><p><strong>Example:</strong></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-el:msg</span>&gt;</span>hello<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-el:other-msg</span>&gt;</span>world<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">v-el:msg</span>&gt;</span>hello<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">v-el:other-msg</span>&gt;</span>world<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">this</span>.$els.msg.textContent <span class="comment">// -&gt; "hello"</span></span><br><span class="line"><span class="keyword">this</span>.$els.otherMsg.textContent <span class="comment">// -&gt; "world"</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
@@ -1325,7 +1325,7 @@
 <p>Skip compilation for this element and all its children. You can use this for displaying raw mustache tags. Skipping large numbers of nodes with no directives on them can also speed up compilation.</p>
 </li>
 <li><p><strong>Example:</strong></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">v-pre</span>&gt;</span>&#123;&#123; this will not be compiled &#125;&#125;<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">v-pre</span>&gt;</span>&#123;&#123; this will not be compiled &#125;&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="v-cloak"><a href="#v-cloak" class="headerlink" title="v-cloak"></a>v-cloak</h3><ul>
@@ -1335,12 +1335,12 @@
 <p>This directive will remain on the element until the associated Vue instance finishes compilation. Combined with CSS rules such as <code>[v-cloak] { display: none }</code>, this directive can be used to hide un-compiled mustache bindings until the Vue instance is ready.</p>
 </li>
 <li><p><strong>Example:</strong></p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="attr_selector">[v-cloak]</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">display</span>:<span class="value"> none</span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-cloak</span>&gt;</span></span><br><span class="line">  &#123;&#123; message &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-attr">[v-cloak]</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: none;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-cloak</span>&gt;</span></span><br><span class="line">  &#123;&#123; message &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>The <code>&lt;div&gt;</code> will not be visible until the compilation is done.</p>
 </li>
 </ul>
-<h2 id="Special_Elements"><a href="#Special_Elements" class="headerlink" title="Special Elements"></a>Special Elements</h2><h3 id="component"><a href="#component" class="headerlink" title="component"></a>component</h3><ul>
+<h2 id="Special-Elements"><a href="#Special-Elements" class="headerlink" title="Special Elements"></a>Special Elements</h2><h3 id="component"><a href="#component" class="headerlink" title="component"></a>component</h3><ul>
 <li><p><strong>Attributes:</strong></p>
 <ul>
 <li><code>is</code></li>
@@ -1354,7 +1354,7 @@
 </li>
 <li><p><strong>Usage:</strong></p>
 <p>Alternative syntax for invoking components. Primarily used for dynamic components with the <code>is</code> attribute:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- a dynamic component controlled by --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- the `componentId` property on the vm --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">component</span> <span class="attribute">:is</span>=<span class="value">"componentId"</span>&gt;</span><span class="tag">&lt;/<span class="title">component</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- a dynamic component controlled by --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- the `componentId` property on the vm --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">component</span> <span class="attr">:is</span>=<span class="string">"componentId"</span>&gt;</span><span class="tag">&lt;/<span class="name">component</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>See also:</strong> <a href="/guide/components.html#Dynamic_Components">Dynamic Components</a></p>
 </li>
@@ -1384,7 +1384,7 @@
 </li>
 <li><p><strong>Example:</strong></p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// registering a partial</span></span><br><span class="line">Vue.partial(<span class="string">'my-partial'</span>, <span class="string">'&lt;p&gt;This is a partial! &#123;&#123;msg&#125;&#125;&lt;/p&gt;'</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- a static partial --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">partial</span> <span class="attribute">name</span>=<span class="value">"my-partial"</span>&gt;</span><span class="tag">&lt;/<span class="title">partial</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- a dynamic partial --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- renders partial with id === vm.partialId --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">partial</span> <span class="attribute">v-bind:name</span>=<span class="value">"partialId"</span>&gt;</span><span class="tag">&lt;/<span class="title">partial</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- dynamic partial using v-bind shorthand --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">partial</span> <span class="attribute">:name</span>=<span class="value">"partialId"</span>&gt;</span><span class="tag">&lt;/<span class="title">partial</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- a static partial --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">partial</span> <span class="attr">name</span>=<span class="string">"my-partial"</span>&gt;</span><span class="tag">&lt;/<span class="name">partial</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- a dynamic partial --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- renders partial with id === vm.partialId --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">partial</span> <span class="attr">v-bind:name</span>=<span class="string">"partialId"</span>&gt;</span><span class="tag">&lt;/<span class="name">partial</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- dynamic partial using v-bind shorthand --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">partial</span> <span class="attr">:name</span>=<span class="string">"partialId"</span>&gt;</span><span class="tag">&lt;/<span class="name">partial</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h2 id="Filters"><a href="#Filters" class="headerlink" title="Filters"></a>Filters</h2><h3 id="capitalize"><a href="#capitalize" class="headerlink" title="capitalize"></a>capitalize</h3><ul>
@@ -1447,7 +1447,7 @@
 </li>
 <li><p><strong>Example:</strong></p>
 <p>Print an object with 4-space indent:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">pre</span>&gt;</span>&#123;&#123; nestedObject | json 4 &#125;&#125;<span class="tag">&lt;/<span class="title">pre</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">pre</span>&gt;</span>&#123;&#123; nestedObject | json 4 &#125;&#125;<span class="tag">&lt;/<span class="name">pre</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="debounce"><a href="#debounce" class="headerlink" title="debounce"></a>debounce</h3><ul>
@@ -1462,7 +1462,7 @@
 <p>Wrap the handler to debounce it for <code>x</code> milliseconds, where <code>x</code> is the argument. Default wait time is 300ms. A debounced handler will be delayed until at least <code>x</code> ms has passed after the call moment; if the handler is called again before the delay period, the delay period is reset to <code>x</code> ms.</p>
 </li>
 <li><p><strong>Example:</strong></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> @<span class="attribute">keyup</span>=<span class="value">"onKeyup | debounce 500"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> @<span class="attr">keyup</span>=<span class="string">"onKeyup | debounce 500"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="limitBy"><a href="#limitBy" class="headerlink" title="limitBy"></a>limitBy</h3><ul>
@@ -1476,7 +1476,7 @@
 </li>
 <li><p><strong>Usage:</strong></p>
 <p>Limit the array to the first N items, as specified by the argument. An optional second argument can be provided to set a starting offset.</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- only display first 10 items --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-for</span>=<span class="value">"item in items | limitBy 10"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- display items 5 to 15 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-for</span>=<span class="value">"item in items | limitBy 10 5"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- only display first 10 items --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-for</span>=<span class="string">"item in items | limitBy 10"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- display items 5 to 15 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-for</span>=<span class="string">"item in items | limitBy 10 5"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="filterBy"><a href="#filterBy" class="headerlink" title="filterBy"></a>filterBy</h3><ul>
@@ -1492,13 +1492,13 @@
 <li><p><strong>Usage:</strong></p>
 <p>Return a filtered version of the source Array. The first argument can either be a string or a function.</p>
 <p>When the first argument is a string, it will be used as the target string to search for in each element of the Array:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-for</span>=<span class="value">"item in items | filterBy 'hello'"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-for</span>=<span class="string">"item in items | filterBy 'hello'"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>In the above example, only items that contain the target string <code>&quot;hello&quot;</code> will be displayed.</p>
 <p>If the item is an object, the filter will recursively search every nested property of the object for the target string. To narrow down the search scope, additional search keys can be specified:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-for</span>=<span class="value">"user in users | filterBy 'Jack' in 'name'"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-for</span>=<span class="string">"user in users | filterBy 'Jack' in 'name'"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>In the above example, the filter will only search for <code>&quot;Jack&quot;</code> in the <code>name</code> field of each user object. <strong>It is a good idea to always limit the search scope for better performance.</strong></p>
 <p>The examples above are using static arguments - we can, of course, use dynamic arguments as target string or search keys. Combined with <code>v-model</code> we can easily implement type-ahead filtering:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"filter-by-example"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">input</span> <span class="attribute">v-model</span>=<span class="value">"name"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-for</span>=<span class="value">"user in users | filterBy name in 'name'"</span>&gt;</span></span><br><span class="line">      &#123;&#123; user.name &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"filter-by-example"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">v-model</span>=<span class="string">"name"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">v-for</span>=<span class="string">"user in users | filterBy name in 'name'"</span>&gt;</span></span><br><span class="line">      &#123;&#123; user.name &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#filter-by-example'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    name: <span class="string">''</span>,</span><br><span class="line">    users: [</span><br><span class="line">      &#123; name: <span class="string">'Bruce'</span> &#125;,</span><br><span class="line">      &#123; name: <span class="string">'Chuck'</span> &#125;,</span><br><span class="line">      &#123; name: <span class="string">'Jackie'</span> &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
   <div id="filter-by-example" class="demo">
@@ -1522,11 +1522,11 @@
 </li>
 <li><p><strong>Additional Examples:</strong></p>
 <p>Multiple search keys:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-for</span>=<span class="value">"user in users | filterBy searchText in 'name' 'phone'"</span>&gt;</span><span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">li</span> <span class="attr">v-for</span>=<span class="string">"user in users | filterBy searchText in 'name' 'phone'"</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Multiple search keys with a dynamic Array argument:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- fields = ['fieldA', 'fieldB'] --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-for</span>=<span class="value">"user in users | filterBy searchText in fields"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- fields = ['fieldA', 'fieldB'] --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-for</span>=<span class="string">"user in users | filterBy searchText in fields"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Use a custom filter function:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">v-for</span>=<span class="value">"user in users | filterBy myCustomFilterFunction"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-for</span>=<span class="string">"user in users | filterBy myCustomFilterFunction"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="orderBy"><a href="#orderBy" class="headerlink" title="orderBy"></a>orderBy</h3><ul>
@@ -1544,13 +1544,13 @@
 </li>
 <li><p><strong>Example:</strong></p>
 <p>Sort users by name:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-for</span>=<span class="value">"user in users | orderBy 'name'"</span>&gt;</span></span><br><span class="line">    &#123;&#123; user.name &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span> <span class="attr">v-for</span>=<span class="string">"user in users | orderBy 'name'"</span>&gt;</span></span><br><span class="line">    &#123;&#123; user.name &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>In descending order:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-for</span>=<span class="value">"user in users | orderBy 'name' -1"</span>&gt;</span></span><br><span class="line">    &#123;&#123; user.name &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span> <span class="attr">v-for</span>=<span class="string">"user in users | orderBy 'name' -1"</span>&gt;</span></span><br><span class="line">    &#123;&#123; user.name &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Sort primitive values:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-for</span>=<span class="value">"n in numbers | orderBy true"</span>&gt;</span></span><br><span class="line">    &#123;&#123; n &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span> <span class="attr">v-for</span>=<span class="string">"n in numbers | orderBy true"</span>&gt;</span></span><br><span class="line">    &#123;&#123; n &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Dynamic sort order:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"orderby-example"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">button</span> @<span class="attribute">click</span>=<span class="value">"order = order * -1"</span>&gt;</span>Reverse Sort Order<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">li</span> <span class="attribute">v-for</span>=<span class="value">"user in users | orderBy 'name' order"</span>&gt;</span></span><br><span class="line">      &#123;&#123; user.name &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"orderby-example"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">"order = order * -1"</span>&gt;</span>Reverse Sort Order<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">v-for</span>=<span class="string">"user in users | orderBy 'name' order"</span>&gt;</span></span><br><span class="line">      &#123;&#123; user.name &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#orderby-example'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    order: <span class="number">1</span>,</span><br><span class="line">    users: [&#123; name: <span class="string">'Bruce'</span> &#125;, &#123; name: <span class="string">'Chuck'</span> &#125;, &#123; name: <span class="string">'Jackie'</span> &#125;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
   <div id="orderby-example" class="demo">
