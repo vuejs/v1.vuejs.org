@@ -188,13 +188,13 @@
 
 
 <div class="content guide with-sidebar">
-    <h1>Form Input Bindings</h1>
-    <div id="ad">
-      <a href="https://strikingly.com" target="_blank">
-        <span>Proudly sponsored by</span><br>
+    <div id="ad" style="width:140px">
+        <a href="https://strikingly.com" target="_blank">
+            <span>Proudly sponsored by</span><br>
         <img src="/images/strikingly.png">
       </a>
     </div>
+    <h1>Form Input Bindings</h1>
     <h2 id="Basics-Usage"><a href="#Basics-Usage" class="headerlink" title="Basics Usage"></a>Basics Usage</h2><p>You can use the <code>v-model</code> directive to create two-way data bindings on form input elements. It automatically picks the correct way to update the element based on the input type. Although a bit magical, <code>v-model</code> is essentially syntax sugar for updating data on user input events, plus special care for some edge cases.</p>
 <h3 id="Text"><a href="#Text" class="headerlink" title="Text"></a>Text</h3><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span>&gt;</span>Message is: &#123;&#123; message &#125;&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">v-model</span>=<span class="string">"message"</span> <span class="attr">placeholder</span>=<span class="string">"edit me"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 

@@ -188,13 +188,13 @@
 
 
 <div class="content guide with-sidebar">
-    <h1>Class and Style Bindings</h1>
-    <div id="ad">
-      <a href="https://strikingly.com" target="_blank">
-        <span>Proudly sponsored by</span><br>
+    <div id="ad" style="width:140px">
+        <a href="https://strikingly.com" target="_blank">
+            <span>Proudly sponsored by</span><br>
         <img src="/images/strikingly.png">
       </a>
     </div>
+    <h1>Class and Style Bindings</h1>
     <p>A common need for data binding is manipulating an element’s class list and its inline styles. Since they are both attributes, we can use <code>v-bind</code> to handle them: we just need to calculate a final string with our expressions. However, meddling with string concatenation is annoying and error-prone. For this reason, Vue.js provides special enhancements when <code>v-bind</code> is used for <code>class</code> and <code>style</code>. In addition to Strings, the expressions can also evaluate to Objects or Arrays.</p>
 <h2 id="Binding-HTML-Classes"><a href="#Binding-HTML-Classes" class="headerlink" title="Binding HTML Classes"></a>Binding HTML Classes</h2><p class="tip">Although you can use mustache interpolations such as <code>class="{{ className }}"</code> to bind the class, it is not recommended to mix that style with <code>v-bind:class</code>. Use one or the other!</p>
 

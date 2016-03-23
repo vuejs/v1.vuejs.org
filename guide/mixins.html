@@ -188,13 +188,13 @@
 
 
 <div class="content guide with-sidebar">
-    <h1>Mixins</h1>
-    <div id="ad">
-      <a href="https://strikingly.com" target="_blank">
-        <span>Proudly sponsored by</span><br>
+    <div id="ad" style="width:140px">
+        <a href="https://strikingly.com" target="_blank">
+            <span>Proudly sponsored by</span><br>
         <img src="/images/strikingly.png">
       </a>
     </div>
+    <h1>Mixins</h1>
     <h2 id="Basics"><a href="#Basics" class="headerlink" title="Basics"></a>Basics</h2><p>Mixins are a flexible way to distribute reusable functionalities for Vue components. A mixin object can contain any component options. When a component uses a mixin, all options in the mixin will be “mixed” into the component’s own options.</p>
 <p>Example:</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// define a mixin object</span></span><br><span class="line"><span class="keyword">var</span> myMixin = &#123;</span><br><span class="line">  created: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.hello()</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    hello: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'hello from mixin!'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// define a component that uses this mixin</span></span><br><span class="line"><span class="keyword">var</span> Component = Vue.extend(&#123;</span><br><span class="line">  mixins: [myMixin]</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> component = <span class="keyword">new</span> Component() <span class="comment">// -&gt; "hello from mixin!"</span></span><br></pre></td></tr></table></figure>

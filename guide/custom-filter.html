@@ -188,13 +188,13 @@
 
 
 <div class="content guide with-sidebar">
-    <h1>Custom Filters</h1>
-    <div id="ad">
-      <a href="https://strikingly.com" target="_blank">
-        <span>Proudly sponsored by</span><br>
+    <div id="ad" style="width:140px">
+        <a href="https://strikingly.com" target="_blank">
+            <span>Proudly sponsored by</span><br>
         <img src="/images/strikingly.png">
       </a>
     </div>
+    <h1>Custom Filters</h1>
     <h2 id="Basics"><a href="#Basics" class="headerlink" title="Basics"></a>Basics</h2><p>Similar to custom directives, you can register a custom filter with the global <code>Vue.filter()</code> method, passing in a <strong>filterID</strong> and a <strong>filter function</strong>. The filter function takes a value as the argument and returns the transformed value:</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">Vue.filter(<span class="string">'reverse'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> value.split(<span class="string">''</span>).reverse().join(<span class="string">''</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 'abc' =&gt; 'cba' --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">v-text</span>=<span class="string">"message | reverse"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
