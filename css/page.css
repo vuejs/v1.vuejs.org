@@ -205,26 +205,27 @@ a.button:hover {
   overflow-x: hidden;
 }
 #ad {
-  width: 130px;
+  width: 140px;
+  text-align: center;
   position: fixed;
   z-index: 99;
   bottom: 10px;
   right: 10px;
   padding: 10px;
-  background-color: #fff;
+  background-color: rgba(255,255,255,0.65);
   border-radius: 3px;
   font-size: 13px;
 }
-#ad .carbon-img,
-#ad .carbon-text {
-  display: block;
-  margin-bottom: 6px;
+#ad a {
+  color: #7f8c8d;
   font-weight: normal;
-  color: #34495e;
 }
-#ad .carbon-poweredby {
-  color: #aaa;
-  font-weight: normal;
+#ad span {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+#ad img {
+  width: 125px;
 }
 #nav .nav-link {
   cursor: pointer;
@@ -720,11 +721,11 @@ ul.demo li {
     z-index: 8;
     position: relative;
     width: auto;
-    height: 100px;
+    height: 60px;
     padding: 0;
     bottom: 0;
     right: 0;
-    margin: 30px 0 35px;
+    margin: -20px 0 15px;
   }
   #ad .carbon-wrap,
   #ad .carbon-img,

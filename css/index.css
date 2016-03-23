@@ -205,26 +205,27 @@ a.button:hover {
   overflow-x: hidden;
 }
 #ad {
-  width: 130px;
+  width: 140px;
+  text-align: center;
   position: fixed;
   z-index: 99;
   bottom: 10px;
   right: 10px;
   padding: 10px;
-  background-color: #fff;
+  background-color: rgba(255,255,255,0.65);
   border-radius: 3px;
   font-size: 13px;
 }
-#ad .carbon-img,
-#ad .carbon-text {
-  display: block;
-  margin-bottom: 6px;
+#ad a {
+  color: #7f8c8d;
   font-weight: normal;
-  color: #34495e;
 }
-#ad .carbon-poweredby {
-  color: #aaa;
-  font-weight: normal;
+#ad span {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+#ad img {
+  width: 125px;
 }
 #nav .nav-link {
   cursor: pointer;
@@ -710,5 +711,10 @@ body {
     height: 1em;
     line-height: 1em;
     padding: 0.5em 0;
+  }
+  #ad {
+    position: relative;
+    text-align: center;
+    width: 100%;
   }
 }

@@ -190,7 +190,10 @@
 <div class="content guide with-sidebar">
     <h1>Reactivity in Depth</h1>
     <div id="ad">
-        <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
+      <a href="https://strikingly.com" target="_blank">
+        <span>Proudly sponsored by</span><br>
+        <img src="/images/strikingly.png">
+      </a>
     </div>
     <p>We’ve covered most of the basics - now it’s time to take a deep dive! One of Vue.js’ most distinct features is the unobtrusive reactive system - models are just plain JavaScript objects, modify it and the view updates. It makes state management very simple and intuitive, but it’s also important to understand how it works to avoid some common gotchas. In this section, we are going to dig into some of the lower-level details of Vue.js’ reactivity system.</p>
 <h2 id="How-Changes-Are-Tracked"><a href="#How-Changes-Are-Tracked" class="headerlink" title="How Changes Are Tracked"></a>How Changes Are Tracked</h2><p>When you pass a plain JavaScript object to a Vue instance as its <code>data</code> option, Vue.js will walk through all of its properties and convert them to getter/setters using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank" rel="external">Object.defineProperty</a>. This is an ES5-only and un-shimmable feature, which is why Vue.js doesn’t support IE8 and below.</p>
