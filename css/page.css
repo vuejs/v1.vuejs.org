@@ -528,9 +528,6 @@ ul.demo li {
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
 }
-.sidebar::-webkit-scrollbar {
-  width: 0 !important;
-}
 .sidebar h2 {
   margin-top: 0.2em;
 }
