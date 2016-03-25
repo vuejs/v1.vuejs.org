@@ -116,13 +116,6 @@
 	  })
 	})
 	
-	describe('custom matcher', function () {
-	  it('should work', function () {
-	    _.warn('lol')
-	    expect('lol').toHaveBeenWarned()
-	  })
-	})
-	
 	// shim process
 	scope.process = {
 	  env: {
@@ -162,7 +155,7 @@
 	
 	_globalApi2['default'](_instanceVue2['default']);
 	
-	_instanceVue2['default'].version = '1.0.18';
+	_instanceVue2['default'].version = '1.0.19';
 	
 	exports['default'] = _instanceVue2['default'];
 	
@@ -1535,6 +1528,22 @@
 	}
 	
 	/**
+	 * For IE9 compat: when both class and :class are present
+	 * getAttribute('class') returns wrong value...
+	 *
+	 * @param {Element} el
+	 * @return {String}
+	 */
+	
+	function getClass(el) {
+	  var classname = el.className;
+	  if (typeof classname === 'object') {
+	    classname = classname.baseVal || '';
+	  }
+	  return classname;
+	}
+	
+	/**
 	 * In IE9, setAttribute('class') will result in empty class
 	 * if the element also has the :class attribute; However in
 	 * PhantomJS, setting `className` does not work on SVG elements...
@@ -1564,7 +1573,7 @@
 	  if (el.classList) {
 	    el.classList.add(cls);
 	  } else {
-	    var cur = ' ' + (el.getAttribute('class') || '') + ' ';
+	    var cur = ' ' + getClass(el) + ' ';
 	    if (cur.indexOf(' ' + cls + ' ') < 0) {
 	      setClass(el, (cur + cls).trim());
 	    }
@@ -1582,7 +1591,7 @@
 	  if (el.classList) {
 	    el.classList.remove(cls);
 	  } else {
-	    var cur = ' ' + (el.getAttribute('class') || '') + ' ';
+	    var cur = ' ' + getClass(el) + ' ';
 	    var tar = ' ' + cls + ' ';
 	    while (cur.indexOf(tar) >= 0) {
 	      cur = cur.replace(tar, ' ');
@@ -2317,7 +2326,7 @@
 	 *   ]
 	 * }
 	 *
-	 * @param {String} str
+	 * @param {String} s
 	 * @return {Object}
 	 */
 	
@@ -2878,19 +2887,12 @@
 	
 	exports.__esModule = true;
 	exports.checkComponentAttr = checkComponentAttr;
-	exports.initProp = initProp;
-	exports.assertProp = assertProp;
-	exports.coerceProp = coerceProp;
 	
 	var _debug = __webpack_require__(44);
 	
 	var _options = __webpack_require__(46);
 	
 	var _dom = __webpack_require__(35);
-	
-	var _lang = __webpack_require__(29);
-	
-	var _observerIndex = __webpack_require__(48);
 	
 	var commonTagRE = /^(div|p|span|img|a|b|i|br|ul|ol|li|h1|h2|h3|h4|h5|h6|code|pre|table|th|td|tr|form|label|input|select|option|nav|article|section|header|footer)$/i;
 	exports.commonTagRE = commonTagRE;
@@ -2964,128 +2966,6 @@
 	      return { id: exp, dynamic: true };
 	    }
 	  }
-	}
-	
-	/**
-	 * Set a prop's initial value on a vm and its data object.
-	 *
-	 * @param {Vue} vm
-	 * @param {Object} prop
-	 * @param {*} value
-	 */
-	
-	function initProp(vm, prop, value) {
-	  var key = prop.path;
-	  value = coerceProp(prop, value);
-	  if (value === undefined) {
-	    value = getPropDefaultValue(vm, prop.options);
-	  }
-	  if (assertProp(prop, value)) {
-	    _observerIndex.defineReactive(vm, key, value, true /* doNotObserve */);
-	  }
-	}
-	
-	/**
-	 * Get the default value of a prop.
-	 *
-	 * @param {Vue} vm
-	 * @param {Object} options
-	 * @return {*}
-	 */
-	
-	function getPropDefaultValue(vm, options) {
-	  // no default, return undefined
-	  if (!_lang.hasOwn(options, 'default')) {
-	    // absent boolean value defaults to false
-	    return options.type === Boolean ? false : undefined;
-	  }
-	  var def = options['default'];
-	  // warn against non-factory defaults for Object & Array
-	  if (_lang.isObject(def)) {
-	    ("development") !== 'production' && _debug.warn('Object/Array as default prop values will be shared ' + 'across multiple instances. Use a factory function ' + 'to return the default value instead.');
-	  }
-	  // call factory function for non-Function types
-	  return typeof def === 'function' && options.type !== Function ? def.call(vm) : def;
-	}
-	
-	/**
-	 * Assert whether a prop is valid.
-	 *
-	 * @param {Object} prop
-	 * @param {*} value
-	 */
-	
-	function assertProp(prop, value) {
-	  if (!prop.options.required && ( // non-required
-	  prop.raw === null || // abscent
-	  value == null) // null or undefined
-	  ) {
-	      return true;
-	    }
-	  var options = prop.options;
-	  var type = options.type;
-	  var valid = true;
-	  var expectedType;
-	  if (type) {
-	    if (type === String) {
-	      expectedType = 'string';
-	      valid = typeof value === expectedType;
-	    } else if (type === Number) {
-	      expectedType = 'number';
-	      valid = typeof value === 'number';
-	    } else if (type === Boolean) {
-	      expectedType = 'boolean';
-	      valid = typeof value === 'boolean';
-	    } else if (type === Function) {
-	      expectedType = 'function';
-	      valid = typeof value === 'function';
-	    } else if (type === Object) {
-	      expectedType = 'object';
-	      valid = _lang.isPlainObject(value);
-	    } else if (type === Array) {
-	      expectedType = 'array';
-	      valid = _lang.isArray(value);
-	    } else {
-	      valid = value instanceof type;
-	    }
-	  }
-	  if (!valid) {
-	    ("development") !== 'production' && _debug.warn('Invalid prop: type check failed for ' + prop.path + '="' + prop.raw + '".' + ' Expected ' + formatType(expectedType) + ', got ' + formatValue(value) + '.');
-	    return false;
-	  }
-	  var validator = options.validator;
-	  if (validator) {
-	    if (!validator(value)) {
-	      ("development") !== 'production' && _debug.warn('Invalid prop: custom validator check failed for ' + prop.path + '="' + prop.raw + '"');
-	      return false;
-	    }
-	  }
-	  return true;
-	}
-	
-	/**
-	 * Force parsing value with coerce option.
-	 *
-	 * @param {*} value
-	 * @param {Object} options
-	 * @return {*}
-	 */
-	
-	function coerceProp(prop, value) {
-	  var coerce = prop.options.coerce;
-	  if (!coerce) {
-	    return value;
-	  }
-	  // coerce is a function
-	  return coerce(value);
-	}
-	
-	function formatType(val) {
-	  return val ? val.charAt(0).toUpperCase() + val.slice(1) : 'custom type';
-	}
-	
-	function formatValue(val) {
-	  return Object.prototype.toString.call(val).slice(8, -1);
 	}
 
 /***/ },
@@ -3216,7 +3096,7 @@
 	 * the prototype chain using __proto__
 	 *
 	 * @param {Object|Array} target
-	 * @param {Object} proto
+	 * @param {Object} src
 	 */
 	
 	function protoAugment(target, src) {
@@ -3604,6 +3484,10 @@
 	  Vue.prototype._initData = function () {
 	    var dataFn = this.$options.data;
 	    var data = this._data = dataFn ? dataFn() : {};
+	    if (!_utilIndex.isPlainObject(data)) {
+	      data = {};
+	      ("development") !== 'production' && _utilIndex.warn('data functions should return an object.');
+	    }
 	    var props = this._props;
 	    var runtimeData = this._runtimeData ? typeof this._runtimeData === 'function' ? this._runtimeData() : this._runtimeData : null;
 	    // proxy data on instance
@@ -3821,7 +3705,7 @@
 	 * This is used for both the $watch() api and directives.
 	 *
 	 * @param {Vue} vm
-	 * @param {String} expression
+	 * @param {String|Function} expOrFn
 	 * @param {Function} cb
 	 * @param {Object} options
 	 *                 - {Array} filters
@@ -4834,7 +4718,7 @@
 	
 	var _directivesInternalIndex2 = _interopRequireDefault(_directivesInternalIndex);
 	
-	var _compileProps = __webpack_require__(90);
+	var _compileProps = __webpack_require__(87);
 	
 	var _parsersText = __webpack_require__(39);
 	
@@ -4851,12 +4735,9 @@
 	var modifierRE = /\.[^\.]+/g;
 	var transitionRE = /^(v-bind:|:)?transition$/;
 	
-	// terminal directives
-	var terminalDirectives = ['for', 'if'];
-	
-	exports.terminalDirectives = terminalDirectives;
 	// default directive priority
 	var DEFAULT_PRIORITY = 1000;
+	var DEFAULT_TERMINAL_PRIORITY = 2000;
 	
 	/**
 	 * Compile a template and return a reusable composite link
@@ -5129,9 +5010,10 @@
 	  }
 	  var linkFn;
 	  var hasAttrs = el.hasAttributes();
+	  var attrs = hasAttrs && _utilIndex.toArray(el.attributes);
 	  // check terminal directives (for & if)
 	  if (hasAttrs) {
-	    linkFn = checkTerminalDirectives(el, options);
+	    linkFn = checkTerminalDirectives(el, attrs, options);
 	  }
 	  // check element directives
 	  if (!linkFn) {
@@ -5143,7 +5025,7 @@
 	  }
 	  // normal directives
 	  if (!linkFn && hasAttrs) {
-	    linkFn = compileDirectives(el.attributes, options);
+	    linkFn = compileDirectives(attrs, options);
 	  }
 	  return linkFn;
 	}
@@ -5372,11 +5254,12 @@
 	 * If it finds one, return a terminal link function.
 	 *
 	 * @param {Element} el
+	 * @param {Array} attrs
 	 * @param {Object} options
 	 * @return {Function} terminalLinkFn
 	 */
 	
-	function checkTerminalDirectives(el, options) {
+	function checkTerminalDirectives(el, attrs, options) {
 	  // skip v-pre
 	  if (_utilIndex.getAttr(el, 'v-pre') !== null) {
 	    return skip;
@@ -5388,13 +5271,26 @@
 	      return skip;
 	    }
 	  }
-	  var value, dirName;
-	  for (var i = 0, l = terminalDirectives.length; i < l; i++) {
-	    dirName = terminalDirectives[i];
-	    value = el.getAttribute('v-' + dirName);
-	    if (value != null) {
-	      return makeTerminalNodeLinkFn(el, dirName, value, options);
+	
+	  var attr, name, value, matched, dirName, arg, def, termDef;
+	  for (var i = 0, j = attrs.length; i < j; i++) {
+	    attr = attrs[i];
+	    if (matched = attr.name.match(dirAttrRE)) {
+	      def = _utilIndex.resolveAsset(options, 'directives', matched[1]);
+	      if (def && def.terminal) {
+	        if (!termDef || (def.priority || DEFAULT_TERMINAL_PRIORITY) > termDef.priority) {
+	          termDef = def;
+	          name = attr.name;
+	          value = attr.value;
+	          dirName = matched[1];
+	          arg = matched[2];
+	        }
+	      }
 	    }
+	  }
+	
+	  if (termDef) {
+	    return makeTerminalNodeLinkFn(el, dirName, value, options, termDef, name, arg);
 	  }
 	}
 	
@@ -5411,21 +5307,29 @@
 	 * @param {String} dirName
 	 * @param {String} value
 	 * @param {Object} options
-	 * @param {Object} [def]
+	 * @param {Object} def
+	 * @param {String} [attrName]
+	 * @param {String} [arg]
 	 * @return {Function} terminalLinkFn
 	 */
 	
-	function makeTerminalNodeLinkFn(el, dirName, value, options, def) {
+	function makeTerminalNodeLinkFn(el, dirName, value, options, def, attrName, arg) {
 	  var parsed = _parsersDirective.parseDirective(value);
 	  var descriptor = {
 	    name: dirName,
 	    expression: parsed.expression,
 	    filters: parsed.filters,
 	    raw: value,
-	    // either an element directive, or if/for
-	    // #2366 or custom terminal directive
-	    def: def || _utilIndex.resolveAsset(options, 'directives', dirName)
+	    rawName: attrName,
+	    def: def
 	  };
+	  if (attrName) {
+	    descriptor.rawName = attrName;
+	    descriptor.modifiers = parseModifiers(attrName);
+	  }
+	  if (arg) {
+	    descriptor.arg = arg.replace(modifierRE, '');
+	  }
 	  // check ref for v-for and router-view
 	  if (dirName === 'for' || dirName === 'router-view') {
 	    descriptor.ref = _utilIndex.findRef(el);
@@ -6052,6 +5956,7 @@
 	var vFor = {
 	
 	  priority: _priorities.FOR,
+	  terminal: true,
 	
 	  params: ['track-by', 'stagger', 'enter-stagger', 'leave-stagger'],
 	
@@ -6725,6 +6630,7 @@
 	 * @param {DocumentFragment} frag
 	 * @param {Vue} [host]
 	 * @param {Object} [scope]
+	 * @param {Fragment} [parentFrag]
 	 */
 	
 	function Fragment(linker, vm, frag, host, scope, parentFrag) {
@@ -6958,6 +6864,7 @@
 	exports['default'] = {
 	
 	  priority: _priorities.IF,
+	  terminal: true,
 	
 	  bind: function bind() {
 	    var el = this.el;
@@ -8048,7 +7955,7 @@
 	
 	var _prop2 = _interopRequireDefault(_prop);
 	
-	var _transition = __webpack_require__(87);
+	var _transition = __webpack_require__(88);
 	
 	var _transition2 = _interopRequireDefault(_transition);
 	
@@ -8091,22 +7998,18 @@
 	
 	  handleObject: function handleObject(value) {
 	    this.cleanup(value);
-	    var keys = this.prevKeys = _Object$keys(value);
-	    for (var i = 0, l = keys.length; i < l; i++) {
-	      var key = keys[i];
-	      if (value[key]) {
-	        _utilIndex.addClass(this.el, key);
-	      } else {
-	        _utilIndex.removeClass(this.el, key);
-	      }
-	    }
+	    this.prevKeys = _Object$keys(value);
+	    setObjectClasses(this.el, value);
 	  },
 	
 	  handleArray: function handleArray(value) {
 	    this.cleanup(value);
 	    for (var i = 0, l = value.length; i < l; i++) {
-	      if (value[i]) {
-	        _utilIndex.addClass(this.el, value[i]);
+	      var val = value[i];
+	      if (val && _utilIndex.isPlainObject(val)) {
+	        setObjectClasses(this.el, val);
+	      } else if (val && typeof val === 'string') {
+	        _utilIndex.addClass(this.el, val);
 	      }
 	    }
 	    this.prevKeys = value.slice();
@@ -8117,13 +8020,29 @@
 	      var i = this.prevKeys.length;
 	      while (i--) {
 	        var key = this.prevKeys[i];
-	        if (key && (!value || !contains(value, key))) {
+	        if (!key) continue;
+	        if (_utilIndex.isPlainObject(key)) {
+	          var keys = _Object$keys(key);
+	          for (var k = 0; k < keys.length; k++) {
+	            _utilIndex.removeClass(this.el, keys[k]);
+	          }
+	        } else {
 	          _utilIndex.removeClass(this.el, key);
 	        }
 	      }
 	    }
 	  }
 	};
+	
+	function setObjectClasses(el, obj) {
+	  var keys = _Object$keys(obj);
+	  for (var i = 0, l = keys.length; i < l; i++) {
+	    var key = keys[i];
+	    if (obj[key]) {
+	      _utilIndex.addClass(el, key);
+	    }
+	  }
+	}
 	
 	function stringToObject(value) {
 	  var res = {};
@@ -8133,10 +8052,6 @@
 	    res[keys[i]] = true;
 	  }
 	  return res;
-	}
-	
-	function contains(value, key) {
-	  return _utilIndex.isArray(value) ? value.indexOf(key) > -1 : _utilIndex.hasOwn(value, key);
 	}
 	module.exports = exports['default'];
 
@@ -8250,16 +8165,19 @@
 	  /**
 	   * Resolve the component constructor to use when creating
 	   * the child vm.
+	   *
+	   * @param {String|Function} value
+	   * @param {Function} cb
 	   */
 	
-	  resolveComponent: function resolveComponent(id, cb) {
+	  resolveComponent: function resolveComponent(value, cb) {
 	    var self = this;
 	    this.pendingComponentCb = _utilIndex.cancellable(function (Component) {
-	      self.ComponentName = Component.options.name || id;
+	      self.ComponentName = Component.options.name || (typeof value === 'string' ? value : null);
 	      self.Component = Component;
 	      cb();
 	    });
-	    this.vm._resolveComponent(id, this.pendingComponentCb);
+	    this.vm._resolveComponent(value, this.pendingComponentCb);
 	  },
 	
 	  /**
@@ -8534,7 +8452,7 @@
 	
 	var _config2 = _interopRequireDefault(_config);
 	
-	var _utilIndex = __webpack_require__(5);
+	var _compilerCompileProps = __webpack_require__(87);
 	
 	var bindingModes = _config2['default']._propBindingModes;
 	
@@ -8550,8 +8468,8 @@
 	    var twoWay = prop.mode === bindingModes.TWO_WAY;
 	
 	    var parentWatcher = this.parentWatcher = new _watcher2['default'](parent, parentKey, function (val) {
-	      val = _utilIndex.coerceProp(prop, val);
-	      if (_utilIndex.assertProp(prop, val)) {
+	      val = _compilerCompileProps.coerceProp(prop, val);
+	      if (_compilerCompileProps.assertProp(prop, val)) {
 	        child[childKey] = val;
 	      }
 	    }, {
@@ -8563,7 +8481,7 @@
 	    });
 	
 	    // set the child initial value.
-	    _utilIndex.initProp(child, prop, parentWatcher.value);
+	    _compilerCompileProps.initProp(child, prop, parentWatcher.value);
 	
 	    // setup two-way binding
 	    if (twoWay) {
@@ -8598,6 +8516,328 @@
 
 	'use strict';
 	
+	var _Object$keys = __webpack_require__(30)['default'];
+	
+	var _interopRequireDefault = __webpack_require__(2)['default'];
+	
+	exports.__esModule = true;
+	exports.compileProps = compileProps;
+	exports.initProp = initProp;
+	exports.assertProp = assertProp;
+	exports.coerceProp = coerceProp;
+	
+	var _config = __webpack_require__(36);
+	
+	var _config2 = _interopRequireDefault(_config);
+	
+	var _parsersDirective = __webpack_require__(43);
+	
+	var _parsersExpression = __webpack_require__(57);
+	
+	var _observerIndex = __webpack_require__(48);
+	
+	var _directivesInternalProp = __webpack_require__(86);
+	
+	var _directivesInternalProp2 = _interopRequireDefault(_directivesInternalProp);
+	
+	var _utilIndex = __webpack_require__(5);
+	
+	var propBindingModes = _config2['default']._propBindingModes;
+	var empty = {};
+	
+	// regexes
+	var identRE = /^[$_a-zA-Z]+[\w$]*$/;
+	var settablePathRE = /^[A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*|\[[^\[\]]+\])*$/;
+	
+	/**
+	 * Compile props on a root element and return
+	 * a props link function.
+	 *
+	 * @param {Element|DocumentFragment} el
+	 * @param {Array} propOptions
+	 * @return {Function} propsLinkFn
+	 */
+	
+	function compileProps(el, propOptions) {
+	  var props = [];
+	  var names = _Object$keys(propOptions);
+	  var i = names.length;
+	  var options, name, attr, value, path, parsed, prop;
+	  while (i--) {
+	    name = names[i];
+	    options = propOptions[name] || empty;
+	
+	    if (("development") !== 'production' && name === '$data') {
+	      _utilIndex.warn('Do not use $data as prop.');
+	      continue;
+	    }
+	
+	    // props could contain dashes, which will be
+	    // interpreted as minus calculations by the parser
+	    // so we need to camelize the path here
+	    path = _utilIndex.camelize(name);
+	    if (!identRE.test(path)) {
+	      ("development") !== 'production' && _utilIndex.warn('Invalid prop key: "' + name + '". Prop keys ' + 'must be valid identifiers.');
+	      continue;
+	    }
+	
+	    prop = {
+	      name: name,
+	      path: path,
+	      options: options,
+	      mode: propBindingModes.ONE_WAY,
+	      raw: null
+	    };
+	
+	    attr = _utilIndex.hyphenate(name);
+	    // first check dynamic version
+	    if ((value = _utilIndex.getBindAttr(el, attr)) === null) {
+	      if ((value = _utilIndex.getBindAttr(el, attr + '.sync')) !== null) {
+	        prop.mode = propBindingModes.TWO_WAY;
+	      } else if ((value = _utilIndex.getBindAttr(el, attr + '.once')) !== null) {
+	        prop.mode = propBindingModes.ONE_TIME;
+	      }
+	    }
+	    if (value !== null) {
+	      // has dynamic binding!
+	      prop.raw = value;
+	      parsed = _parsersDirective.parseDirective(value);
+	      value = parsed.expression;
+	      prop.filters = parsed.filters;
+	      // check binding type
+	      if (_utilIndex.isLiteral(value) && !parsed.filters) {
+	        // for expressions containing literal numbers and
+	        // booleans, there's no need to setup a prop binding,
+	        // so we can optimize them as a one-time set.
+	        prop.optimizedLiteral = true;
+	      } else {
+	        prop.dynamic = true;
+	        // check non-settable path for two-way bindings
+	        if (("development") !== 'production' && prop.mode === propBindingModes.TWO_WAY && !settablePathRE.test(value)) {
+	          prop.mode = propBindingModes.ONE_WAY;
+	          _utilIndex.warn('Cannot bind two-way prop with non-settable ' + 'parent path: ' + value);
+	        }
+	      }
+	      prop.parentPath = value;
+	
+	      // warn required two-way
+	      if (("development") !== 'production' && options.twoWay && prop.mode !== propBindingModes.TWO_WAY) {
+	        _utilIndex.warn('Prop "' + name + '" expects a two-way binding type.');
+	      }
+	    } else if ((value = _utilIndex.getAttr(el, attr)) !== null) {
+	      // has literal binding!
+	      prop.raw = value;
+	    } else if (true) {
+	      // check possible camelCase prop usage
+	      var lowerCaseName = path.toLowerCase();
+	      value = /[A-Z\-]/.test(name) && (el.getAttribute(lowerCaseName) || el.getAttribute(':' + lowerCaseName) || el.getAttribute('v-bind:' + lowerCaseName) || el.getAttribute(':' + lowerCaseName + '.once') || el.getAttribute('v-bind:' + lowerCaseName + '.once') || el.getAttribute(':' + lowerCaseName + '.sync') || el.getAttribute('v-bind:' + lowerCaseName + '.sync'));
+	      if (value) {
+	        _utilIndex.warn('Possible usage error for prop `' + lowerCaseName + '` - ' + 'did you mean `' + attr + '`? HTML is case-insensitive, remember to use ' + 'kebab-case for props in templates.');
+	      } else if (options.required) {
+	        // warn missing required
+	        _utilIndex.warn('Missing required prop: ' + name);
+	      }
+	    }
+	    // push prop
+	    props.push(prop);
+	  }
+	  return makePropsLinkFn(props);
+	}
+	
+	/**
+	 * Build a function that applies props to a vm.
+	 *
+	 * @param {Array} props
+	 * @return {Function} propsLinkFn
+	 */
+	
+	function makePropsLinkFn(props) {
+	  return function propsLinkFn(vm, scope) {
+	    // store resolved props info
+	    vm._props = {};
+	    var i = props.length;
+	    var prop, path, options, value, raw;
+	    while (i--) {
+	      prop = props[i];
+	      raw = prop.raw;
+	      path = prop.path;
+	      options = prop.options;
+	      vm._props[path] = prop;
+	      if (raw === null) {
+	        // initialize absent prop
+	        initProp(vm, prop, undefined);
+	      } else if (prop.dynamic) {
+	        // dynamic prop
+	        if (prop.mode === propBindingModes.ONE_TIME) {
+	          // one time binding
+	          value = (scope || vm._context || vm).$get(prop.parentPath);
+	          initProp(vm, prop, value);
+	        } else {
+	          if (vm._context) {
+	            // dynamic binding
+	            vm._bindDir({
+	              name: 'prop',
+	              def: _directivesInternalProp2['default'],
+	              prop: prop
+	            }, null, null, scope); // el, host, scope
+	          } else {
+	              // root instance
+	              initProp(vm, prop, vm.$get(prop.parentPath));
+	            }
+	        }
+	      } else if (prop.optimizedLiteral) {
+	        // optimized literal, cast it and just set once
+	        var stripped = _utilIndex.stripQuotes(raw);
+	        value = stripped === raw ? _utilIndex.toBoolean(_utilIndex.toNumber(raw)) : stripped;
+	        initProp(vm, prop, value);
+	      } else {
+	        // string literal, but we need to cater for
+	        // Boolean props with no value, or with same
+	        // literal value (e.g. disabled="disabled")
+	        // see https://github.com/vuejs/vue-loader/issues/182
+	        value = options.type === Boolean && (raw === '' || raw === _utilIndex.hyphenate(prop.name)) ? true : raw;
+	        initProp(vm, prop, value);
+	      }
+	    }
+	  };
+	}
+	
+	/**
+	 * Set a prop's initial value on a vm and its data object.
+	 *
+	 * @param {Vue} vm
+	 * @param {Object} prop
+	 * @param {*} value
+	 */
+	
+	function initProp(vm, prop, value) {
+	  var key = prop.path;
+	  value = coerceProp(prop, value);
+	  if (value === undefined) {
+	    value = getPropDefaultValue(vm, prop.options);
+	  }
+	  if (assertProp(prop, value)) {
+	    var doNotObserve =
+	    // if the passed down prop was already converted, then
+	    // subsequent sets should also be converted, because the user
+	    // may mutate the prop binding in the child component (#2549)
+	    !(value && value.__ob__) && (
+	    // otherwise we can skip observation for props that are either
+	    // literal or points to a simple path (non-derived values)
+	    !prop.dynamic || _parsersExpression.isSimplePath(prop.raw));
+	    _observerIndex.defineReactive(vm, key, value, doNotObserve);
+	  }
+	}
+	
+	/**
+	 * Get the default value of a prop.
+	 *
+	 * @param {Vue} vm
+	 * @param {Object} options
+	 * @return {*}
+	 */
+	
+	function getPropDefaultValue(vm, options) {
+	  // no default, return undefined
+	  if (!_utilIndex.hasOwn(options, 'default')) {
+	    // absent boolean value defaults to false
+	    return options.type === Boolean ? false : undefined;
+	  }
+	  var def = options['default'];
+	  // warn against non-factory defaults for Object & Array
+	  if (_utilIndex.isObject(def)) {
+	    ("development") !== 'production' && _utilIndex.warn('Object/Array as default prop values will be shared ' + 'across multiple instances. Use a factory function ' + 'to return the default value instead.');
+	  }
+	  // call factory function for non-Function types
+	  return typeof def === 'function' && options.type !== Function ? def.call(vm) : def;
+	}
+	
+	/**
+	 * Assert whether a prop is valid.
+	 *
+	 * @param {Object} prop
+	 * @param {*} value
+	 */
+	
+	function assertProp(prop, value) {
+	  if (!prop.options.required && ( // non-required
+	  prop.raw === null || // abscent
+	  value == null) // null or undefined
+	  ) {
+	      return true;
+	    }
+	  var options = prop.options;
+	  var type = options.type;
+	  var valid = true;
+	  var expectedType;
+	  if (type) {
+	    if (type === String) {
+	      expectedType = 'string';
+	      valid = typeof value === expectedType;
+	    } else if (type === Number) {
+	      expectedType = 'number';
+	      valid = typeof value === 'number';
+	    } else if (type === Boolean) {
+	      expectedType = 'boolean';
+	      valid = typeof value === 'boolean';
+	    } else if (type === Function) {
+	      expectedType = 'function';
+	      valid = typeof value === 'function';
+	    } else if (type === Object) {
+	      expectedType = 'object';
+	      valid = _utilIndex.isPlainObject(value);
+	    } else if (type === Array) {
+	      expectedType = 'array';
+	      valid = _utilIndex.isArray(value);
+	    } else {
+	      valid = value instanceof type;
+	    }
+	  }
+	  if (!valid) {
+	    ("development") !== 'production' && _utilIndex.warn('Invalid prop: type check failed for ' + prop.path + '="' + prop.raw + '".' + ' Expected ' + formatType(expectedType) + ', got ' + formatValue(value) + '.');
+	    return false;
+	  }
+	  var validator = options.validator;
+	  if (validator) {
+	    if (!validator(value)) {
+	      ("development") !== 'production' && _utilIndex.warn('Invalid prop: custom validator check failed for ' + prop.path + '="' + prop.raw + '"');
+	      return false;
+	    }
+	  }
+	  return true;
+	}
+	
+	/**
+	 * Force parsing value with coerce option.
+	 *
+	 * @param {*} value
+	 * @param {Object} options
+	 * @return {*}
+	 */
+	
+	function coerceProp(prop, value) {
+	  var coerce = prop.options.coerce;
+	  if (!coerce) {
+	    return value;
+	  }
+	  // coerce is a function
+	  return coerce(value);
+	}
+	
+	function formatType(val) {
+	  return val ? val.charAt(0).toUpperCase() + val.slice(1) : 'custom type';
+	}
+	
+	function formatValue(val) {
+	  return Object.prototype.toString.call(val).slice(8, -1);
+	}
+
+/***/ },
+/* 88 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
 	var _interopRequireDefault = __webpack_require__(2)['default'];
 	
 	exports.__esModule = true;
@@ -8606,7 +8846,7 @@
 	
 	var _priorities = __webpack_require__(69);
 	
-	var _transitionTransition = __webpack_require__(88);
+	var _transitionTransition = __webpack_require__(89);
 	
 	var _transitionTransition2 = _interopRequireDefault(_transitionTransition);
 	
@@ -8629,7 +8869,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 88 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8637,7 +8877,7 @@
 	exports.__esModule = true;
 	exports['default'] = Transition;
 	
-	var _queue = __webpack_require__(89);
+	var _queue = __webpack_require__(90);
 	
 	var _utilIndex = __webpack_require__(5);
 	
@@ -8645,6 +8885,32 @@
 	var TYPE_ANIMATION = 'animation';
 	var transDurationProp = _utilIndex.transitionProp + 'Duration';
 	var animDurationProp = _utilIndex.animationProp + 'Duration';
+	
+	/**
+	 * If a just-entered element is applied the
+	 * leave class while its enter transition hasn't started yet,
+	 * and the transitioned property has the same value for both
+	 * enter/leave, then the leave transition will be skipped and
+	 * the transitionend event never fires. This function ensures
+	 * its callback to be called after a transition has started
+	 * by waiting for double raf.
+	 *
+	 * It falls back to setTimeout on devices that support CSS
+	 * transitions but not raf (e.g. Android 4.2 browser) - since
+	 * these environments are usually slow, we are giving it a
+	 * relatively large timeout.
+	 */
+	
+	var raf = _utilIndex.inBrowser && window.requestAnimationFrame;
+	var waitForTransitionStart = raf
+	/* istanbul ignore next */
+	? function (fn) {
+	  raf(function () {
+	    raf(fn);
+	  });
+	} : function (fn) {
+	  setTimeout(fn, 50);
+	};
 	
 	/**
 	 * A Transition object that encapsulates the state and logic
@@ -8731,19 +8997,13 @@
 	 */
 	
 	p.enterNextTick = function () {
-	  // Important hack:
-	  // in Chrome, if a just-entered element is applied the
-	  // leave class while its interpolated property still has
-	  // a very small value (within one frame), Chrome will
-	  // skip the leave transition entirely and not firing the
-	  // transtionend event. Therefore we need to protected
-	  // against such cases using a one-frame timeout.
-	  this.justEntered = true;
-	  var self = this;
-	  setTimeout(function () {
-	    self.justEntered = false;
-	  }, 17);
+	  var _this = this;
 	
+	  // prevent transition skipping
+	  this.justEntered = true;
+	  waitForTransitionStart(function () {
+	    _this.justEntered = false;
+	  });
 	  var enterDone = this.enterDone;
 	  var type = this.getCssTransitionType(this.enterClass);
 	  if (!this.pendingJsCb) {
@@ -8997,7 +9257,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 89 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9040,189 +9300,6 @@
 	  // dummy return, so js linters don't complain about
 	  // unused variable f
 	  return f;
-	}
-
-/***/ },
-/* 90 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _Object$keys = __webpack_require__(30)['default'];
-	
-	var _interopRequireDefault = __webpack_require__(2)['default'];
-	
-	exports.__esModule = true;
-	exports.compileProps = compileProps;
-	
-	var _config = __webpack_require__(36);
-	
-	var _config2 = _interopRequireDefault(_config);
-	
-	var _parsersDirective = __webpack_require__(43);
-	
-	var _directivesInternalProp = __webpack_require__(86);
-	
-	var _directivesInternalProp2 = _interopRequireDefault(_directivesInternalProp);
-	
-	var _utilIndex = __webpack_require__(5);
-	
-	var propBindingModes = _config2['default']._propBindingModes;
-	var empty = {};
-	
-	// regexes
-	var identRE = /^[$_a-zA-Z]+[\w$]*$/;
-	var settablePathRE = /^[A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*|\[[^\[\]]+\])*$/;
-	
-	/**
-	 * Compile props on a root element and return
-	 * a props link function.
-	 *
-	 * @param {Element|DocumentFragment} el
-	 * @param {Array} propOptions
-	 * @return {Function} propsLinkFn
-	 */
-	
-	function compileProps(el, propOptions) {
-	  var props = [];
-	  var names = _Object$keys(propOptions);
-	  var i = names.length;
-	  var options, name, attr, value, path, parsed, prop;
-	  while (i--) {
-	    name = names[i];
-	    options = propOptions[name] || empty;
-	
-	    if (("development") !== 'production' && name === '$data') {
-	      _utilIndex.warn('Do not use $data as prop.');
-	      continue;
-	    }
-	
-	    // props could contain dashes, which will be
-	    // interpreted as minus calculations by the parser
-	    // so we need to camelize the path here
-	    path = _utilIndex.camelize(name);
-	    if (!identRE.test(path)) {
-	      ("development") !== 'production' && _utilIndex.warn('Invalid prop key: "' + name + '". Prop keys ' + 'must be valid identifiers.');
-	      continue;
-	    }
-	
-	    prop = {
-	      name: name,
-	      path: path,
-	      options: options,
-	      mode: propBindingModes.ONE_WAY,
-	      raw: null
-	    };
-	
-	    attr = _utilIndex.hyphenate(name);
-	    // first check dynamic version
-	    if ((value = _utilIndex.getBindAttr(el, attr)) === null) {
-	      if ((value = _utilIndex.getBindAttr(el, attr + '.sync')) !== null) {
-	        prop.mode = propBindingModes.TWO_WAY;
-	      } else if ((value = _utilIndex.getBindAttr(el, attr + '.once')) !== null) {
-	        prop.mode = propBindingModes.ONE_TIME;
-	      }
-	    }
-	    if (value !== null) {
-	      // has dynamic binding!
-	      prop.raw = value;
-	      parsed = _parsersDirective.parseDirective(value);
-	      value = parsed.expression;
-	      prop.filters = parsed.filters;
-	      // check binding type
-	      if (_utilIndex.isLiteral(value) && !parsed.filters) {
-	        // for expressions containing literal numbers and
-	        // booleans, there's no need to setup a prop binding,
-	        // so we can optimize them as a one-time set.
-	        prop.optimizedLiteral = true;
-	      } else {
-	        prop.dynamic = true;
-	        // check non-settable path for two-way bindings
-	        if (("development") !== 'production' && prop.mode === propBindingModes.TWO_WAY && !settablePathRE.test(value)) {
-	          prop.mode = propBindingModes.ONE_WAY;
-	          _utilIndex.warn('Cannot bind two-way prop with non-settable ' + 'parent path: ' + value);
-	        }
-	      }
-	      prop.parentPath = value;
-	
-	      // warn required two-way
-	      if (("development") !== 'production' && options.twoWay && prop.mode !== propBindingModes.TWO_WAY) {
-	        _utilIndex.warn('Prop "' + name + '" expects a two-way binding type.');
-	      }
-	    } else if ((value = _utilIndex.getAttr(el, attr)) !== null) {
-	      // has literal binding!
-	      prop.raw = value;
-	    } else if (true) {
-	      // check possible camelCase prop usage
-	      var lowerCaseName = path.toLowerCase();
-	      value = /[A-Z\-]/.test(name) && (el.getAttribute(lowerCaseName) || el.getAttribute(':' + lowerCaseName) || el.getAttribute('v-bind:' + lowerCaseName) || el.getAttribute(':' + lowerCaseName + '.once') || el.getAttribute('v-bind:' + lowerCaseName + '.once') || el.getAttribute(':' + lowerCaseName + '.sync') || el.getAttribute('v-bind:' + lowerCaseName + '.sync'));
-	      if (value) {
-	        _utilIndex.warn('Possible usage error for prop `' + lowerCaseName + '` - ' + 'did you mean `' + attr + '`? HTML is case-insensitive, remember to use ' + 'kebab-case for props in templates.');
-	      } else if (options.required) {
-	        // warn missing required
-	        _utilIndex.warn('Missing required prop: ' + name);
-	      }
-	    }
-	    // push prop
-	    props.push(prop);
-	  }
-	  return makePropsLinkFn(props);
-	}
-	
-	/**
-	 * Build a function that applies props to a vm.
-	 *
-	 * @param {Array} props
-	 * @return {Function} propsLinkFn
-	 */
-	
-	function makePropsLinkFn(props) {
-	  return function propsLinkFn(vm, scope) {
-	    // store resolved props info
-	    vm._props = {};
-	    var i = props.length;
-	    var prop, path, options, value, raw;
-	    while (i--) {
-	      prop = props[i];
-	      raw = prop.raw;
-	      path = prop.path;
-	      options = prop.options;
-	      vm._props[path] = prop;
-	      if (raw === null) {
-	        // initialize absent prop
-	        _utilIndex.initProp(vm, prop, undefined);
-	      } else if (prop.dynamic) {
-	        // dynamic prop
-	        if (prop.mode === propBindingModes.ONE_TIME) {
-	          // one time binding
-	          value = (scope || vm._context || vm).$get(prop.parentPath);
-	          _utilIndex.initProp(vm, prop, value);
-	        } else {
-	          if (vm._context) {
-	            // dynamic binding
-	            vm._bindDir({
-	              name: 'prop',
-	              def: _directivesInternalProp2['default'],
-	              prop: prop
-	            }, null, null, scope); // el, host, scope
-	          } else {
-	              // root instance
-	              _utilIndex.initProp(vm, prop, vm.$get(prop.parentPath));
-	            }
-	        }
-	      } else if (prop.optimizedLiteral) {
-	        // optimized literal, cast it and just set once
-	        var stripped = _utilIndex.stripQuotes(raw);
-	        value = stripped === raw ? _utilIndex.toBoolean(_utilIndex.toNumber(raw)) : stripped;
-	        _utilIndex.initProp(vm, prop, value);
-	      } else {
-	        // string literal, but we need to cater for
-	        // Boolean props with no value
-	        value = options.type === Boolean && raw === '' ? true : raw;
-	        _utilIndex.initProp(vm, prop, value);
-	      }
-	    }
-	  };
 	}
 
 /***/ },
@@ -9416,6 +9493,9 @@
 	      (contents[name] || (contents[name] = [])).push(el);
 	    }
 	    /* eslint-enable no-cond-assign */
+	    if (("development") !== 'production' && _utilIndex.getBindAttr(el, 'slot')) {
+	      _utilIndex.warn('The "slot" attribute must be static.');
+	    }
 	  }
 	  for (name in contents) {
 	    contents[name] = extractFragment(contents[name], content);
@@ -9762,10 +9842,8 @@
 	  /**
 	   * Create and bind a directive to an element.
 	   *
-	   * @param {String} name - directive name
+	   * @param {Object} descriptor - parsed directive descriptor
 	   * @param {Node} node   - target node
-	   * @param {Object} desc - parsed directive descriptor
-	   * @param {Object} def  - directive definition object
 	   * @param {Vue} [host] - transclusion host component
 	   * @param {Object} [scope] - v-for scope
 	   * @param {Fragment} [frag] - owner fragment
@@ -9922,18 +10000,21 @@
 	 * It registers a watcher with the expression and calls
 	 * the DOM update function when a change is triggered.
 	 *
-	 * @param {String} name
-	 * @param {Node} el
-	 * @param {Vue} vm
 	 * @param {Object} descriptor
 	 *                 - {String} name
 	 *                 - {Object} def
 	 *                 - {String} expression
 	 *                 - {Array<Object>} [filters]
+	 *                 - {Object} [modifiers]
 	 *                 - {Boolean} literal
 	 *                 - {String} attr
+	 *                 - {String} arg
 	 *                 - {String} raw
-	 * @param {Object} def - directive definition object
+	 *                 - {String} [ref]
+	 *                 - {Array<Object>} [interp]
+	 *                 - {Boolean} [hasOneTime]
+	 * @param {Vue} vm
+	 * @param {Node} el
 	 * @param {Vue} [host] - transclusion host component
 	 * @param {Object} [scope] - v-for scope
 	 * @param {Fragment} [frag] - owner fragment
@@ -9970,8 +10051,6 @@
 	 * Initialize the directive, mixin definition properties,
 	 * setup the watcher, call definition bind() and update()
 	 * if present.
-	 *
-	 * @param {Object} def
 	 */
 	
 	Directive.prototype._bind = function () {
@@ -10238,7 +10317,7 @@
 	  Vue.prototype._applyFilters = function (value, oldValue, filters, write) {
 	    var filter, fn, args, arg, offset, i, l, j, k;
 	    for (i = 0, l = filters.length; i < l; i++) {
-	      filter = filters[i];
+	      filter = filters[write ? l - i - 1 : i];
 	      fn = _utilIndex.resolveAsset(this.$options, 'filters', filter.name);
 	      if (true) {
 	        _utilIndex.assertAsset(fn, 'filter', filter.name);
@@ -10266,14 +10345,19 @@
 	   * resolves asynchronously and caches the resolved
 	   * constructor on the factory.
 	   *
-	   * @param {String} id
+	   * @param {String|Function} value
 	   * @param {Function} cb
 	   */
 	
-	  Vue.prototype._resolveComponent = function (id, cb) {
-	    var factory = _utilIndex.resolveAsset(this.$options, 'components', id);
-	    if (true) {
-	      _utilIndex.assertAsset(factory, 'component', id);
+	  Vue.prototype._resolveComponent = function (value, cb) {
+	    var factory;
+	    if (typeof value === 'function') {
+	      factory = value;
+	    } else {
+	      factory = _utilIndex.resolveAsset(this.$options, 'components', value);
+	      if (true) {
+	        _utilIndex.assertAsset(factory, 'component', value);
+	      }
 	    }
 	    if (!factory) {
 	      return;
@@ -10300,7 +10384,7 @@
 	            cbs[i](res);
 	          }
 	        }, function reject(reason) {
-	          ("development") !== 'production' && _utilIndex.warn('Failed to resolve async component: ' + id + '. ' + (reason ? '\nReason: ' + reason : ''));
+	          ("development") !== 'production' && _utilIndex.warn('Failed to resolve async component' + (typeof value === 'string' ? ': ' + value : '') + '. ' + (reason ? '\nReason: ' + reason : ''));
 	        });
 	      }
 	    } else {
@@ -10972,6 +11056,9 @@
 	  /**
 	   * Teardown the instance, simply delegate to the internal
 	   * _destroy.
+	   *
+	   * @param {Boolean} remove
+	   * @param {Boolean} deferCleanup
 	   */
 	
 	  Vue.prototype.$destroy = function (remove, deferCleanup) {
@@ -10984,6 +11071,8 @@
 	   *
 	   * @param {Element|DocumentFragment} el
 	   * @param {Vue} [host]
+	   * @param {Object} [scope]
+	   * @param {Fragment} [frag]
 	   * @return {Function}
 	   */
 	
@@ -13389,6 +13478,48 @@
 	    expect(args[1]).toBe(el.firstChild)
 	  })
 	
+	  it('custom terminal directives', function () {
+	    var defTerminal = {
+	      terminal: true,
+	      priority: Vue.options.directives.if.priority + 1
+	    }
+	    var options = _.mergeOptions(Vue.options, {
+	      directives: { term: defTerminal }
+	    })
+	    el.innerHTML = '<div v-term:arg1.modifier1.modifier2="foo"></div>'
+	    var linker = compile(el, options)
+	    linker(vm, el)
+	    expect(vm._bindDir.calls.count()).toBe(1)
+	    var args = vm._bindDir.calls.argsFor(0)
+	    expect(args[0].name).toBe('term')
+	    expect(args[0].expression).toBe('foo')
+	    expect(args[0].rawName).toBe('v-term:arg1.modifier1.modifier2')
+	    expect(args[0].arg).toBe('arg1')
+	    expect(args[0].modifiers.modifier1).toBe(true)
+	    expect(args[0].modifiers.modifier2).toBe(true)
+	    expect(args[0].def).toBe(defTerminal)
+	  })
+	
+	  it('custom terminal directives priority', function () {
+	    var defTerminal = {
+	      terminal: true,
+	      priority: Vue.options.directives.if.priority + 1
+	    }
+	    var options = _.mergeOptions(Vue.options, {
+	      directives: { term: defTerminal }
+	    })
+	    el.innerHTML = '<div v-term:arg1 v-if="ok"></div>'
+	    var linker = compile(el, options)
+	    linker(vm, el)
+	    expect(vm._bindDir.calls.count()).toBe(1)
+	    var args = vm._bindDir.calls.argsFor(0)
+	    expect(args[0].name).toBe('term')
+	    expect(args[0].expression).toBe('')
+	    expect(args[0].rawName).toBe('v-term:arg1')
+	    expect(args[0].arg).toBe('arg1')
+	    expect(args[0].def).toBe(defTerminal)
+	  })
+	
 	  it('custom element components', function () {
 	    var options = _.mergeOptions(Vue.options, {
 	      components: {
@@ -13765,19 +13896,6 @@
 	      components: { comp: { template: '<div></div>' }}
 	    })
 	    expect(el.textContent).toBe('worked!')
-	    expect(getWarnCount()).toBe(0)
-	  })
-	
-	  it('allow custom terminal directive', function () {
-	    Vue.mixin({}) // #2366 conflict with custom terminal directive
-	    Vue.compiler.terminalDirectives.push('foo')
-	    Vue.directive('foo', {})
-	
-	    new Vue({
-	      el: el,
-	      template: '<div v-foo></div>'
-	    })
-	
 	    expect(getWarnCount()).toBe(0)
 	  })
 	})
@@ -14689,6 +14807,19 @@
 	    })
 	    expect(vm.$el.textContent).toBe('hi')
 	  })
+	
+	  it('warn dynamic slot attribute', function () {
+	    new Vue({
+	      el: el,
+	      template: '<test><div :slot="1"></div></test>',
+	      components: {
+	        test: {
+	          template: '<div><slot></slot></div>'
+	        }
+	      }
+	    })
+	    expect('"slot" attribute must be static').toHaveBeenWarned()
+	  })
 	})
 
 
@@ -14740,7 +14871,7 @@
 	    dir.update(['b', 'c'])
 	    expect(el.className).toBe('a b c')
 	    dir.update(['d', 'c'])
-	    expect(el.className).toBe('a c d')
+	    expect(el.className).toBe('a d c')
 	    dir.update()
 	    expect(el.className).toBe('a')
 	    // test mutating array
@@ -14751,6 +14882,19 @@
 	    arr.push('f')
 	    dir.update(arr)
 	    expect(el.className).toBe('a f')
+	    // test array with objects
+	    dir.update(['x', {y: true, z: true}])
+	    expect(el.className).toBe('a x y z')
+	    dir.update(['x', {y: true, z: false}])
+	    expect(el.className).toBe('a x y')
+	    dir.update(['f', {z: true}])
+	    expect(el.className).toBe('a f z')
+	    dir.update(['l', 'f', {n: true, z: true}])
+	    expect(el.className).toBe('a l f n z')
+	    dir.update(['x', {}])
+	    expect(el.className).toBe('a x')
+	    dir.update()
+	    expect(el.className).toBe('a')
 	  })
 	})
 
@@ -14893,6 +15037,26 @@
 	        done()
 	      })
 	    })
+	  })
+	
+	  it(':is using raw component constructor', function () {
+	    new Vue({
+	      el: el,
+	      template:
+	        '<component :is="$options.components.test"></component>' +
+	        '<component :is="$options.components.async"></component>',
+	      components: {
+	        test: {
+	          template: 'hi'
+	        },
+	        async: function (resolve) {
+	          resolve({
+	            template: 'ho'
+	          })
+	        }
+	      }
+	    })
+	    expect(el.textContent).toBe('hiho')
 	  })
 	
 	  it('keep-alive', function (done) {
@@ -15936,18 +16100,20 @@
 	  it('treat boolean props properly', function () {
 	    var vm = new Vue({
 	      el: el,
-	      template: '<comp v-ref:child prop-a></comp>',
+	      template: '<comp v-ref:child prop-a prop-b="prop-b"></comp>',
 	      components: {
 	        comp: {
 	          props: {
 	            propA: Boolean,
-	            propB: Boolean
+	            propB: Boolean,
+	            propC: Boolean
 	          }
 	        }
 	      }
 	    })
 	    expect(vm.$refs.child.propA).toBe(true)
-	    expect(vm.$refs.child.propB).toBe(false)
+	    expect(vm.$refs.child.propB).toBe(true)
+	    expect(vm.$refs.child.propC).toBe(false)
 	  })
 	
 	  it('detect possible camelCase prop usage', function () {
@@ -16007,6 +16173,51 @@
 	    Vue.nextTick(function () {
 	      expect(child.a.msg).toBe('yo')
 	      expect(child.a.__ob__).toBeUndefined()
+	      done()
+	    })
+	  })
+	
+	  it('inline prop values should be converted', function (done) {
+	    var vm = new Vue({
+	      el: el,
+	      template: '<comp :a="[1, 2, 3]"></comp>',
+	      components: {
+	        comp: {
+	          props: ['a'],
+	          template: '<div v-for="i in a">{{ i }}</div>'
+	        }
+	      }
+	    })
+	    expect(vm.$el.textContent).toBe('123')
+	    vm.$children[0].a.pop()
+	    Vue.nextTick(function () {
+	      expect(vm.$el.textContent).toBe('12')
+	      done()
+	    })
+	  })
+	
+	  // #2549
+	  it('mutating child prop binding should be reactive if parent value was reactive', function (done) {
+	    var vm = new Vue({
+	      el: el,
+	      template: '<comp :list="list"></comp>',
+	      data: {
+	        list: [1, 2, 3]
+	      },
+	      components: {
+	        comp: {
+	          props: ['list'],
+	          template: '<div v-for="i in list">{{ i }}</div>',
+	          created: function () {
+	            this.list = [2, 3, 4]
+	          }
+	        }
+	      }
+	    })
+	    expect(vm.$el.textContent).toBe('234')
+	    vm.$children[0].list.push(5)
+	    Vue.nextTick(function () {
+	      expect(vm.$el.textContent).toBe('2345')
 	      done()
 	    })
 	  })
@@ -16150,7 +16361,7 @@
 	var _ = __webpack_require__(5)
 	var Vue = __webpack_require__(1)
 	var Directive = __webpack_require__(95)
-	var def = __webpack_require__(87)
+	var def = __webpack_require__(88)
 	
 	describe('transition', function () {
 	  it('should instantiate a transition object with correct args', function () {
@@ -20584,6 +20795,22 @@
 	          write: function (v, oldV) {
 	            return v + ' ' + oldV
 	          }
+	        },
+	        duplex1: {
+	          read: function (v) {
+	            return v.split('').reverse().join('')
+	          },
+	          write: function (v) {
+	            return v.split('').reverse().join('')
+	          }
+	        },
+	        duplex2: {
+	          read: function (v) {
+	            return v + 'hi'
+	          },
+	          write: function (v) {
+	            return v.replace('hi', '')
+	          }
 	        }
 	      }
 	    })
@@ -20605,6 +20832,17 @@
 	      expect(val).toBe('test oldTest')
 	    })
 	
+	    it('chained read + write', function () {
+	      var filters = [
+	        { name: 'duplex1' },
+	        { name: 'duplex2' }
+	      ]
+	      var val = vm._applyFilters('test', 'oldTest', filters)
+	      expect(val).toBe('tsethi')
+	      val = vm._applyFilters('tsethi', 'oldTest', filters, true)
+	      expect(val).toBe('test')
+	    })
+	
 	    it('warn not found', function () {
 	      vm._applyFilters('what', null, [{name: 'wtf'}])
 	      expect('Failed to resolve filter').toHaveBeenWarned()
@@ -20621,6 +20859,13 @@
 	var _ = __webpack_require__(5)
 	
 	describe('Instance state initialization', function () {
+	  it('should warn data functions that do not return an object', function () {
+	    new Vue({
+	      data: function () {}
+	    })
+	    expect('should return an object').toHaveBeenWarned()
+	  })
+	
 	  describe('data proxy', function () {
 	    var data = {
 	      a: 0,
@@ -21285,11 +21530,11 @@
 	      components: {
 	        test: {
 	          replace: true,
-	          template: '<div :class="{\'inner\': true}"></div>'
+	          template: '<div class="static-inner" :class="{\'inner\': true}"></div>'
 	        }
 	      }
 	    })
-	    expect(vm.$el.firstChild.className).toBe('outer inner')
+	    expect(vm.$el.firstChild.className).toBe('static-inner outer inner')
 	  })
 	
 	  it('SVG class interpolation', function () {
@@ -22756,7 +23001,7 @@
 	var Vue = __webpack_require__(1)
 	var _ = __webpack_require__(5)
 	var transition = __webpack_require__(45)
-	var Transition = __webpack_require__(88)
+	var Transition = __webpack_require__(89)
 	
 	if (!_.isIE9) {
 	  describe('Transition', function () {
@@ -22767,20 +23012,20 @@
 	      document.head.appendChild(cssEl)
 	    }
 	
-	    var duration = '50ms'
+	    var duration = 100
 	    insertCSS(
 	      '.test {\
-	        transition: opacity ' + duration + ' ease;\
-	        -webkit-transition: opacity ' + duration + ' ease;}'
+	        transition: opacity ' + duration + 'ms ease;\
+	        -webkit-transition: opacity ' + duration + 'ms ease;}'
 	    )
 	    insertCSS('.test-enter, .test-leave { opacity: 0; }')
 	    insertCSS(
 	      '.test-anim-enter {\
-	        animation: test-enter ' + duration + ';\
-	        -webkit-animation: test-enter ' + duration + ';}\
+	        animation: test-enter ' + duration + 'ms;\
+	        -webkit-animation: test-enter ' + duration + 'ms;}\
 	      .test-anim-leave {\
-	        animation: test-leave ' + duration + ';\
-	        -webkit-animation: test-leave ' + duration + ';}\
+	        animation: test-leave ' + duration + 'ms;\
+	        -webkit-animation: test-leave ' + duration + 'ms;}\
 	      @keyframes test-enter {\
 	        from { opacity: 0 }\
 	        to { opacity: 1 }}\
@@ -22949,7 +23194,7 @@
 	              expect(el.classList.contains('test-no-trans-leave')).toBe(false)
 	              done()
 	            })
-	          }, 17)
+	          }, 50)
 	        })
 	      })
 	
@@ -22958,7 +23203,7 @@
 	        el.__v_trans = new Transition(el, 'test', hooks, vm)
 	        // inline style
 	        el.style.transition =
-	        el.style.WebkitTransition = 'opacity ' + duration + ' ease'
+	        el.style.WebkitTransition = 'opacity ' + duration + 'ms ease'
 	        transition.applyTransition(el, 1, function () {
 	          document.body.appendChild(el)
 	          op()
@@ -22986,7 +23231,7 @@
 	        circle.__v_trans = new Transition(circle, 'test', hooks, vm)
 	        // inline style
 	        circle.style.transition =
-	        circle.style.WebkitTransition = 'opacity ' + duration + ' ease'
+	        circle.style.WebkitTransition = 'opacity ' + duration + 'ms ease'
 	        transition.applyTransition(circle, 1, function () {
 	          svg.appendChild(circle)
 	          op()
@@ -23114,7 +23359,7 @@
 	          setTimeout(function () {
 	            enterDone()
 	            testDone()
-	          }, 100)
+	          }, duration * 1.5)
 	        }
 	
 	        el.__v_trans = new Transition(el, 'test', hooks, vm)
@@ -23157,7 +23402,7 @@
 	          setTimeout(function () {
 	            enterDone()
 	            testDone()
-	          }, 20)
+	          }, duration / 2)
 	        }
 	
 	        el.__v_trans = new Transition(el, 'test', hooks, vm)
@@ -23309,7 +23554,7 @@
 	        var leaveSpy = jasmine.createSpy('js leave')
 	        var timeout
 	        hooks.enter = function (el, done) {
-	          timeout = setTimeout(done, 30)
+	          timeout = setTimeout(done, duration / 2)
 	        }
 	        hooks.enterCancelled = function () {
 	          clearTimeout(timeout)
@@ -23328,8 +23573,8 @@
 	          setTimeout(function () {
 	            expect(cb).not.toHaveBeenCalled()
 	            done()
-	          }, 30)
-	        }, 15)
+	          }, duration / 2)
+	        }, duration / 4)
 	      })
 	    })
 	  })
