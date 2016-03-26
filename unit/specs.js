@@ -155,7 +155,7 @@
 	
 	_globalApi2['default'](_instanceVue2['default']);
 	
-	_instanceVue2['default'].version = '1.0.19';
+	_instanceVue2['default'].version = '1.0.20';
 	
 	exports['default'] = _instanceVue2['default'];
 	
@@ -2987,6 +2987,7 @@
 	var _interopRequireDefault = __webpack_require__(2)['default'];
 	
 	exports.__esModule = true;
+	exports.withoutConversion = withoutConversion;
 	exports.Observer = Observer;
 	exports.observe = observe;
 	exports.defineReactive = defineReactive;
@@ -3000,6 +3001,24 @@
 	var _utilIndex = __webpack_require__(5);
 	
 	var arrayKeys = _Object$getOwnPropertyNames(_array.arrayMethods);
+	
+	/**
+	 * By default, when a reactive property is set, the new value is
+	 * also converted to become reactive. However in certain cases, e.g.
+	 * v-for scope alias and props, we don't want to force conversion
+	 * because the value may be a nested value under a frozen data structure.
+	 *
+	 * So whenever we want to set a reactive property without forcing
+	 * conversion on the new value, we wrap that call inside this function.
+	 */
+	
+	var shouldConvert = true;
+	
+	function withoutConversion(fn) {
+	  shouldConvert = false;
+	  fn();
+	  shouldConvert = true;
+	}
 	
 	/**
 	 * Observer class that are attached to each observed
@@ -3138,7 +3157,7 @@
 	  var ob;
 	  if (_utilIndex.hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
 	    ob = value.__ob__;
-	  } else if ((_utilIndex.isArray(value) || _utilIndex.isPlainObject(value)) && _Object$isExtensible(value) && !value._isVue) {
+	  } else if (shouldConvert && (_utilIndex.isArray(value) || _utilIndex.isPlainObject(value)) && _Object$isExtensible(value) && !value._isVue) {
 	    ob = new Observer(value);
 	  }
 	  if (ob && vm) {
@@ -3153,10 +3172,9 @@
 	 * @param {Object} obj
 	 * @param {String} key
 	 * @param {*} val
-	 * @param {Boolean} doNotObserve
 	 */
 	
-	function defineReactive(obj, key, val, doNotObserve) {
+	function defineReactive(obj, key, val) {
 	  var dep = new _dep2['default']();
 	
 	  var property = _Object$getOwnPropertyDescriptor(obj, key);
@@ -3168,11 +3186,7 @@
 	  var getter = property && property.get;
 	  var setter = property && property.set;
 	
-	  // if doNotObserve is true, only use the child value observer
-	  // if it already exists, and do not attempt to create it.
-	  // this allows freezing a large object from the root and
-	  // avoid unnecessary observation inside v-for fragments.
-	  var childOb = doNotObserve ? _utilIndex.isObject(val) && val.__ob__ : observe(val);
+	  var childOb = observe(val);
 	  _Object$defineProperty(obj, key, {
 	    enumerable: true,
 	    configurable: true,
@@ -3202,7 +3216,7 @@
 	      } else {
 	        val = newVal;
 	      }
-	      childOb = doNotObserve ? _utilIndex.isObject(newVal) && newVal.__ob__ : observe(newVal);
+	      childOb = observe(newVal);
 	      dep.notify();
 	    }
 	  });
@@ -5272,15 +5286,17 @@
 	    }
 	  }
 	
-	  var attr, name, value, matched, dirName, arg, def, termDef;
+	  var attr, name, value, modifiers, matched, dirName, rawName, arg, def, termDef;
 	  for (var i = 0, j = attrs.length; i < j; i++) {
 	    attr = attrs[i];
-	    if (matched = attr.name.match(dirAttrRE)) {
+	    modifiers = parseModifiers(attr.name);
+	    name = attr.name.replace(modifierRE, '');
+	    if (matched = name.match(dirAttrRE)) {
 	      def = _utilIndex.resolveAsset(options, 'directives', matched[1]);
 	      if (def && def.terminal) {
 	        if (!termDef || (def.priority || DEFAULT_TERMINAL_PRIORITY) > termDef.priority) {
 	          termDef = def;
-	          name = attr.name;
+	          rawName = attr.name;
 	          value = attr.value;
 	          dirName = matched[1];
 	          arg = matched[2];
@@ -5290,7 +5306,7 @@
 	  }
 	
 	  if (termDef) {
-	    return makeTerminalNodeLinkFn(el, dirName, value, options, termDef, name, arg);
+	    return makeTerminalNodeLinkFn(el, dirName, value, options, termDef, rawName, arg, modifiers);
 	  }
 	}
 	
@@ -5308,28 +5324,24 @@
 	 * @param {String} value
 	 * @param {Object} options
 	 * @param {Object} def
-	 * @param {String} [attrName]
+	 * @param {String} [rawName]
 	 * @param {String} [arg]
+	 * @param {Object} [modifiers]
 	 * @return {Function} terminalLinkFn
 	 */
 	
-	function makeTerminalNodeLinkFn(el, dirName, value, options, def, attrName, arg) {
+	function makeTerminalNodeLinkFn(el, dirName, value, options, def, rawName, arg, modifiers) {
 	  var parsed = _parsersDirective.parseDirective(value);
 	  var descriptor = {
 	    name: dirName,
+	    arg: arg,
 	    expression: parsed.expression,
 	    filters: parsed.filters,
 	    raw: value,
-	    rawName: attrName,
+	    attr: rawName,
+	    modifiers: modifiers,
 	    def: def
 	  };
-	  if (attrName) {
-	    descriptor.rawName = attrName;
-	    descriptor.modifiers = parseModifiers(attrName);
-	  }
-	  if (arg) {
-	    descriptor.arg = arg.replace(modifierRE, '');
-	  }
 	  // check ref for v-for and router-view
 	  if (dirName === 'for' || dirName === 'router-view') {
 	    descriptor.ref = _utilIndex.findRef(el);
@@ -5949,6 +5961,8 @@
 	
 	var _priorities = __webpack_require__(69);
 	
+	var _observerIndex = __webpack_require__(48);
+	
 	var _utilIndex = __webpack_require__(5);
 	
 	var uid = 0;
@@ -6066,7 +6080,9 @@
 	        // update data for track-by, object repeat &
 	        // primitive values.
 	        if (trackByKey || convertedFromObject || primitive) {
-	          frag.scope[alias] = value;
+	          _observerIndex.withoutConversion(function () {
+	            frag.scope[alias] = value;
+	          });
 	        }
 	      } else {
 	        // new isntance
@@ -6156,7 +6172,11 @@
 	    // for two-way binding on alias
 	    scope.$forContext = this;
 	    // define scope properties
-	    _utilIndex.defineReactive(scope, alias, value, true /* do not observe */);
+	    // important: define the scope alias without forced conversion
+	    // so that frozen data structures remain non-reactive.
+	    _observerIndex.withoutConversion(function () {
+	      _utilIndex.defineReactive(scope, alias, value);
+	    });
 	    _utilIndex.defineReactive(scope, '$index', index);
 	    if (key) {
 	      _utilIndex.defineReactive(scope, '$key', key);
@@ -8309,7 +8329,9 @@
 	
 	  unbuild: function unbuild(defer) {
 	    if (this.waitingFor) {
-	      this.waitingFor.$destroy();
+	      if (!this.keepAlive) {
+	        this.waitingFor.$destroy();
+	      }
 	      this.waitingFor = null;
 	    }
 	    var child = this.childVM;
@@ -8452,6 +8474,10 @@
 	
 	var _config2 = _interopRequireDefault(_config);
 	
+	var _parsersExpression = __webpack_require__(57);
+	
+	var _observerIndex = __webpack_require__(48);
+	
 	var _compilerCompileProps = __webpack_require__(87);
 	
 	var bindingModes = _config2['default']._propBindingModes;
@@ -8466,11 +8492,18 @@
 	    var childKey = prop.path;
 	    var parentKey = prop.parentPath;
 	    var twoWay = prop.mode === bindingModes.TWO_WAY;
+	    var isSimple = _parsersExpression.isSimplePath(parentKey);
 	
 	    var parentWatcher = this.parentWatcher = new _watcher2['default'](parent, parentKey, function (val) {
 	      val = _compilerCompileProps.coerceProp(prop, val);
 	      if (_compilerCompileProps.assertProp(prop, val)) {
-	        child[childKey] = val;
+	        if (isSimple) {
+	          _observerIndex.withoutConversion(function () {
+	            child[childKey] = val;
+	          });
+	        } else {
+	          child[childKey] = val;
+	        }
 	      }
 	    }, {
 	      twoWay: twoWay,
@@ -8481,7 +8514,14 @@
 	    });
 	
 	    // set the child initial value.
-	    _compilerCompileProps.initProp(child, prop, parentWatcher.value);
+	    var value = parentWatcher.value;
+	    if (isSimple && value !== undefined) {
+	      _observerIndex.withoutConversion(function () {
+	        _compilerCompileProps.initProp(child, prop, value);
+	      });
+	    } else {
+	      _compilerCompileProps.initProp(child, prop, value);
+	    }
 	
 	    // setup two-way binding
 	    if (twoWay) {
@@ -8531,8 +8571,6 @@
 	var _config2 = _interopRequireDefault(_config);
 	
 	var _parsersDirective = __webpack_require__(43);
-	
-	var _parsersExpression = __webpack_require__(57);
 	
 	var _observerIndex = __webpack_require__(48);
 	
@@ -8717,15 +8755,7 @@
 	    value = getPropDefaultValue(vm, prop.options);
 	  }
 	  if (assertProp(prop, value)) {
-	    var doNotObserve =
-	    // if the passed down prop was already converted, then
-	    // subsequent sets should also be converted, because the user
-	    // may mutate the prop binding in the child component (#2549)
-	    !(value && value.__ob__) && (
-	    // otherwise we can skip observation for props that are either
-	    // literal or points to a simple path (non-derived values)
-	    !prop.dynamic || _parsersExpression.isSimplePath(prop.raw));
-	    _observerIndex.defineReactive(vm, key, value, doNotObserve);
+	    _observerIndex.defineReactive(vm, key, value);
 	  }
 	}
 	
@@ -10131,7 +10161,7 @@
 	  var i = params.length;
 	  var key, val, mappedKey;
 	  while (i--) {
-	    key = params[i];
+	    key = _utilIndex.hyphenate(params[i]);
 	    mappedKey = _utilIndex.camelize(key);
 	    val = _utilIndex.getBindAttr(this.el, key);
 	    if (val != null) {
@@ -13229,6 +13259,7 @@
 
 	var Vue = __webpack_require__(1)
 	var _ = __webpack_require__(5)
+	var FragmentFactory = __webpack_require__(67)
 	var compiler = __webpack_require__(60)
 	var compile = compiler.compile
 	var publicDirectives = __webpack_require__(62)
@@ -13493,7 +13524,7 @@
 	    var args = vm._bindDir.calls.argsFor(0)
 	    expect(args[0].name).toBe('term')
 	    expect(args[0].expression).toBe('foo')
-	    expect(args[0].rawName).toBe('v-term:arg1.modifier1.modifier2')
+	    expect(args[0].attr).toBe('v-term:arg1.modifier1.modifier2')
 	    expect(args[0].arg).toBe('arg1')
 	    expect(args[0].modifiers.modifier1).toBe(true)
 	    expect(args[0].modifiers.modifier2).toBe(true)
@@ -13515,7 +13546,7 @@
 	    var args = vm._bindDir.calls.argsFor(0)
 	    expect(args[0].name).toBe('term')
 	    expect(args[0].expression).toBe('')
-	    expect(args[0].rawName).toBe('v-term:arg1')
+	    expect(args[0].attr).toBe('v-term:arg1')
 	    expect(args[0].arg).toBe('arg1')
 	    expect(args[0].def).toBe(defTerminal)
 	  })
@@ -13898,6 +13929,50 @@
 	    expect(el.textContent).toBe('worked!')
 	    expect(getWarnCount()).toBe(0)
 	  })
+	
+	  // #xxx
+	  it('should compile build-in terminal directive wihtout loop', function (done) {
+	    var vm = new Vue({
+	      el: el,
+	      data: { show: false },
+	      template: '<p v-if:arg1.modifier1="show">hello world</p>'
+	    })
+	    vm.show = true
+	    _.nextTick(function () {
+	      expect(el.textContent).toBe('hello world')
+	      done()
+	    })
+	  })
+	
+	  it('should compile custom terminal directive wihtout loop', function (done) {
+	    var vm = new Vue({
+	      el: el,
+	      data: { show: false },
+	      template: '<p v-if="show" v-inject:modal.modifier1="foo">hello world</p>',
+	      directives: {
+	        inject: {
+	          terminal: true,
+	          priority: Vue.options.directives.if.priority + 1,
+	          bind: function () {
+	            this.anchor = _.createAnchor('v-inject')
+	            _.replace(this.el, this.anchor)
+	            var factory = new FragmentFactory(this.vm, this.el)
+	            this.frag = factory.create(this._host, this._scope, this._frag)
+	            this.frag.before(this.anchor)
+	          },
+	          unbind: function () {
+	            this.frag.remove()
+	            _.replace(this.anchor, this.el)
+	          }
+	        }
+	      }
+	    })
+	    vm.show = true
+	    _.nextTick(function () {
+	      expect(el.textContent).toBe('hello world')
+	      done()
+	    })
+	  })
 	})
 
 
@@ -14051,7 +14126,7 @@
 	  beforeEach(function () {
 	    el = document.createElement('div')
 	    def = {
-	      params: ['foo'],
+	      params: ['foo', 'keBab'],
 	      paramWatchers: {
 	        foo: jasmine.createSpy('foo')
 	      },
@@ -14203,6 +14278,7 @@
 	
 	  it('static params', function () {
 	    el.setAttribute('foo', 'hello')
+	    el.setAttribute('ke-bab', 'yo')
 	    var d = new Directive({
 	      name: 'test',
 	      def: def,
@@ -14210,10 +14286,12 @@
 	    }, vm, el)
 	    d._bind()
 	    expect(d.params.foo).toBe('hello')
+	    expect(d.params.keBab).toBe('yo')
 	  })
 	
 	  it('dynamic params', function (done) {
 	    el.setAttribute(':foo', 'a')
+	    el.setAttribute(':ke-bab', '123')
 	    var d = new Directive({
 	      name: 'test',
 	      def: def,
@@ -14221,6 +14299,7 @@
 	    }, vm, el)
 	    d._bind()
 	    expect(d.params.foo).toBe(vm.a)
+	    expect(d.params.keBab).toBe(123)
 	    vm.a = 2
 	    nextTick(function () {
 	      expect(def.paramWatchers.foo).toHaveBeenCalledWith(2, 1)
@@ -16152,11 +16231,13 @@
 	
 	  it('non reactive values passed down as prop should not be converted', function (done) {
 	    var a = Object.freeze({
-	      msg: 'hello'
+	      nested: {
+	        msg: 'hello'
+	      }
 	    })
 	    var parent = new Vue({
 	      el: el,
-	      template: '<comp :a="a"></comp>',
+	      template: '<comp :a="a.nested"></comp>',
 	      data: {
 	        a: a
 	      },
@@ -16169,7 +16250,11 @@
 	    var child = parent.$children[0]
 	    expect(child.a.msg).toBe('hello')
 	    expect(child.a.__ob__).toBeUndefined() // should not be converted
-	    parent.a = Object.freeze({ msg: 'yo' })
+	    parent.a = Object.freeze({
+	      nested: {
+	        msg: 'yo'
+	      }
+	    })
 	    Vue.nextTick(function () {
 	      expect(child.a.msg).toBe('yo')
 	      expect(child.a.__ob__).toBeUndefined()
@@ -16197,7 +16282,7 @@
 	  })
 	
 	  // #2549
-	  it('mutating child prop binding should be reactive if parent value was reactive', function (done) {
+	  it('mutating child prop binding should be reactive', function (done) {
 	    var vm = new Vue({
 	      el: el,
 	      template: '<comp :list="list"></comp>',
@@ -16211,6 +16296,34 @@
 	          created: function () {
 	            this.list = [2, 3, 4]
 	          }
+	        }
+	      }
+	    })
+	    expect(vm.$el.textContent).toBe('234')
+	    vm.$children[0].list.push(5)
+	    Vue.nextTick(function () {
+	      expect(vm.$el.textContent).toBe('2345')
+	      done()
+	    })
+	  })
+	
+	  it('prop default value should be reactive', function (done) {
+	    var vm = new Vue({
+	      el: el,
+	      template: '<comp :list="list"></comp>',
+	      data: {
+	        list: undefined
+	      },
+	      components: {
+	        comp: {
+	          props: {
+	            list: {
+	              default: function () {
+	                return [2, 3, 4]
+	              }
+	            }
+	          },
+	          template: '<div v-for="i in list">{{ i }}</div>'
 	        }
 	      }
 	    })
