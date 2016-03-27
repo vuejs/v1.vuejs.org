@@ -216,7 +216,7 @@
 <p>Defer the callback to be executed after the next DOM update cycle. Use it immediately after you’ve changed some data to wait for the DOM update.</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// modify data</span></span><br><span class="line">vm.msg = <span class="string">'Hello'</span></span><br><span class="line"><span class="comment">// DOM not updated yet</span></span><br><span class="line">Vue.nextTick(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// DOM updated</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>See also:</strong> <a href="/guide/reactivity.html#Async_Update_Queue">Async Update Queue</a></p>
+<li><p><strong>See also:</strong> <a href="/guide/reactivity.html#Async-Update-Queue">Async Update Queue</a></p>
 </li>
 </ul>
 <h3 id="Vue-set">Vue.set( object, key, value )</h3>
@@ -281,7 +281,7 @@
 <p>Register or retrieve a global element directive.</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// register</span></span><br><span class="line">Vue.elementDirective(<span class="string">'my-element'</span>, &#123;</span><br><span class="line">  bind: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;,</span><br><span class="line">  <span class="comment">// element directives do not use `update`</span></span><br><span class="line">  unbind: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// getter, return the directive definition if registered</span></span><br><span class="line"><span class="keyword">var</span> myDirective = Vue.elementDirective(<span class="string">'my-element'</span>)</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>See also:</strong> <a href="/guide/custom-directive.html#Element_Directives">Element Directives</a></p>
+<li><p><strong>See also:</strong> <a href="/guide/custom-directive.html#Element-Directives">Element Directives</a></p>
 </li>
 </ul>
 <h3 id="Vue-filter">Vue.filter( id, [definition] )</h3>
@@ -374,7 +374,7 @@
 <li><p><strong>Usage:</strong></p>
 <p>Apply a mixin globally, which affects every Vue instance created afterwards. This can be used by plugin authors to inject custom behavior into components. <strong>Not recommended in application code</strong>.</p>
 </li>
-<li><p><strong>See also:</strong> <a href="/guide/mixins.html#Global_Mixin">Global Mixins</a></p>
+<li><p><strong>See also:</strong> <a href="/guide/mixins.html#Global-Mixin">Global Mixins</a></p>
 </li>
 </ul>
 <h2 id="Options-Data"><a href="#Options-Data" class="headerlink" title="Options / Data"></a>Options / Data</h2><h3 id="data"><a href="#data" class="headerlink" title="data"></a>data</h3><ul>
@@ -419,7 +419,7 @@
 <li><p><strong>See also:</strong></p>
 <ul>
 <li><a href="/guide/computed.html">Computed Properties</a></li>
-<li><a href="/guide/reactivity.html#Inside_Computed_Properties">Reactivity in Depth: Inside Computed Properties</a></li>
+<li><a href="/guide/reactivity.html#Inside-Computed-Properties">Reactivity in Depth: Inside Computed Properties</a></li>
 </ul>
 </li>
 </ul>
@@ -457,7 +457,7 @@
 <p>When used in <code>Vue.extend</code>, a function must be provided so each instance gets a separately created element.</p>
 <p>If this option is available at instantiation, the instance will immediately enter compilation; otherwise, the user will have to explicitly call <code>vm.$mount()</code> to manually start the compilation.</p>
 </li>
-<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle_Diagram">Lifecycle Diagram</a></p>
+<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle-Diagram">Lifecycle Diagram</a></p>
 </li>
 </ul>
 <h3 id="template"><a href="#template" class="headerlink" title="template"></a>template</h3><ul>
@@ -470,9 +470,9 @@
 </li>
 <li><p><strong>See also:</strong></p>
 <ul>
-<li><a href="/guide/instance.html#Lifecycle_Diagram">Lifecycle Diagram</a></li>
-<li><a href="/guide/components.html#Content_Distribution_with_Slots">Content Distribution</a></li>
-<li><a href="/guide/components.html#Fragment_Instance">Fragment Instance</a></li>
+<li><a href="/guide/instance.html#Lifecycle-Diagram">Lifecycle Diagram</a></li>
+<li><a href="/guide/components.html#Content-Distribution-with-Slots">Content Distribution</a></li>
+<li><a href="/guide/components.html#Fragment-Instance">Fragment Instance</a></li>
 </ul>
 </li>
 </ul>
@@ -504,7 +504,7 @@
 <li><p><strong>Details:</strong></p>
 <p>Called synchronously after the instance has just been initialized, before data observation and event / watcher setup.</p>
 </li>
-<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle_Diagram">Lifecycle Diagram</a></p>
+<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle-Diagram">Lifecycle Diagram</a></p>
 </li>
 </ul>
 <h3 id="created"><a href="#created" class="headerlink" title="created"></a>created</h3><ul>
@@ -513,7 +513,7 @@
 <li><p><strong>Details:</strong></p>
 <p>Called synchronously after the instance is created. At this stage, the instance has finished processing the options which means the following have been set up: data observation, computed properties, methods, watch/event callbacks. However, DOM compilation has not been started, and the <code>$el</code> property will not be available yet.</p>
 </li>
-<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle_Diagram">Lifecycle Diagram</a></p>
+<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle-Diagram">Lifecycle Diagram</a></p>
 </li>
 </ul>
 <h3 id="beforeCompile"><a href="#beforeCompile" class="headerlink" title="beforeCompile"></a>beforeCompile</h3><ul>
@@ -522,7 +522,7 @@
 <li><p><strong>Details:</strong></p>
 <p>Called right before the compilation starts.</p>
 </li>
-<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle_Diagram">Lifecycle Diagram</a></p>
+<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle-Diagram">Lifecycle Diagram</a></p>
 </li>
 </ul>
 <h3 id="compiled"><a href="#compiled" class="headerlink" title="compiled"></a>compiled</h3><ul>
@@ -531,7 +531,7 @@
 <li><p><strong>Details:</strong></p>
 <p>Called after the compilation is finished. At this stage all directives have been linked so data changes will trigger DOM updates. However, <code>$el</code> is not guaranteed to have been inserted into the document yet.</p>
 </li>
-<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle_Diagram">Lifecycle Diagram</a></p>
+<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle-Diagram">Lifecycle Diagram</a></p>
 </li>
 </ul>
 <h3 id="ready"><a href="#ready" class="headerlink" title="ready"></a>ready</h3><ul>
@@ -540,7 +540,7 @@
 <li><p><strong>Details:</strong></p>
 <p>Called after compilation <strong>and</strong> the <code>$el</code> is <strong>inserted into the document for the first time</strong>, i.e. right after the first <code>attached</code> hook. Note this insertion must be executed via Vue (with methods like <code>vm.$appendTo()</code> or as a result of a directive update) to trigger the <code>ready</code> hook.</p>
 </li>
-<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle_Diagram">Lifecycle Diagram</a></p>
+<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle-Diagram">Lifecycle Diagram</a></p>
 </li>
 </ul>
 <h3 id="attached"><a href="#attached" class="headerlink" title="attached"></a>attached</h3><ul>
@@ -563,7 +563,7 @@
 <li><p><strong>Details:</strong></p>
 <p>Called right before a Vue instance is destroyed. At this stage the instance is still fully functional.</p>
 </li>
-<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle_Diagram">Lifecycle Diagram</a></p>
+<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle-Diagram">Lifecycle Diagram</a></p>
 </li>
 </ul>
 <h3 id="destroyed"><a href="#destroyed" class="headerlink" title="destroyed"></a>destroyed</h3><ul>
@@ -573,7 +573,7 @@
 <p>Called after a Vue instance has been destroyed. When this hook is called, all bindings and directives of the Vue instance have been unbound and all child Vue instances have also been destroyed.</p>
 <p>Note if there is a leaving transition, the <code>destroyed</code> hook is called <strong>after</strong> the transition has finished.</p>
 </li>
-<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle_Diagram">Lifecycle Diagram</a></p>
+<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle-Diagram">Lifecycle Diagram</a></p>
 </li>
 </ul>
 <h2 id="Options-Assets"><a href="#Options-Assets" class="headerlink" title="Options / Assets"></a>Options / Assets</h2><h3 id="directives"><a href="#directives" class="headerlink" title="directives"></a>directives</h3><ul>
@@ -585,7 +585,7 @@
 <li><p><strong>See also:</strong></p>
 <ul>
 <li><a href="/guide/custom-directive.html">Custom Directives</a></li>
-<li><a href="/guide/components.html#Assets_Naming_Convention">Assets Naming Convention</a></li>
+<li><a href="/guide/components.html#Assets-Naming-Convention">Assets Naming Convention</a></li>
 </ul>
 </li>
 </ul>
@@ -597,8 +597,8 @@
 </li>
 <li><p><strong>See also:</strong></p>
 <ul>
-<li><a href="/guide/custom-directive.html#Element_Directives">Element Directives</a></li>
-<li><a href="/guide/components.html#Assets_Naming_Convention">Assets Naming Convention</a></li>
+<li><a href="/guide/custom-directive.html#Element-Directives">Element Directives</a></li>
+<li><a href="/guide/components.html#Assets-Naming-Convention">Assets Naming Convention</a></li>
 </ul>
 </li>
 </ul>
@@ -611,7 +611,7 @@
 <li><p><strong>See also:</strong></p>
 <ul>
 <li><a href="/guide/custom-filter.html">Custom Filters</a></li>
-<li><a href="/guide/components.html#Assets_Naming_Convention">Assets Naming Convention</a></li>
+<li><a href="/guide/components.html#Assets-Naming-Convention">Assets Naming Convention</a></li>
 </ul>
 </li>
 </ul>
@@ -657,7 +657,7 @@
 <li><p><strong>Details:</strong></p>
 <p>Specify the parent instance for the instance to be created. Establishes a parent-child relationship between the two. The parent will be accessible as <code>this.$parent</code> for the child, and the child will be pushed into the parent’s <code>$children</code> array.</p>
 </li>
-<li><p><strong>See also:</strong> <a href="/guide/components.html#Parent-Child_Communication">Parent-Child Communication</a></p>
+<li><p><strong>See also:</strong> <a href="/guide/components.html#Parent-Child-Communication">Parent-Child Communication</a></p>
 </li>
 </ul>
 <h3 id="events"><a href="#events" class="headerlink" title="events"></a>events</h3><ul>
@@ -671,8 +671,8 @@
 </li>
 <li><p><strong>See also:</strong></p>
 <ul>
-<li><a href="#Instance_Methods_/_Events">Instance Methods - Events</a></li>
-<li><a href="/guide/components.html#Parent-Child_Communication">Parent-Child Communication</a></li>
+<li><a href="#Instance-Methods-Events">Instance Methods - Events</a></li>
+<li><a href="/guide/components.html#Parent-Child-Communication">Parent-Child Communication</a></li>
 </ul>
 </li>
 </ul>
@@ -715,7 +715,7 @@
 <li><p><strong>Read only</strong></p>
 </li>
 <li><p><strong>Details:</strong></p>
-<p>The DOM element that the Vue instance is managing. Note that for <a href="/guide/components.html#Fragment_Instance">Fragment Instances</a>, <code>vm.$el</code> will return an anchor node that indicates the starting position of the fragment.</p>
+<p>The DOM element that the Vue instance is managing. Note that for <a href="/guide/components.html#Fragment-Instance">Fragment Instances</a>, <code>vm.$el</code> will return an anchor node that indicates the starting position of the fragment.</p>
 </li>
 </ul>
 <h3 id="vm-options"><a href="#vm-options" class="headerlink" title="vm.$options"></a>vm.$options</h3><ul>
@@ -765,7 +765,7 @@
 </li>
 <li><p><strong>See also:</strong></p>
 <ul>
-<li><a href="/guide/components.html#Child_Component_Refs">Child Component Refs</a></li>
+<li><a href="/guide/components.html#Child-Component-Refs">Child Component Refs</a></li>
 <li><a href="#v-ref">v-ref</a>.</li>
 </ul>
 </li>
@@ -989,7 +989,7 @@
 <li><p><strong>Example:</strong></p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// create a parent chain</span></span><br><span class="line"><span class="keyword">var</span> parent = <span class="keyword">new</span> Vue()</span><br><span class="line"><span class="keyword">var</span> child1 = <span class="keyword">new</span> Vue(&#123; parent: parent &#125;)</span><br><span class="line"><span class="keyword">var</span> child2 = <span class="keyword">new</span> Vue(&#123; parent: child1 &#125;)</span><br><span class="line"></span><br><span class="line">parent.$on(<span class="string">'test'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'parent notified'</span>)</span><br><span class="line">&#125;)</span><br><span class="line">child1.$on(<span class="string">'test'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'child1 notified'</span>)</span><br><span class="line">&#125;)</span><br><span class="line">child2.$on(<span class="string">'test'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'child2 notified'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">child2.$dispatch(<span class="string">'test'</span>)</span><br><span class="line"><span class="comment">// -&gt; "child2 notified"</span></span><br><span class="line"><span class="comment">// -&gt; "child1 notified"</span></span><br><span class="line"><span class="comment">// parent is NOT notified, because child1 didn't return</span></span><br><span class="line"><span class="comment">// true in its callback</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>See also:</strong> <a href="/guide/components.html#Parent-Child_Communication">Parent-Child Communication</a></p>
+<li><p><strong>See also:</strong> <a href="/guide/components.html#Parent-Child-Communication">Parent-Child Communication</a></p>
 </li>
 </ul>
 <h3 id="vm-broadcast">vm.$broadcast( event, […args] )</h3>
@@ -1084,7 +1084,7 @@
 <li><p><strong>See also:</strong></p>
 <ul>
 <li><a href="#Vue-nextTick">Vue.nextTick</a></li>
-<li><a href="/guide/reactivity.html#Async_Update_Queue">Async Update Queue</a></li>
+<li><a href="/guide/reactivity.html#Async-Update-Queue">Async Update Queue</a></li>
 </ul>
 </li>
 </ul>
@@ -1106,7 +1106,7 @@
 <li><p><strong>Example:</strong></p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> MyComponent = Vue.extend(&#123;</span><br><span class="line">  template: <span class="string">'&lt;div&gt;Hello!&lt;/div&gt;'</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// create and mount to #app (will replace #app)</span></span><br><span class="line"><span class="keyword">new</span> MyComponent().$mount(<span class="string">'#app'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// the above is the same as:</span></span><br><span class="line"><span class="keyword">new</span> MyComponent(&#123; el: <span class="string">'#app'</span> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// or, compile off-document and append afterwards:</span></span><br><span class="line"><span class="keyword">new</span> MyComponent().$mount().$appendTo(<span class="string">'#container'</span>)</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle_Diagram">Lifecycle Diagram</a></p>
+<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle-Diagram">Lifecycle Diagram</a></p>
 </li>
 </ul>
 <h3 id="vm-destroy">vm.$destroy( [remove] )</h3>
@@ -1121,7 +1121,7 @@
 <p>Completely destroy a vm. Clean up its connections with other existing vms, unbind all its directives, turn off all event listeners and, if the <code>remove</code> argument is true, remove its associated DOM element or fragment from the DOM.</p>
 <p>Triggers the <code>beforeDestroy</code> and <code>destroyed</code> hooks.</p>
 </li>
-<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle_Diagram">Lifecycle Diagram</a></p>
+<li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle-Diagram">Lifecycle Diagram</a></p>
 </li>
 </ul>
 <h2 id="Directives"><a href="#Directives" class="headerlink" title="Directives"></a>Directives</h2><h3 id="v-text"><a href="#v-text" class="headerlink" title="v-text"></a>v-text</h3><ul>
@@ -1183,9 +1183,9 @@
 <li><p><strong>Param Attributes:</strong></p>
 <ul>
 <li><a href="/guide/list.html#track-by"><code>track-by</code></a></li>
-<li><a href="/guide/transitions.html#Staggering_Transitions"><code>stagger</code></a></li>
-<li><a href="/guide/transitions.html#Staggering_Transitions"><code>enter-stagger</code></a></li>
-<li><a href="/guide/transitions.html#Staggering_Transitions"><code>leave-stagger</code></a></li>
+<li><a href="/guide/transitions.html#Staggering-Transitions"><code>stagger</code></a></li>
+<li><a href="/guide/transitions.html#Staggering-Transitions"><code>enter-stagger</code></a></li>
+<li><a href="/guide/transitions.html#Staggering-Transitions"><code>leave-stagger</code></a></li>
 </ul>
 </li>
 <li><p><strong>Usage:</strong></p>
@@ -1303,7 +1303,7 @@
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">comp</span> <span class="attr">v-ref:list</span> <span class="attr">v-for</span>=<span class="string">"item in list"</span>&gt;</span><span class="tag">&lt;/<span class="name">comp</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// this will be an array in parent</span></span><br><span class="line"><span class="keyword">this</span>.$refs.list</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>See also:</strong> <a href="/guide/components.html#Child_Component_Refs">Child Component Refs</a></p>
+<li><p><strong>See also:</strong> <a href="/guide/components.html#Child-Component-Refs">Child Component Refs</a></p>
 </li>
 </ul>
 <h3 id="v-el"><a href="#v-el" class="headerlink" title="v-el"></a>v-el</h3><ul>
@@ -1360,7 +1360,7 @@
 <p>Alternative syntax for invoking components. Primarily used for dynamic components with the <code>is</code> attribute:</p>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- a dynamic component controlled by --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- the `componentId` property on the vm --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">component</span> <span class="attr">:is</span>=<span class="string">"componentId"</span>&gt;</span><span class="tag">&lt;/<span class="name">component</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>See also:</strong> <a href="/guide/components.html#Dynamic_Components">Dynamic Components</a></p>
+<li><p><strong>See also:</strong> <a href="/guide/components.html#Dynamic-Components">Dynamic Components</a></p>
 </li>
 </ul>
 <h3 id="slot"><a href="#slot" class="headerlink" title="slot"></a>slot</h3><ul>
@@ -1374,7 +1374,7 @@
 <p>A slot with the <code>name</code> attribute is called a named slot. A named slot will distribute content with a <code>slot</code> attribute that matches its name.</p>
 <p>For detailed usage, see the guide section linked below.</p>
 </li>
-<li><p><strong>See also:</strong> <a href="/guide/components.html#Content_Distribution_with_Slots">Content Distribution with Slots</a></p>
+<li><p><strong>See also:</strong> <a href="/guide/components.html#Content-Distribution-with-Slots">Content Distribution with Slots</a></p>
 </li>
 </ul>
 <h3 id="partial"><a href="#partial" class="headerlink" title="partial"></a>partial</h3><ul>
