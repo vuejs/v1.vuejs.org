@@ -1577,6 +1577,34 @@
   
 </li>
 </ul>
+<h2 id="Array-Extension-Methods"><a href="#Array-Extension-Methods" class="headerlink" title="Array Extension Methods"></a>Array Extension Methods</h2><p>Vue.js extends <code>Array.prototype</code> with two additional methods that makes it easier to perform some common Array operations while ensuring reactive updates are properly triggered.</p>
+<h3 id="array-set-index-value"><a href="#array-set-index-value" class="headerlink" title="array.$set(index, value)"></a>array.$set(index, value)</h3><ul>
+<li><p><strong>Arguments</strong></p>
+<ul>
+<li><code>{Number} index</code></li>
+<li><code>{*} value</code></li>
+</ul>
+</li>
+<li><p><strong>Usage</strong></p>
+<p>Set an element in the array to a value by index and trigger view updates.</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">vm.animals.$set(<span class="number">0</span>, &#123; name: <span class="string">'Aardvark'</span> &#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>See also:</strong> <a href="/guide/list.html#Caveats">Array Detection Caveats</a></p>
+</li>
+</ul>
+<h3 id="array-remove-reference"><a href="#array-remove-reference" class="headerlink" title="array.$remove(reference)"></a>array.$remove(reference)</h3><ul>
+<li><p><strong>Arguments</strong></p>
+<ul>
+<li><code>{Reference} reference</code></li>
+</ul>
+</li>
+<li><p><strong>Usage</strong></p>
+<p>Remove an element from an array by reference and trigger view updates. This is a sugar method for first searching for the element in the array, and then if found, calling <code>array.splice(index, 1)</code>.</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> aardvark = vm.animals[<span class="number">0</span>]</span><br><span class="line">vm.animals.$remove(aardvark)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>See also:</strong> <a href="/guide/list.html#Mutation-Methods">Mutation Methods</a></p>
+</li>
+</ul>
 
     
     <div class="footer">
