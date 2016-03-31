@@ -705,11 +705,6 @@ ul.demo li {
   border-top: 1px solid #e5e5e5;
   font-size: 0.9em;
 }
-@media screen and (min-width: 720px) {
-  #main.fix-sidebar .sidebar {
-    position: fixed;
-  }
-}
 @media screen and (max-width: 1200px) {
   .content.with-sidebar {
     margin-left: 280px;
@@ -717,12 +712,12 @@ ul.demo li {
   #ad {
     z-index: 8;
     position: relative;
-    width: auto;
+    width: 140px;
     height: 60px;
     padding: 0;
     bottom: 0;
     right: 0;
-    margin: 0 0 15px;
+    margin: 0 0 15px -6px;
   }
   #ad .carbon-wrap,
   #ad .carbon-img,
@@ -744,20 +739,14 @@ ul.demo li {
 #donate {
   margin-top: 15px;
 }
-@media screen and (max-width: 560px) {
-  #downloads {
-    text-align: center;
-    margin-bottom: 25px;
-  }
-  #downloads .info {
-    margin-top: 5px;
-    margin-left: 0;
-  }
-  iframe {
-    margin: 0 !important;
-  }
-}
 @media screen and (max-width: 720px) {
+  #ad {
+    width: 100%;
+    margin-bottom: -25px;
+  }
+  #main.fix-sidebar .sidebar {
+    position: fixed;
+  }
   body {
     -webkit-text-size-adjust: none;
     font-size: 14px;
@@ -814,5 +803,18 @@ ul.demo li {
   .footer {
     margin-left: 0;
     text-align: center;
+  }
+}
+@media screen and (max-width: 560px) {
+  #downloads {
+    text-align: center;
+    margin-bottom: 25px;
+  }
+  #downloads .info {
+    margin-top: 5px;
+    margin-left: 0;
+  }
+  iframe {
+    margin: 0 !important;
   }
 }
