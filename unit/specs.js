@@ -67,9 +67,6 @@
 	}
 	
 	function hasWarned (msg) {
-	  if (!_.warn.calls) {
-	    console.warn('make sure to call before tests.')
-	  }
 	  var count = _.warn.calls.count()
 	  var args
 	  while (count--) {
@@ -155,19 +152,21 @@
 	
 	_globalApi2['default'](_instanceVue2['default']);
 	
-	_instanceVue2['default'].version = '1.0.20';
+	_instanceVue2['default'].version = '1.0.21';
 	
 	exports['default'] = _instanceVue2['default'];
 	
 	// devtools global hook
 	/* istanbul ignore next */
-	if (_config2['default'].devtools) {
-	  if (_utilIndex.devtools) {
-	    _utilIndex.devtools.emit('init', _instanceVue2['default']);
-	  } else if (("development") !== 'production' && _utilIndex.inBrowser && /Chrome\/\d+/.test(window.navigator.userAgent)) {
-	    console.log('Download the Vue Devtools for a better development experience:\n' + 'https://github.com/vuejs/vue-devtools');
+	setTimeout(function () {
+	  if (_config2['default'].devtools) {
+	    if (_utilIndex.devtools) {
+	      _utilIndex.devtools.emit('init', _instanceVue2['default']);
+	    } else if (("development") !== 'production' && _utilIndex.inBrowser && /Chrome\/\d+/.test(window.navigator.userAgent)) {
+	      console.log('Download the Vue Devtools for a better development experience:\n' + 'https://github.com/vuejs/vue-devtools');
+	    }
 	  }
-	}
+	}, 0);
 	module.exports = exports['default'];
 
 /***/ },
@@ -1970,7 +1969,7 @@
 	  var close = escapeRegex(_config2['default'].delimiters[1]);
 	  var unsafeOpen = escapeRegex(_config2['default'].unsafeDelimiters[0]);
 	  var unsafeClose = escapeRegex(_config2['default'].unsafeDelimiters[1]);
-	  tagRE = new RegExp(unsafeOpen + '(.+?)' + unsafeClose + '|' + open + '(.+?)' + close, 'g');
+	  tagRE = new RegExp(unsafeOpen + '((?:.|\\n)+?)' + unsafeClose + '|' + open + '((?:.|\\n)+?)' + close, 'g');
 	  htmlRE = new RegExp('^' + unsafeOpen + '.*' + unsafeClose + '$');
 	  // reset cache
 	  cache = new _cache2['default'](1000);
@@ -1995,7 +1994,6 @@
 	  if (hit) {
 	    return hit;
 	  }
-	  text = text.replace(/\n/g, '');
 	  if (!tagRE.test(text)) {
 	    return null;
 	  }
@@ -2408,23 +2406,24 @@
 	
 	var _config2 = _interopRequireDefault(_config);
 	
+	var _lang = __webpack_require__(29);
+	
 	var warn = undefined;
+	var formatComponentName = undefined;
 	
 	if (true) {
 	  (function () {
 	    var hasConsole = typeof console !== 'undefined';
-	    exports.warn = warn = function (msg, e) {
-	      if (hasConsole && (!_config2['default'].silent || _config2['default'].debug)) {
-	        console.warn('[Vue warn]: ' + msg);
-	        /* istanbul ignore if */
-	        if (_config2['default'].debug) {
-	          if (e) {
-	            throw e;
-	          } else {
-	            console.warn(new Error('Warning Stack Trace').stack);
-	          }
-	        }
+	
+	    exports.warn = warn = function (msg, vm) {
+	      if (hasConsole && !_config2['default'].silent) {
+	        console.error('[Vue warn]: ' + msg + (vm ? formatComponentName(vm) : ''));
 	      }
+	    };
+	
+	    formatComponentName = function (vm) {
+	      var name = vm._isVue ? vm.$options.name : vm.name;
+	      return name ? ' (found in component: <' + _lang.hyphenate(name) + '>)' : '';
 	    };
 	  })();
 	}
@@ -2536,7 +2535,6 @@
 	exports.__esModule = true;
 	exports.mergeOptions = mergeOptions;
 	exports.resolveAsset = resolveAsset;
-	exports.assertAsset = assertAsset;
 	
 	var _instanceVue = __webpack_require__(3);
 	
@@ -2595,7 +2593,7 @@
 	      return parentVal;
 	    }
 	    if (typeof childVal !== 'function') {
-	      ("development") !== 'production' && _debug.warn('The "data" option should be a function ' + 'that returns a per-instance value in component ' + 'definitions.');
+	      ("development") !== 'production' && _debug.warn('The "data" option should be a function ' + 'that returns a per-instance value in component ' + 'definitions.', vm);
 	      return parentVal;
 	    }
 	    if (!parentVal) {
@@ -2629,7 +2627,7 @@
 	
 	strats.el = function (parentVal, childVal, vm) {
 	  if (!vm && childVal && typeof childVal !== 'function') {
-	    ("development") !== 'production' && _debug.warn('The "el" option should be a function ' + 'that returns a per-instance value in component ' + 'definitions.');
+	    ("development") !== 'production' && _debug.warn('The "el" option should be a function ' + 'that returns a per-instance value in component ' + 'definitions.', vm);
 	    return;
 	  }
 	  var ret = childVal || parentVal;
@@ -2643,15 +2641,6 @@
 	
 	strats.init = strats.created = strats.ready = strats.attached = strats.detached = strats.beforeCompile = strats.compiled = strats.beforeDestroy = strats.destroyed = strats.activate = function (parentVal, childVal) {
 	  return childVal ? parentVal ? parentVal.concat(childVal) : _lang.isArray(childVal) ? childVal : [childVal] : parentVal;
-	};
-	
-	/**
-	 * 0.11 deprecation warning
-	 */
-	
-	strats.paramAttributes = function () {
-	  /* istanbul ignore next */
-	  ("development") !== 'production' && _debug.warn('"paramAttributes" option has been deprecated in 0.12. ' + 'Use "props" instead.');
 	};
 	
 	/**
@@ -2852,31 +2841,26 @@
 	 * @param {Object} options
 	 * @param {String} type
 	 * @param {String} id
+	 * @param {Boolean} warnMissing
 	 * @return {Object|Function}
 	 */
 	
-	function resolveAsset(options, type, id) {
+	function resolveAsset(options, type, id, warnMissing) {
 	  /* istanbul ignore if */
 	  if (typeof id !== 'string') {
 	    return;
 	  }
 	  var assets = options[type];
 	  var camelizedId;
-	  return assets[id] ||
+	  var res = assets[id] ||
 	  // camelCase ID
 	  assets[camelizedId = _lang.camelize(id)] ||
 	  // Pascal Case ID
 	  assets[camelizedId.charAt(0).toUpperCase() + camelizedId.slice(1)];
-	}
-	
-	/**
-	 * Assert asset exists
-	 */
-	
-	function assertAsset(val, type, id) {
-	  if (!val) {
-	    ("development") !== 'production' && _debug.warn('Failed to resolve ' + type + ': ' + id);
+	  if (("development") !== 'production' && warnMissing && !res) {
+	    _debug.warn('Failed to resolve ' + type.slice(0, -1) + ': ' + id, options);
 	  }
+	  return res;
 	}
 
 /***/ },
@@ -3396,10 +3380,9 @@
 	});
 	
 	/**
-	 * Convenience method to remove the element at given index.
+	 * Convenience method to remove the element at given index or target element reference.
 	 *
-	 * @param {Number} index
-	 * @param {*} val
+	 * @param {*} item
 	 */
 	
 	_utilIndex.def(arrayProto, '$remove', function $remove(item) {
@@ -3482,7 +3465,7 @@
 	    var el = options.el;
 	    var props = options.props;
 	    if (props && !el) {
-	      ("development") !== 'production' && _utilIndex.warn('Props will not be compiled if no `el` option is ' + 'provided at instantiation.');
+	      ("development") !== 'production' && _utilIndex.warn('Props will not be compiled if no `el` option is ' + 'provided at instantiation.', this);
 	    }
 	    // make sure to convert string selectors into element now
 	    el = options.el = _utilIndex.query(el);
@@ -3500,7 +3483,7 @@
 	    var data = this._data = dataFn ? dataFn() : {};
 	    if (!_utilIndex.isPlainObject(data)) {
 	      data = {};
-	      ("development") !== 'production' && _utilIndex.warn('data functions should return an object.');
+	      ("development") !== 'production' && _utilIndex.warn('data functions should return an object.', this);
 	    }
 	    var props = this._props;
 	    var runtimeData = this._runtimeData ? typeof this._runtimeData === 'function' ? this._runtimeData() : this._runtimeData : null;
@@ -3517,7 +3500,7 @@
 	      if (!props || !_utilIndex.hasOwn(props, key) || runtimeData && _utilIndex.hasOwn(runtimeData, key) && props[key].raw === null) {
 	        this._proxy(key);
 	      } else if (true) {
-	        _utilIndex.warn('Data field "' + key + '" is already defined ' + 'as a prop. Use prop default value instead.');
+	        _utilIndex.warn('Data field "' + key + '" is already defined ' + 'as a prop. Use prop default value instead.', this);
 	      }
 	    }
 	    // observe data
@@ -3778,7 +3761,7 @@
 	    value = this.getter.call(scope, scope);
 	  } catch (e) {
 	    if (("development") !== 'production' && _config2['default'].warnExpressionErrors) {
-	      _utilIndex.warn('Error when evaluating expression "' + this.expression + '". ' + (_config2['default'].debug ? '' : 'Turn on debug mode to see stack trace.'), e);
+	      _utilIndex.warn('Error when evaluating expression ' + '"' + this.expression + '": ' + e.toString(), this.vm);
 	    }
 	  }
 	  // "touch" every property so they are all tracked as
@@ -3814,14 +3797,14 @@
 	    this.setter.call(scope, scope, value);
 	  } catch (e) {
 	    if (("development") !== 'production' && _config2['default'].warnExpressionErrors) {
-	      _utilIndex.warn('Error when evaluating setter "' + this.expression + '"', e);
+	      _utilIndex.warn('Error when evaluating setter ' + '"' + this.expression + '": ' + e.toString(), this.vm);
 	    }
 	  }
 	  // two-way sync for v-for alias
 	  var forContext = scope.$forContext;
 	  if (forContext && forContext.alias === this.expression) {
 	    if (forContext.filters) {
-	      ("development") !== 'production' && _utilIndex.warn('It seems you are using two-way binding on ' + 'a v-for alias (' + this.expression + '), and the ' + 'v-for has filters. This will not work properly. ' + 'Either remove the filters or use an array of ' + 'objects and bind to object properties instead.');
+	      ("development") !== 'production' && _utilIndex.warn('It seems you are using two-way binding on ' + 'a v-for alias (' + this.expression + '), and the ' + 'v-for has filters. This will not work properly. ' + 'Either remove the filters or use an array of ' + 'objects and bind to object properties instead.', this.vm);
 	      return;
 	    }
 	    forContext._withLock(function () {
@@ -4515,8 +4498,8 @@
 	
 	var warnNonExistent;
 	if (true) {
-	  warnNonExistent = function (path) {
-	    _utilIndex.warn('You are setting a non-existent path "' + path.raw + '" ' + 'on a vm instance. Consider pre-initializing the property ' + 'with the "data" option for more reliable reactivity ' + 'and better performance.');
+	  warnNonExistent = function (path, vm) {
+	    _utilIndex.warn('You are setting a non-existent path "' + path.raw + '" ' + 'on a vm instance. Consider pre-initializing the property ' + 'with the "data" option for more reliable reactivity ' + 'and better performance.', vm);
 	  };
 	}
 	
@@ -4548,7 +4531,7 @@
 	      if (!_utilIndex.isObject(obj)) {
 	        obj = {};
 	        if (("development") !== 'production' && last._isVue) {
-	          warnNonExistent(path);
+	          warnNonExistent(path, last);
 	        }
 	        _utilIndex.set(last, key, obj);
 	      }
@@ -4559,7 +4542,7 @@
 	        obj[key] = val;
 	      } else {
 	        if (("development") !== 'production' && obj._isVue) {
-	          warnNonExistent(path);
+	          warnNonExistent(path, obj);
 	        }
 	        _utilIndex.set(obj, key, val);
 	      }
@@ -4646,8 +4629,8 @@
 	    if (("development") !== 'production' && has[id] != null) {
 	      circular[id] = (circular[id] || 0) + 1;
 	      if (circular[id] > _config2['default']._maxUpdateCount) {
-	        queue.splice(has[id], 1);
-	        _utilIndex.warn('You may have an infinite update loop for watcher ' + 'with expression: ' + watcher.expression);
+	        _utilIndex.warn('You may have an infinite update loop for watcher ' + 'with expression "' + watcher.expression + '"', watcher.vm);
+	        break;
 	      }
 	    }
 	  }
@@ -4898,7 +4881,7 @@
 	 */
 	
 	function compileAndLinkProps(vm, el, props, scope) {
-	  var propsLinkFn = _compileProps.compileProps(el, props);
+	  var propsLinkFn = _compileProps.compileProps(el, props, vm);
 	  var propDirs = linkAndCapture(function () {
 	    propsLinkFn(vm, scope);
 	  }, vm);
@@ -5389,7 +5372,7 @@
 	        if (name === 'class' && Array.prototype.some.call(attrs, function (attr) {
 	          return attr.name === ':class' || attr.name === 'v-bind:class';
 	        })) {
-	          _utilIndex.warn('class="' + rawValue + '": Do not mix mustache interpolation ' + 'and v-bind for "class" on the same element. Use one or the other.');
+	          _utilIndex.warn('class="' + rawValue + '": Do not mix mustache interpolation ' + 'and v-bind for "class" on the same element. Use one or the other.', options);
 	        }
 	      }
 	    } else
@@ -5427,12 +5410,7 @@
 	                continue;
 	              }
 	
-	              dirDef = _utilIndex.resolveAsset(options, 'directives', dirName);
-	
-	              if (true) {
-	                _utilIndex.assertAsset(dirDef, 'directive', dirName);
-	              }
-	
+	              dirDef = _utilIndex.resolveAsset(options, 'directives', dirName, true);
 	              if (dirDef) {
 	                pushDir(dirName, dirDef);
 	              }
@@ -5963,6 +5941,8 @@
 	
 	var _observerIndex = __webpack_require__(48);
 	
+	var _parsersPath = __webpack_require__(58);
+	
 	var _utilIndex = __webpack_require__(5);
 	
 	var uid = 0;
@@ -5989,7 +5969,7 @@
 	    }
 	
 	    if (!this.alias) {
-	      ("development") !== 'production' && _utilIndex.warn('Alias is required in v-for.');
+	      ("development") !== 'production' && _utilIndex.warn('Invalid v-for expression "' + this.descriptor.raw + '": ' + 'alias is required.', this.vm);
 	      return;
 	    }
 	
@@ -6331,7 +6311,7 @@
 	    var primitive = !_utilIndex.isObject(value);
 	    var id;
 	    if (key || trackByKey || primitive) {
-	      id = trackByKey ? trackByKey === '$index' ? index : value[trackByKey] : key || value;
+	      id = trackByKey ? trackByKey === '$index' ? index : _parsersPath.getPath(value, trackByKey) : key || value;
 	      if (!cache[id]) {
 	        cache[id] = frag;
 	      } else if (trackByKey !== '$index') {
@@ -6366,7 +6346,7 @@
 	    var primitive = !_utilIndex.isObject(value);
 	    var frag;
 	    if (key || trackByKey || primitive) {
-	      var id = trackByKey ? trackByKey === '$index' ? index : value[trackByKey] : key || value;
+	      var id = trackByKey ? trackByKey === '$index' ? index : _parsersPath.getPath(value, trackByKey) : key || value;
 	      frag = this.cache[id];
 	    } else {
 	      frag = value[this.id];
@@ -6393,7 +6373,7 @@
 	    var key = _utilIndex.hasOwn(scope, '$key') && scope.$key;
 	    var primitive = !_utilIndex.isObject(value);
 	    if (trackByKey || key || primitive) {
-	      var id = trackByKey ? trackByKey === '$index' ? index : value[trackByKey] : key || value;
+	      var id = trackByKey ? trackByKey === '$index' ? index : _parsersPath.getPath(value, trackByKey) : key || value;
 	      this.cache[id] = null;
 	    } else {
 	      value[this.id] = null;
@@ -6545,7 +6525,7 @@
 	
 	if (true) {
 	  vFor.warnDuplicate = function (value) {
-	    _utilIndex.warn('Duplicate value found in v-for="' + this.descriptor.raw + '": ' + JSON.stringify(value) + '. Use track-by="$index" if ' + 'you are expecting duplicate values.');
+	    _utilIndex.warn('Duplicate value found in v-for="' + this.descriptor.raw + '": ' + JSON.stringify(value) + '. Use track-by="$index" if ' + 'you are expecting duplicate values.', this.vm);
 	  };
 	}
 	
@@ -6856,11 +6836,11 @@
 	exports.COMPONENT = COMPONENT;
 	var PARTIAL = 1750;
 	exports.PARTIAL = PARTIAL;
-	var FOR = 2000;
-	exports.FOR = FOR;
-	var IF = 2000;
+	var IF = 2100;
 	exports.IF = IF;
-	var SLOT = 2100;
+	var FOR = 2200;
+	exports.FOR = FOR;
+	var SLOT = 2300;
 	exports.SLOT = SLOT;
 
 /***/ },
@@ -6899,7 +6879,7 @@
 	      this.anchor = _utilIndex.createAnchor('v-if');
 	      _utilIndex.replace(el, this.anchor);
 	    } else {
-	      ("development") !== 'production' && _utilIndex.warn('v-if="' + this.expression + '" cannot be ' + 'used on an instance root element.');
+	      ("development") !== 'production' && _utilIndex.warn('v-if="' + this.expression + '" cannot be ' + 'used on an instance root element.', this.vm);
 	      this.invalid = true;
 	    }
 	  },
@@ -7054,7 +7034,7 @@
 	    // friendly warning...
 	    this.checkFilters();
 	    if (this.hasRead && !this.hasWrite) {
-	      ("development") !== 'production' && _utilIndex.warn('It seems you are using a read-only filter with ' + 'v-model. You might want to use a two-way filter ' + 'to ensure correct behavior.');
+	      ("development") !== 'production' && _utilIndex.warn('It seems you are using a read-only filter with ' + 'v-model="' + this.descriptor.raw + '". ' + 'You might want to use a two-way filter to ensure correct behavior.', this.vm);
 	    }
 	    var el = this.el;
 	    var tag = el.tagName;
@@ -7066,7 +7046,7 @@
 	    } else if (tag === 'TEXTAREA') {
 	      handler = handlers.text;
 	    } else {
-	      ("development") !== 'production' && _utilIndex.warn('v-model does not support element type: ' + tag);
+	      ("development") !== 'production' && _utilIndex.warn('v-model does not support element type: ' + tag, this.vm);
 	      return;
 	    }
 	    el.__v_model = this;
@@ -7565,7 +7545,7 @@
 	    }
 	
 	    if (typeof handler !== 'function') {
-	      ("development") !== 'production' && _utilIndex.warn('v-on:' + this.arg + '="' + this.expression + '" expects a function value, ' + 'got ' + handler);
+	      ("development") !== 'production' && _utilIndex.warn('v-on:' + this.arg + '="' + this.expression + '" expects a function value, ' + 'got ' + handler, this.vm);
 	      return;
 	    }
 	
@@ -7673,7 +7653,7 @@
 	
 	      // only allow binding on native attributes
 	      if (disallowedInterpAttrRE.test(attr) || attr === 'name' && (tag === 'PARTIAL' || tag === 'SLOT')) {
-	        ("development") !== 'production' && _utilIndex.warn(attr + '="' + descriptor.raw + '": ' + 'attribute interpolation is not allowed in Vue.js ' + 'directives and special attributes.');
+	        ("development") !== 'production' && _utilIndex.warn(attr + '="' + descriptor.raw + '": ' + 'attribute interpolation is not allowed in Vue.js ' + 'directives and special attributes.', this.vm);
 	        this.el.removeAttribute(attr);
 	        this.invalid = true;
 	      }
@@ -7683,12 +7663,12 @@
 	        var raw = attr + '="' + descriptor.raw + '": ';
 	        // warn src
 	        if (attr === 'src') {
-	          _utilIndex.warn(raw + 'interpolation in "src" attribute will cause ' + 'a 404 request. Use v-bind:src instead.');
+	          _utilIndex.warn(raw + 'interpolation in "src" attribute will cause ' + 'a 404 request. Use v-bind:src instead.', this.vm);
 	        }
 	
 	        // warn style
 	        if (attr === 'style') {
-	          _utilIndex.warn(raw + 'interpolation in "style" attribute will cause ' + 'the attribute to be discarded in Internet Explorer. ' + 'Use v-bind:style instead.');
+	          _utilIndex.warn(raw + 'interpolation in "style" attribute will cause ' + 'the attribute to be discarded in Internet Explorer. ' + 'Use v-bind:style instead.', this.vm);
 	        }
 	      }
 	    }
@@ -7818,11 +7798,17 @@
 	    if (value) {
 	      var isImportant = importantRE.test(value) ? 'important' : '';
 	      if (isImportant) {
+	        /* istanbul ignore if */
+	        if (true) {
+	          _utilIndex.warn('It\'s probably a bad idea to use !important with inline rules. ' + 'This feature will be deprecated in a future version of Vue.');
+	        }
 	        value = value.replace(importantRE, '').trim();
+	        this.el.style.setProperty(prop.kebab, value, isImportant);
+	      } else {
+	        this.el.style[prop.camel] = value;
 	      }
-	      this.el.style.setProperty(prop, value, isImportant);
 	    } else {
-	      this.el.style.removeProperty(prop);
+	      this.el.style[prop.camel] = '';
 	    }
 	  }
 	
@@ -7867,11 +7853,17 @@
 	  while (i--) {
 	    prefixed = camelPrefixes[i] + upper;
 	    if (prefixed in testEl.style) {
-	      return prefixes[i] + prop;
+	      return {
+	        kebab: prefixes[i] + prop,
+	        camel: prefixed
+	      };
 	    }
 	  }
 	  if (camel in testEl.style) {
-	    return prop;
+	    return {
+	      kebab: prop,
+	      camel: camel
+	    };
 	  }
 	}
 	module.exports = exports['default'];
@@ -7927,7 +7919,7 @@
 	
 	exports['default'] = {
 	  bind: function bind() {
-	    ("development") !== 'production' && _utilIndex.warn('v-ref:' + this.arg + ' must be used on a child ' + 'component. Found on <' + this.el.tagName.toLowerCase() + '>.');
+	    ("development") !== 'production' && _utilIndex.warn('v-ref:' + this.arg + ' must be used on a child ' + 'component. Found on <' + this.el.tagName.toLowerCase() + '>.', this.vm);
 	  }
 	};
 	module.exports = exports['default'];
@@ -8036,19 +8028,16 @@
 	  },
 	
 	  cleanup: function cleanup(value) {
-	    if (this.prevKeys) {
-	      var i = this.prevKeys.length;
-	      while (i--) {
-	        var key = this.prevKeys[i];
-	        if (!key) continue;
-	        if (_utilIndex.isPlainObject(key)) {
-	          var keys = _Object$keys(key);
-	          for (var k = 0; k < keys.length; k++) {
-	            _utilIndex.removeClass(this.el, keys[k]);
-	          }
-	        } else {
-	          _utilIndex.removeClass(this.el, key);
-	        }
+	    if (!this.prevKeys) return;
+	
+	    var i = this.prevKeys.length;
+	    while (i--) {
+	      var key = this.prevKeys[i];
+	      if (!key) continue;
+	
+	      var keys = _utilIndex.isPlainObject(key) ? _Object$keys(key) : [key];
+	      for (var j = 0, l = keys.length; j < l; j++) {
+	        toggleClasses(this.el, keys[j], _utilIndex.removeClass);
 	      }
 	    }
 	  }
@@ -8058,20 +8047,46 @@
 	  var keys = _Object$keys(obj);
 	  for (var i = 0, l = keys.length; i < l; i++) {
 	    var key = keys[i];
-	    if (obj[key]) {
-	      _utilIndex.addClass(el, key);
-	    }
+	    if (!obj[key]) continue;
+	    toggleClasses(el, key, _utilIndex.addClass);
 	  }
 	}
 	
 	function stringToObject(value) {
 	  var res = {};
 	  var keys = value.trim().split(/\s+/);
-	  var i = keys.length;
-	  while (i--) {
+	  for (var i = 0, l = keys.length; i < l; i++) {
 	    res[keys[i]] = true;
 	  }
 	  return res;
+	}
+	
+	/**
+	 * Add or remove a class/classes on an element
+	 *
+	 * @param {Element} el
+	 * @param {String} key The class name. This may or may not
+	 *                     contain a space character, in such a
+	 *                     case we'll deal with multiple class
+	 *                     names at once.
+	 * @param {Function} fn
+	 */
+	
+	function toggleClasses(el, key, fn) {
+	  key = key.trim();
+	
+	  if (key.indexOf(' ') === -1) {
+	    fn(el, key);
+	    return;
+	  }
+	
+	  // The key contains one or more space characters.
+	  // Since a class name doesn't accept such characters, we
+	  // treat it as multiple classes.
+	  var keys = key.split(/\s+/);
+	  for (var i = 0, l = keys.length; i < l; i++) {
+	    fn(el, keys[i]);
+	  }
 	}
 	module.exports = exports['default'];
 
@@ -8304,7 +8319,7 @@
 	      }
 	      /* istanbul ignore if */
 	      if (("development") !== 'production' && this.el.hasAttribute('transition') && child._isFragment) {
-	        _utilIndex.warn('Transitions will not work on a fragment instance. ' + 'Template: ' + child.$options.template);
+	        _utilIndex.warn('Transitions will not work on a fragment instance. ' + 'Template: ' + child.$options.template, child);
 	      }
 	      return child;
 	    }
@@ -8474,10 +8489,6 @@
 	
 	var _config2 = _interopRequireDefault(_config);
 	
-	var _parsersExpression = __webpack_require__(57);
-	
-	var _observerIndex = __webpack_require__(48);
-	
 	var _compilerCompileProps = __webpack_require__(87);
 	
 	var bindingModes = _config2['default']._propBindingModes;
@@ -8492,19 +8503,9 @@
 	    var childKey = prop.path;
 	    var parentKey = prop.parentPath;
 	    var twoWay = prop.mode === bindingModes.TWO_WAY;
-	    var isSimple = _parsersExpression.isSimplePath(parentKey);
 	
 	    var parentWatcher = this.parentWatcher = new _watcher2['default'](parent, parentKey, function (val) {
-	      val = _compilerCompileProps.coerceProp(prop, val);
-	      if (_compilerCompileProps.assertProp(prop, val)) {
-	        if (isSimple) {
-	          _observerIndex.withoutConversion(function () {
-	            child[childKey] = val;
-	          });
-	        } else {
-	          child[childKey] = val;
-	        }
-	      }
+	      _compilerCompileProps.updateProp(child, prop, val);
 	    }, {
 	      twoWay: twoWay,
 	      filters: prop.filters,
@@ -8514,14 +8515,7 @@
 	    });
 	
 	    // set the child initial value.
-	    var value = parentWatcher.value;
-	    if (isSimple && value !== undefined) {
-	      _observerIndex.withoutConversion(function () {
-	        _compilerCompileProps.initProp(child, prop, value);
-	      });
-	    } else {
-	      _compilerCompileProps.initProp(child, prop, value);
-	    }
+	    _compilerCompileProps.initProp(child, prop, parentWatcher.value);
 	
 	    // setup two-way binding
 	    if (twoWay) {
@@ -8563,14 +8557,15 @@
 	exports.__esModule = true;
 	exports.compileProps = compileProps;
 	exports.initProp = initProp;
-	exports.assertProp = assertProp;
-	exports.coerceProp = coerceProp;
+	exports.updateProp = updateProp;
 	
 	var _config = __webpack_require__(36);
 	
 	var _config2 = _interopRequireDefault(_config);
 	
 	var _parsersDirective = __webpack_require__(43);
+	
+	var _parsersExpression = __webpack_require__(57);
 	
 	var _observerIndex = __webpack_require__(48);
 	
@@ -8593,10 +8588,11 @@
 	 *
 	 * @param {Element|DocumentFragment} el
 	 * @param {Array} propOptions
+	 * @param {Vue} vm
 	 * @return {Function} propsLinkFn
 	 */
 	
-	function compileProps(el, propOptions) {
+	function compileProps(el, propOptions, vm) {
 	  var props = [];
 	  var names = _Object$keys(propOptions);
 	  var i = names.length;
@@ -8606,7 +8602,7 @@
 	    options = propOptions[name] || empty;
 	
 	    if (("development") !== 'production' && name === '$data') {
-	      _utilIndex.warn('Do not use $data as prop.');
+	      _utilIndex.warn('Do not use $data as prop.', vm);
 	      continue;
 	    }
 	
@@ -8615,7 +8611,7 @@
 	    // so we need to camelize the path here
 	    path = _utilIndex.camelize(name);
 	    if (!identRE.test(path)) {
-	      ("development") !== 'production' && _utilIndex.warn('Invalid prop key: "' + name + '". Prop keys ' + 'must be valid identifiers.');
+	      ("development") !== 'production' && _utilIndex.warn('Invalid prop key: "' + name + '". Prop keys ' + 'must be valid identifiers.', vm);
 	      continue;
 	    }
 	
@@ -8653,14 +8649,14 @@
 	        // check non-settable path for two-way bindings
 	        if (("development") !== 'production' && prop.mode === propBindingModes.TWO_WAY && !settablePathRE.test(value)) {
 	          prop.mode = propBindingModes.ONE_WAY;
-	          _utilIndex.warn('Cannot bind two-way prop with non-settable ' + 'parent path: ' + value);
+	          _utilIndex.warn('Cannot bind two-way prop with non-settable ' + 'parent path: ' + value, vm);
 	        }
 	      }
 	      prop.parentPath = value;
 	
 	      // warn required two-way
 	      if (("development") !== 'production' && options.twoWay && prop.mode !== propBindingModes.TWO_WAY) {
-	        _utilIndex.warn('Prop "' + name + '" expects a two-way binding type.');
+	        _utilIndex.warn('Prop "' + name + '" expects a two-way binding type.', vm);
 	      }
 	    } else if ((value = _utilIndex.getAttr(el, attr)) !== null) {
 	      // has literal binding!
@@ -8670,10 +8666,10 @@
 	      var lowerCaseName = path.toLowerCase();
 	      value = /[A-Z\-]/.test(name) && (el.getAttribute(lowerCaseName) || el.getAttribute(':' + lowerCaseName) || el.getAttribute('v-bind:' + lowerCaseName) || el.getAttribute(':' + lowerCaseName + '.once') || el.getAttribute('v-bind:' + lowerCaseName + '.once') || el.getAttribute(':' + lowerCaseName + '.sync') || el.getAttribute('v-bind:' + lowerCaseName + '.sync'));
 	      if (value) {
-	        _utilIndex.warn('Possible usage error for prop `' + lowerCaseName + '` - ' + 'did you mean `' + attr + '`? HTML is case-insensitive, remember to use ' + 'kebab-case for props in templates.');
+	        _utilIndex.warn('Possible usage error for prop `' + lowerCaseName + '` - ' + 'did you mean `' + attr + '`? HTML is case-insensitive, remember to use ' + 'kebab-case for props in templates.', vm);
 	      } else if (options.required) {
 	        // warn missing required
-	        _utilIndex.warn('Missing required prop: ' + name);
+	        _utilIndex.warn('Missing required prop: ' + name, vm);
 	      }
 	    }
 	    // push prop
@@ -8741,6 +8737,37 @@
 	}
 	
 	/**
+	 * Process a prop with a rawValue, applying necessary coersions,
+	 * default values & assertions and call the given callback with
+	 * processed value.
+	 *
+	 * @param {Vue} vm
+	 * @param {Object} prop
+	 * @param {*} rawValue
+	 * @param {Function} fn
+	 */
+	
+	function processPropValue(vm, prop, rawValue, fn) {
+	  var isSimple = prop.dynamic && _parsersExpression.isSimplePath(prop.parentPath);
+	  var value = rawValue;
+	  if (value === undefined) {
+	    value = getPropDefaultValue(vm, prop);
+	  }
+	  value = coerceProp(prop, value);
+	  var coerced = value !== rawValue;
+	  if (!assertProp(prop, value, vm)) {
+	    value = undefined;
+	  }
+	  if (isSimple && !coerced) {
+	    _observerIndex.withoutConversion(function () {
+	      fn(value);
+	    });
+	  } else {
+	    fn(value);
+	  }
+	}
+	
+	/**
 	 * Set a prop's initial value on a vm and its data object.
 	 *
 	 * @param {Vue} vm
@@ -8749,26 +8776,36 @@
 	 */
 	
 	function initProp(vm, prop, value) {
-	  var key = prop.path;
-	  value = coerceProp(prop, value);
-	  if (value === undefined) {
-	    value = getPropDefaultValue(vm, prop.options);
-	  }
-	  if (assertProp(prop, value)) {
-	    _observerIndex.defineReactive(vm, key, value);
-	  }
+	  processPropValue(vm, prop, value, function (value) {
+	    _observerIndex.defineReactive(vm, prop.path, value);
+	  });
+	}
+	
+	/**
+	 * Update a prop's value on a vm.
+	 *
+	 * @param {Vue} vm
+	 * @param {Object} prop
+	 * @param {*} value
+	 */
+	
+	function updateProp(vm, prop, value) {
+	  processPropValue(vm, prop, value, function (value) {
+	    vm[prop.path] = value;
+	  });
 	}
 	
 	/**
 	 * Get the default value of a prop.
 	 *
 	 * @param {Vue} vm
-	 * @param {Object} options
+	 * @param {Object} prop
 	 * @return {*}
 	 */
 	
-	function getPropDefaultValue(vm, options) {
+	function getPropDefaultValue(vm, prop) {
 	  // no default, return undefined
+	  var options = prop.options;
 	  if (!_utilIndex.hasOwn(options, 'default')) {
 	    // absent boolean value defaults to false
 	    return options.type === Boolean ? false : undefined;
@@ -8776,7 +8813,7 @@
 	  var def = options['default'];
 	  // warn against non-factory defaults for Object & Array
 	  if (_utilIndex.isObject(def)) {
-	    ("development") !== 'production' && _utilIndex.warn('Object/Array as default prop values will be shared ' + 'across multiple instances. Use a factory function ' + 'to return the default value instead.');
+	    ("development") !== 'production' && _utilIndex.warn('Invalid default value for prop "' + prop.name + '": ' + 'Props with type Object/Array must use a factory function ' + 'to return the default value.', vm);
 	  }
 	  // call factory function for non-Function types
 	  return typeof def === 'function' && options.type !== Function ? def.call(vm) : def;
@@ -8787,9 +8824,10 @@
 	 *
 	 * @param {Object} prop
 	 * @param {*} value
+	 * @param {Vue} vm
 	 */
 	
-	function assertProp(prop, value) {
+	function assertProp(prop, value, vm) {
 	  if (!prop.options.required && ( // non-required
 	  prop.raw === null || // abscent
 	  value == null) // null or undefined
@@ -8798,39 +8836,28 @@
 	    }
 	  var options = prop.options;
 	  var type = options.type;
-	  var valid = true;
-	  var expectedType;
+	  var valid = !type;
+	  var expectedTypes = [];
 	  if (type) {
-	    if (type === String) {
-	      expectedType = 'string';
-	      valid = typeof value === expectedType;
-	    } else if (type === Number) {
-	      expectedType = 'number';
-	      valid = typeof value === 'number';
-	    } else if (type === Boolean) {
-	      expectedType = 'boolean';
-	      valid = typeof value === 'boolean';
-	    } else if (type === Function) {
-	      expectedType = 'function';
-	      valid = typeof value === 'function';
-	    } else if (type === Object) {
-	      expectedType = 'object';
-	      valid = _utilIndex.isPlainObject(value);
-	    } else if (type === Array) {
-	      expectedType = 'array';
-	      valid = _utilIndex.isArray(value);
-	    } else {
-	      valid = value instanceof type;
+	    if (!_utilIndex.isArray(type)) {
+	      type = [type];
+	    }
+	    for (var i = 0; i < type.length && !valid; i++) {
+	      var assertedType = assertType(value, type[i]);
+	      expectedTypes.push(assertedType.expectedType);
+	      valid = assertedType.valid;
 	    }
 	  }
 	  if (!valid) {
-	    ("development") !== 'production' && _utilIndex.warn('Invalid prop: type check failed for ' + prop.path + '="' + prop.raw + '".' + ' Expected ' + formatType(expectedType) + ', got ' + formatValue(value) + '.');
+	    if (true) {
+	      _utilIndex.warn('Invalid prop: type check failed for prop "' + prop.name + '".' + ' Expected ' + expectedTypes.map(formatType).join(', ') + ', got ' + formatValue(value) + '.', vm);
+	    }
 	    return false;
 	  }
 	  var validator = options.validator;
 	  if (validator) {
 	    if (!validator(value)) {
-	      ("development") !== 'production' && _utilIndex.warn('Invalid prop: custom validator check failed for ' + prop.path + '="' + prop.raw + '"');
+	      ("development") !== 'production' && _utilIndex.warn('Invalid prop: custom validator check failed for prop "' + prop.name + '".', vm);
 	      return false;
 	    }
 	  }
@@ -8854,9 +8881,61 @@
 	  return coerce(value);
 	}
 	
-	function formatType(val) {
-	  return val ? val.charAt(0).toUpperCase() + val.slice(1) : 'custom type';
+	/**
+	 * Assert the type of a value
+	 *
+	 * @param {*} value
+	 * @param {Function} type
+	 * @return {Object}
+	 */
+	
+	function assertType(value, type) {
+	  var valid;
+	  var expectedType;
+	  if (type === String) {
+	    expectedType = 'string';
+	    valid = typeof value === expectedType;
+	  } else if (type === Number) {
+	    expectedType = 'number';
+	    valid = typeof value === expectedType;
+	  } else if (type === Boolean) {
+	    expectedType = 'boolean';
+	    valid = typeof value === expectedType;
+	  } else if (type === Function) {
+	    expectedType = 'function';
+	    valid = typeof value === expectedType;
+	  } else if (type === Object) {
+	    expectedType = 'object';
+	    valid = _utilIndex.isPlainObject(value);
+	  } else if (type === Array) {
+	    expectedType = 'array';
+	    valid = _utilIndex.isArray(value);
+	  } else {
+	    valid = value instanceof type;
+	  }
+	  return {
+	    valid: valid,
+	    expectedType: expectedType
+	  };
 	}
+	
+	/**
+	 * Format type for output
+	 *
+	 * @param {String} type
+	 * @return {String}
+	 */
+	
+	function formatType(type) {
+	  return type ? type.charAt(0).toUpperCase() + type.slice(1) : 'custom type';
+	}
+	
+	/**
+	 * Format value
+	 *
+	 * @param {*} value
+	 * @return {String}
+	 */
 	
 	function formatValue(val) {
 	  return Object.prototype.toString.call(val).slice(8, -1);
@@ -8969,7 +9048,7 @@
 	  /* istanbul ignore if */
 	  if (true) {
 	    if (this.type && this.type !== TYPE_TRANSITION && this.type !== TYPE_ANIMATION) {
-	      _utilIndex.warn('invalid CSS transition type for transition="' + this.id + '": ' + this.type);
+	      _utilIndex.warn('invalid CSS transition type for transition="' + this.id + '": ' + this.type, vm);
 	    }
 	  }
 	  // bind
@@ -9524,7 +9603,7 @@
 	    }
 	    /* eslint-enable no-cond-assign */
 	    if (("development") !== 'production' && _utilIndex.getBindAttr(el, 'slot')) {
-	      _utilIndex.warn('The "slot" attribute must be static.');
+	      _utilIndex.warn('The "slot" attribute must be static.', vm.$parent);
 	    }
 	  }
 	  for (name in contents) {
@@ -9603,7 +9682,7 @@
 	          handler._fromParent = true;
 	          vm.$on(name.replace(eventRE), handler);
 	        } else if (true) {
-	          _utilIndex.warn('v-on:' + name + '="' + attrs[i].value + '"' + (vm.$options.name ? ' on component <' + vm.$options.name + '>' : '') + ' expects a function value, got ' + handler);
+	          _utilIndex.warn('v-on:' + name + '="' + attrs[i].value + '" ' + 'expects a function value, got ' + handler, vm);
 	        }
 	      }
 	    }
@@ -9652,7 +9731,7 @@
 	      if (method) {
 	        vm[action](key, method, options);
 	      } else {
-	        ("development") !== 'production' && _utilIndex.warn('Unknown method: "' + handler + '" when ' + 'registering callback for ' + action + ': "' + key + '".');
+	        ("development") !== 'production' && _utilIndex.warn('Unknown method: "' + handler + '" when ' + 'registering callback for ' + action + ': "' + key + '".', vm);
 	      }
 	    } else if (handler && type === 'object') {
 	      register(vm, action, key, handler.handler, handler);
@@ -10348,10 +10427,7 @@
 	    var filter, fn, args, arg, offset, i, l, j, k;
 	    for (i = 0, l = filters.length; i < l; i++) {
 	      filter = filters[write ? l - i - 1 : i];
-	      fn = _utilIndex.resolveAsset(this.$options, 'filters', filter.name);
-	      if (true) {
-	        _utilIndex.assertAsset(fn, 'filter', filter.name);
-	      }
+	      fn = _utilIndex.resolveAsset(this.$options, 'filters', filter.name, true);
 	      if (!fn) continue;
 	      fn = write ? fn.write : fn.read || fn;
 	      if (typeof fn !== 'function') continue;
@@ -10384,10 +10460,7 @@
 	    if (typeof value === 'function') {
 	      factory = value;
 	    } else {
-	      factory = _utilIndex.resolveAsset(this.$options, 'components', value);
-	      if (true) {
-	        _utilIndex.assertAsset(factory, 'component', value);
-	      }
+	      factory = _utilIndex.resolveAsset(this.$options, 'components', value, true);
 	    }
 	    if (!factory) {
 	      return;
@@ -11055,7 +11128,7 @@
 	
 	  Vue.prototype.$mount = function (el) {
 	    if (this._isCompiled) {
-	      ("development") !== 'production' && _utilIndex.warn('$mount() should be called only once.');
+	      ("development") !== 'production' && _utilIndex.warn('$mount() should be called only once.', this);
 	      return;
 	    }
 	    el = _utilIndex.query(el);
@@ -11519,10 +11592,7 @@
 	  },
 	
 	  insert: function insert(id) {
-	    var partial = _utilIndex.resolveAsset(this.vm.$options, 'partials', id);
-	    if (true) {
-	      _utilIndex.assertAsset(partial, 'partial', id);
-	    }
+	    var partial = _utilIndex.resolveAsset(this.vm.$options, 'partials', id, true);
 	    if (partial) {
 	      this.factory = new _fragmentFactory2['default'](this.vm, partial);
 	      _publicIf2['default'].insert.call(this);
@@ -11718,9 +11788,7 @@
 	  // because why not
 	  var n = delimiter === 'in' ? 3 : 2;
 	  // extract and flatten keys
-	  var keys = _utilIndex.toArray(arguments, n).reduce(function (prev, cur) {
-	    return prev.concat(cur);
-	  }, []);
+	  var keys = Array.prototype.concat.apply([], _utilIndex.toArray(arguments, n));
 	  var res = [];
 	  var item, key, val, j;
 	  for (var i = 0, l = arr.length; i < l; i++) {
@@ -11745,26 +11813,58 @@
 	/**
 	 * Filter filter for arrays
 	 *
-	 * @param {String} sortKey
-	 * @param {String} reverse
+	 * @param {String|Array<String>|Function} ...sortKeys
+	 * @param {Number} [order]
 	 */
 	
-	function orderBy(arr, sortKey, reverse) {
+	function orderBy(arr) {
+	  var comparator = null;
+	  var sortKeys = undefined;
 	  arr = convertArray(arr);
-	  if (!sortKey) {
-	    return arr;
+	
+	  // determine order (last argument)
+	  var args = _utilIndex.toArray(arguments, 1);
+	  var order = args[args.length - 1];
+	  if (typeof order === 'number') {
+	    order = order < 0 ? -1 : 1;
+	    args = args.length > 1 ? args.slice(0, -1) : args;
+	  } else {
+	    order = 1;
 	  }
-	  var order = reverse && reverse < 0 ? -1 : 1;
-	  // sort on a copy to avoid mutating original array
-	  return arr.slice().sort(function (a, b) {
-	    if (sortKey !== '$key') {
-	      if (_utilIndex.isObject(a) && '$value' in a) a = a.$value;
-	      if (_utilIndex.isObject(b) && '$value' in b) b = b.$value;
+	
+	  // determine sortKeys & comparator
+	  var firstArg = args[0];
+	  if (!firstArg) {
+	    return arr;
+	  } else if (typeof firstArg === 'function') {
+	    // custom comparator
+	    comparator = function (a, b) {
+	      return firstArg(a, b) * order;
+	    };
+	  } else {
+	    // string keys. flatten first
+	    sortKeys = Array.prototype.concat.apply([], args);
+	    comparator = function (a, b, i) {
+	      i = i || 0;
+	      return i >= sortKeys.length - 1 ? baseCompare(a, b, i) : baseCompare(a, b, i) || comparator(a, b, i + 1);
+	    };
+	  }
+	
+	  function baseCompare(a, b, sortKeyIndex) {
+	    var sortKey = sortKeys[sortKeyIndex];
+	    if (sortKey) {
+	      if (sortKey !== '$key') {
+	        if (_utilIndex.isObject(a) && '$value' in a) a = a.$value;
+	        if (_utilIndex.isObject(b) && '$value' in b) b = b.$value;
+	      }
+	      a = _utilIndex.isObject(a) ? _parsersPath.getPath(a, sortKey) : a;
+	      b = _utilIndex.isObject(b) ? _parsersPath.getPath(b, sortKey) : b;
 	    }
-	    a = _utilIndex.isObject(a) ? _parsersPath.getPath(a, sortKey) : a;
-	    b = _utilIndex.isObject(b) ? _parsersPath.getPath(b, sortKey) : b;
 	    return a === b ? 0 : a > b ? order : -order;
-	  });
+	  }
+	
+	  // sort on a copy to avoid mutating original array
+	  return arr.slice().sort(comparator);
 	}
 	
 	/**
@@ -11881,7 +11981,7 @@
 	  var vm
 	  beforeEach(function () {
 	    var el = document.createElement('div')
-	    el.setAttribute('prop', 'hi')
+	    el.setAttribute('prop', 'foo')
 	    vm = new Vue({
 	      el: el,
 	      props: ['prop'],
@@ -12029,7 +12129,7 @@
 	        expect(val.a).toBe(1)
 	        expect(val.b.c).toBe(2)
 	        expect(val.d).toBe(2)
-	        expect(val.prop).toBe('hi')
+	        expect(val.prop).toBe('foo')
 	        spy()
 	      }
 	      vm.$log()
@@ -12502,13 +12602,13 @@
 	    it('normal', function () {
 	      var vm = new Vue({
 	        data: {
-	          test: 'hi!'
+	          test: 'foo'
 	        }
 	      })
 	      vm.$mount(el)
 	      expect(vm.$el).toBe(el)
 	      expect(el.__vue__).toBe(vm)
-	      expect(el.textContent).toBe('hi!')
+	      expect(el.textContent).toBe('foo')
 	    })
 	
 	    it('auto-create', function () {
@@ -12528,12 +12628,12 @@
 	      el.id = 'mount-test'
 	      document.body.appendChild(el)
 	      var vm = new Vue({
-	        data: { test: 'hi!' }
+	        data: { test: 'foo' }
 	      })
 	      vm.$mount('#mount-test')
 	      expect(vm.$el).toBe(el)
 	      expect(el.__vue__).toBe(vm)
-	      expect(el.textContent).toBe('hi!')
+	      expect(el.textContent).toBe('foo')
 	      document.body.removeChild(el)
 	    })
 	
@@ -12548,12 +12648,12 @@
 	      document.body.appendChild(el)
 	      var vm = new Vue({
 	        replace: true,
-	        data: { test: 'hi!' },
+	        data: { test: 'foo' },
 	        template: '<div>{{test}}</div>'
 	      })
 	      vm.$mount(el)
 	      expect(vm.$el).not.toBe(el)
-	      expect(vm.$el.textContent).toBe('hi!')
+	      expect(vm.$el.textContent).toBe('foo')
 	      expect(document.body.contains(el)).toBe(false)
 	      expect(document.body.lastChild).toBe(vm.$el)
 	      expect(vm.$el.className).toBe('replace-test')
@@ -12565,13 +12665,13 @@
 	      var vm = new Vue({
 	        _linker: linker,
 	        data: {
-	          test: 'hi!'
+	          test: 'foo'
 	        }
 	      })
 	      vm.$mount(el)
 	      expect(vm.$el).toBe(el)
 	      expect(el.__vue__).toBe(vm)
-	      expect(el.textContent).toBe('hi!')
+	      expect(el.textContent).toBe('foo')
 	    })
 	
 	    it('mount to fragment', function () {
@@ -12587,13 +12687,13 @@
 	      document.body.appendChild(el)
 	      var vm = new Vue({
 	        replace: true,
-	        data: { test: 'hi!' },
-	        template: '<div>{{test}}</div><div>{{test + "!"}}</div>'
+	        data: { test: 'foo' },
+	        template: '<div>{{test}}</div><div>{{test + "bar"}}</div>'
 	      })
 	      vm.$mount(el)
 	      expect(vm.$el).not.toBe(el)
-	      expect(vm.$el.nextSibling.textContent).toBe('hi!')
-	      expect(vm.$el.nextSibling.nextSibling.textContent).toBe('hi!!')
+	      expect(vm.$el.nextSibling.textContent).toBe('foo')
+	      expect(vm.$el.nextSibling.nextSibling.textContent).toBe('foobar')
 	      expect(document.body.contains(el)).toBe(false)
 	      expect(document.body.lastChild).toBe(vm._fragmentEnd)
 	      vm.$remove()
@@ -12603,7 +12703,7 @@
 	      var hooks = ['created', 'beforeCompile', 'compiled', 'attached', 'ready']
 	      var options = {
 	        data: {
-	          test: 'hihi'
+	          test: 'foo'
 	        }
 	      }
 	      hooks.forEach(function (hook) {
@@ -12788,21 +12888,21 @@
 	        el: el,
 	        template: '{{a}}',
 	        data: {
-	          a: 'hi'
+	          a: 'foo'
 	        }
 	      })
 	      expect(vm._directives.length).toBe(1)
 	      var partial = document.createElement('span')
 	      partial.textContent = '{{a}}'
 	      var decompile = vm.$compile(partial)
-	      expect(partial.textContent).toBe('hi')
+	      expect(partial.textContent).toBe('foo')
 	      expect(vm._directives.length).toBe(2)
 	      decompile()
 	      expect(vm._directives.length).toBe(1)
-	      vm.a = 'ha'
+	      vm.a = 'bar'
 	      Vue.nextTick(function () {
-	        expect(el.textContent).toBe('ha')
-	        expect(partial.textContent).toBe('hi')
+	        expect(el.textContent).toBe('bar')
+	        expect(partial.textContent).toBe('foo')
 	        done()
 	      })
 	    })
@@ -12832,7 +12932,7 @@
 	    var go = jasmine.createSpy()
 	    new Vue({
 	      el: el,
-	      template: '<test hi="ok" @ready="go"></test>',
+	      template: '<test foo="bar" @ready="go"></test>',
 	      methods: {
 	        go: go
 	      },
@@ -12840,8 +12940,8 @@
 	        test: function (resolve) {
 	          setTimeout(function () {
 	            resolve({
-	              props: ['hi'],
-	              template: '{{ hi }}',
+	              props: ['foo'],
+	              template: '{{ foo }}',
 	              ready: function () {
 	                this.$emit('ready')
 	              }
@@ -12852,7 +12952,7 @@
 	      }
 	    })
 	    function next () {
-	      expect(el.textContent).toBe('ok')
+	      expect(el.textContent).toBe('bar')
 	      expect(go).toHaveBeenCalled()
 	      done()
 	    }
@@ -13310,7 +13410,7 @@
 	
 	  it('normal directives', function () {
 	    el.setAttribute('v-a', 'b')
-	    el.innerHTML = '<p v-a:hello.a.b="a" v-b="1">hello</p><div v-b.literal="hi"></div>'
+	    el.innerHTML = '<p v-a:hello.a.b="a" v-b="1">hello</p><div v-b.literal="foo"></div>'
 	    var defA = { priority: 1 }
 	    var defB = { priority: 2 }
 	    var options = _.mergeOptions(Vue.options, {
@@ -13354,7 +13454,7 @@
 	    // 4 (explicit literal)
 	    args = vm._bindDir.calls.argsFor(3)
 	    expect(args[0].name).toBe('b')
-	    expect(args[0].expression).toBe('hi')
+	    expect(args[0].expression).toBe('foo')
 	    expect(args[0].def).toBe(defB)
 	    expect(args[0].modifiers.literal).toBe(true)
 	    expect(args[1]).toBe(el.lastChild)
@@ -13478,7 +13578,7 @@
 	  })
 	
 	  it('inline html', function () {
-	    data.html = '<div>yoyoyo</div>'
+	    data.html = '<div>foo</div>'
 	    el.innerHTML = '{{{html}}} {{{*html}}}'
 	    var htmlDef = Vue.options.directives.html
 	    var linker = compile(el, Vue.options)
@@ -13489,7 +13589,7 @@
 	    expect(htmlArgs[0].expression).toBe('html')
 	    expect(htmlArgs[0].def).toBe(htmlDef)
 	    // with placeholder comments & interpolated one-time html
-	    expect(el.innerHTML).toBe('<!--v-html--> <div>yoyoyo</div>')
+	    expect(el.innerHTML).toBe('<!--v-html--> <div>foo</div>')
 	  })
 	
 	  it('terminal directives', function () {
@@ -13593,7 +13693,7 @@
 	      ':test-two-way.sync="a" ' +
 	      ':two-way-warn.sync="a + 1" ' +
 	      ':test-one-time.once="a" ' +
-	      ':literal-with-filter="\'HI\' | lowercase"' +
+	      ':literal-with-filter="\'FOO\' | lowercase"' +
 	      '></div>'
 	    compiler.compileAndLinkProps(vm, el.firstChild, props)
 	    // check bindDir calls:
@@ -13628,7 +13728,7 @@
 	    prop = args[0].prop
 	    expect(args[0].name).toBe('prop')
 	    expect(prop.path).toBe('literalWithFilter')
-	    expect(prop.parentPath).toBe("'HI'")
+	    expect(prop.parentPath).toBe("'FOO'")
 	    expect(prop.filters.length).toBe(1)
 	    expect(prop.mode).toBe(bindingModes.ONE_WAY)
 	  })
@@ -13637,11 +13737,11 @@
 	    // temporarily remove vm.$parent
 	    var context = vm._context
 	    vm._context = null
-	    el.setAttribute('v-bind:a', '"hi"')
+	    el.setAttribute('v-bind:a', '"foo"')
 	    el.setAttribute(':b', '[1,2,3]')
 	    compiler.compileAndLinkProps(vm, el, { a: null, b: null })
 	    expect(vm._bindDir.calls.count()).toBe(0)
-	    expect(vm.a).toBe('hi')
+	    expect(vm.a).toBe('foo')
 	    expect(vm.b.join(',')).toBe('1,2,3')
 	    // restore parent mock
 	    vm._context = context
@@ -13712,7 +13812,7 @@
 	      el: el,
 	      template: '<test :msg="msg"></test>',
 	      data: {
-	        msg: 'hi'
+	        msg: 'foo'
 	      },
 	      components: {
 	        test: {
@@ -13741,7 +13841,7 @@
 	      },
 	      components: {
 	        test: {
-	          template: 'hi'
+	          template: 'foo'
 	        }
 	      }
 	    })
@@ -13888,7 +13988,7 @@
 	      el: el,
 	      template: '<div class="{{a}}" :class="bcd"></div>',
 	      data: {
-	        a: 'hi'
+	        a: 'foo'
 	      }
 	    })
 	    expect('Do not mix mustache interpolation and v-bind').toHaveBeenWarned()
@@ -13897,7 +13997,7 @@
 	  it('warn directives on fragment instances', function () {
 	    new Vue({
 	      el: el,
-	      template: '<test id="hi" class="ok" :prop="123"></test>',
+	      template: '<test id="foo" class="ok" :prop="123"></test>',
 	      components: {
 	        test: {
 	          replace: true,
@@ -14327,18 +14427,18 @@
 	  it('static', function (done) {
 	    var vm = new Vue({
 	      el: el,
-	      template: '<partial name="yo"></partial>',
+	      template: '<partial name="p"></partial>',
 	      data: {
-	        msg: 'hello'
+	        msg: 'foo'
 	      },
 	      partials: {
-	        yo: '{{msg}}'
+	        p: '{{msg}}'
 	      }
 	    })
-	    expect(el.textContent).toBe('hello')
-	    vm.msg = 'what'
+	    expect(el.textContent).toBe('foo')
+	    vm.msg = 'bar'
 	    _.nextTick(function () {
-	      expect(el.textContent).toBe('what')
+	      expect(el.textContent).toBe('bar')
 	      done()
 	    })
 	  })
@@ -14368,14 +14468,14 @@
 	      el: el,
 	      template: '<div v-for="id in list"><partial v-bind:name="\'test-\' + id"></partial></div>',
 	      data: {
-	        list: ['a', 'b']
+	        list: ['foo', 'bar']
 	      },
 	      partials: {
-	        'test-a': 'a {{id}}',
-	        'test-b': 'b {{id}}'
+	        'test-foo': 'foo {{id}}',
+	        'test-bar': 'bar {{id}}'
 	      }
 	    })
-	    expect(el.textContent).toBe('a ab b')
+	    expect(el.textContent).toBe('foo foobar bar')
 	  })
 	
 	  it('caching', function () {
@@ -14391,16 +14491,16 @@
 	        '<partial name="cache-test"></partial> ' +
 	        '<partial name="cache-test"></partial>',
 	      partials: {
-	        'cache-test': 'cache-test {{msg}}'
+	        'cache-test': 'foo {{msg}}'
 	      }
 	    })
 	    new Comp({
 	      el: el,
 	      data: {
-	        msg: 'hi'
+	        msg: 'bar'
 	      }
 	    })
-	    expect(el.textContent).toBe('cache-test hi cache-test hi')
+	    expect(el.textContent).toBe('foo bar foo bar')
 	    // one call for instance, and one for partial
 	    expect(calls).toBe(2)
 	    // cleanup
@@ -14466,20 +14566,20 @@
 	  })
 	
 	  it('default content', function () {
-	    el.innerHTML = '<p>hi</p>'
+	    el.innerHTML = '<p>foo</p>'
 	    options.template = '<div><slot></slot></div>'
 	    mount()
 	    expect(el.firstChild.tagName).toBe('DIV')
 	    expect(el.firstChild.firstChild.tagName).toBe('P')
-	    expect(el.firstChild.firstChild.textContent).toBe('hi')
+	    expect(el.firstChild.firstChild.textContent).toBe('foo')
 	  })
 	
 	  it('no template auto content', function () {
-	    el.innerHTML = '<p>hi</p>'
+	    el.innerHTML = '<p>foo</p>'
 	    options._asComponent = true
 	    mount()
 	    expect(el.firstChild.tagName).toBe('P')
-	    expect(el.firstChild.textContent).toBe('hi')
+	    expect(el.firstChild.textContent).toBe('foo')
 	  })
 	
 	  it('fallback content', function () {
@@ -14519,17 +14619,17 @@
 	  })
 	
 	  it('default content should only render parts not selected', function () {
-	    el.innerHTML = '<div>hi</div><p slot="a">1</p><p slot="b">2</p>'
+	    el.innerHTML = '<div>foo</div><p slot="a">1</p><p slot="b">2</p>'
 	    options.template =
 	      '<slot name="a"></slot>' +
 	      '<slot></slot>' +
 	      '<slot name="b"></slot>'
 	    mount()
-	    expect(el.innerHTML).toBe('<p slot="a">1</p><div>hi</div><p slot="b">2</p>')
+	    expect(el.innerHTML).toBe('<p slot="a">1</p><div>foo</div><p slot="b">2</p>')
 	  })
 	
 	  it('content transclusion with replace', function () {
-	    el.innerHTML = '<p>hi</p>'
+	    el.innerHTML = '<p>foo</p>'
 	    options.template = '<div><div><slot></slot></div></div>'
 	    options.replace = true
 	    mount()
@@ -14537,11 +14637,11 @@
 	    expect(res).not.toBe(el)
 	    expect(res.firstChild.tagName).toBe('DIV')
 	    expect(res.firstChild.firstChild.tagName).toBe('P')
-	    expect(res.firstChild.firstChild.textContent).toBe('hi')
+	    expect(res.firstChild.firstChild.textContent).toBe('foo')
 	  })
 	
 	  it('block instance content transclusion', function () {
-	    el.innerHTML = '<p slot="p">hi</p><span slot="span">ho</span>'
+	    el.innerHTML = '<p slot="p">foo</p><span slot="span">ho</span>'
 	    options.template = '<div></div><slot name="p"></slot><slot name="span"></slot>'
 	    options.replace = true
 	    mount()
@@ -14588,7 +14688,7 @@
 	    var vm = new Vue({
 	      el: el,
 	      data: {
-	        msg: 'hello'
+	        msg: 'foo'
 	      },
 	      template: '<test>{{msg}}</test>',
 	      components: {
@@ -14597,10 +14697,10 @@
 	        }
 	      }
 	    })
-	    expect(el.innerHTML).toBe('<test>hello</test>')
-	    vm.msg = 'what'
+	    expect(el.innerHTML).toBe('<test>foo</test>')
+	    vm.msg = 'bar'
 	    nextTick(function () {
-	      expect(el.innerHTML).toBe('<test>what</test>')
+	      expect(el.innerHTML).toBe('<test>bar</test>')
 	      done()
 	    })
 	  })
@@ -14659,7 +14759,7 @@
 	      template: '<test v-for="n in list" :class="cls" :a="n.a">{{msg}}</test>',
 	      data: {
 	        cls: 'parent',
-	        msg: 'hi',
+	        msg: 'foo',
 	        list: [{a: 1}, {a: 2}, {a: 3}]
 	      },
 	      components: {
@@ -14671,12 +14771,12 @@
 	      }
 	    })
 	    var markup = vm.list.map(function (item) {
-	      return '<div class="child parent">' + item.a + ' hi</div>'
+	      return '<div class="child parent">' + item.a + ' foo</div>'
 	    }).join('')
 	    expect(el.innerHTML).toBe(markup)
-	    vm.msg = 'ho'
+	    vm.msg = 'bar'
 	    markup = vm.list.map(function (item) {
-	      return '<div class="child parent">' + item.a + ' ho</div>'
+	      return '<div class="child parent">' + item.a + ' bar</div>'
 	    }).join('')
 	    nextTick(function () {
 	      expect(el.innerHTML).toBe(markup)
@@ -14826,16 +14926,16 @@
 	      template: '<div v-for="n in 3"><comp></comp></div>',
 	      components: {
 	        comp: {
-	          template: '<div><slot>{{something}}</slot></div>',
+	          template: '<div><slot>{{foo}}</slot></div>',
 	          data: function () {
 	            return {
-	              something: 'hi'
+	              foo: 'bar'
 	            }
 	          }
 	        }
 	      }
 	    })
-	    expect(el.textContent).toBe('hihihi')
+	    expect(el.textContent).toBe('barbarbar')
 	  })
 	
 	  it('fallback for slot with v-if', function (done) {
@@ -14867,7 +14967,7 @@
 	  it('slot inside template', function () {
 	    var vm = new Vue({
 	      el: el,
-	      template: '<test>hi</test>',
+	      template: '<test>foo</test>',
 	      components: {
 	        test: {
 	          data: function () {
@@ -14884,7 +14984,7 @@
 	        }
 	      }
 	    })
-	    expect(vm.$el.textContent).toBe('hi')
+	    expect(vm.$el.textContent).toBe('foo')
 	  })
 	
 	  it('warn dynamic slot attribute', function () {
@@ -14916,32 +15016,42 @@
 	  })
 	
 	  it('plain string', function () {
-	    el.className = 'haha'
+	    el.className = 'foo'
 	    var dir = _.extend({ el: el }, def)
-	    dir.update('test')
-	    expect(el.className).toBe('haha test')
-	    dir.update('what now test')
-	    expect(el.className).toBe('haha test now what')
-	    dir.update('ok cool')
-	    expect(el.className).toBe('haha cool ok')
+	    dir.update('bar')
+	    expect(el.className).toBe('foo bar')
+	    dir.update('baz')
+	    expect(el.className).toBe('foo baz')
+	    dir.update('qux')
+	    expect(el.className).toBe('foo qux')
 	    dir.update()
-	    expect(el.className).toBe('haha')
+	    expect(el.className).toBe('foo')
 	  })
 	
 	  it('object value', function () {
-	    el.className = 'hoho'
+	    el.className = 'foo'
 	    var dir = _.extend({ el: el }, def)
 	    dir.update({
-	      a: true,
-	      b: false
+	      bar: true,
+	      baz: false
 	    })
-	    expect(el.className).toBe('hoho a')
+	    expect(el.className).toBe('foo bar')
 	    dir.update({
-	      b: true
+	      baz: true
 	    })
-	    expect(el.className).toBe('hoho b')
+	    expect(el.className).toBe('foo baz')
 	    dir.update(null)
-	    expect(el.className).toBe('hoho')
+	    expect(el.className).toBe('foo')
+	
+	    dir.update({
+	      'bar baz': true,
+	      qux: false
+	    })
+	    expect(el.className).toBe('foo bar baz')
+	    dir.update({
+	      qux: true
+	    })
+	    expect(el.className).toBe('foo qux')
 	  })
 	
 	  it('array value', function () {
@@ -15091,14 +15201,14 @@
 	      },
 	      components: {
 	        'view-a': {
-	          template: '<div>AAA</div>',
+	          template: '<div>foo</div>',
 	          replace: true,
 	          data: function () {
 	            return { view: 'a' }
 	          }
 	        },
 	        'view-b': {
-	          template: '<div>BBB</div>',
+	          template: '<div>bar</div>',
 	          replace: true,
 	          data: function () {
 	            return { view: 'b' }
@@ -15106,10 +15216,10 @@
 	        }
 	      }
 	    })
-	    expect(el.innerHTML).toBe('<div view="view-a">AAA</div>')
+	    expect(el.innerHTML).toBe('<div view="view-a">foo</div>')
 	    vm.view = 'view-b'
 	    _.nextTick(function () {
-	      expect(el.innerHTML).toBe('<div view="view-b">BBB</div>')
+	      expect(el.innerHTML).toBe('<div view="view-b">bar</div>')
 	      vm.view = ''
 	      _.nextTick(function () {
 	        expect(el.innerHTML).toBe('')
@@ -15126,16 +15236,16 @@
 	        '<component :is="$options.components.async"></component>',
 	      components: {
 	        test: {
-	          template: 'hi'
+	          template: 'foo'
 	        },
 	        async: function (resolve) {
 	          resolve({
-	            template: 'ho'
+	            template: 'bar'
 	          })
 	        }
 	      }
 	    })
-	    expect(el.textContent).toBe('hiho')
+	    expect(el.textContent).toBe('foobar')
 	  })
 	
 	  it('keep-alive', function (done) {
@@ -15150,32 +15260,32 @@
 	      components: {
 	        'view-a': {
 	          created: spyA,
-	          template: '<div>AAA</div>',
+	          template: '<div>foo</div>',
 	          replace: true
 	        },
 	        'view-b': {
 	          created: spyB,
-	          template: '<div>BBB</div>',
+	          template: '<div>bar</div>',
 	          replace: true
 	        }
 	      }
 	    })
-	    expect(el.innerHTML).toBe('<div>AAA</div>')
+	    expect(el.innerHTML).toBe('<div>foo</div>')
 	    expect(spyA.calls.count()).toBe(1)
 	    expect(spyB.calls.count()).toBe(0)
 	    vm.view = 'view-b'
 	    _.nextTick(function () {
-	      expect(el.innerHTML).toBe('<div>BBB</div>')
+	      expect(el.innerHTML).toBe('<div>bar</div>')
 	      expect(spyA.calls.count()).toBe(1)
 	      expect(spyB.calls.count()).toBe(1)
 	      vm.view = 'view-a'
 	      _.nextTick(function () {
-	        expect(el.innerHTML).toBe('<div>AAA</div>')
+	        expect(el.innerHTML).toBe('<div>foo</div>')
 	        expect(spyA.calls.count()).toBe(1)
 	        expect(spyB.calls.count()).toBe(1)
 	        vm.view = 'view-b'
 	        _.nextTick(function () {
-	          expect(el.innerHTML).toBe('<div>BBB</div>')
+	          expect(el.innerHTML).toBe('<div>bar</div>')
 	          expect(spyA.calls.count()).toBe(1)
 	          expect(spyB.calls.count()).toBe(1)
 	          done()
@@ -15270,12 +15380,12 @@
 	      template: '<view-a></view-a>',
 	      components: {
 	        'view-a': {
-	          template: 'AAA',
+	          template: 'foo',
 	          activate: function (ready) {
 	            setTimeout(function () {
 	              expect(el.textContent).toBe('')
 	              ready()
-	              expect(el.textContent).toBe('AAA')
+	              expect(el.textContent).toBe('foo')
 	              done()
 	            }, 0)
 	          }
@@ -15291,7 +15401,7 @@
 	      template: '<view-a></view-a>',
 	      components: {
 	        'view-a': {
-	          template: 'AAA',
+	          template: 'foo',
 	          mixins: [{
 	            activate: function (done) {
 	              expect(el.textContent).toBe('')
@@ -15304,7 +15414,7 @@
 	              expect(mixinSpy).toHaveBeenCalled()
 	              expect(el.textContent).toBe('')
 	              ready()
-	              expect(el.textContent).toBe('AAA')
+	              expect(el.textContent).toBe('foo')
 	              done()
 	            }, 0)
 	          }
@@ -15323,13 +15433,13 @@
 	      template: '<component :is="view"></component>',
 	      components: {
 	        'view-a': {
-	          template: 'AAA',
+	          template: 'foo',
 	          activate: function (ready) {
 	            next = ready
 	          }
 	        },
 	        'view-b': {
-	          template: 'BBB',
+	          template: 'bar',
 	          activate: function (ready) {
 	            next = ready
 	          }
@@ -15339,14 +15449,14 @@
 	    expect(next).toBeTruthy()
 	    expect(el.textContent).toBe('')
 	    next()
-	    expect(el.textContent).toBe('AAA')
+	    expect(el.textContent).toBe('foo')
 	    vm.view = 'view-b'
 	    _.nextTick(function () {
-	      expect(el.textContent).toBe('AAA')
+	      expect(el.textContent).toBe('foo')
 	      // old vm is already removed, this is the new vm
 	      expect(vm.$children.length).toBe(1)
 	      next()
-	      expect(el.textContent).toBe('BBB')
+	      expect(el.textContent).toBe('bar')
 	      // ensure switching before ready event correctly
 	      // cleans up the component being waited on.
 	      // see #1152
@@ -15357,7 +15467,7 @@
 	        vm.view = 'view-b'
 	        _.nextTick(function () {
 	          expect(vm.$children.length).toBe(1)
-	          expect(vm.$children[0].$el.textContent).toBe('BBB')
+	          expect(vm.$children[0].$el.textContent).toBe('bar')
 	          // calling view-a's ready callback here should not throw
 	          // because it should've been cancelled (#1994)
 	          expect(callback).not.toThrow()
@@ -15377,13 +15487,13 @@
 	      template: '<component :is="view" keep-alive></component>',
 	      components: {
 	        'view-a': {
-	          template: 'AAA',
+	          template: 'foo',
 	          activate: function (ready) {
 	            next = ready
 	          }
 	        },
 	        'view-b': {
-	          template: 'BBB',
+	          template: 'bar',
 	          activate: function (ready) {
 	            next = ready
 	          }
@@ -15391,17 +15501,17 @@
 	      }
 	    })
 	    next()
-	    expect(el.textContent).toBe('AAA')
+	    expect(el.textContent).toBe('foo')
 	    vm.view = 'view-b'
 	    _.nextTick(function () {
 	      expect(vm.$children.length).toBe(2)
 	      next()
-	      expect(el.textContent).toBe('BBB')
+	      expect(el.textContent).toBe('bar')
 	      vm.view = 'view-a'
 	      _.nextTick(function () {
 	        // should switch without the need to emit
 	        // because of keep-alive
-	        expect(el.textContent).toBe('AAA')
+	        expect(el.textContent).toBe('foo')
 	        done()
 	      })
 	    })
@@ -15418,8 +15528,8 @@
 	      },
 	      template: '<component :is="view" transition="test" transition-mode="in-out"></component>',
 	      components: {
-	        'view-a': { template: 'AAA' },
-	        'view-b': { template: 'BBB' }
+	        'view-a': { template: 'foo' },
+	        'view-b': { template: 'bar' }
 	      },
 	      transitions: {
 	        test: {
@@ -15434,17 +15544,17 @@
 	        }
 	      }
 	    })
-	    expect(el.textContent).toBe('AAA')
+	    expect(el.textContent).toBe('foo')
 	    vm.view = 'view-b'
 	    _.nextTick(function () {
 	      expect(spy1).toHaveBeenCalled()
 	      expect(spy2).not.toHaveBeenCalled()
-	      expect(el.textContent).toBe('AAABBB')
+	      expect(el.textContent).toBe('foobar')
 	      next()
 	      _.nextTick(function () {
 	        expect(spy2).toHaveBeenCalled()
 	        _.nextTick(function () {
-	          expect(el.textContent).toBe('BBB')
+	          expect(el.textContent).toBe('bar')
 	          done()
 	        })
 	      })
@@ -15462,8 +15572,8 @@
 	      },
 	      template: '<component :is="view" transition="test" transition-mode="out-in"></component>',
 	      components: {
-	        'view-a': { template: 'AAA' },
-	        'view-b': { template: 'BBB' }
+	        'view-a': { template: 'foo' },
+	        'view-b': { template: 'bar' }
 	      },
 	      transitions: {
 	        test: {
@@ -15478,15 +15588,15 @@
 	        }
 	      }
 	    })
-	    expect(el.textContent).toBe('AAA')
+	    expect(el.textContent).toBe('foo')
 	    vm.view = 'view-b'
 	    _.nextTick(function () {
 	      expect(spy1).toHaveBeenCalled()
 	      expect(spy2).not.toHaveBeenCalled()
-	      expect(el.textContent).toBe('AAA')
+	      expect(el.textContent).toBe('foo')
 	      next()
 	      expect(spy2).toHaveBeenCalled()
-	      expect(el.textContent).toBe('BBB')
+	      expect(el.textContent).toBe('bar')
 	      done()
 	    })
 	  })
@@ -15563,7 +15673,7 @@
 	    var vm = new Vue({
 	      el: el,
 	      data: {
-	        b: 'B'
+	        b: 'bar'
 	      },
 	      template: '<test v-bind:b="b" v-ref:child></test>',
 	      components: {
@@ -15573,14 +15683,14 @@
 	        }
 	      }
 	    })
-	    expect(el.innerHTML).toBe('<test>B</test>')
-	    vm.b = 'BB'
+	    expect(el.innerHTML).toBe('<test>bar</test>')
+	    vm.b = 'baz'
 	    Vue.nextTick(function () {
-	      expect(el.innerHTML).toBe('<test>BB</test>')
-	      vm.$refs.child.b = 'BBB'
-	      expect(vm.b).toBe('BB')
+	      expect(el.innerHTML).toBe('<test>baz</test>')
+	      vm.$refs.child.b = 'qux'
+	      expect(vm.b).toBe('baz')
 	      Vue.nextTick(function () {
-	        expect(el.innerHTML).toBe('<test>BBB</test>')
+	        expect(el.innerHTML).toBe('<test>qux</test>')
 	        done()
 	      })
 	    })
@@ -15635,17 +15745,17 @@
 	    vm.b = 'BB'
 	    Vue.nextTick(function () {
 	      expect(el.firstChild.textContent).toBe('AA BB AA')
-	      vm.test = { a: 'AAA' }
+	      vm.test = { a: 'foo' }
 	      Vue.nextTick(function () {
-	        expect(el.firstChild.textContent).toBe('AAA BB AAA')
+	        expect(el.firstChild.textContent).toBe('foo BB foo')
 	        vm.$data = {
-	          b: 'BBB',
+	          b: 'bar',
 	          test: {
-	            a: 'AAAA'
+	            a: 'fooA'
 	          }
 	        }
 	        Vue.nextTick(function () {
-	          expect(el.firstChild.textContent).toBe('AAAA BBB AAAA')
+	          expect(el.firstChild.textContent).toBe('fooA bar fooA')
 	          // test two-way
 	          vm.$refs.child.bb = 'B'
 	          vm.$refs.child.testt = { a: 'A' }
@@ -15670,7 +15780,7 @@
 	    var vm = new Vue({
 	      el: el,
 	      data: {
-	        b: 'B'
+	        b: 'foo'
 	      },
 	      template: '<test :b.once="b" v-ref:child></test>',
 	      components: {
@@ -15680,10 +15790,10 @@
 	        }
 	      }
 	    })
-	    expect(el.innerHTML).toBe('<test>B</test>')
-	    vm.b = 'BB'
+	    expect(el.innerHTML).toBe('<test>foo</test>')
+	    vm.b = 'bar'
 	    Vue.nextTick(function () {
-	      expect(el.innerHTML).toBe('<test>B</test>')
+	      expect(el.innerHTML).toBe('<test>foo</test>')
 	      done()
 	    })
 	  })
@@ -15692,9 +15802,9 @@
 	    var vm = new Vue({
 	      el: el,
 	      data: {
-	        b: 'B'
+	        b: 'foo'
 	      },
-	      template: '<test :b.sync=" b + \'B\'" v-ref:child></test>',
+	      template: '<test :b.sync=" b + \'bar\'" v-ref:child></test>',
 	      components: {
 	        test: {
 	          props: ['b'],
@@ -15703,14 +15813,14 @@
 	      }
 	    })
 	    expect('Cannot bind two-way prop with non-settable parent path').toHaveBeenWarned()
-	    expect(el.innerHTML).toBe('<test>BB</test>')
-	    vm.b = 'BB'
+	    expect(el.innerHTML).toBe('<test>foobar</test>')
+	    vm.b = 'baz'
 	    Vue.nextTick(function () {
-	      expect(el.innerHTML).toBe('<test>BBB</test>')
-	      vm.$refs.child.b = 'hahaha'
+	      expect(el.innerHTML).toBe('<test>bazbar</test>')
+	      vm.$refs.child.b = 'qux'
 	      Vue.nextTick(function () {
-	        expect(vm.b).toBe('BB')
-	        expect(el.innerHTML).toBe('<test>hahaha</test>')
+	        expect(vm.b).toBe('baz')
+	        expect(el.innerHTML).toBe('<test>qux</test>')
 	        done()
 	      })
 	    })
@@ -15719,9 +15829,9 @@
 	  it('warn expect two-way', function () {
 	    new Vue({
 	      el: el,
-	      template: '<test :test="ok"></test>',
+	      template: '<test :test="foo"></test>',
 	      data: {
-	        ok: 'hi'
+	        foo: 'bar'
 	      },
 	      components: {
 	        test: {
@@ -15741,7 +15851,7 @@
 	      el: el,
 	      template: '<test></test>',
 	      data: {
-	        ok: 'hi'
+	        foo: 'bar'
 	      },
 	      components: {
 	        test: {
@@ -15786,7 +15896,7 @@
 	        }
 	      }
 	    })
-	    expect('Use a factory function to return the default value').toHaveBeenWarned()
+	    expect('use a factory function to return the default value').toHaveBeenWarned()
 	    expect(getWarnCount()).toBe(2)
 	  })
 	
@@ -15815,10 +15925,10 @@
 	      // unbind the two props
 	      child._directives[0].unbind()
 	      child._directives[1].unbind()
-	      child.aa = 'AAA'
+	      child.aa = 'foo'
 	      vm.b = 'BBB'
 	      Vue.nextTick(function () {
-	        expect(el.firstChild.textContent).toBe('AAA BB')
+	        expect(el.firstChild.textContent).toBe('foo BB')
 	        expect(vm.a).toBe('AA')
 	        done()
 	      })
@@ -15830,8 +15940,8 @@
 	      el: el,
 	      template: '<test :b="a" :c="d"></test>',
 	      data: {
-	        a: 'AAA',
-	        d: 'DDD'
+	        a: 'foo',
+	        d: 'bar'
 	      },
 	      components: {
 	        test: {
@@ -15841,7 +15951,7 @@
 	        }
 	      }
 	    })
-	    expect(el.innerHTML).toBe('<p>AAA</p><p>DDD</p>')
+	    expect(el.innerHTML).toBe('<p>foo</p><p>bar</p>')
 	  })
 	
 	  describe('assertions', function () {
@@ -15917,6 +16027,13 @@
 	      expect('Expected custom type').toHaveBeenWarned()
 	    })
 	
+	    it('multiple types', function () {
+	      makeInstance([], [Array, Number, Boolean])
+	      expect(getWarnCount()).toBe(0)
+	      makeInstance({}, [Array, Number, Boolean])
+	      expect('Expected Array, Number, Boolean').toHaveBeenWarned()
+	    })
+	
 	    it('custom validator', function () {
 	      makeInstance(123, null, function (v) {
 	        return v === 123
@@ -15943,12 +16060,38 @@
 	      expect('Expected String').toHaveBeenWarned()
 	    })
 	
+	    it('multiple types + custom validator', function () {
+	      makeInstance(123, [Number, String, Boolean], function (v) {
+	        return v === 123
+	      })
+	      expect(getWarnCount()).toBe(0)
+	      makeInstance(123, [Number, String, Boolean], function (v) {
+	        return v === 234
+	      })
+	      expect('custom validator check failed').toHaveBeenWarned()
+	      makeInstance(123, [String, Boolean], function (v) {
+	        return v === 123
+	      })
+	      expect('Expected String, Boolean').toHaveBeenWarned()
+	    })
+	
 	    it('type check + coerce', function () {
 	      makeInstance(123, String, null, String)
 	      expect(getWarnCount()).toBe(0)
 	      makeInstance('123', Number, null, Number)
 	      expect(getWarnCount()).toBe(0)
 	      makeInstance('123', Boolean, null, function (val) {
+	        return val === '123'
+	      })
+	      expect(getWarnCount()).toBe(0)
+	    })
+	
+	    it('multiple types + custom validator', function () {
+	      makeInstance(123, [String, Boolean, Number], null, String)
+	      expect(getWarnCount()).toBe(0)
+	      makeInstance('123', [String, Boolean, Number], null, Number)
+	      expect(getWarnCount()).toBe(0)
+	      makeInstance('123', [String, Boolean, Function], null, function (val) {
 	        return val === '123'
 	      })
 	      expect(getWarnCount()).toBe(0)
@@ -15991,8 +16134,8 @@
 	      el: el,
 	      template: '<test :b="a" :c="d"></test>',
 	      data: {
-	        a: 'AAA',
-	        d: 'DDD'
+	        a: 'foo',
+	        d: 'bar'
 	      },
 	      components: {
 	        test: {
@@ -16011,7 +16154,7 @@
 	    })
 	    expect('Missing required prop').toHaveBeenWarned()
 	    expect('Expected Number').toHaveBeenWarned()
-	    expect(el.textContent).toBe('AAA')
+	    expect(el.textContent).toBe('foo')
 	  })
 	
 	  it('mixed syntax', function () {
@@ -16019,8 +16162,8 @@
 	      el: el,
 	      template: '<test :b="a" :c="d"></test>',
 	      data: {
-	        a: 'AAA',
-	        d: 'DDD'
+	        a: 'foo',
+	        d: 'bar'
 	      },
 	      components: {
 	        test: {
@@ -16041,7 +16184,7 @@
 	    })
 	    expect('Missing required prop').toHaveBeenWarned()
 	    expect('Expected Number').toHaveBeenWarned()
-	    expect(el.textContent).toBe('AAA')
+	    expect(el.textContent).toBe('foo')
 	  })
 	
 	  it('should respect default value of a Boolean prop', function () {
@@ -16211,10 +16354,13 @@
 	    expect('did you mean `prop-c`').toHaveBeenWarned()
 	  })
 	
-	  it('should use default for undefined values', function () {
+	  it('should use default for undefined values', function (done) {
 	    var vm = new Vue({
 	      el: el,
 	      template: '<comp :a="a"></comp>',
+	      data: {
+	        a: undefined
+	      },
 	      components: {
 	        comp: {
 	          template: '{{a}}',
@@ -16227,6 +16373,15 @@
 	      }
 	    })
 	    expect(vm.$el.textContent).toBe('1')
+	    vm.a = 2
+	    Vue.nextTick(function () {
+	      expect(vm.$el.textContent).toBe('2')
+	      vm.a = undefined
+	      Vue.nextTick(function () {
+	        expect(vm.$el.textContent).toBe('1')
+	        done()
+	      })
+	    })
 	  })
 	
 	  it('non reactive values passed down as prop should not be converted', function (done) {
@@ -16333,6 +16488,56 @@
 	      expect(vm.$el.textContent).toBe('2345')
 	      done()
 	    })
+	  })
+	
+	  it('prop coerced value should be reactive', function (done) {
+	    var vm = new Vue({
+	      el: el,
+	      template: '<comp :obj="obj"></comp>',
+	      data: {
+	        obj: { ok: true }
+	      },
+	      components: {
+	        comp: {
+	          props: {
+	            obj: {
+	              coerce: function () {
+	                return { ok: false }
+	              }
+	            }
+	          },
+	          template: '<div>{{ obj.ok }}</div>'
+	        }
+	      }
+	    })
+	    expect(vm.$el.textContent).toBe('false')
+	    vm.$children[0].obj.ok = true
+	    Vue.nextTick(function () {
+	      expect(vm.$el.textContent).toBe('true')
+	      done()
+	    })
+	  })
+	
+	  it('prop coercion should be applied after defaulting', function () {
+	    var vm = new Vue({
+	      el: el,
+	      template: '<comp></comp>',
+	      components: {
+	        comp: {
+	          props: {
+	            color: {
+	              type: String,
+	              default: 'blue',
+	              coerce: function (color) {
+	                return 'color-' + color
+	              }
+	            }
+	          },
+	          template: '<div>{{ color }}</div>'
+	        }
+	      }
+	    })
+	    expect(vm.$el.textContent).toBe('color-blue')
 	  })
 	})
 
@@ -16617,8 +16822,8 @@
 	  it('should set property for input value', function () {
 	    dir.el = document.createElement('input')
 	    dir.arg = 'value'
-	    dir.update('what')
-	    expect(dir.el.value).toBe('what')
+	    dir.update('foo')
+	    expect(dir.el.value).toBe('foo')
 	    dir.el = document.createElement('input')
 	    dir.el.type = 'checkbox'
 	    dir.arg = 'checked'
@@ -16640,11 +16845,11 @@
 	  it('object format', function () {
 	    dir.el = document.createElement('input')
 	    dir.update({
-	      'test': 'hi',
-	      'value': 'what'
+	      'test': 'foo',
+	      'value': 'bar'
 	    })
-	    expect(dir.el.getAttribute('test')).toBe('hi')
-	    expect(dir.el.value).toBe('what')
+	    expect(dir.el.getAttribute('test')).toBe('foo')
+	    expect(dir.el.value).toBe('bar')
 	    dir.update({
 	      'xlink:special': 'ok'
 	    })
@@ -16946,6 +17151,28 @@
 	    expect(el.innerHTML).toBe('<div>aaa a</div><div>bbb b</div>')
 	  })
 	
+	  it('check priorities: v-if before v-for', function () {
+	    new Vue({
+	      el: el,
+	      data: {
+	        items: [1, 2, 3]
+	      },
+	      template: '<div v-if="item < 3" v-for="item in items">{{item}}</div>'
+	    })
+	    expect(el.textContent).toBe('12')
+	  })
+	
+	  it('check priorities: v-if after v-for', function () {
+	    new Vue({
+	      el: el,
+	      data: {
+	        items: [1, 2, 3]
+	      },
+	      template: '<div v-for="item in items" v-if="item < 3">{{item}}</div>'
+	    })
+	    expect(el.textContent).toBe('12')
+	  })
+	
 	  it('component', function (done) {
 	    var vm = new Vue({
 	      el: el,
@@ -17095,17 +17322,17 @@
 	      },
 	      components: {
 	        'view-a': {
-	          template: 'AAA'
+	          template: 'foo'
 	        },
 	        'view-b': {
-	          template: 'BBB'
+	          template: 'bar'
 	        },
 	        'view-c': {
-	          template: 'CCC'
+	          template: 'baz'
 	        }
 	      }
 	    })
-	    expect(el.innerHTML).toBe('<component>AAA</component><component>BBB</component><component>CCC</component>')
+	    expect(el.innerHTML).toBe('<component>foo</component><component>bar</component><component>baz</component>')
 	    // primitive
 	    el = document.createElement('div')
 	    new Vue({
@@ -17116,17 +17343,17 @@
 	      },
 	      components: {
 	        'view-a': {
-	          template: 'AAA'
+	          template: 'foo'
 	        },
 	        'view-b': {
-	          template: 'BBB'
+	          template: 'bar'
 	        },
 	        'view-c': {
-	          template: 'CCC'
+	          template: 'baz'
 	        }
 	      }
 	    })
-	    expect(el.innerHTML).toBe('<component>AAA</component><component>BBB</component><component>CCC</component>')
+	    expect(el.innerHTML).toBe('<component>foo</component><component>bar</component><component>baz</component>')
 	  })
 	
 	  it('fragment loop', function (done) {
@@ -17210,13 +17437,13 @@
 	      el: el,
 	      template: '<div v-for="item in list | filterBy filterKey | orderBy sortKey -1 | limitBy 2">{{item.id}}</div>',
 	      data: {
-	        filterKey: 'hi!',
+	        filterKey: 'foo',
 	        sortKey: 'id',
 	        list: [
-	          { id: 1, id2: 4, msg: 'hi!' },
-	          { id: 2, id2: 3, msg: 'na' },
-	          { id: 3, id2: 2, msg: 'hi!' },
-	          { id: 4, id2: 1, msg: 'na' }
+	          { id: 1, id2: 4, msg: 'foo' },
+	          { id: 2, id2: 3, msg: 'bar' },
+	          { id: 3, id2: 2, msg: 'foo' },
+	          { id: 4, id2: 1, msg: 'bar' }
 	        ]
 	      }
 	    })
@@ -17224,7 +17451,7 @@
 	
 	    go(
 	      function () {
-	        vm.filterKey = 'na'
+	        vm.filterKey = 'bar'
 	      }, assertMarkup
 	    )
 	    .then(
@@ -17239,14 +17466,14 @@
 	    )
 	    .then(
 	      function () {
-	        vm.list.push({ id: 0, id2: 4, msg: 'na' })
+	        vm.list.push({ id: 0, id2: 4, msg: 'bar' })
 	      }, assertMarkup
 	    )
 	    .then(
 	      function () {
 	        vm.list = [
-	          { id: 33, id2: 4, msg: 'hi!' },
-	          { id: 44, id2: 3, msg: 'na' }
+	          { id: 33, id2: 4, msg: 'foo' },
+	          { id: 44, id2: 3, msg: 'bar' }
 	        ]
 	      }, assertMarkup
 	    )
@@ -17307,9 +17534,9 @@
 	      template: '<test v-for="item in list" :item="item" track-by="id"></test>',
 	      data: {
 	        list: [
-	          { id: 1, msg: 'hi' },
-	          { id: 2, msg: 'ha' },
-	          { id: 3, msg: 'ho' }
+	          { id: 1, msg: 'foo' },
+	          { id: 2, msg: 'bar' },
+	          { id: 3, msg: 'baz' }
 	        ]
 	      },
 	      components: {
@@ -17324,8 +17551,52 @@
 	    // swap the data with different objects, but with
 	    // the same ID!
 	    vm.list = [
-	      { id: 1, msg: 'wa' },
-	      { id: 2, msg: 'wo' }
+	      { id: 1, msg: 'qux' },
+	      { id: 2, msg: 'quux' }
+	    ]
+	    _.nextTick(function () {
+	      assertMarkup()
+	      // should reuse old vms!
+	      var i = 2
+	      while (i--) {
+	        expect(vm.$children[i]).toBe(oldVms[i])
+	      }
+	      done()
+	    })
+	
+	    function assertMarkup () {
+	      var markup = vm.list.map(function (item) {
+	        return '<test>' + item.msg + '</test>'
+	      }).join('')
+	      expect(el.innerHTML).toBe(markup)
+	    }
+	  })
+	
+	  it('track by nested id path', function (done) {
+	    var vm = new Vue({
+	      el: el,
+	      template: '<test v-for="item in list" :item="item" track-by="nested.id"></test>',
+	      data: {
+	        list: [
+	          { nested: { id: 1 }, msg: 'foo' },
+	          { nested: { id: 2 }, msg: 'bar' },
+	          { nested: { id: 3 }, msg: 'baz' }
+	        ]
+	      },
+	      components: {
+	        test: {
+	          props: ['item'],
+	          template: '{{item.msg}}'
+	        }
+	      }
+	    })
+	    assertMarkup()
+	    var oldVms = vm.$children.slice()
+	    // swap the data with different objects, but with
+	    // the same ID!
+	    vm.list = [
+	      { nested: { id: 1 }, msg: 'qux' },
+	      { nested: { id: 2 }, msg: 'quux' }
 	    ]
 	    _.nextTick(function () {
 	      assertMarkup()
@@ -17389,7 +17660,7 @@
 	      el: el,
 	      template: '<div v-for="items"></div>'
 	    })
-	    expect('Alias is required in v-for').toHaveBeenWarned()
+	    expect('alias is required').toHaveBeenWarned()
 	  })
 	
 	  it('warn duplicate objects', function () {
@@ -17581,8 +17852,8 @@
 	          { id: 1, msg: 'hi', list: [
 	            { id: 1, msg: 'hi foo' }
 	          ] },
-	          { id: 2, msg: 'ha', list: [] },
-	          { id: 3, msg: 'ho', list: [] }
+	          { id: 2, msg: 'bar', list: [] },
+	          { id: 3, msg: 'baz', list: [] }
 	        ]
 	      }
 	    })
@@ -17592,11 +17863,11 @@
 	    var oldInnerNodes = el.children[0].children
 	
 	    vm.list = [
-	      { id: 1, msg: 'wa', list: [
+	      { id: 1, msg: 'baz', list: [
 	        { id: 1, msg: 'hi foo' },
 	        { id: 2, msg: 'hi bar' }
 	      ] },
-	      { id: 2, msg: 'wo', list: [] }
+	      { id: 2, msg: 'qux', list: [] }
 	    ]
 	
 	    _.nextTick(function () {
@@ -17623,8 +17894,8 @@
 	
 	  it('switch between object-converted & array mode', function (done) {
 	    var obj = {
-	      a: { msg: 'AA' },
-	      b: { msg: 'BB' }
+	      a: { msg: 'foo' },
+	      b: { msg: 'bar' }
 	    }
 	    var arr = [obj.b, obj.a]
 	    var vm = new Vue({
@@ -17639,7 +17910,7 @@
 	    }).join(''))
 	    vm.obj = arr
 	    _.nextTick(function () {
-	      expect(el.innerHTML).toBe('<div>BB</div><div>AA</div>')
+	      expect(el.innerHTML).toBe('<div>bar</div><div>foo</div>')
 	      // make sure it cleared the cache
 	      expect(vm._directives[0].cache.a).toBeNull()
 	      expect(vm._directives[0].cache.b).toBeNull()
@@ -18390,10 +18661,10 @@
 	      template: '<component :is="view" v-if="ok"></component>',
 	      components: {
 	        'view-a': {
-	          template: 'AAA'
+	          template: 'foo'
 	        },
 	        'view-b': {
-	          template: 'BBB'
+	          template: 'bar'
 	        }
 	      }
 	    })
@@ -18402,12 +18673,12 @@
 	    // toggle if with lazy instantiation
 	    vm.ok = true
 	    nextTick(function () {
-	      expect(el.innerHTML).toBe('<component>AAA</component>')
+	      expect(el.innerHTML).toBe('<component>foo</component>')
 	      expect(vm.$children.length).toBe(1)
 	      // switch view when if=true
 	      vm.view = 'view-b'
 	      nextTick(function () {
-	        expect(el.innerHTML).toBe('<component>BBB</component>')
+	        expect(el.innerHTML).toBe('<component>bar</component>')
 	        expect(vm.$children.length).toBe(1)
 	        // toggle if when already instantiated
 	        vm.ok = false
@@ -18418,7 +18689,7 @@
 	          vm.view = 'view-a'
 	          vm.ok = true
 	          nextTick(function () {
-	            expect(el.innerHTML).toBe('<component>AAA</component>')
+	            expect(el.innerHTML).toBe('<component>foo</component>')
 	            expect(vm.$children.length).toBe(1)
 	            done()
 	          })
@@ -18606,7 +18877,7 @@
 	      template: '<template v-if="show"><test></test></template>',
 	      components: {
 	        test: {
-	          template: 'hi',
+	          template: 'foo',
 	          replace: true,
 	          attached: attachSpy,
 	          detached: detachSpy
@@ -18634,7 +18905,7 @@
 	    })
 	
 	    function assertMarkup () {
-	      expect(el.innerHTML).toBe(vm.show ? 'hi' : '')
+	      expect(el.innerHTML).toBe(vm.show ? 'foo' : '')
 	    }
 	
 	    function assertCalls (attach, detach) {
@@ -19278,15 +19549,15 @@
 	    var vm = new Vue({
 	      el: el,
 	      data: {
-	        test: 'aaa'
+	        test: 'foo'
 	      },
 	      template: '<input v-model="test">'
 	    })
 	    var input = el.firstChild
-	    input.value = 'aa'
+	    input.value = 'bar'
 	    trigger(input, 'cut')
 	    _.nextTick(function () {
-	      expect(vm.test).toBe('aa')
+	      expect(vm.test).toBe('bar')
 	      input.value = 'a'
 	      trigger(input, 'keyup', function (e) {
 	        e.keyCode = 8
@@ -19294,7 +19565,7 @@
 	      expect(vm.test).toBe('a')
 	      // teardown
 	      vm._directives[0]._teardown()
-	      input.value = 'bbb'
+	      input.value = 'bar'
 	      trigger(input, 'keyup', function (e) {
 	        e.keyCode = 8
 	      })
@@ -19309,8 +19580,8 @@
 	      var vm = new Vue({
 	        el: el,
 	        data: {
-	          test: 'aaa',
-	          test2: 'bbb'
+	          test: 'foo',
+	          test2: 'bar'
 	        },
 	        template: '<input v-model="test"><input v-model="test2 | uppercase">'
 	      })
@@ -19318,19 +19589,19 @@
 	      var input2 = el.childNodes[1]
 	      trigger(input, 'compositionstart')
 	      trigger(input2, 'compositionstart')
-	      input.value = input2.value = 'ccc'
+	      input.value = input2.value = 'baz'
 	      // input before composition unlock should not call set
 	      trigger(input, 'input')
 	      trigger(input2, 'input')
-	      expect(vm.test).toBe('aaa')
-	      expect(vm.test2).toBe('bbb')
+	      expect(vm.test).toBe('foo')
+	      expect(vm.test2).toBe('bar')
 	      // after composition unlock it should work
 	      trigger(input, 'compositionend')
 	      trigger(input2, 'compositionend')
 	      trigger(input, 'input')
 	      trigger(input2, 'input')
-	      expect(vm.test).toBe('ccc')
-	      expect(vm.test2).toBe('ccc')
+	      expect(vm.test).toBe('baz')
+	      expect(vm.test2).toBe('baz')
 	      // IE complains about "unspecified error" when calling
 	      // setSelectionRange() on an input element that's been
 	      // removed from the DOM, so we wait until the
@@ -19343,13 +19614,13 @@
 	    var vm = new Vue({
 	      el: el,
 	      data: {
-	        test: 'b',
-	        b: 'BB'
+	        test: 'foo',
+	        b: 'bar'
 	      },
-	      template: '<textarea v-model="test">a {{b}} c</textarea>'
+	      template: '<textarea v-model="test">foo {{b}} baz</textarea>'
 	    })
-	    expect(vm.test).toBe('a BB c')
-	    expect(el.firstChild.value).toBe('a BB c')
+	    expect(vm.test).toBe('foo bar baz')
+	    expect(el.firstChild.value).toBe('foo bar baz')
 	  })
 	
 	  it('warn invalid tag', function () {
@@ -19484,7 +19755,7 @@
 	        '</form>',
 	      data: {
 	        ok: true,
-	        msg: 'hi'
+	        msg: 'foo'
 	      },
 	      methods: {
 	        save: function () {
@@ -19997,16 +20268,16 @@
 	        comp: {
 	          template: '<slot></slot>',
 	          data: function () {
-	            return { msg: 'hi' }
+	            return { msg: 'foo' }
 	          }
 	        }
 	      }
 	    })
 	    expect(getWarnCount()).toBe(0)
-	    expect(vm.$el.textContent).toBe('hi')
-	    vm.$children[0].msg = 'ho'
+	    expect(vm.$el.textContent).toBe('foo')
+	    vm.$children[0].msg = 'bar'
 	    _.nextTick(function () {
-	      expect(vm.$el.textContent).toBe('ho')
+	      expect(vm.$el.textContent).toBe('bar')
 	      done()
 	    })
 	  })
@@ -20093,8 +20364,8 @@
 	    }
 	    _.extend(dir, def)
 	    dir.bind()
-	    dir.update('hi')
-	    expect(dir.el.textContent).toBe('hi')
+	    dir.update('foo')
+	    expect(dir.el.textContent).toBe('foo')
 	    dir.update(123)
 	    expect(dir.el.textContent).toBe('123')
 	  })
@@ -20105,8 +20376,8 @@
 	    }
 	    _.extend(dir, def)
 	    dir.bind()
-	    dir.update('hi')
-	    expect(dir.el.nodeValue).toBe('hi')
+	    dir.update('foo')
+	    expect(dir.el.nodeValue).toBe('foo')
 	    dir.update(123)
 	    expect(dir.el.nodeValue).toBe('123')
 	  })
@@ -20323,6 +20594,8 @@
 	    // no sort key
 	    res = filter(arr, null)
 	    expect(res).toBe(arr)
+	    res = filter(arr)
+	    expect(res).toBe(arr)
 	  })
 	
 	  it('orderBy on Object-converted array', function () {
@@ -20346,7 +20619,69 @@
 	    res = filter(arr, 'v')
 	    assertArray(res, [arr[1], arr[2], arr[0]])
 	  })
+	
+	  it('orderBy primitive values', function () {
+	    var filter = filters.orderBy
+	    var arr = [9, 11, 1, 2]
+	    var res = filter(arr, true)
+	    assertArray(res, [arr[2], arr[3], arr[0], arr[1]])
+	  })
+	
+	  it('orderBy multiple fields', function () {
+	    var filter = filters.orderBy
+	    var arr = [
+	      { a: 1, b: 1, c: 1 }, // 0
+	      { a: 0, b: 1, c: 1 }, // 1
+	      { a: 1, b: 2, c: 0 }, // 2
+	      { a: 1, b: 0, c: 0 }, // 3
+	      { a: 0, b: 0, c: 0 }, // 4
+	      { a: 0, b: 1, c: 0 }  // 5
+	    ]
+	    var res
+	    // sort two keys
+	    res = filter(arr, ['a', 'b'])
+	    assertArray(res, [arr[4], arr[1], arr[5], arr[3], arr[0], arr[2]])
+	    res = filter(arr, 'a', 'b')
+	    assertArray(res, [arr[4], arr[1], arr[5], arr[3], arr[0], arr[2]])
+	
+	    // sort two keys with order
+	    res = filter(arr, ['a', 'b'], 1)
+	    assertArray(res, [arr[4], arr[1], arr[5], arr[3], arr[0], arr[2]])
+	    res = filter(arr, 'a', 'b', 1)
+	    assertArray(res, [arr[4], arr[1], arr[5], arr[3], arr[0], arr[2]])
+	
+	    // sort three keys
+	    res = filter(arr, ['a', 'b', 'c'])
+	    assertArray(res, [arr[4], arr[5], arr[1], arr[3], arr[0], arr[2]])
+	    res = filter(arr, 'a', 'b', 'c')
+	    assertArray(res, [arr[4], arr[5], arr[1], arr[3], arr[0], arr[2]])
+	
+	    // reverse two key. Preserves order when equal: 1 then 5
+	    res = filter(arr, ['a', 'b'], -1)
+	    assertArray(res, [arr[2], arr[0], arr[3], arr[1], arr[5], arr[4]])
+	    res = filter(arr, 'a', 'b', -1)
+	    assertArray(res, [arr[2], arr[0], arr[3], arr[1], arr[5], arr[4]])
+	  })
+	
+	  it('orderBy using a compare function', function () {
+	    var filter = filters.orderBy
+	    var arr = [9, 11, 1, 2]
+	    var res = filter(arr, evenBeforeOdd)
+	    assertArray(res, [arr[3], arr[2], arr[0], arr[1]])
+	    res = filter(arr, evenBeforeOdd, 1)
+	    assertArray(res, [arr[3], arr[2], arr[0], arr[1]])
+	    res = filter(arr, evenBeforeOdd, -1)
+	    assertArray(res, [arr[1], arr[0], arr[2], arr[3]])
+	  })
 	})
+	
+	function evenBeforeOdd (a, b) {
+	  if (a % 2 === 0) {
+	    if (b % 2 === 0) return a - b
+	    else return -1
+	  } else if (b % 2 === 0) return 1
+	    else return a - b
+	}
 	
 	function assertArray (res, expectations) {
 	  expect(res.length).toBe(expectations.length)
@@ -20731,7 +21066,7 @@
 	          comp: {}
 	        }
 	      })
-	      expect('v-on:test="onThat" on component <comp> expects a function value').toHaveBeenWarned()
+	      expect('v-on:test="onThat" expects a function value').toHaveBeenWarned()
 	    })
 	
 	    it('passing $arguments', function () {
@@ -20893,7 +21228,7 @@
 	  describe('_applyFilters', function () {
 	    var vm = new Vue({
 	      data: {
-	        msg: 'BBB'
+	        msg: 'bar'
 	      },
 	      filters: {
 	        read: function (v, arg) {
@@ -20930,11 +21265,11 @@
 	
 	    it('read', function () {
 	      var filters = [
-	        { name: 'read', args: [{dynamic: false, value: 'AAA'}] },
+	        { name: 'read', args: [{dynamic: false, value: 'foo'}] },
 	        { name: 'read2', args: [{dynamic: true, value: 'msg'}] }
 	      ]
 	      var val = vm._applyFilters('test', null, filters, false)
-	      expect(val).toBe('test read:AAA read2:BBB')
+	      expect(val).toBe('test read:foo read2:bar')
 	    })
 	
 	    it('write', function () {
@@ -20957,7 +21292,7 @@
 	    })
 	
 	    it('warn not found', function () {
-	      vm._applyFilters('what', null, [{name: 'wtf'}])
+	      vm._applyFilters('waldo', null, [{name: 'nemo'}])
 	      expect('Failed to resolve filter').toHaveBeenWarned()
 	    })
 	  })
@@ -21255,18 +21590,18 @@
 	      el: document.createElement('div'),
 	      template: '<div v-test>{{test}}</div>',
 	      data: {
-	        test: 'hi'
+	        test: 'foo'
 	      },
 	      directives: {
 	        test: {
 	          bind: function () {
-	            this.el.insertBefore(document.createTextNode('yo '),
+	            this.el.insertBefore(document.createTextNode('bar '),
 	              this.el.firstChild)
 	          }
 	        }
 	      }
 	    })
-	    expect(vm.$el.textContent).toBe('yo hi')
+	    expect(vm.$el.textContent).toBe('bar foo')
 	  })
 	
 	  it('attached/detached hooks for transcluded components', function () {
@@ -21283,7 +21618,7 @@
 	          template: '<slot></slot>'
 	        },
 	        inner: {
-	          template: 'hi',
+	          template: 'foo',
 	          attached: spy1,
 	          detached: spy2
 	        }
@@ -21441,13 +21776,13 @@
 	      el: document.createElement('div'),
 	      template: '{{msg}}',
 	      data: Object.freeze({
-	        msg: 'hi!'
+	        msg: 'foo'
 	      })
 	    })
-	    expect(vm.$el.textContent).toBe('hi!')
-	    try { vm.msg = 'ho!' } catch (e) {}
+	    expect(vm.$el.textContent).toBe('foo')
+	    try { vm.msg = 'bar' } catch (e) {}
 	    Vue.nextTick(function () {
-	      expect(vm.$el.textContent).toBe('hi!')
+	      expect(vm.$el.textContent).toBe('foo')
 	      done()
 	    })
 	  })
@@ -21457,14 +21792,14 @@
 	      el: document.createElement('div'),
 	      template: '{{msg}} {{frozen.msg}}',
 	      data: {
-	        msg: 'hi',
+	        msg: 'foo',
 	        frozen: Object.freeze({
 	          msg: 'frozen'
 	        })
 	      }
 	    })
-	    expect(vm.$el.textContent).toBe('hi frozen')
-	    vm.msg = 'ho'
+	    expect(vm.$el.textContent).toBe('foo frozen')
+	    vm.msg = 'bar'
 	    try {
 	      vm.frozen.msg = 'changed'
 	    } catch (error) {
@@ -21473,7 +21808,7 @@
 	      }
 	    }
 	    Vue.nextTick(function () {
-	      expect(vm.$el.textContent).toBe('ho frozen')
+	      expect(vm.$el.textContent).toBe('bar frozen')
 	      done()
 	    })
 	  })
@@ -21671,10 +22006,10 @@
 	      el: document.createElement('div'),
 	      template: '<div class="{{test}}" transition="test"></div>',
 	      data: {
-	        test: 'hi'
+	        test: 'foo'
 	      }
 	    })
-	    expect(vm.$el.firstChild.className).toBe('hi test-transition')
+	    expect(vm.$el.firstChild.className).toBe('foo test-transition')
 	  })
 	
 	  it('transclude class merging should skip interpolated class', function () {
@@ -21682,7 +22017,7 @@
 	      el: document.createElement('div'),
 	      template: '<test class="outer-{{test}}"></test>',
 	      data: {
-	        test: 'hi'
+	        test: 'foo'
 	      },
 	      components: {
 	        test: {
@@ -21691,7 +22026,7 @@
 	        }
 	      }
 	    })
-	    expect(vm.$el.firstChild.className).toBe('outer-hi')
+	    expect(vm.$el.firstChild.className).toBe('outer-foo')
 	  })
 	
 	  // #2163
@@ -21758,7 +22093,7 @@
 	          },
 	          components: {
 	            child: {
-	              template: 'yo',
+	              template: 'foo',
 	              attached: spyChild
 	            }
 	          }
@@ -22398,15 +22733,15 @@
 	  },
 	  {
 	    // expressions with inline object literals
-	    exp: "sortRows({ column: 'name', test: haha, durrr: 123 })",
+	    exp: "sortRows({ column: 'name', test: foo, durrr: 123 })",
 	    scope: {
 	      sortRows: function (params) {
 	        return params.column + params.test + params.durrr
 	      },
-	      haha: 'hoho'
+	      foo: 'bar'
 	    },
-	    expected: 'namehoho123',
-	    paths: ['sortRows', 'haha']
+	    expected: 'namebar123',
+	    paths: ['sortRows', 'bar']
 	  },
 	  {
 	    // space between path segments
@@ -22830,10 +23165,10 @@
 	  })
 	
 	  it('should handle string that contains html entities', function () {
-	    var res = parse('hi&lt;hi')
+	    var res = parse('foo&lt;bar')
 	    expect(res.nodeType).toBe(11)
 	    expect(res.childNodes.length).toBe(1)
-	    expect(res.firstChild.nodeValue).toBe('hi<hi')
+	    expect(res.firstChild.nodeValue).toBe('foo<bar')
 	    // #1330
 	    res = parse('hello &#x2F; hello')
 	    expect(res.nodeType).toBe(11)
@@ -22992,7 +23327,7 @@
 	var testCases = [
 	  {
 	    // no tags
-	    text: 'haha',
+	    text: 'foo',
 	    expected: null
 	  },
 	  {
@@ -23035,6 +23370,15 @@
 	    text: '{{\n  value  \n}}',
 	    expected: [
 	      { tag: true, value: 'value', html: false, oneTime: false }
+	    ]
+	  },
+	  // new lines preserved outside of tags
+	  {
+	    text: 'hello\n{{value}}\nworld',
+	    expected: [
+	        { value: 'hello\n' },
+	        { tag: true, value: 'value', html: false, oneTime: false },
+	        { value: '\nworld' }
 	    ]
 	  }
 	]
@@ -23709,15 +24053,15 @@
 	    expect(res).toBeUndefined()
 	
 	    // static <component is="...">
-	    el.setAttribute('is', 'what')
+	    el.setAttribute('is', 'foo')
 	    res = _.checkComponentAttr(el)
-	    expect(res.id).toBe('what')
+	    expect(res.id).toBe('foo')
 	    expect(res.dynamic).toBeFalsy()
 	
 	    // <component :is="...">
-	    el.setAttribute(':is', 'what')
+	    el.setAttribute(':is', 'foo')
 	    res = _.checkComponentAttr(el)
-	    expect(res.id).toBe('what')
+	    expect(res.id).toBe('foo')
 	    expect(res.dynamic).toBe(true)
 	
 	    // custom element, not defined
@@ -23735,11 +24079,11 @@
 	
 	    // is on undefined custom element
 	    el = document.createElement('test2')
-	    el.setAttribute('is', 'what')
+	    el.setAttribute('is', 'foo')
 	    res = _.checkComponentAttr(el, {
 	      components: {}
 	    })
-	    expect(res.id).toBe('what')
+	    expect(res.id).toBe('foo')
 	  })
 	})
 
@@ -23749,30 +24093,37 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(5)
+	var Vue = __webpack_require__(1)
 	var config = __webpack_require__(36)
 	var warnPrefix = '[Vue warn]: '
 	
 	if (typeof console !== 'undefined') {
 	  describe('Util - Debug', function () {
 	    beforeEach(function () {
-	      spyOn(console, 'warn')
-	      if (console.trace) {
-	        spyOn(console, 'trace')
-	      }
+	      spyOn(console, 'error')
 	    })
 	
 	    it('warn when silent is false', function () {
 	      config.silent = false
 	      _.warn.and.callThrough()
 	      _.warn('oops')
-	      expect(console.warn).toHaveBeenCalledWith(warnPrefix + 'oops')
+	      expect(console.error).toHaveBeenCalledWith(warnPrefix + 'oops')
+	    })
+	
+	    it('format component name', function () {
+	      config.silent = false
+	      _.warn.and.callThrough()
+	      _.warn('oops', new Vue({ name: 'foo' }))
+	      expect(console.error).toHaveBeenCalledWith(warnPrefix + 'oops (found in component: <foo>)')
+	      _.warn('oops', { name: 'bar' })
+	      expect(console.error).toHaveBeenCalledWith(warnPrefix + 'oops (found in component: <bar>)')
 	    })
 	
 	    it('not warn when silent is ture', function () {
 	      config.silent = true
 	      _.warn.and.callThrough()
 	      _.warn('oops')
-	      expect(console.warn).not.toHaveBeenCalled()
+	      expect(console.error).not.toHaveBeenCalled()
 	    })
 	  })
 	}
@@ -23952,14 +24303,14 @@
 	    expect(_.isLiteral('12.3')).toBe(true)
 	    expect(_.isLiteral('true')).toBe(true)
 	    expect(_.isLiteral(' false ')).toBe(true)
-	    expect(_.isLiteral('"hi"')).toBe(true)
-	    expect(_.isLiteral(" 'whatt' ")).toBe(true)
+	    expect(_.isLiteral('"foo"')).toBe(true)
+	    expect(_.isLiteral(" 'foo' ")).toBe(true)
 	    expect(_.isLiteral('a.b.c')).toBe(false)
 	    expect(_.isLiteral('1 + 1')).toBe(false)
 	  })
 	
 	  it('toString', function () {
-	    expect(_._toString('hi')).toBe('hi')
+	    expect(_._toString('foo')).toBe('foo')
 	    expect(_._toString(1.234)).toBe('1.234')
 	    expect(_._toString(null)).toBe('')
 	    expect(_._toString(undefined)).toBe('')
@@ -23986,16 +24337,16 @@
 	  })
 	
 	  it('hyphenate', function () {
-	    expect(_.hyphenate('whatsUp')).toBe('whats-up')
+	    expect(_.hyphenate('fooBar')).toBe('foo-bar')
 	    expect(_.hyphenate('a1BfC')).toBe('a1-bf-c')
 	    expect(_.hyphenate('already-With-Hyphen')).toBe('already-with-hyphen')
 	  })
 	
 	  it('classify', function () {
 	    expect(_.classify('abc')).toBe('Abc')
-	    expect(_.classify('some-long-name')).toBe('SomeLongName')
-	    expect(_.classify('what_about_this')).toBe('WhatAboutThis')
-	    expect(_.classify('how/about/that')).toBe('HowAboutThat')
+	    expect(_.classify('foo-bar')).toBe('FooBar')
+	    expect(_.classify('foo_bar')).toBe('FooBar')
+	    expect(_.classify('foo/bar')).toBe('FooBar')
 	  })
 	
 	  it('bind', function () {
@@ -24039,7 +24390,7 @@
 	    expect(_.isObject(null)).toBeFalsy()
 	    expect(_.isObject(123)).toBeFalsy()
 	    expect(_.isObject(true)).toBeFalsy()
-	    expect(_.isObject('hi')).toBeFalsy()
+	    expect(_.isObject('foo')).toBeFalsy()
 	    expect(_.isObject(undefined)).toBeFalsy()
 	    expect(_.isObject(function () {})).toBeFalsy()
 	  })
@@ -24051,7 +24402,7 @@
 	    expect(_.isPlainObject(null)).toBeFalsy()
 	    expect(_.isPlainObject(123)).toBeFalsy()
 	    expect(_.isPlainObject(true)).toBeFalsy()
-	    expect(_.isPlainObject('hi')).toBeFalsy()
+	    expect(_.isPlainObject('foo')).toBeFalsy()
 	    expect(_.isPlainObject(undefined)).toBeFalsy()
 	    expect(_.isPlainObject(function () {})).toBe(false)
 	    expect(_.isPlainObject(window)).toBe(false)
@@ -24249,7 +24600,7 @@
 	      components: null
 	    }, {
 	      components: {
-	        test: { template: 'hi' }
+	        test: { template: 'foo' }
 	      }
 	    })
 	    expect(typeof res.components.test).toBe('function')
@@ -24261,7 +24612,7 @@
 	      components: null
 	    }, {
 	      components: {
-	        a: { template: 'hi' }
+	        a: { template: 'foo' }
 	      }
 	    })
 	    expect('Do not use built-in or reserved HTML elements as component id: a').toHaveBeenWarned()
@@ -24269,7 +24620,7 @@
 	      components: null
 	    }, {
 	      components: {
-	        slot: { template: 'hi' }
+	        slot: { template: 'foo' }
 	      }
 	    })
 	    expect('Do not use built-in or reserved HTML elements as component id: slot').toHaveBeenWarned()
@@ -24464,13 +24815,13 @@
 	      data: {},
 	      components: {
 	        'hyphenated-component': {
-	          template: 'hi'
+	          template: 'foo'
 	        },
 	        camelCasedComponent: {
-	          template: 'yo'
+	          template: 'bar'
 	        },
 	        PascalCasedComponent: {
-	          template: 'ho'
+	          template: 'baz'
 	        }
 	      }
 	    })
