@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Plugins - vue.js</title>
+        <title>Join the Vue Community! - vue.js</title>
         <meta charset="utf-8">
         <meta name="description" content="Vue.js - Intuitive, Fast and Composable MVVM for building interactive interfaces.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -171,7 +171,7 @@
                 </li>
             
                 <li>
-                    <a href="/guide/plugins.html" class="sidebar-link current">Plugins</a>
+                    <a href="/guide/plugins.html" class="sidebar-link">Plugins</a>
                 </li>
             
                 <li>
@@ -183,7 +183,7 @@
                 </li>
             
                 <li>
-                    <a href="/guide/join.html" class="sidebar-link">Join the Vue Community!</a>
+                    <a href="/guide/join.html" class="sidebar-link current">Join the Vue Community!</a>
                 </li>
             
         </ul>
@@ -199,60 +199,43 @@
   </a>
 </div>
 
-    <h1>Plugins</h1>
-    <h2 id="Writing-a-Plugin"><a href="#Writing-a-Plugin" class="headerlink" title="Writing a Plugin"></a>Writing a Plugin</h2><p>Plugins usually add global-level functionality to Vue. There is no strictly defined scope for a plugin - there are typically several types of plugins you can write:</p>
-<ol>
-<li><p>Add some global methods or properties. e.g. <a href="https://github.com/vuejs/vue-element" target="_blank" rel="external">vue-element</a></p>
+    <h1>Join the Vue Community!</h1>
+    <h2 id="Join-the-Vue-js-Community"><a href="#Join-the-Vue-js-Community" class="headerlink" title="Join the Vue.js Community!"></a>Join the Vue.js Community!</h2><p>The vibrant community around Vue.js is continually growing. Nevertheless, helpful hands are always welcome. In fact, a growing community is the best sign of a healthy OSS project worth putting any effort into, even if it is as the user of the software. </p>
+<p>If you would like to also be a part of the Vue.js community, this page was meant to support your endeavors. Have a look at the resources listed below to get some orientation around the sailing ship of Vue.js and…</p>
+<p>….welcome aboard!</p>
+<h2 id="Resources-You-Should-Know-About"><a href="#Resources-You-Should-Know-About" class="headerlink" title="Resources You Should Know About!"></a>Resources You Should Know About!</h2><h3 id="The-Community"><a href="#The-Community" class="headerlink" title="The Community"></a>The Community</h3><ul>
+<li><a href="http://forum.vuejs.org/" target="_blank" rel="external">The Forum</a> - THE best place to ask questions and get answers about Vue.js and its components.</li>
+<li><a href="https://gitter.im/vuejs/vue" target="_blank" rel="external">Gitter Channel</a> -  A place for devs to meet and chat. You can ask questions here, but the forum is the better platform, since the discussions are threaded.</li>
+<li><a href="https://github.com/vuejs" target="_blank" rel="external">Github</a> - Report bugs or fork repositories to offer pull requests. Any contribution is greatly appreciated!  </li>
+</ul>
+<h3 id="Third-Party-Contributions"><a href="#Third-Party-Contributions" class="headerlink" title="Third Party Contributions"></a>Third Party Contributions</h3><ul>
+<li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="external">The Awesome Vue Page</a> - See what other awesome resources have been published by other awesome people.</li>
+<li><a href="http://forum.vuejs.org/category/15/show-tell" target="_blank" rel="external">The “Show and Tell” Subforum</a> - Another great place to check out what others have built with and for the growing Vue ecosystem.</li>
+</ul>
+<h3 id="Contributing-to-Vue"><a href="#Contributing-to-Vue" class="headerlink" title="Contributing to Vue"></a>Contributing to Vue</h3><ul>
+<li><p><a href="https://github.com/vuejs/vue/blob/dev/CONTRIBUTING.md" target="_blank" rel="external">The rules to contribute</a> - As with any community, there has to be rules, in order to ensure everyone is doing the right things the right way.</p>
 </li>
-<li><p>Add one or more global assets: directives/filters/transitions etc. e.g. <a href="https://github.com/vuejs/vue-touch" target="_blank" rel="external">vue-touch</a></p>
-</li>
-<li><p>Add some Vue instance methods by attaching them to Vue.prototype.</p>
-</li>
-<li><p>A library that provides an API of its own, while at the same time injecting some combination of the above. e.g. <a href="https://github.com/vuejs/vue-router" target="_blank" rel="external">vue-router</a></p>
-</li>
-</ol>
-<p>A Vue.js plugin should expose an <code>install</code> method. The method will be called with the <code>Vue</code> constructor as the first argument, along with possible options:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">MyPlugin.install = <span class="function"><span class="keyword">function</span> (<span class="params">Vue, options</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 1. add global method or property</span></span><br><span class="line">  Vue.myGlobalMethod = ...</span><br><span class="line">  <span class="comment">// 2. add a global asset</span></span><br><span class="line">  Vue.directive(<span class="string">'my-directive'</span>, &#123;&#125;)</span><br><span class="line">  <span class="comment">// 3. add an instance method</span></span><br><span class="line">  Vue.prototype.$myMethod = ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Using-a-Plugin"><a href="#Using-a-Plugin" class="headerlink" title="Using a Plugin"></a>Using a Plugin</h2><p>Use plugins by calling the <code>Vue.use()</code> global method:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// calls `MyPlugin.install(Vue)`</span></span><br><span class="line">Vue.use(MyPlugin)</span><br></pre></td></tr></table></figure>
-<p>You can optionally pass in some options:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">Vue.use(MyPlugin, &#123; someOption: <span class="literal">true</span> &#125;)</span><br></pre></td></tr></table></figure>
-<p>Some plugins such as <code>vue-router</code> automatically calls <code>Vue.use()</code> if <code>Vue</code> is available as a global variable. However in a module environment you always need to call <code>Vue.use()</code> explicitly:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// When using CommonJS via Browserify or Webpack</span></span><br><span class="line"><span class="keyword">var</span> Vue = <span class="built_in">require</span>(<span class="string">'vue'</span>)</span><br><span class="line"><span class="keyword">var</span> VueRouter = <span class="built_in">require</span>(<span class="string">'vue-router'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Don't forget to call this</span></span><br><span class="line">Vue.use(VueRouter)</span><br></pre></td></tr></table></figure>
-<h2 id="Existing-Plugins-amp-Tools"><a href="#Existing-Plugins-amp-Tools" class="headerlink" title="Existing Plugins &amp; Tools"></a>Existing Plugins &amp; Tools</h2><ul>
-<li><p><a href="https://github.com/vuejs/vue-router" target="_blank" rel="external">vue-router</a>: The official router for Vue.js. Deeply integrated with Vue.js core to make building Single Page Applications a breeze.</p>
-</li>
-<li><p><a href="https://github.com/vuejs/vue-resource" target="_blank" rel="external">vue-resource</a>: A plugin that provides services for making web requests and handle responses using a XMLHttpRequest or JSONP.</p>
-</li>
-<li><p><a href="https://github.com/vuejs/vue-async-data" target="_blank" rel="external">vue-async-data</a>: Async data loading plugin.</p>
-</li>
-<li><p><a href="https://github.com/vuejs/vue-validator" target="_blank" rel="external">vue-validator</a>: A plugin for form validations.</p>
-</li>
-<li><p><a href="https://github.com/vuejs/vue-devtools" target="_blank" rel="external">vue-devtools</a>: A Chrome devtools extension for debugging Vue.js applications.</p>
-</li>
-<li><p><a href="https://github.com/vuejs/vue-touch" target="_blank" rel="external">vue-touch</a>: Add touch-gesture directives using Hammer.js.</p>
-</li>
-<li><p><a href="https://github.com/vuejs/vue-element" target="_blank" rel="external">vue-element</a>: Register Custom Elements with Vue.js.</p>
-</li>
-<li><p><a href="https://github.com/vuejs/vue-animated-list" target="_blank" rel="external">vue-animated-list</a>: A plugin for easily animating <code>v-for</code> rendered lists.</p>
-</li>
-<li><p><a href="https://github.com/vuejs/awesome-vue#libraries--plugins" target="_blank" rel="external">List of User Contributed Tools</a></p>
+<li><p>The Main Components of Vue</p>
+<ul>
+<li><a href="https://github.com/vuejs/vue" target="_blank" rel="external">Vue</a> - The core repository.</li>
+<li><a href="https://github.com/vuejs/vuex" target="_blank" rel="external">Vuex</a> - A Flux-inspired Application Architecture for Vue.js.</li>
+<li><a href="https://github.com/vuejs/vue-router" target="_blank" rel="external">Vue-router</a> - A routing system for SPAs with Vue.js.</li>
+<li><a href="https://github.com/vuejs/vue-resource" target="_blank" rel="external">Vue-resource</a> - A plugin, which provides services for making web requests and to handle responses using XMLHttpRequests or JSONP. </li>
+</ul>
 </li>
 </ul>
 
     
       <div class="guide-links">
         
-          <span>← <a href="/guide/mixins.html">Mixins</a></span>
+          <span>← <a href="/guide/comparison.html">Comparison with Other Frameworks</a></span>
         
-        
-          <span style="float:right"><a href="/guide/application.html">Building Large-Scale Apps</a> →</span>
         
       </div>
     
     <div class="footer">
       Caught a mistake or want to contribute to the documentation?
-      <a href="https://github.com/vuejs/vuejs.org/blob/master/src/guide/plugins.md" target="_blank">
+      <a href="https://github.com/vuejs/vuejs.org/blob/master/src/guide/join.md" target="_blank">
         Edit this page on Github!
       </a>
     </div>

@@ -182,6 +182,10 @@
                     <a href="/guide/comparison.html" class="sidebar-link">Comparison with Other Frameworks</a>
                 </li>
             
+                <li>
+                    <a href="/guide/join.html" class="sidebar-link">Join the Vue Community!</a>
+                </li>
+            
         </ul>
     </div>
 </div>
@@ -400,13 +404,13 @@ var parent = new Vue({
 </ol>
 <p>To make the composition work, we need a way to interweave the parent “content” and the component’s own template. This is a process called <strong>content distribution</strong> (or “transclusion” if you are familiar with Angular). Vue.js implements a content distribution API that is modeled after with the current <a href="https://github.com/w3c/webcomponents/blob/gh-pages/proposals/Slots-Proposal.md" target="_blank" rel="external">Web Components spec draft</a>, using the special <code>&lt;slot&gt;</code> element to serve as distribution outlets for the original content.</p>
 <h3 id="Compilation-Scope"><a href="#Compilation-Scope" class="headerlink" title="Compilation Scope"></a>Compilation Scope</h3><p>Before we dig into the API, let’s first clarify which scope the contents are compiled in. Imagine a template like this:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">child</span>&gt;</span></span><br><span class="line">  &#123;&#123; msg &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">child-component</span>&gt;</span></span><br><span class="line">  &#123;&#123; msg &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">child-component</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Should the <code>msg</code> be bound to the parent’s data or the child data? The answer is parent. A simple rule of thumb for component scope is:</p>
 <blockquote>
 <p>Everything in the parent template is compiled in parent scope; everything in the child template is compiled in child scope.</p>
 </blockquote>
 <p>A common mistake is trying to bind a directive to a child property/method in the parent template:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- does NOT work --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">child</span> <span class="attr">v-show</span>=<span class="string">"someChildProperty"</span>&gt;</span><span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- does NOT work --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">child-component</span> <span class="attr">v-show</span>=<span class="string">"someChildProperty"</span>&gt;</span><span class="tag">&lt;/<span class="name">child-component</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Assuming <code>someChildProperty</code> is a property on the child component, the example above would not work as intended. The parent’s template should not be aware of the state of a child component.</p>
 <p>If you need to bind child-scope directives on a component root node, you should do so in the child component’s own template:</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">Vue.component(<span class="string">'child-component'</span>, &#123;</span><br><span class="line">  <span class="comment">// this does work, because we are in the right scope</span></span><br><span class="line">  template: <span class="string">'&lt;div v-show="someChildProperty"&gt;Child&lt;/div&gt;'</span>,</span><br><span class="line">  data: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      someChildProperty: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
