@@ -1413,6 +1413,7 @@
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} [symbol] - default: &#39;$&#39;</code></li>
+<li><code>{Number} [decimal places] - default: 2</code></li>
 </ul>
 </li>
 <li><p><strong>Example:</strong></p>
@@ -1421,6 +1422,9 @@
 <p>Use a different symbol:</p>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line">&#123;&#123; amount | currency '£' &#125;&#125;</span><br></pre></td></tr></table></figure>
 <p><em>12345 =&gt; £12,345.00</em></p>
+<p>Some currencies have 3 or 4 decimal places, while some others have none, for example Japanese Yen (¥) or Vietnamese Dong (₫):</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">&#123;&#123; amount | currency '₫' 0 &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p><em>12345 =&gt; ₫12,345</em></p>
 </li>
 </ul>
 <h3 id="pluralize"><a href="#pluralize" class="headerlink" title="pluralize"></a>pluralize</h3><ul>
