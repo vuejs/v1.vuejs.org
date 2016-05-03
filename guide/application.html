@@ -193,10 +193,11 @@
 
 <div class="content guide with-sidebar">
     <div id="ad">
+  <span>Proudly sponsored by</span><br>
   <a href="https://strikingly.com/s/careers?utm_source=v" target="_blank">
-    <span>Proudly sponsored by</span><br>
     <img src="/images/strikingly.png">
   </a>
+  
 </div>
 
     <h1>Building Large-Scale Apps</h1>
@@ -233,7 +234,7 @@
 <p>Notice we are putting all actions that mutate the store’s state inside the store itself. This type of centralized state management makes it easier to understand what type of mutations could happen to the state, and how are they triggered. Each component can still own and manage its private state.</p>
 <p><img src="/images/state.png" alt="State Management"></p>
 <p>One thing to take note is that you should never replace the original state object in your actions - the components and the store need to share reference to the same object in order for the mutations to be observed.</p>
-<p>If we enforce a convention where components are never allowed to directly mutate state that belongs to a store, but should instead dispatch events that notify the store to perform actions, we’ve essentially arrived at the <a href="https://facebook.github.io/flux/" target="_blank" rel="external">Flux</a> architecture. The benefits of this convention is we can record all state mutations happening to the store, and on top of that we can implement advanced debugging helpers such as mutation logs, snapshots, history re-rolls etc.</p>
+<p>If we enforce a convention where components are never allowed to directly mutate state that belongs to a store, but should instead dispatch events that notify the store to perform actions, we’ve essentially arrived at the <a href="https://facebook.github.io/flux/" target="_blank" rel="external">Flux</a> architecture. The benefit of this convention is we can record all state mutations happening to the store, and on top of that we can implement advanced debugging helpers such as mutation logs, snapshots, history re-rolls, etc.</p>
 <p>The Flux architecture is commonly used in React applications, but it can be applied to Vue.js application as well. For example, <a href="https://github.com/vuejs/vuex/" target="_blank" rel="external">Vuex</a> is a Flux-inspired application architecture that is designed specifically for managing state inside large Vue.js applications. <a href="https://github.com/rackt/redux/" target="_blank" rel="external">Redux</a>, the most popular Flux implementation for React, is view-layer agnostic and can also easily work with Vue via some <a href="https://github.com/egoist/revue" target="_blank" rel="external">simple bindings</a>.</p>
 <h2 id="Unit-Testing"><a href="#Unit-Testing" class="headerlink" title="Unit Testing"></a>Unit Testing</h2><p>Anything compatible with a module-based build system works. A recommendation is using the <a href="http://karma-runner.github.io/0.12/index.html" target="_blank" rel="external">Karma</a> test runner. It has a lot of community plugins, including support for <a href="https://github.com/webpack/karma-webpack" target="_blank" rel="external">Webpack</a> and <a href="https://github.com/Nikku/karma-browserify" target="_blank" rel="external">Browserify</a>. For detailed setup, please refer to each project’s respective documentation.</p>
 <p>In terms of code structure for testing, the best practice is to export raw options / functions in your component modules. Consider this example:</p>
