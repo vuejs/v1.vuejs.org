@@ -410,6 +410,21 @@
 <li><p><strong>See also:</strong> <a href="/guide/components.html#Props">Props</a></p>
 </li>
 </ul>
+<h3 id="propsData"><a href="#propsData" class="headerlink" title="propsData"></a>propsData</h3><blockquote>
+<p>1.0.22+</p>
+</blockquote>
+<ul>
+<li><p><strong>Type:</strong> <code>Object</code></p>
+</li>
+<li><p><strong>Restriction:</strong> only respected in instance creation via <code>new</code>.</p>
+</li>
+<li><p><strong>Details:</strong></p>
+<p>Pass props to an instance during its creation. This is primarily intended to make unit testing easier.</p>
+</li>
+<li><p><strong>Example:</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> Comp = Vue.extend(&#123;</span><br><span class="line">  props: [<span class="string">'msg'</span>],</span><br><span class="line">  template: <span class="string">'&lt;div&gt;&#123;&#123; msg &#125;&#125;&lt;/div&gt;'</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> vm = <span class="keyword">new</span> Comp(&#123;</span><br><span class="line">  propsData: &#123;</span><br><span class="line">    msg: <span class="string">'hello'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 <h3 id="computed"><a href="#computed" class="headerlink" title="computed"></a>computed</h3><ul>
 <li><p><strong>Type:</strong> <code>Object</code></p>
 </li>
@@ -703,6 +718,20 @@
 </li>
 <li><p><strong>Example:</strong></p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> Ctor = Vue.extend(&#123;</span><br><span class="line">  name: <span class="string">'stack-overflow'</span>,</span><br><span class="line">  template:</span><br><span class="line">    <span class="string">'&lt;div&gt;'</span> +</span><br><span class="line">      <span class="comment">// recursively invoke self</span></span><br><span class="line">      <span class="string">'&lt;stack-overflow&gt;&lt;/stack-overflow&gt;'</span> +</span><br><span class="line">    <span class="string">'&lt;/div&gt;'</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// this will actually result in a max stack size exceeded</span></span><br><span class="line"><span class="comment">// error, but let's assume it works...</span></span><br><span class="line"><span class="keyword">var</span> vm = <span class="keyword">new</span> Ctor()</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(vm) <span class="comment">// -&gt; StackOverflow &#123;$el: null, ...&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="extends"><a href="#extends" class="headerlink" title="extends"></a>extends</h3><blockquote>
+<p>1.0.22+</p>
+</blockquote>
+<ul>
+<li><p><strong>Type:</strong> <code>Object | Function</code></p>
+</li>
+<li><p><strong>Details:</strong></p>
+<p>Allows declaratively extending another component (could be either a plain options object or a constructor) without having to use <code>Vue.extend</code>. This is primarily intended to make it easier to extend between single file components.</p>
+<p>This is similar to <code>mixins</code>, the difference being that the component’s own options takes higher priority than the source component being extended.</p>
+</li>
+<li><p><strong>Example:</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> CompA = &#123; ... &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// extend CompA without having to call Vue.extend on either</span></span><br><span class="line"><span class="keyword">var</span> CompB = &#123;</span><br><span class="line">  extends: CompA,</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h2 id="Instance-Properties"><a href="#Instance-Properties" class="headerlink" title="Instance Properties"></a>Instance Properties</h2><h3 id="vm-data"><a href="#vm-data" class="headerlink" title="vm.$data"></a>vm.$data</h3><ul>
@@ -1416,7 +1445,7 @@
 <li><p><strong>Arguments:</strong></p>
 <ul>
 <li><code>{String} [symbol] - default: &#39;$&#39;</code></li>
-<li><code>{Number} [decimal places] - default: 2</code></li>
+<li><strong>1.0.22+</strong> <code>{Number} [decimal places] - default: 2</code></li>
 </ul>
 </li>
 <li><p><strong>Example:</strong></p>

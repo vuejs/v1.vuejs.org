@@ -152,7 +152,7 @@
 	
 	_globalApi2['default'](_instanceVue2['default']);
 	
-	_instanceVue2['default'].version = '1.0.21';
+	_instanceVue2['default'].version = '1.0.22';
 	
 	exports['default'] = _instanceVue2['default'];
 	
@@ -353,7 +353,7 @@
 	    this._updateRef();
 	
 	    // initialize data as empty object.
-	    // it will be filled up in _initScope().
+	    // it will be filled up in _initData().
 	    this._data = {};
 	
 	    // call init hook
@@ -3437,7 +3437,7 @@
 	 */
 	
 	function mergeAssets(parentVal, childVal) {
-	  var res = _Object$create(parentVal);
+	  var res = _Object$create(parentVal || null);
 	  return childVal ? _lang.extend(res, guardArrayAssets(childVal)) : res;
 	}
 	
@@ -3604,7 +3604,7 @@
 	  var options = {};
 	  var key;
 	  if (child['extends']) {
-	    parent = mergeOptions(parent, child['extends'], vm);
+	    parent = typeof child['extends'] === 'function' ? mergeOptions(parent, child['extends'].options, vm) : mergeOptions(parent, child['extends'], vm);
 	  }
 	  if (child.mixins) {
 	    for (var i = 0, l = child.mixins.length; i < l; i++) {
@@ -4776,15 +4776,13 @@
 	var seenObjects = new _utilIndex._Set();
 	function traverse(val, seen) {
 	  var i = undefined,
-	      keys = undefined,
-	      isA = undefined,
-	      isO = undefined;
+	      keys = undefined;
 	  if (!seen) {
 	    seen = seenObjects;
 	    seen.clear();
 	  }
-	  isA = _utilIndex.isArray(val);
-	  isO = _utilIndex.isObject(val);
+	  var isA = _utilIndex.isArray(val);
+	  var isO = _utilIndex.isObject(val);
 	  if (isA || isO) {
 	    if (val.__ob__) {
 	      var depId = val.__ob__.dep.id;
@@ -5383,24 +5381,22 @@
 	// triggered, the DOM would have already been in updated
 	// state.
 	
-	var queueIndex;
 	var queue = [];
 	var userQueue = [];
 	var has = {};
 	var circular = {};
 	var waiting = false;
-	var internalQueueDepleted = false;
 	
 	/**
 	 * Reset the batcher's state.
 	 */
 	
 	function resetBatcherState() {
-	  queue = [];
-	  userQueue = [];
+	  queue.length = 0;
+	  userQueue.length = 0;
 	  has = {};
 	  circular = {};
-	  waiting = internalQueueDepleted = false;
+	  waiting = false;
 	}
 	
 	/**
@@ -5409,8 +5405,12 @@
 	
 	function flushBatcherQueue() {
 	  runBatcherQueue(queue);
-	  internalQueueDepleted = true;
+	  queue.length = 0;
 	  runBatcherQueue(userQueue);
+	  // user watchers triggered more internal watchers
+	  if (queue.length) {
+	    runBatcherQueue(queue);
+	  }
 	  // dev tool hook
 	  /* istanbul ignore if */
 	  if (_utilIndex.devtools && _config2['default'].devtools) {
@@ -5428,8 +5428,8 @@
 	function runBatcherQueue(queue) {
 	  // do not cache length because more watchers might be pushed
 	  // as we run existing watchers
-	  for (queueIndex = 0; queueIndex < queue.length; queueIndex++) {
-	    var watcher = queue[queueIndex];
+	  for (var i = 0; i < queue.length; i++) {
+	    var watcher = queue[i];
 	    var id = watcher.id;
 	    has[id] = null;
 	    watcher.run();
@@ -5458,20 +5458,14 @@
 	function pushWatcher(watcher) {
 	  var id = watcher.id;
 	  if (has[id] == null) {
-	    if (internalQueueDepleted && !watcher.user) {
-	      // an internal watcher triggered by a user watcher...
-	      // let's run it immediately after current user watcher is done.
-	      userQueue.splice(queueIndex + 1, 0, watcher);
-	    } else {
-	      // push watcher into appropriate queue
-	      var q = watcher.user ? userQueue : queue;
-	      has[id] = q.length;
-	      q.push(watcher);
-	      // queue the flush
-	      if (!waiting) {
-	        waiting = true;
-	        _utilIndex.nextTick(flushBatcherQueue);
-	      }
+	    // push watcher into appropriate queue
+	    var q = watcher.user ? userQueue : queue;
+	    has[id] = q.length;
+	    q.push(watcher);
+	    // queue the flush
+	    if (!waiting) {
+	      waiting = true;
+	      _utilIndex.nextTick(flushBatcherQueue);
 	    }
 	  }
 	}
@@ -5565,7 +5559,7 @@
 	  // link function for the node itself.
 	  var nodeLinkFn = partial || !options._asComponent ? compileNode(el, options) : null;
 	  // link function for the childNodes
-	  var childLinkFn = !(nodeLinkFn && nodeLinkFn.terminal) && el.tagName !== 'SCRIPT' && el.hasChildNodes() ? compileNodeList(el.childNodes, options) : null;
+	  var childLinkFn = !(nodeLinkFn && nodeLinkFn.terminal) && !isScript(el) && el.hasChildNodes() ? compileNodeList(el.childNodes, options) : null;
 	
 	  /**
 	   * A composite linker function to be called on a already
@@ -5785,7 +5779,7 @@
 	
 	function compileNode(node, options) {
 	  var type = node.nodeType;
-	  if (type === 1 && node.tagName !== 'SCRIPT') {
+	  if (type === 1 && !isScript(node)) {
 	    return compileElement(node, options);
 	  } else if (type === 3 && node.data.trim()) {
 	    return compileTextNode(node, options);
@@ -6307,6 +6301,10 @@
 	    if (tokens[i].oneTime) return true;
 	  }
 	}
+	
+	function isScript(el) {
+	  return el.tagName === 'SCRIPT' && (!el.hasAttribute('type') || el.getAttribute('type') === 'text/javascript');
+	}
 
 /***/ },
 /* 100 */
@@ -6576,10 +6574,13 @@
 	
 	function nodeToFragment(node) {
 	  // if its a template tag and the browser supports it,
-	  // its content is already a document fragment.
+	  // its content is already a document fragment. However, iOS Safari has
+	  // bug when using directly cloned template content with touch
+	  // events and can cause crashes when the nodes are removed from DOM, so we
+	  // have to treat template elements as string templates. (#2805)
+	  /* istanbul ignore if */
 	  if (isRealTemplate(node)) {
-	    _utilIndex.trimNode(node.content);
-	    return node.content;
+	    return stringToFragment(node.innerHTML);
 	  }
 	  // script template
 	  if (node.tagName === 'SCRIPT') {
@@ -6734,6 +6735,8 @@
 	'use strict';
 	
 	var _Object$create = __webpack_require__(74)['default'];
+	
+	var _Object$isExtensible = __webpack_require__(88)['default'];
 	
 	var _Object$keys = __webpack_require__(30)['default'];
 	
@@ -7048,7 +7051,15 @@
 	      });
 	      setTimeout(op, staggerAmount);
 	    } else {
-	      frag.before(prevEl.nextSibling);
+	      var target = prevEl.nextSibling;
+	      /* istanbul ignore if */
+	      if (!target) {
+	        // reset end anchor position in case the position was messed up
+	        // by an external drag-n-drop library.
+	        _utilIndex.after(this.end, prevEl);
+	        target = this.end;
+	      }
+	      frag.before(target);
 	    }
 	  },
 	
@@ -7133,8 +7144,10 @@
 	        } else {
 	          ("development") !== 'production' && this.warnDuplicate(value);
 	        }
-	      } else {
+	      } else if (_Object$isExtensible(value)) {
 	        _utilIndex.def(value, id, frag);
+	      } else if (true) {
+	        _utilIndex.warn('Frozen v-for objects cannot be automatically tracked, make sure to ' + 'provide a track-by key.');
 	      }
 	    }
 	    frag.raw = value;
@@ -8517,8 +8530,12 @@
 	      attr = _utilIndex.camelize(attr);
 	    }
 	    if (!interp && attrWithPropsRE.test(attr) && attr in el) {
-	      el[attr] = attr === 'value' ? value == null // IE9 will set input.value to "null" for null...
+	      var attrValue = attr === 'value' ? value == null // IE9 will set input.value to "null" for null...
 	      ? '' : value : value;
+	
+	      if (el[attr] !== attrValue) {
+	        el[attr] = attrValue;
+	      }
 	    }
 	    // set model props
 	    var modelProp = modelProps[attr];
@@ -9289,7 +9306,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	// NOTE: the prop internal directive is compiled and linked
-	// during _initScope(), before the created hook is called.
+	// during _initProps(), before the created hook is called.
 	// The purpose is to make the initial prop values available
 	// inside `created` hooks and `data` functions.
 	
@@ -10376,8 +10393,8 @@
 	    value = attrs[i].value;
 	    if (!to.hasAttribute(name) && !specialCharRE.test(name)) {
 	      to.setAttribute(name, value);
-	    } else if (name === 'class' && !_parsersText.parseText(value)) {
-	      value.trim().split(/\s+/).forEach(function (cls) {
+	    } else if (name === 'class' && !_parsersText.parseText(value) && (value = value.trim())) {
+	      value.split(/\s+/).forEach(function (cls) {
 	        _utilIndex.addClass(to, cls);
 	      });
 	    }
@@ -10431,6 +10448,10 @@
 	    contents[name] = extractFragment(contents[name], content);
 	  }
 	  if (content.hasChildNodes()) {
+	    var nodes = content.childNodes;
+	    if (nodes.length === 1 && nodes[0].nodeType === 3 && !nodes[0].data.trim()) {
+	      return;
+	    }
 	    contents['default'] = extractFragment(content.childNodes, content);
 	  }
 	}
@@ -10884,7 +10905,7 @@
 	    }
 	    // remove reference from data ob
 	    // frozen object may not have observer.
-	    if (this._data.__ob__) {
+	    if (this._data && this._data.__ob__) {
 	      this._data.__ob__.removeVm(this);
 	    }
 	    // Clean up references to private properties and other
@@ -11288,6 +11309,7 @@
 	    } else {
 	      factory = _utilIndex.resolveAsset(this.$options, 'components', value, true);
 	    }
+	    /* istanbul ignore if */
 	    if (!factory) {
 	      return;
 	    }
@@ -15030,6 +15052,16 @@
 	    expect(res.getAttribute('title')).toBe('child')
 	  })
 	
+	  // #2789
+	  it('empty class merge', function () {
+	    el.setAttribute('class', '')
+	    options.template = '<div class="test"></div>'
+	    options.replace = true
+	    options._asComponent = true
+	    var res = transclude(el, options)
+	    expect(res.getAttribute('class')).toBe('test')
+	  })
+	
 	  it('class merge for svg elements', function () {
 	    el.setAttribute('class', 'test')
 	    options.template = '<circle class="other"></circle>'
@@ -15827,6 +15859,25 @@
 	      }
 	    })
 	    expect('"slot" attribute must be static').toHaveBeenWarned()
+	  })
+	
+	  it('default slot should use fallback content if has only whitespace', function () {
+	    new Vue({
+	      el: el,
+	      template: '<test><div slot="first">1</div> <div slot="second">2</div></test>',
+	      components: {
+	        test: {
+	          replace: true,
+	          template:
+	            '<div class="wrapper">' +
+	              '<slot name="first"><p>first slot</p></slot>' +
+	              '<slot><p>this is the default slot</p></slot>' +
+	              '<slot name="second"><p>second named slot</p></slot>' +
+	            '</div>'
+	        }
+	      }
+	    })
+	    expect(el.children[0].innerHTML).toBe('<div slot="first">1</div><p>this is the default slot</p><div slot="second">2</div>')
 	  })
 	})
 
@@ -18881,6 +18932,17 @@
 	      expect(vm.$els.a.innerHTML).toContain('<div>1</div><div>1</div>')
 	      done()
 	    })
+	  })
+	
+	  it('warning for frozen objects', function () {
+	    new Vue({
+	      el: document.createElement('div'),
+	      template: '<div v-for="item in items">{{item.name}}</div>',
+	      data: {
+	        items: [Object.freeze({ name: 'hi' })]
+	      }
+	    })
+	    expect('Frozen v-for objects cannot be automatically tracked').toHaveBeenWarned()
 	  })
 	})
 	
@@ -22219,7 +22281,7 @@
 	
 	  it('should initialize data once per strat', function () {
 	    var spyOncePerStrat = jasmine.createSpy('called once per strat')
-	    const VM = Vue.extend({
+	    var Comp = Vue.extend({
 	      data: function () {
 	        spyOncePerStrat()
 	        return {
@@ -22227,7 +22289,7 @@
 	        }
 	      }
 	    })
-	    new VM({
+	    new Comp({
 	      data: function () {
 	        spyOncePerStrat()
 	        return {
@@ -24081,16 +24143,6 @@
 	    expect(res).toBe(frag)
 	  })
 	
-	  it('should return content if argument is a valid template node', function () {
-	    var templateNode = document.createElement('template')
-	    if (!templateNode.content) {
-	      // mock the content
-	      templateNode.content = document.createDocumentFragment()
-	    }
-	    var res = parse(templateNode)
-	    expect(res).toBe(templateNode.content)
-	  })
-	
 	  it('should parse if argument is a template string', function () {
 	    var res = parse(testString)
 	    expect(res.nodeType).toBe(11)
@@ -24120,6 +24172,15 @@
 	    expect(res.nodeType).toBe(11)
 	    expect(res.childNodes.length).toBe(1)
 	    expect(res.firstChild.nodeValue).toBe('')
+	  })
+	
+	  it('should parse innerHTML if argument is a template node', function () {
+	    var templateNode = document.createElement('template')
+	    templateNode.innerHTML = testString
+	    var res = parse(templateNode)
+	    expect(res.nodeType).toBe(11)
+	    expect(res.childNodes.length).toBe(2)
+	    expect(res.querySelector('.test').textContent).toBe('world')
 	  })
 	
 	  it('should parse textContent if argument is a script node', function () {
@@ -25008,6 +25069,20 @@
 	    expect(res.id).toBe('foo')
 	    expect(res.dynamic).toBe(true)
 	
+	    // <test is="...">
+	    el = document.createElement('test')
+	    el.setAttribute('is', 'foo')
+	    res = _.checkComponentAttr(el, mockOptions)
+	    expect(res.id).toBe('foo')
+	    expect(res.dynamic).toBeUndefined()
+	
+	    // <test :is="...">
+	    el = document.createElement('test')
+	    el.setAttribute(':is', 'foo')
+	    res = _.checkComponentAttr(el, mockOptions)
+	    expect(res.id).toBe('foo')
+	    expect(res.dynamic).toBe(true)
+	
 	    // custom element, not defined
 	    el = document.createElement('test')
 	    res = _.checkComponentAttr(el, mockOptions)
@@ -25682,9 +25757,9 @@
 	    var f1 = function () {}
 	    var f2 = function () {}
 	    var f3 = function () {}
-	    var componentA = { template: 'foo', methods: { f1: f1, f2: function () {} } }
-	    var componentB = { extends: componentA, methods: { f2: f2 } }
-	    var componentC = { extends: componentB, template: 'bar', methods: { f3: f3 } }
+	    var componentA = Vue.extend({ template: 'foo', methods: { f1: f1, f2: function () {} }})
+	    var componentB = { extends: componentA, methods: { f2: f2 }}
+	    var componentC = { extends: componentB, template: 'bar', methods: { f3: f3 }}
 	    var res = merge({}, componentC)
 	    expect(res.template).toBe('bar')
 	    expect(res.methods.f1).toBe(f1)
