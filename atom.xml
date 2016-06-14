@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://vuejs.org/"/>
-  <updated>2016-04-27T17:33:30.000Z</updated>
+  <updated>2016-06-14T16:24:54.000Z</updated>
   <id>http://vuejs.org/</id>
   
   <author>
@@ -20,10 +20,11 @@
     <link href="http://vuejs.org/2016/04/27/announcing-2.0/"/>
     <id>http://vuejs.org/2016/04/27/announcing-2.0/</id>
     <published>2016-04-27T17:33:00.000Z</published>
-    <updated>2016-04-27T17:33:30.000Z</updated>
+    <updated>2016-06-14T16:24:54.000Z</updated>
     
     <content type="html">&lt;p&gt;Today I am thrilled to announce the first public preview of Vue.js 2.0, which brings along many exciting improvements and new features. Let’s take a peek at what’s in store!&lt;/p&gt;
-&lt;h2 id=&quot;Even-Leaner-Even-Faster&quot;&gt;&lt;a href=&quot;#Even-Leaner-Even-Faster&quot; class=&quot;headerlink&quot; title=&quot;Even Leaner, Even Faster&quot;&gt;&lt;/a&gt;Even Leaner, Even Faster&lt;/h2&gt;&lt;p&gt;Vue.js has always focused on staying light and fast, but 2.0 pushes it even further. The rendering layer is now based on a lightweight virtual-DOM implementation that improves initial rendering speed and memory consumption by up to 2~4x in most scenarios (check out &lt;a href=&quot;https://github.com/vuejs/vue/tree/next/benchmarks&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;these benchmarks&lt;/a&gt;). The template-to-virtual-DOM compiler and the runtime can be separated, so you can pre-compile templates and ship your app with only the runtime, which is less than 12kb min+gzip (as a reference, React 15 is 44kb min+gzip). The compiler also works in the browser, which means you can still drop in one script tag and start hacking, just like before. Even with the compiler included, the build is sitting at 17kb min+gzip, still lighter than the current 1.0 build.&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h2 id=&quot;Even-Leaner-Even-Faster&quot;&gt;&lt;a href=&quot;#Even-Leaner-Even-Faster&quot; class=&quot;headerlink&quot; title=&quot;Even Leaner, Even Faster&quot;&gt;&lt;/a&gt;Even Leaner, Even Faster&lt;/h2&gt;&lt;p&gt;Vue.js has always focused on staying light and fast, but 2.0 pushes it even further. The rendering layer is now based on a lightweight virtual-DOM implementation (based on &lt;a href=&quot;https://github.com/paldepind/snabbdom&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Snabbdom&lt;/a&gt;) that improves initial rendering speed and memory consumption by up to 2~4x in most scenarios (check out &lt;a href=&quot;https://github.com/vuejs/vue/tree/next/benchmarks&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;these benchmarks&lt;/a&gt;). The template-to-virtual-DOM compiler and the runtime can be separated, so you can pre-compile templates and ship your app with only the runtime, which is less than 12kb min+gzip (as a reference, React 15 is 44kb min+gzip). The compiler also works in the browser, which means you can still drop in one script tag and start hacking, just like before. Even with the compiler included, the build is sitting at 17kb min+gzip, still lighter than the current 1.0 build.&lt;/p&gt;
 &lt;h2 id=&quot;Not-Your-Average-Virtual-DOM&quot;&gt;&lt;a href=&quot;#Not-Your-Average-Virtual-DOM&quot; class=&quot;headerlink&quot; title=&quot;Not Your Average Virtual-DOM&quot;&gt;&lt;/a&gt;Not Your Average Virtual-DOM&lt;/h2&gt;&lt;p&gt;Now, just virtual-DOM sounds boring because there are so many implementations out there - but this one is different. Combined with Vue’s reactivity system, it provides optimized re-rendering out of the box without you having to do anything. Each component keeps track of its reactive dependencies during its render, so the system knows precisely when to re-render, and which components to re-render. No need for &lt;code&gt;shouldComponentUpdate&lt;/code&gt; or immutable data structures - &lt;strong&gt;it just works&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;In addition, Vue 2.0 applies some advanced optimizations during the template-to-virtual-DOM compilation phase:&lt;/p&gt;
 &lt;ol&gt;
@@ -48,7 +49,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;Today I am thrilled to announce the first public preview of Vue.js 2.0, which brings along many exciting improvements and new features. L
+      &lt;p&gt;Today I am thrilled to announce the first public preview of Vue.js 2.0, which brings along many exciting improvements and new features. Let’s take a peek at what’s in store!&lt;/p&gt;
     
     </summary>
     

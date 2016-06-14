@@ -331,7 +331,9 @@ body {
   margin-right: 0;
 }
 #translations {
-  margin-bottom: 3em;
+  position: fixed;
+  right: 1em;
+  bottom: 0.5em;
 }
 #translations .delimiter {
   color: #7f8c8d;
@@ -367,6 +369,7 @@ body {
   position: relative;
 }
 #hero .inner {
+  z-index: 2;
   height: 640px;
   width: 100%;
   position: absolute;
@@ -392,6 +395,7 @@ body {
 }
 #hero .down {
   position: absolute;
+  z-index: 1;
   bottom: 0;
   width: 100%;
   left: 0;
@@ -608,12 +612,40 @@ body {
 #donate {
   margin-left: -2px !important;
 }
+#sponsors span,
+#sponsors-mobile span {
+  color: #7f8c8d;
+  font-size: 0.85em;
+}
+#sponsors a,
+#sponsors-mobile a,
+#sponsors img,
+#sponsors-mobile img {
+  position: relative;
+  width: 100px;
+  display: inline-block;
+  vertical-align: middle;
+}
+#sponsors a,
+#sponsors-mobile a {
+  margin: 5px 10px 0;
+}
+#sponsors-mobile {
+  display: none;
+  text-align: center;
+  margin-bottom: 2em;
+}
+#sponsors-mobile a {
+  display: block;
+  width: auto;
+  margin: 10px auto;
+}
 @media screen and (max-width: 480px) {
   body {
     font-size: 14px;
   }
   #nav {
-    margin: 2em 1.8em 0;
+    margin: 1.5em 1.2em 0;
   }
   #translations {
     margin-bottom: 2em;
@@ -655,7 +687,7 @@ body {
   #hero .warning,
   #hero .desc {
     font-size: 0.85em;
-    margin: 1em auto;
+    margin: 0.8em auto;
   }
   #hero .warning br,
   #hero .desc br {
@@ -684,19 +716,17 @@ body {
   #why h2 {
     font-size: 1.4em;
   }
-  #ad {
-    position: static;
-  }
-  #ad .carbon-img,
-  #ad .carbon-text,
-  #ad .carbon-poweredby {
-    display: inline-bloc;
-  }
 }
 @media screen and (max-width: 860px) {
   #features,
   #hero {
     font-size: 16px;
+  }
+  #sponsors {
+    display: none;
+  }
+  #sponsors-mobile {
+    display: block;
   }
   #example .block {
     display: block;
@@ -712,9 +742,9 @@ body {
     line-height: 1em;
     padding: 0.5em 0;
   }
-  #ad {
+  #translations {
     position: relative;
-    text-align: center;
-    width: 100%;
+    right: 0;
+    bottom: 0;
   }
 }
