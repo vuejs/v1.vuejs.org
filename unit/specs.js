@@ -152,7 +152,7 @@
 	
 	_globalApi2['default'](_instanceVue2['default']);
 	
-	_instanceVue2['default'].version = '1.0.24';
+	_instanceVue2['default'].version = '1.0.25';
 	
 	exports['default'] = _instanceVue2['default'];
 	
@@ -1234,15 +1234,23 @@
 	exports.devtools = devtools;
 	// UA sniffing for working around browser-specific quirks
 	var UA = inBrowser && window.navigator.userAgent.toLowerCase();
+	var isIE = UA && UA.indexOf('trident') > 0;
+	exports.isIE = isIE;
 	var isIE9 = UA && UA.indexOf('msie 9.0') > 0;
 	exports.isIE9 = isIE9;
 	var isAndroid = UA && UA.indexOf('android') > 0;
 	exports.isAndroid = isAndroid;
 	var isIos = UA && /(iphone|ipad|ipod|ios)/i.test(UA);
 	exports.isIos = isIos;
-	var isWechat = UA && UA.indexOf('micromessenger') > 0;
+	var iosVersionMatch = isIos && UA.match(/os ([\d_]+)/);
+	exports.iosVersionMatch = iosVersionMatch;
+	var iosVersion = iosVersionMatch && iosVersionMatch[1].split('_');
 	
-	exports.isWechat = isWechat;
+	exports.iosVersion = iosVersion;
+	// detecting iOS UIWebView by indexedDB
+	var hasMutationObserverBug = iosVersion && Number(iosVersion[0]) >= 9 && Number(iosVersion[1]) >= 3 && !window.indexedDB;
+	
+	exports.hasMutationObserverBug = hasMutationObserverBug;
 	var transitionProp = undefined;
 	var transitionEndEvent = undefined;
 	var animationProp = undefined;
@@ -1287,7 +1295,7 @@
 	  }
 	
 	  /* istanbul ignore if */
-	  if (typeof MutationObserver !== 'undefined' && !(isWechat && isIos)) {
+	  if (typeof MutationObserver !== 'undefined' && !hasMutationObserverBug) {
 	    var counter = 1;
 	    var observer = new MutationObserver(nextTickHandler);
 	    var textNode = document.createTextNode(counter);
@@ -2771,7 +2779,7 @@
 	  var unsafeOpen = escapeRegex(_config2['default'].unsafeDelimiters[0]);
 	  var unsafeClose = escapeRegex(_config2['default'].unsafeDelimiters[1]);
 	  tagRE = new RegExp(unsafeOpen + '((?:.|\\n)+?)' + unsafeClose + '|' + open + '((?:.|\\n)+?)' + close, 'g');
-	  htmlRE = new RegExp('^' + unsafeOpen + '.*' + unsafeClose + '$');
+	  htmlRE = new RegExp('^' + unsafeOpen + '((?:.|\\n)+?)' + unsafeClose + '$');
 	  // reset cache
 	  cache = new _cache2['default'](1000);
 	}
@@ -2943,12 +2951,12 @@
 	
 	p.put = function (key, value) {
 	  var removed;
-	  if (this.size === this.limit) {
-	    removed = this.shift();
-	  }
 	
 	  var entry = this.get(key, true);
 	  if (!entry) {
+	    if (this.size === this.limit) {
+	      removed = this.shift();
+	    }
 	    entry = {
 	      key: key
 	    };
@@ -3609,7 +3617,9 @@
 	  }
 	  if (child.mixins) {
 	    for (var i = 0, l = child.mixins.length; i < l; i++) {
-	      parent = mergeOptions(parent, child.mixins[i], vm);
+	      var mixin = child.mixins[i];
+	      var mixinOptions = mixin.prototype instanceof _instanceVue2['default'] ? mixin.options : mixin;
+	      parent = mergeOptions(parent, mixinOptions, vm);
 	    }
 	  }
 	  for (key in parent) {
@@ -3687,7 +3697,8 @@
 	      return (/HTMLUnknownElement/.test(el.toString()) &&
 	        // Chrome returns unknown for several HTML5 elements.
 	        // https://code.google.com/p/chromium/issues/detail?id=540526
-	        !/^(data|time|rtc|rb)$/.test(tag)
+	        // Firefox returns unknown for some "Interactive elements."
+	        !/^(data|time|rtc|rb|details|dialog|summary)$/.test(tag)
 	      );
 	    }
 	  };
@@ -4840,7 +4851,9 @@
 	var restoreRE = /"(\d+)"/g;
 	var pathTestRE = /^[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*|\['.*?'\]|\[".*?"\]|\[\d+\]|\[[A-Za-z_$][\w$]*\])*$/;
 	var identRE = /[^\w$\.](?:[A-Za-z_$][\w$]*)/g;
-	var booleanLiteralRE = /^(?:true|false)$/;
+	var literalValueRE = /^(?:true|false|null|undefined|Infinity|NaN)$/;
+	
+	function noop() {}
 	
 	/**
 	 * Save / Rewrite / Restore
@@ -4922,7 +4935,7 @@
 	  // save strings and object literal keys
 	  var body = exp.replace(saveRE, save).replace(wsRE, '');
 	  // rewrite all paths
-	  // pad 1 space here becaue the regex matches 1 extra char
+	  // pad 1 space here because the regex matches 1 extra char
 	  body = (' ' + body).replace(identRE, rewrite).replace(restoreRE, restore);
 	  return makeGetterFn(body);
 	}
@@ -4943,7 +4956,15 @@
 	    return new Function('scope', 'return ' + body + ';');
 	    /* eslint-enable no-new-func */
 	  } catch (e) {
-	    ("development") !== 'production' && _utilIndex.warn('Invalid expression. ' + 'Generated function body: ' + body);
+	    if (true) {
+	      /* istanbul ignore if */
+	      if (e.toString().match(/unsafe-eval|CSP/)) {
+	        _utilIndex.warn('It seems you are using the default build of Vue.js in an environment ' + 'with Content Security Policy that prohibits unsafe-eval. ' + 'Use the CSP-compliant build instead: ' + 'http://vuejs.org/guide/installation.html#CSP-compliant-build');
+	      } else {
+	        _utilIndex.warn('Invalid expression. ' + 'Generated function body: ' + body);
+	      }
+	    }
+	    return noop;
 	  }
 	}
 	
@@ -5005,8 +5026,8 @@
 	
 	function isSimplePath(exp) {
 	  return pathTestRE.test(exp) &&
-	  // don't treat true/false as paths
-	  !booleanLiteralRE.test(exp) &&
+	  // don't treat literal values as paths
+	  !literalValueRE.test(exp) &&
 	  // Math constants e.g. Math.PI, Math.E etc.
 	  exp.slice(0, 5) !== 'Math.';
 	}
@@ -5948,7 +5969,7 @@
 	          if (token.html) {
 	            _utilIndex.replace(node, _parsersTemplate.parseTemplate(value, true));
 	          } else {
-	            node.data = value;
+	            node.data = _utilIndex._toString(value);
 	          }
 	        } else {
 	          vm._bindDir(token.descriptor, node, host, scope);
@@ -6521,6 +6542,7 @@
 	
 	var tagRE = /<([\w:-]+)/;
 	var entityRE = /&#?\w+?;/;
+	var commentRE = /<!--/;
 	
 	/**
 	 * Convert a string template to a DocumentFragment.
@@ -6543,8 +6565,9 @@
 	  var frag = document.createDocumentFragment();
 	  var tagMatch = templateString.match(tagRE);
 	  var entityMatch = entityRE.test(templateString);
+	  var commentMatch = commentRE.test(templateString);
 	
-	  if (!tagMatch && !entityMatch) {
+	  if (!tagMatch && !entityMatch && !commentMatch) {
 	    // text only, return a single text node.
 	    frag.appendChild(document.createTextNode(templateString));
 	  } else {
@@ -7244,7 +7267,7 @@
 	   * the filters. This is passed to and called by the watcher.
 	   *
 	   * It is necessary for this to be called during the
-	   * wathcer's dependency collection phase because we want
+	   * watcher's dependency collection phase because we want
 	   * the v-for to update when the source Object is mutated.
 	   */
 	
@@ -8051,7 +8074,10 @@
 	  },
 	
 	  update: function update(value) {
-	    this.el.value = _utilIndex._toString(value);
+	    // #3029 only update when the value changes. This prevent
+	    // browsers from overwriting values like selectionStart
+	    value = _utilIndex._toString(value);
+	    if (value !== this.el.value) this.el.value = value;
 	  },
 	
 	  unbind: function unbind() {
@@ -8122,6 +8148,8 @@
 	exports['default'] = {
 	
 	  bind: function bind() {
+	    var _this = this;
+	
 	    var self = this;
 	    var el = this.el;
 	
@@ -8153,11 +8181,16 @@
 	    // selectedIndex with value -1 to 0 when the element
 	    // is appended to a new parent, therefore we have to
 	    // force a DOM update whenever that happens...
-	    this.vm.$on('hook:attached', this.forceUpdate);
+	    this.vm.$on('hook:attached', function () {
+	      _utilIndex.nextTick(_this.forceUpdate);
+	    });
 	  },
 	
 	  update: function update(value) {
 	    var el = this.el;
+	    if (!_utilIndex.inDoc(el)) {
+	      return _utilIndex.nextTick(this.forceUpdate);
+	    }
 	    el.selectedIndex = -1;
 	    var multi = this.multiple && _utilIndex.isArray(value);
 	    var options = el.options;
@@ -9600,7 +9633,7 @@
 	  if (value === undefined) {
 	    value = getPropDefaultValue(vm, prop);
 	  }
-	  value = coerceProp(prop, value);
+	  value = coerceProp(prop, value, vm);
 	  var coerced = value !== rawValue;
 	  if (!assertProp(prop, value, vm)) {
 	    value = undefined;
@@ -9719,13 +9752,17 @@
 	 * @return {*}
 	 */
 	
-	function coerceProp(prop, value) {
+	function coerceProp(prop, value, vm) {
 	  var coerce = prop.options.coerce;
 	  if (!coerce) {
 	    return value;
 	  }
-	  // coerce is a function
-	  return coerce(value);
+	  if (typeof coerce === 'function') {
+	    return coerce(value);
+	  } else {
+	    ("development") !== 'production' && _utilIndex.warn('Invalid coerce for prop "' + prop.name + '": expected function, got ' + typeof coerce + '.', vm);
+	    return value;
+	  }
 	}
 	
 	/**
@@ -9815,10 +9852,9 @@
 	    // resolve on owner vm
 	    var hooks = _utilIndex.resolveAsset(this.vm.$options, 'transitions', id);
 	    id = id || 'v';
+	    oldId = oldId || 'v';
 	    el.__v_trans = new _transitionTransition2['default'](el, id, hooks, this.vm);
-	    if (oldId) {
-	      _utilIndex.removeClass(el, oldId + '-transition');
-	    }
+	    _utilIndex.removeClass(el, oldId + '-transition');
 	    _utilIndex.addClass(el, id + '-transition');
 	  }
 	};
@@ -12278,7 +12314,9 @@
 	          }
 	        }
 	        if (type === 'component' && _utilIndex.isPlainObject(definition)) {
-	          definition.name = id;
+	          if (!definition.name) {
+	            definition.name = id;
+	          }
 	          definition = Vue.extend(definition);
 	        }
 	        this.options[type + 's'][id] = definition;
@@ -12493,7 +12531,7 @@
 	
 	  json: {
 	    read: function read(value, indent) {
-	      return typeof value === 'string' ? value : JSON.stringify(value, null, Number(indent) || 2);
+	      return typeof value === 'string' ? value : JSON.stringify(value, null, arguments.length > 1 ? indent : 2);
 	    },
 	    write: function write(value) {
 	      try {
@@ -16979,6 +17017,12 @@
 	      expect(getWarnCount()).toBe(0)
 	    })
 	
+	    it('warn if coerce is not a function', function () {
+	      var coerce = 1
+	      makeInstance('123', String, null, coerce)
+	      expect(getWarnCount()).toBe(1)
+	    })
+	
 	    it('multiple types + custom validator', function () {
 	      makeInstance(123, [String, Boolean, Number], null, String)
 	      expect(getWarnCount()).toBe(0)
@@ -17600,7 +17644,7 @@
 	    })
 	    var dir = new Directive({
 	      name: 'transition',
-	      raw: 'test',
+	      raw: '',
 	      def: def,
 	      modifiers: {
 	        literal: true
@@ -17608,17 +17652,22 @@
 	    }, vm, el)
 	    dir._bind()
 	    var transition = dir.el.__v_trans
+	    expect(transition.enterClass).toBe('v-enter')
+	    expect(transition.leaveClass).toBe('v-leave')
+	    expect(dir.el.className).toBe('v-transition')
+	    dir.update('test', '')
+	    transition = dir.el.__v_trans
 	    expect(transition.el).toBe(dir.el)
 	    expect(transition.hooks).toBe(fns)
 	    expect(transition.enterClass).toBe('test-enter')
 	    expect(transition.leaveClass).toBe('test-leave')
-	    expect(dir.el.className === 'test-transition')
+	    expect(dir.el.className).toBe('test-transition')
 	    dir.update('lol', 'test')
 	    transition = dir.el.__v_trans
 	    expect(transition.enterClass).toBe('lol-enter')
 	    expect(transition.leaveClass).toBe('lol-leave')
 	    expect(transition.fns).toBeUndefined()
-	    expect(dir.el.className === 'lol-transition')
+	    expect(dir.el.className).toBe('lol-transition')
 	  })
 	
 	  it('dynamic transitions', function (done) {
@@ -20188,7 +20237,7 @@
 	    })
 	  })
 	
-	  it('select persist non-selected on append', function () {
+	  it('select persist non-selected on append', function (done) {
 	    var vm = new Vue({
 	      el: el,
 	      data: {
@@ -20202,12 +20251,17 @@
 	          '<option>c</option>' +
 	        '</select>'
 	    })
-	    expect(vm.$el.value).toBe('')
-	    expect(vm.$el.selectedIndex).toBe(-1)
-	    vm.$remove()
-	    vm.$appendTo(document.body)
-	    expect(vm.$el.value).toBe('')
-	    expect(vm.$el.selectedIndex).toBe(-1)
+	    _.nextTick(function () {
+	      expect(vm.$el.value).toBe('')
+	      expect(vm.$el.selectedIndex).toBe(-1)
+	      vm.$remove()
+	      vm.$appendTo(document.body)
+	      _.nextTick(function () {
+	        expect(vm.$el.value).toBe('')
+	        expect(vm.$el.selectedIndex).toBe(-1)
+	        done()
+	      })
+	    })
 	  })
 	
 	  it('select template default value', function () {
@@ -21359,6 +21413,7 @@
 	    var obj = {a: {b: 2}}
 	    expect(filter(obj)).toBe(JSON.stringify(obj, null, 2))
 	    expect(filter(obj, 4)).toBe(JSON.stringify(obj, null, 4))
+	    expect(filter(obj, 0)).toBe(JSON.stringify(obj, null, 0))
 	    // plain string
 	    expect(filter('1234')).toBe('1234')
 	  })
@@ -21786,6 +21841,15 @@
 	      expect(Test.component('test2')).toBe(component)
 	      // extended registration should not pollute global
 	      expect(Vue.options.components.test).toBeUndefined()
+	    })
+	
+	    // GitHub issue #3039
+	    it('component with `name` option', function () {
+	      var def = { name: 'Component1' }
+	      Test.component('ns-tree', def)
+	      var component = Test.options.components['ns-tree']
+	      expect(typeof component).toBe('function')
+	      expect(component.options.name).toBe('Component1')
 	    })
 	  })
 	})
@@ -23887,6 +23951,18 @@
 	    paths: []
 	  },
 	  {
+	    exp: 'null',
+	    scope: {},
+	    expected: null,
+	    paths: []
+	  },
+	  {
+	    exp: 'undefined',
+	    scope: { undefined: 1 },
+	    expected: undefined,
+	    paths: []
+	  },
+	  {
 	    // Date global
 	    exp: 'Date.now() > new Date("2000-01-01")',
 	    scope: {},
@@ -24197,6 +24273,13 @@
 	    expect(res.firstChild.nodeType).toBe(3) // Text node
 	  })
 	
+	  it('should work if the template string doesn\'t contain tags but contains comments', function () {
+	    var res = parse('<!-- yo -->hello<!-- yo -->')
+	    expect(res.childNodes.length).toBe(1)
+	    expect(res.firstChild.nodeType).toBe(3) // text node
+	    expect(res.firstChild.nodeValue).toBe('hello')
+	  })
+	
 	  it('should handle string that contains html entities', function () {
 	    var res = parse('foo&lt;bar')
 	    expect(res.nodeType).toBe(11)
@@ -24412,6 +24495,13 @@
 	    text: '{{\n  value  \n}}',
 	    expected: [
 	      { tag: true, value: 'value', html: false, oneTime: false }
+	    ]
+	  },
+	  // multiline HTML
+	  {
+	    text: '{{{\n code \n}}}',
+	    expected: [
+	      { tag: true, value: 'code', html: true, oneTime: false }
 	    ]
 	  },
 	  // new lines preserved outside of tags
@@ -25830,12 +25920,14 @@
 	    var f4 = function () {}
 	    var mixinA = { a: 1, directives: { a: a }, created: f2 }
 	    var mixinB = { b: 1, directives: { b: b }, created: f3 }
+	    var mixinC = Vue.extend({ c: 1 })
 	    var res = merge(
 	      { a: 2, directives: { c: c }, created: [f1] },
-	      { directives: { d: d }, mixins: [mixinA, mixinB], created: f4 }
+	      { directives: { d: d }, mixins: [mixinA, mixinB, mixinC], created: f4 }
 	    )
 	    expect(res.a).toBe(1)
 	    expect(res.b).toBe(1)
+	    expect(res.c).toBe(1)
 	    expect(res.directives.a).toBe(a)
 	    expect(res.directives.b).toBe(b)
 	    expect(res.directives.c).toBe(c)
