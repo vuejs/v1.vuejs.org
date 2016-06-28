@@ -152,7 +152,7 @@
 	
 	_globalApi2['default'](_instanceVue2['default']);
 	
-	_instanceVue2['default'].version = '1.0.25';
+	_instanceVue2['default'].version = '1.0.26';
 	
 	exports['default'] = _instanceVue2['default'];
 	
@@ -4471,6 +4471,8 @@
 
 	'use strict';
 	
+	var _Object$isExtensible = __webpack_require__(88)['default'];
+	
 	var _Object$keys = __webpack_require__(30)['default'];
 	
 	var _interopRequireDefault = __webpack_require__(2)['default'];
@@ -4795,7 +4797,7 @@
 	  }
 	  var isA = _utilIndex.isArray(val);
 	  var isO = _utilIndex.isObject(val);
-	  if (isA || isO) {
+	  if ((isA || isO) && _Object$isExtensible(val)) {
 	    if (val.__ob__) {
 	      var depId = val.__ob__.dep.id;
 	      if (seen.has(depId)) {
@@ -8184,13 +8186,13 @@
 	    this.vm.$on('hook:attached', function () {
 	      _utilIndex.nextTick(_this.forceUpdate);
 	    });
+	    if (!_utilIndex.inDoc(el)) {
+	      _utilIndex.nextTick(this.forceUpdate);
+	    }
 	  },
 	
 	  update: function update(value) {
 	    var el = this.el;
-	    if (!_utilIndex.inDoc(el)) {
-	      return _utilIndex.nextTick(this.forceUpdate);
-	    }
 	    el.selectedIndex = -1;
 	    var multi = this.multiple && _utilIndex.isArray(value);
 	    var options = el.options;
@@ -12604,7 +12606,13 @@
 	
 	  pluralize: function pluralize(value) {
 	    var args = _utilIndex.toArray(arguments, 1);
-	    return args.length > 1 ? args[value % 10 - 1] || args[args.length - 1] : args[0] + (value === 1 ? '' : 's');
+	    var length = args.length;
+	    if (length > 1) {
+	      var index = value % 10 - 1;
+	      return index in args ? args[index] : args[length - 1];
+	    } else {
+	      return args[0] + (value === 1 ? '' : 's');
+	    }
 	  },
 	
 	  /**
@@ -21460,6 +21468,8 @@
 	    expect(filter(2, 'st', 'nd', 'rd', 'th')).toBe('nd')
 	    expect(filter(3, 'st', 'nd', 'rd', 'th')).toBe('rd')
 	    expect(filter(4, 'st', 'nd', 'rd', 'th')).toBe('th')
+	    // multi args where selected argument is empty string
+	    expect(filter(1, '', 'nd', 'rd', 'th')).toBe('')
 	  })
 	
 	  it('currency', function () {
