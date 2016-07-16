@@ -132,19 +132,35 @@ p {
 }
 a.button {
   display: inline-block;
-  font-family: 'Roboto Mono', Monaco, courier, monospace;
   font-weight: 700;
   color: #fff;
   background-color: #4fc08d;
+  transition: all 0.15s ease;
+  font-family: 'Roboto Mono', Monaco, courier, monospace;
   border-bottom: 2px solid #3aa373;
   padding: 12px 14px;
   border-radius: 4px;
-  transition: all 0.15s ease;
 }
 a.button:hover {
   background-color: #5dc596;
-  -webkit-transform: translate(0, -2px);
-  transform: translate(0, -2px);
+  -webkit-transform: scale(1.03);
+  transform: scale(1.03);
+}
+a.small-button {
+  display: inline-block;
+  font-weight: 700;
+  color: #fff;
+  background-color: #4fc08d;
+  transition: all 0.15s ease;
+  padding: 4px 8px 5px;
+  border-radius: 4px;
+  width: 140px;
+  margin: 0 5px;
+}
+a.small-button:hover {
+  background-color: #5dc596;
+  -webkit-transform: scale(1.03);
+  transform: scale(1.03);
 }
 .highlight {
   overflow-x: auto;
