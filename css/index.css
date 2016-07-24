@@ -699,6 +699,9 @@ body {
     font-size: 0.8em;
     margin: 0.5em 0;
   }
+  #hero a.small-button {
+    margin: 0.3em 0;
+  }
   #hero .desc {
     max-width: 300px;
   }
