@@ -132,35 +132,19 @@ p {
 }
 a.button {
   display: inline-block;
+  font-family: 'Roboto Mono', Monaco, courier, monospace;
   font-weight: 700;
   color: #fff;
   background-color: #4fc08d;
-  transition: all 0.15s ease;
-  font-family: 'Roboto Mono', Monaco, courier, monospace;
   border-bottom: 2px solid #3aa373;
   padding: 12px 14px;
   border-radius: 4px;
+  transition: all 0.15s ease;
 }
 a.button:hover {
   background-color: #5dc596;
-  -webkit-transform: scale(1.03);
-  transform: scale(1.03);
-}
-a.small-button {
-  display: inline-block;
-  font-weight: 700;
-  color: #fff;
-  background-color: #4fc08d;
-  transition: all 0.15s ease;
-  padding: 4px 8px 5px;
-  border-radius: 4px;
-  width: 140px;
-  margin: 0 5px;
-}
-a.small-button:hover {
-  background-color: #5dc596;
-  -webkit-transform: scale(1.03);
-  transform: scale(1.03);
+  -webkit-transform: translate(0, -2px);
+  transform: translate(0, -2px);
 }
 .highlight {
   overflow-x: auto;
@@ -186,6 +170,9 @@ a.small-button:hover {
   padding: 1.2em 1.4em;
   line-height: 1.5em;
   margin: 0;
+}
+.highlight .code .line {
+  min-height: 1.5em;
 }
 .highlight.html .code:after,
 .highlight.js .code:after,
@@ -628,9 +615,6 @@ body {
 #donate {
   margin-left: -2px !important;
 }
-#sponsors {
-  padding-top: 20px;
-}
 #sponsors span,
 #sponsors-mobile span {
   color: #7f8c8d;
@@ -653,10 +637,11 @@ body {
   display: none;
   text-align: center;
   margin-bottom: 2em;
-  padding: 0 1em;
 }
 #sponsors-mobile a {
-  margin: 20px 10px 0;
+  display: block;
+  width: auto;
+  margin: 10px auto;
 }
 @media screen and (max-width: 480px) {
   body {
@@ -699,9 +684,6 @@ body {
     font-size: 0.8em;
     margin: 0.5em 0;
   }
-  #hero a.small-button {
-    margin: 0.3em 0;
-  }
   #hero .desc {
     max-width: 300px;
   }
@@ -738,7 +720,7 @@ body {
     font-size: 1.4em;
   }
 }
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 860px) {
   #features,
   #hero {
     font-size: 16px;
