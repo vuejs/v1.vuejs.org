@@ -326,13 +326,7 @@
 </div>
 
     <h1>Form Input Bindings</h1>
-    <h2 id="Basic-Usage"><a href="#Basic-Usage" class="headerlink" title="Basic Usage"></a>Basic Usage</h2><p>You can use the <code>v-model</code> directive to create two-way data bindings on form input elements. It automatically picks the correct way to update the element based on the input type. Although it can seem a bit magical, <code>v-model</code> is essentially syntax sugar for updating data on user input events, plus special care for some edge cases.</p>
-<p>That means this:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">v-model</span>=<span class="string">"message"</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>is the same as:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">v-bind:value</span>=<span class="string">"message"</span> <span class="attr">v-on:input</span>=<span class="string">"message = $event.target.value"</span>&gt;</span></div></pre></td></tr></table></figure>
-<p class="tip" id="two-way-binding">Did your heart skip a beat when you read the words <strong>two-way data bindings</strong>? Aren’t those bad? This is a great question! The phrase “two-way binding” is overloaded, meaning it’s actually used to mean two separate things.<br><br>Two-way binding for <em>form inputs</em>, which is what <code>v-model</code> is for, is just simplifying syntax for a very common and safe pattern. Two-way binding <em>between scopes/components/models</em>, where there are two separate sources of truth for the same data, is what can be dangerous and lead to state bugs.</p>
-
+    <h2 id="Basic-Usage"><a href="#Basic-Usage" class="headerlink" title="Basic Usage"></a>Basic Usage</h2><p>You can use the <code>v-model</code> directive to create two-way data bindings on form input and textarea elements. It automatically picks the correct way to update the element based on the input type. Although a bit magical, <code>v-model</code> is essentially syntax sugar for updating data on user input events, plus special care for some edge cases.</p>
 <h3 id="Text"><a href="#Text" class="headerlink" title="Text"></a>Text</h3><figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">v-model</span>=<span class="string">"message"</span> <span class="attr">placeholder</span>=<span class="string">"edit me"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Message is: &#123;&#123; message &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div></pre></td></tr></table></figure>
 
 <div id="example-1" class="demo">
@@ -342,6 +336,22 @@
 <script>
 new Vue({
   el: '#example-1',
+  data: {
+    message: ''
+  }
+})
+</script>
+
+<h3 id="Multiline-text"><a href="#Multiline-text" class="headerlink" title="Multiline text"></a>Multiline text</h3><figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">span</span>&gt;</span>Multiline message is:<span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123; message &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">textarea</span> <span class="attr">v-model</span>=<span class="string">"message"</span> <span class="attr">placeholder</span>=<span class="string">"add multiple lines"</span>&gt;</span><span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></div></pre></td></tr></table></figure>
+
+<div id="example-textarea" class="demo">
+  <span>Message is:</span>
+  <p style="white-space: pre">{{ message }}</p><br>
+  <textarea v-model="message" placeholder="add multiple lines"></textarea>
+</div>
+<script>
+new Vue({
+  el: '#example-textarea',
   data: {
     message: ''
   }
