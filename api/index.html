@@ -39,7 +39,7 @@
     <ul id="nav">
         <li>
   <form id="search-form">
-    <input type="text" id="search-query-nav" class="search-query st-default-search-input">
+    <input type="text" id="search-query" class="st-default-search-input">
   </form>
 </li>
 <li><a href="/guide/" class="nav-link">Guide</a></li>
@@ -59,7 +59,6 @@
 
     </ul>
 </div>
-
             <div id="main">
                 
                     
@@ -67,7 +66,7 @@
     <ul class="main-menu">
         <li>
   <form id="search-form">
-    <input type="text" id="search-query-sidebar" class="search-query st-default-search-input">
+    <input type="text" id="search-query" class="st-default-search-input">
   </form>
 </li>
 <li><a href="/guide/" class="nav-link">Guide</a></li>
@@ -96,8 +95,7 @@
         <h2>
             API
             <select class="version-select">
-                <option selected>2.0</option>
-                <option>1.0</option>
+                <option selected>1.0</option>
                 <option>0.12</option>
                 <option>0.11</option>
             </select>
@@ -111,16 +109,49 @@
 
 <div class="content api with-sidebar">
     <div id="ad">
-  <span>Proudly sponsored by</span>
-  <br>
-  <a href="https://strikingly.com/s/careers?utm_source=v" target="_blank"
-    style="display:inline-block;padding-top:8px">
-    <img src="/images/strikingly.png">
-  </a>
+  <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
 </div>
 
     <h1></h1>
     <h2 id="Global-Config"><a href="#Global-Config" class="headerlink" title="Global Config"></a>Global Config</h2><p><code>Vue.config</code> is an object containing Vue’s global configurations. You can modify its properties listed below before bootstrapping your application:</p>
+<h3 id="debug"><a href="#debug" class="headerlink" title="debug"></a>debug</h3><ul>
+<li><p><strong>Type:</strong> <code>Boolean</code></p>
+</li>
+<li><p><strong>Default:</strong> <code>false</code></p>
+</li>
+<li><p><strong>Usage:</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><div class="line">Vue.config.debug = <span class="literal">true</span></div></pre></td></tr></table></figure>
+<p>When in debug mode, Vue will:</p>
+<ol>
+<li><p>Print stack traces for all warnings.</p>
+</li>
+<li><p>Make all anchor nodes visible in the DOM as Comment nodes. This makes it easier to inspect the structure of the rendered result.</p>
+</li>
+</ol>
+<p class="tip">Debug mode is only available in development build.</p>
+
+</li>
+</ul>
+<h3 id="delimiters"><a href="#delimiters" class="headerlink" title="delimiters"></a>delimiters</h3><ul>
+<li><p><strong>Type:</strong> <code>Array&lt;String&gt;</code></p>
+</li>
+<li><p><strong>Default:</strong> <code>["{{", "}}"]</code></p>
+</li>
+<li><p><strong>Usage:</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// ES6 template string style</span></div><div class="line">Vue.config.delimiters = [<span class="string">'$&#123;'</span>, <span class="string">'&#125;'</span>]</div></pre></td></tr></table></figure>
+<p>Change the plain text interpolation delimiters.</p>
+</li>
+</ul>
+<h3 id="unsafeDelimiters"><a href="#unsafeDelimiters" class="headerlink" title="unsafeDelimiters"></a>unsafeDelimiters</h3><ul>
+<li><p><strong>Type:</strong> <code>Array&lt;String&gt;</code></p>
+</li>
+<li><p><strong>Default:</strong> <code>["{{{", "}}}"]</code></p>
+</li>
+<li><p><strong>Usage:</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// make it look more dangerous</span></div><div class="line">Vue.config.unsafeDelimiters = [<span class="string">'&#123;!!'</span>, <span class="string">'!!&#125;'</span>]</div></pre></td></tr></table></figure>
+<p>Change the raw HTML interpolation delimiters.</p>
+</li>
+</ul>
 <h3 id="silent"><a href="#silent" class="headerlink" title="silent"></a>silent</h3><ul>
 <li><p><strong>Type:</strong> <code>Boolean</code></p>
 </li>
@@ -128,18 +159,17 @@
 </li>
 <li><p><strong>Usage:</strong></p>
 <figure class="highlight js"><table><tr><td class="code"><pre><div class="line">Vue.config.silent = <span class="literal">true</span></div></pre></td></tr></table></figure>
-<p>Suppress all Vue logs and warnings.</p>
+<p>Suppress all Vue.js logs and warnings.</p>
 </li>
 </ul>
-<h3 id="optionMergeStrategies"><a href="#optionMergeStrategies" class="headerlink" title="optionMergeStrategies"></a>optionMergeStrategies</h3><ul>
-<li><p><strong>Type:</strong> <code>Object</code></p>
+<h3 id="async"><a href="#async" class="headerlink" title="async"></a>async</h3><ul>
+<li><p><strong>Type:</strong> <code>Boolean</code></p>
 </li>
-<li><p><strong>Default:</strong> <code>{}</code></p>
+<li><p><strong>Default:</strong> <code>true</code></p>
 </li>
 <li><p><strong>Usage:</strong></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><div class="line">Vue.config.optionMergeStrategies._my_option = <span class="function"><span class="keyword">function</span> (<span class="params">parent, child, vm</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> child + <span class="number">1</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">const</span> Profile = Vue.extend(&#123;</div><div class="line">  _my_option: <span class="number">1</span></div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="comment">// Profile.options._my_option = 2</span></div></pre></td></tr></table></figure>
-<p>Define custom merging strategies for options.</p>
-<p>The merge strategy receives the value of that option defined on the parent and child instances as the first and second arguments, respectively. The context Vue instance is passed as the third argument.</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><div class="line">Vue.config.async = <span class="literal">false</span></div></pre></td></tr></table></figure>
+<p>When async mode is off, Vue will perform all DOM updates synchronously upon detecting data change. This may help with debugging in some scenarios, but could also cause degraded performance and affect the order in which watcher callbacks are called. <strong><code>async: false</code> is not recommended in production.</strong></p>
 </li>
 </ul>
 <h3 id="devtools"><a href="#devtools" class="headerlink" title="devtools"></a>devtools</h3><ul>
@@ -150,26 +180,6 @@
 <li><p><strong>Usage:</strong></p>
 <figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// make sure to set this synchronously immediately after loading Vue</span></div><div class="line">Vue.config.devtools = <span class="literal">true</span></div></pre></td></tr></table></figure>
 <p>Configure whether to allow <a href="https://github.com/vuejs/vue-devtools" target="_blank" rel="external">vue-devtools</a> inspection. This option’s default value is <code>true</code> in development builds and <code>false</code> in production builds. You can set it to <code>true</code> to enable inspection for production builds.</p>
-</li>
-</ul>
-<h3 id="errorHandler"><a href="#errorHandler" class="headerlink" title="errorHandler"></a>errorHandler</h3><ul>
-<li><p><strong>Type:</strong> <code>Function</code></p>
-</li>
-<li><p><strong>Default:</strong> Error is thrown in place</p>
-</li>
-<li><p><strong>Usage:</strong></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><div class="line">Vue.config.errorHandler = <span class="function"><span class="keyword">function</span> (<span class="params">err, vm</span>) </span>&#123;</div><div class="line">  <span class="comment">// handle error</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>Assign a handler for uncaught errors during component render and watchers. The handler gets called with the error and the Vue instance.</p>
-</li>
-</ul>
-<h3 id="keyCodes"><a href="#keyCodes" class="headerlink" title="keyCodes"></a>keyCodes</h3><ul>
-<li><p><strong>Type:</strong> <code>Object</code></p>
-</li>
-<li><p><strong>Default:</strong> <code>{}</code></p>
-</li>
-<li><p><strong>Usage:</strong></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><div class="line">Vue.config.keyCodes = &#123; esc: <span class="number">27</span> &#125;</div></pre></td></tr></table></figure>
-<p>Define custom key aliases for v-on.</p>
 </li>
 </ul>
 <h2 id="Global-API"><a href="#Global-API" class="headerlink" title="Global API"></a>Global API</h2><h3 id="Vue-extend">Vue.extend( options )</h3>
