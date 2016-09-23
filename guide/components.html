@@ -39,7 +39,7 @@
     <ul id="nav">
         <li>
   <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
+    <input type="text" id="search-query-nav" class="search-query st-default-search-input">
   </form>
 </li>
 <li><a href="/guide/" class="nav-link current">Guide</a></li>
@@ -59,6 +59,7 @@
 
     </ul>
 </div>
+
             <div id="main">
                 
                     
@@ -66,7 +67,7 @@
     <ul class="main-menu">
         <li>
   <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
+    <input type="text" id="search-query-sidebar" class="search-query st-default-search-input">
   </form>
 </li>
 <li><a href="/guide/" class="nav-link current">Guide</a></li>
@@ -95,6 +96,7 @@
         <h2>
             Guide
             <select class="version-select">
+                <option value="rc">2.0-rc</option>
                 <option selected>1.0</option>
                 <option>0.12</option>
                 <option>0.11</option>
@@ -221,6 +223,7 @@ new Vue({ el: '#example' })
 </script>
 
 <p>Note the component’s template <strong>replaces</strong> the custom element, which only serves as a <strong>mounting point</strong>. This behavior can be configured using the <code>replace</code> instance option.</p>
+<p>Also note that components are provided a template instead of mounting with the <code>el</code> option! Only the root Vue instance (defined using <code>new Vue</code>) will include an <code>el</code> to mount to).</p>
 <h3 id="Local-Registration"><a href="#Local-Registration" class="headerlink" title="Local Registration"></a>Local Registration</h3><p>You don’t have to register every component globally. You can make a component available only in the scope of another component by registering it with the <code>components</code> instance option:</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> Child = Vue.extend(&#123; <span class="comment">/* ... */</span> &#125;)</div><div class="line"></div><div class="line"><span class="keyword">var</span> Parent = Vue.extend(&#123;</div><div class="line">  template: <span class="string">'...'</span>,</div><div class="line">  components: &#123;</div><div class="line">    <span class="comment">// &lt;my-component&gt; will only be available in Parent's template</span></div><div class="line">    <span class="string">'my-component'</span>: Child</div><div class="line">  &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
 <p>The same encapsulation applies for other assets types such as directives, filters and transitions.</p>
@@ -240,7 +243,7 @@ new Vue({ el: '#example' })
 <li><code>tr</code> can only contain <code>th</code> and <code>td</code>, and these elements should be direct children of <code>tr</code></li>
 </ul>
 <p>In practice these restriction can cause unexpected behavior. Although in simple cases it might appear to work, you can not rely on custom elements being expanded before browser validation. E.g. <code>&lt;my-select&gt;&lt;option&gt;...&lt;/option&gt;&lt;/my-select&gt;</code> is not a valid template even if <code>my-select</code> component eventually expands to <code>&lt;select&gt;...&lt;/select&gt;</code>.</p>
-<p>Another consequence is that you can not use custom tags (including custom elements and special tags like <code>&lt;component&gt;</code>, <code>&lt;template&gt;</code> and <code>&lt;partial&gt;</code>) inside of <code>ul</code>, <code>select</code>, <code>table</code> and other elements with similar restrictions. Custom tags will be hoisted out and thus not render properly.</p>
+<p>Another consequence is that you can not use custom tags (including custom elements and special tags like <code>&lt;component&gt;</code>, <code>&lt;template&gt;</code> and <code>&lt;partial&gt;</code>) inside of <code>select</code>, <code>table</code> and other elements with similar restrictions. Custom tags will be hoisted out and thus not render properly.</p>
 <p>In case of a custom element you should use the <code>is</code> special attribute:</p>
 <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">tr</span> <span class="attr">is</span>=<span class="string">"my-component"</span>&gt;</span><span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>In case of a <code>&lt;template&gt;</code> inside of a <code>&lt;table&gt;</code> you should use <code>&lt;tbody&gt;</code>, as tables are allowed to have multiple <code>tbody</code>:</p>

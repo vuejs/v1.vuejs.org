@@ -39,7 +39,7 @@
     <ul id="nav">
         <li>
   <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
+    <input type="text" id="search-query-nav" class="search-query st-default-search-input">
   </form>
 </li>
 <li><a href="/guide/" class="nav-link">Guide</a></li>
@@ -59,6 +59,7 @@
 
     </ul>
 </div>
+
             <div id="main">
                 
                     
@@ -66,7 +67,7 @@
     <ul class="main-menu">
         <li>
   <form id="search-form">
-    <input type="text" id="search-query" class="st-default-search-input">
+    <input type="text" id="search-query-sidebar" class="search-query st-default-search-input">
   </form>
 </li>
 <li><a href="/guide/" class="nav-link">Guide</a></li>
@@ -95,6 +96,7 @@
         <h2>
             API
             <select class="version-select">
+                <option value="rc">2.0-rc</option>
                 <option selected>1.0</option>
                 <option>0.12</option>
                 <option>0.11</option>
@@ -544,6 +546,20 @@
 <p>Called after the compilation is finished. At this stage all directives have been linked so data changes will trigger DOM updates. However, <code>$el</code> is not guaranteed to have been inserted into the document yet.</p>
 </li>
 <li><p><strong>See also:</strong> <a href="/guide/instance.html#Lifecycle-Diagram">Lifecycle Diagram</a></p>
+</li>
+</ul>
+<h3 id="activate"><a href="#activate" class="headerlink" title="activate"></a>activate</h3><ul>
+<li><p><strong>Type:</strong> <code>Function</code></p>
+</li>
+<li><p><strong>Arguments:</strong></p>
+<ul>
+<li><code>{Function} done</code></li>
+</ul>
+</li>
+<li><p><strong>Details:</strong></p>
+<p>Called after compilation is finished, right before the <code>ready</code> hook - but <strong>only</strong> during dynamic component swapping or in the initial render for static components. Unlike other lifecycle hooks, it accepts a <code>done</code> callback, which must be called for the rest of the lifecycle to complete. It’s most useful for performing some asynchronous operation before a component is swapped in, like fetching data from an API.</p>
+</li>
+<li><p><strong>See also:</strong> <a href="/guide/components.html#Dynamic-Components">Dynamic Components</a></p>
 </li>
 </ul>
 <h3 id="ready"><a href="#ready" class="headerlink" title="ready"></a>ready</h3><ul>
