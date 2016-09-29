@@ -32,12 +32,28 @@
         </div>
         
             <div id="header">
-    <a id="logo" href="/">
-        <img src="/images/logo.png">
-        <span>Vue.js</span>
-    </a>
-    <ul id="nav">
-        <li>
+  <a id="logo" href="/">
+    <img src="/images/logo.png">
+    <span>Vue.js <sup>2.0 RC</sup></span>
+  </a>
+  <span style="
+    position: absolute;
+    top: 100%;
+    left: 60px;
+    padding: 0 10px;
+    background: #ef9f00;
+    border-radius: 3px;
+    margin-top: -15px;
+    line-height: 30px;
+    color: white;
+    font-weight: bold;
+    letter-spacing: 1px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.3);
+  ">
+    WORK IN PROGRESS
+  </span>
+  <ul id="nav">
+    <li>
   <form id="search-form">
     <input type="text" id="search-query-nav" class="search-query st-default-search-input">
   </form>
@@ -57,7 +73,7 @@
 </li>
 
 
-    </ul>
+  </ul>
 </div>
 
             <div id="main">
@@ -96,8 +112,9 @@
         <h2>
             Guide
             <select class="version-select">
-                <option selected>2.0</option>
-                <option>1.0</option>
+                <option value="rc" selected>2.0</option>
+                <!-- !!TODO: Update value to subdomain when 2.0 is released -->
+                <option value="">1.0</option>
                 <option>0.12</option>
                 <option>0.11</option>
             </select>
@@ -119,15 +136,7 @@
                 
                 
                 <li>
-                    <a href="/guide/index.html" class="sidebar-link">Getting Started</a>
-                </li>
-            
-                
-                
-                
-                
-                <li>
-                    <a href="/guide/overview.html" class="sidebar-link">Overview</a>
+                    <a href="/guide/index.html" class="sidebar-link">Introduction</a>
                 </li>
             
                 
@@ -143,7 +152,7 @@
                 
                 
                 <li>
-                    <a href="/guide/syntax.html" class="sidebar-link">Data Binding Syntax</a>
+                    <a href="/guide/syntax.html" class="sidebar-link">Template Syntax</a>
                 </li>
             
                 
@@ -183,7 +192,7 @@
                 
                 
                 <li>
-                    <a href="/guide/events.html" class="sidebar-link">Methods and Event Handling</a>
+                    <a href="/guide/events.html" class="sidebar-link">Event Handling</a>
                 </li>
             
                 
@@ -296,6 +305,22 @@
                 
                 
                 
+                <li>
+                    <a href="/guide/ssr.html" class="sidebar-link">Server-Side Rendering</a>
+                </li>
+            
+                
+                
+                
+                
+                <li>
+                    <a href="/guide/migration.html" class="sidebar-link">Migration from 1.x</a>
+                </li>
+            
+                
+                
+                
+                
                   <li><h3>Meta</h3></li>
                 
                 <li>
@@ -315,14 +340,9 @@
 </div>
 
 
-<div class="content guide with-sidebar">
+<div class="content guide with-sidebar unit-testing-guide">
     <div id="ad">
-  <span>Proudly sponsored by</span>
-  <br>
-  <a href="https://strikingly.com/s/careers?utm_source=v" target="_blank"
-    style="display:inline-block;padding-top:8px">
-    <img src="/images/strikingly.png">
-  </a>
+  <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=vuejs" id="_carbonads_js"></script>
 </div>
 
     <h1>Unit Testing</h1>
@@ -330,9 +350,14 @@
 <h2 id="Simple-Assertions"><a href="#Simple-Assertions" class="headerlink" title="Simple Assertions"></a>Simple Assertions</h2><p>In terms of code structure for testing, you don’t have to do anything special in your components to make them testable. Just export the raw options:</p>
 <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">span</span>&gt;</span>&#123;&#123; message &#125;&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></div><div class="line">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</div><div class="line">    data () &#123;</div><div class="line">      <span class="keyword">return</span> &#123;</div><div class="line">        message: <span class="string">'hello!'</span></div><div class="line">      &#125;</div><div class="line">    &#125;,</div><div class="line">    created () &#123;</div><div class="line">      <span class="keyword">this</span>.message = <span class="string">'bye!'</span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>When you test that component, all you have to do is import the object along with Vue to make many common assertions:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// Import Vue and the component being tested</span></div><div class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></div><div class="line"><span class="keyword">import</span> MyComponent <span class="keyword">from</span> <span class="string">'path/to/MyComponent.vue'</span></div><div class="line"></div><div class="line"><span class="comment">// Here are some Jasmine 2.0 tests, though you can</span></div><div class="line"><span class="comment">// use any assertion library you prefer</span></div><div class="line">describe(<span class="string">'MyComponent'</span>, () =&gt; &#123;</div><div class="line">  <span class="comment">// Inspect the raw component options</span></div><div class="line">  it(<span class="string">'has a created hook'</span>, () =&gt; &#123;</div><div class="line">    expect(<span class="keyword">typeof</span> MyComponent.created).toBe(<span class="string">'function'</span>)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  <span class="comment">// Evaluate the results of functions in</span></div><div class="line">  <span class="comment">// the raw component options</span></div><div class="line">  it(<span class="string">'sets the correct default data'</span>, () =&gt; &#123;</div><div class="line">    expect(<span class="keyword">typeof</span> MyComponent.data).toBe(<span class="string">'function'</span>)</div><div class="line">    <span class="keyword">const</span> defaultData = MyComponent.data()</div><div class="line">    expect(defaultData.message).toBe(<span class="string">'hello!'</span>)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  <span class="comment">// Inspect the component instance on mount</span></div><div class="line">  it(<span class="string">'correctly sets the message when created'</span>, () =&gt; &#123;</div><div class="line">    <span class="keyword">const</span> vm = <span class="keyword">new</span> Vue(MyComponent).$mount()</div><div class="line">    expect(vm.message).toBe(<span class="string">'bye!'</span>)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  <span class="comment">// Inspect the generated HTML on mount</span></div><div class="line">  it(<span class="string">'renders the correct message'</span>, () =&gt; &#123;</div><div class="line">    <span class="keyword">const</span> vm = <span class="keyword">new</span> Vue(MyComponent).$mount()</div><div class="line">    expect(vm.$el.textContent).toBe(<span class="string">'bye!'</span>)</div><div class="line">  &#125;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-<h2 id="Asserting-Asynchronous-Updates"><a href="#Asserting-Asynchronous-Updates" class="headerlink" title="Asserting Asynchronous Updates"></a>Asserting Asynchronous Updates</h2><p>Since Vue performs DOM updates asynchronously, some assertions will have to be made in a <code>Vue.nextTick</code> callback:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// Inspect the generated HTML after a state update</span></div><div class="line">it(<span class="string">'updates the rendered message when vm.message updates'</span>, done =&gt; &#123;</div><div class="line">  <span class="keyword">const</span> vm = <span class="keyword">new</span> Vue(MyComponent).$mount()</div><div class="line">  vm.message = <span class="string">'foo'</span></div><div class="line">  Vue.nextTick(() =&gt; &#123;</div><div class="line">    expect(vm.$el.textContent).toBe(<span class="string">'foo'</span>)</div><div class="line">    done()</div><div class="line">  &#125;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// Import Vue and the component being tested</span></div><div class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></div><div class="line"><span class="keyword">import</span> MyComponent <span class="keyword">from</span> <span class="string">'path/to/MyComponent.vue'</span></div><div class="line"></div><div class="line"><span class="comment">// Here are some Jasmine 2.0 tests, though you can</span></div><div class="line"><span class="comment">// use any test runner / assertion library combo you prefer</span></div><div class="line">describe(<span class="string">'MyComponent'</span>, () =&gt; &#123;</div><div class="line">  <span class="comment">// Inspect the raw component options</span></div><div class="line">  it(<span class="string">'has a created hook'</span>, () =&gt; &#123;</div><div class="line">    expect(<span class="keyword">typeof</span> MyComponent.created).toBe(<span class="string">'function'</span>)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  <span class="comment">// Evaluate the results of functions in</span></div><div class="line">  <span class="comment">// the raw component options</span></div><div class="line">  it(<span class="string">'sets the correct default data'</span>, () =&gt; &#123;</div><div class="line">    expect(<span class="keyword">typeof</span> MyComponent.data).toBe(<span class="string">'function'</span>)</div><div class="line">    <span class="keyword">const</span> defaultData = MyComponent.data()</div><div class="line">    expect(defaultData.message).toBe(<span class="string">'hello!'</span>)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  <span class="comment">// Inspect the component instance on mount</span></div><div class="line">  it(<span class="string">'correctly sets the message when created'</span>, () =&gt; &#123;</div><div class="line">    <span class="keyword">const</span> vm = <span class="keyword">new</span> Vue(MyComponent).$mount()</div><div class="line">    expect(vm.message).toBe(<span class="string">'bye!'</span>)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  <span class="comment">// Mount an instance and inspect the render output</span></div><div class="line">  it(<span class="string">'renders the correct message'</span>, () =&gt; &#123;</div><div class="line">    <span class="keyword">const</span> Ctor = Vue.extend(MyComponent)</div><div class="line">    <span class="keyword">const</span> vm = <span class="keyword">new</span> Ctor().$mount()</div><div class="line">    expect(vm.$el.textContent).toBe(<span class="string">'bye!'</span>)</div><div class="line">  &#125;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<h2 id="Writing-Testable-Components"><a href="#Writing-Testable-Components" class="headerlink" title="Writing Testable Components"></a>Writing Testable Components</h2><p>A lot of components’ render output are primarily determined by the props they receive. In fact, if a component’s render output solely depends on its props, it becomes quite straightforward to test, similar to asserting the return value of a pure function with different arguments. Take an contrived example:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123; msg &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></div><div class="line">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</div><div class="line">    props: [<span class="string">'msg'</span>]</div><div class="line">  &#125;</div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>You can assert its render output with different props using the <code>propsData</code> option:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></div><div class="line"><span class="keyword">import</span> MyComponent <span class="keyword">from</span> <span class="string">'./MyComponent.vue'</span></div><div class="line"></div><div class="line"><span class="comment">// helper function that mounts and returns the rendered text</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getRenderedText</span> (<span class="params">Component, propsData</span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> Ctor = Vue.extend(MyComponent)</div><div class="line">  <span class="keyword">const</span> vm = <span class="keyword">new</span> Ctor(&#123; propsData &#125;).$mount()</div><div class="line">  <span class="keyword">return</span> vm.$el.textContent</div><div class="line">&#125;</div><div class="line"></div><div class="line">describe(<span class="string">'MyComponent'</span>, () =&gt; &#123;</div><div class="line">  it(<span class="string">'render correctly with different props'</span>, () =&gt; &#123;</div><div class="line">    expect(getRenderedText(MyComponent, &#123;</div><div class="line">      msg: <span class="string">'Hello'</span></div><div class="line">    &#125;)).toBe(<span class="string">'Hello'</span>)</div><div class="line"></div><div class="line">    expect(getRenderedText(MyComponent, &#123;</div><div class="line">      msg: <span class="string">'Bye'</span></div><div class="line">    &#125;)).toBe(<span class="string">'Bye'</span>)</div><div class="line">  &#125;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<h2 id="Asserting-Asynchronous-Updates"><a href="#Asserting-Asynchronous-Updates" class="headerlink" title="Asserting Asynchronous Updates"></a>Asserting Asynchronous Updates</h2><p>Since Vue <a href="/guide/reactivity.html#Async-Update-Queue">performs DOM updates asynchronously</a>, assertions on DOM updates resulting from state change will have to be made in a <code>Vue.nextTick</code> callback:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// Inspect the generated HTML after a state update</span></div><div class="line">it(<span class="string">'updates the rendered message when vm.message updates'</span>, done =&gt; &#123;</div><div class="line">  <span class="keyword">const</span> vm = <span class="keyword">new</span> Vue(MyComponent).$mount()</div><div class="line">  vm.message = <span class="string">'foo'</span></div><div class="line"></div><div class="line">  <span class="comment">// wait a "tick" after state change before asserting DOM updates</span></div><div class="line">  Vue.nextTick(() =&gt; &#123;</div><div class="line">    expect(vm.$el.textContent).toBe(<span class="string">'foo'</span>)</div><div class="line">    done()</div><div class="line">  &#125;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>We are planning to work on a collection of common test helpers that makes it even simpler to render components with different constraints (e.g. shallow rendering that ignores child components) and assert their output.</p>
 
     
       <div class="guide-links">
@@ -340,7 +365,7 @@
           <span>← <a href="/guide/state-management.html">State Management</a></span>
         
         
-          <span style="float:right"><a href="/guide/comparison.html">Comparison with Other Frameworks</a> →</span>
+          <span style="float:right"><a href="/guide/ssr.html">Server-Side Rendering</a> →</span>
         
       </div>
     
