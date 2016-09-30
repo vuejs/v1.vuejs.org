@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://vuejs.org/"/>
-  <updated>2016-06-14T16:24:54.000Z</updated>
+  <updated>2016-09-30T04:22:50.000Z</updated>
   <id>http://vuejs.org/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://vuejs.org/2016/04/27/announcing-2.0/"/>
     <id>http://vuejs.org/2016/04/27/announcing-2.0/</id>
     <published>2016-04-27T17:33:00.000Z</published>
-    <updated>2016-06-14T16:24:54.000Z</updated>
+    <updated>2016-09-30T04:22:50.000Z</updated>
     
     <content type="html"><![CDATA[<p>Today I am thrilled to announce the first public preview of Vue.js 2.0, which brings along many exciting improvements and new features. Let’s take a peek at what’s in store!</p>
 <a id="more"></a>
@@ -61,7 +61,7 @@
     <link href="http://vuejs.org/2016/03/14/march-update/"/>
     <id>http://vuejs.org/2016/03/14/march-update/</id>
     <published>2016-03-14T22:45:00.000Z</published>
-    <updated>2016-03-14T23:02:37.000Z</updated>
+    <updated>2016-09-30T04:22:50.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="Growing-Community"><a href="#Growing-Community" class="headerlink" title="Growing Community"></a>Growing Community</h2><p>Vue’s growth in the past year has been nothing short of amazing. As of today we are at over 15,000 stars on GitHub, over 500k downloads from npm, and over 2,000 users in the Gitter channel. What’s more exciting though, is that the community successfully organized the first <a href="http://www.meetup.com/London-Vue-js-Meetup/" target="_blank" rel="external">London Vue.js Meetup</a> and the first <a href="http://www.meetup.com/Vuejs-Paris/?scroll=true" target="_blank" rel="external">Paris Vue.js Meetup</a>! A big shoutout to the awesome organizers: <a href="https://twitter.com/JackBarham" target="_blank" rel="external">Jack</a>, <a href="https://twitter.com/onejamesbrowne/" target="_blank" rel="external">James</a> and <a href="https://twitter.com/posva/" target="_blank" rel="external">Eduardo</a>.</p>
 <a id="more"></a>
@@ -92,7 +92,7 @@
     <link href="http://vuejs.org/2016/02/06/common-gotchas/"/>
     <id>http://vuejs.org/2016/02/06/common-gotchas/</id>
     <published>2016-02-06T15:00:00.000Z</published>
-    <updated>2016-03-27T05:19:35.000Z</updated>
+    <updated>2016-09-30T04:22:50.000Z</updated>
     
     <content type="html"><![CDATA[<p>There are few types of questions that we frequently see from users who are new to Vue.js. Although they are all mentioned somewhere in the guide, they are easy to miss and can be hard to find when you do get bitten by the gotchas. Therefore we are aggregating them in this post and hopefully it can save you some time!</p>
 <a id="more"></a>
@@ -127,7 +127,7 @@
     <link href="http://vuejs.org/2015/12/28/vue-cli/"/>
     <id>http://vuejs.org/2015/12/28/vue-cli/</id>
     <published>2015-12-28T05:00:00.000Z</published>
-    <updated>2016-08-06T02:02:06.000Z</updated>
+    <updated>2016-09-30T04:22:50.000Z</updated>
     
     <content type="html"><![CDATA[<p>Recently there has been a lot of <a href="https://medium.com/@ericclemmons/javascript-fatigue-48d4011b6fc4#.chg95e5p6" target="_blank" rel="external">discussion around the tooling hurdle</a> when you start a React project. Luckily for Vue.js, all you need to do to start with a quick prototype is including it from a CDN via a <code>&lt;script&gt;</code> tag, so we’ve got that part covered. However, that’s not how you’d build a real world application. In real world applications we inevitably need a certain amount of tooling to give us modularization, transpilers, pre-processors, hot-reload, linting and testing. These tools are necessary for the long-term maintainability and productivity of large projects, but the initial setup can be a big pain. This is why we are announcing <a href="https://github.com/vuejs/vue-cli" target="_blank" rel="external">vue-cli</a>, a simple CLI tool to help you quickly scaffold Vue.js projects with opinionated, battery-included build setups.</p>
 <a id="more"></a>
@@ -166,7 +166,7 @@
     <link href="http://vuejs.org/2015/10/28/why-no-template-url/"/>
     <id>http://vuejs.org/2015/10/28/why-no-template-url/</id>
     <published>2015-10-28T14:56:00.000Z</published>
-    <updated>2016-03-27T05:20:45.000Z</updated>
+    <updated>2016-09-30T04:22:50.000Z</updated>
     
     <content type="html"><![CDATA[<p>A very common question from new Vue users, especially those who used Angular before, is “can I have <code>templateURL</code>?”. I have answered this so many times and I figure it’s better to write something about it.</p>
 <a id="more"></a>
@@ -192,7 +192,7 @@
     <link href="http://vuejs.org/2015/10/26/1.0.0-release/"/>
     <id>http://vuejs.org/2015/10/26/1.0.0-release/</id>
     <published>2015-10-26T14:00:00.000Z</published>
-    <updated>2015-10-27T03:21:41.000Z</updated>
+    <updated>2016-09-30T04:22:50.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>Hi HN! If you are not familiar with Vue.js, you might want to read this <a href="http://blog.evanyou.me/2015/10/25/vuejs-re-introduction/" target="_blank" rel="external">blog post</a> for a higher level overview.</p>
@@ -244,7 +244,7 @@
     <link href="http://vuejs.org/2015/06/11/012-release/"/>
     <id>http://vuejs.org/2015/06/11/012-release/</id>
     <published>2015-06-11T21:37:30.000Z</published>
-    <updated>2015-10-25T20:34:02.000Z</updated>
+    <updated>2016-09-30T04:22:50.000Z</updated>
     
     <content type="html"><![CDATA[<p>I’m really excited to announce that <a href="https://github.com/yyx990803/vue/releases/tag/0.12.0" target="_blank" rel="external">Vue.js 0.12: Dragon Ball</a> is finally here! Thanks to everyone who tried out the beta/rc versions and provided feedback / bug reports along the way.</p>
 <p>There’s a lot to cover in this release, and we will talk about a few highlights below. However, it is still recommended to carefully go through the <a href="https://github.com/yyx990803/vue/releases/tag/0.12.0" target="_blank" rel="external">Full Release Note</a> and updated docs if you are upgrading from 0.11. You can report bugs on GitHub, send questions to <a href="https://github.com/vuejs/Discussion/issues" target="_blank" rel="external">vuejs/Discussion</a>, or join us in the <a href="https://gitter.im/yyx990803/vue" target="_blank" rel="external">Gitter chat channel</a>.</p>
@@ -290,7 +290,7 @@
     <link href="http://vuejs.org/2014/12/08/011-component/"/>
     <id>http://vuejs.org/2014/12/08/011-component/</id>
     <published>2014-12-08T20:02:14.000Z</published>
-    <updated>2015-10-25T20:34:02.000Z</updated>
+    <updated>2016-09-30T04:22:50.000Z</updated>
     
     <content type="html"><![CDATA[<p class="tip">Note: this post contains information for the outdated 0.11 version. Please refer to the <a href="https://github.com/yyx990803/vue/releases" target="_blank" rel="external">0.12 release notes</a> for the changes in the API.</p>
 
@@ -326,7 +326,7 @@
     <link href="http://vuejs.org/2014/11/09/vue-011-release/"/>
     <id>http://vuejs.org/2014/11/09/vue-011-release/</id>
     <published>2014-11-09T14:23:40.000Z</published>
-    <updated>2015-10-25T20:34:02.000Z</updated>
+    <updated>2016-09-30T04:22:50.000Z</updated>
     
     <content type="html"><![CDATA[<p>After the long wait, <a href="https://github.com/yyx990803/vue/releases/tag/0.11.0" target="_blank" rel="external">Vue.js 0.11 <strong>Cowboy Bebop</strong></a> is finally here! Thanks to everyone who tried out the release candidate versions and provided feedback / bug reports along the way.</p>
 <a id="more"></a>
@@ -348,7 +348,7 @@
     <link href="http://vuejs.org/2014/07/29/vue-next/"/>
     <id>http://vuejs.org/2014/07/29/vue-next/</id>
     <published>2014-07-29T04:04:55.000Z</published>
-    <updated>2015-10-25T20:34:02.000Z</updated>
+    <updated>2016-09-30T04:22:50.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="0-10-6"><a href="#0-10-6" class="headerlink" title="0.10.6"></a>0.10.6</h2><p>Vue.js 0.10.6 has been released! This is another small bug-fix release and will be the last maintainance version before the next major release.</p>
 <a id="more"></a>
@@ -382,7 +382,7 @@
     <link href="http://vuejs.org/2014/03/22/vuejs-010-release/"/>
     <id>http://vuejs.org/2014/03/22/vuejs-010-release/</id>
     <published>2014-03-22T23:00:13.000Z</published>
-    <updated>2015-10-25T20:34:02.000Z</updated>
+    <updated>2016-09-30T04:22:50.000Z</updated>
     
     <content type="html"><![CDATA[<p>Vue.js 0.10.0 (Blade Runner) has been released! This release comes with many useful additions based on the suggestions from the users, notably interpolation in literal directives, dynamic components with the new <code>v-view</code> directive, array filters, and the option to configure interpolation delimiters. Internally, the codebase has received many refactoring and improvements which makes Vue.js <a href="http://vuejs.org/perf/">even faster</a>.</p>
 <a id="more"></a>
