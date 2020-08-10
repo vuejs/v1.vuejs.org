@@ -1412,11 +1412,13 @@
 <li><code>name</code></li>
 </ul>
 </li>
+<li><p><strong>Reactive?</strong> No</p></li>
 <li><p><strong>Usage:</strong></p>
 <p><code>&lt;slot&gt;</code> elements serve as content distribution outlets in component templates. The slot element itself will be replaced.</p>
 <p>A slot with the <code>name</code> attribute is called a named slot. A named slot will distribute content with a <code>slot</code> attribute that matches its name.</p>
 <p>For detailed usage, see the guide section linked below.</p>
 </li>
+<li><p><strong>Note:</strong> Please note that slots are <em>not</em> reactive. If you need a component to re-render based on changes to data passed to a slot, we suggest considering a different strategy that relies on a reactive instance option, such as `props` or `data`.</p></li>
 <li><p><strong>See also:</strong> <a href="/guide/components.html#Content-Distribution-with-Slots">Content Distribution with Slots</a></p>
 </li>
 </ul>
